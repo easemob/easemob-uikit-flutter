@@ -1,0 +1,3 @@
+class ChatUIKitViewArguments {
+  String? attributes;
+}
