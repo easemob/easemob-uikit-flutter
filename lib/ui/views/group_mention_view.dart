@@ -144,7 +144,7 @@ class _GroupMentionViewState extends State<GroupMentionView> {
         return ValueListenableBuilder(
           valueListenable: selectedProfiles,
           builder: (context, value, child) {
-            return SearchUsersView(
+            return SearchView(
               searchHideText:
                   ChatUIKitLocal.groupMentionViewSearchHint.getString(context),
               searchData: list,

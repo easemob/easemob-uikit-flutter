@@ -100,13 +100,13 @@ class _MessageListViewState extends State<MessageListView> {
 
   @override
   void dispose() {
+    controller.isDisposed = true;
     controller.dispose();
     _scrollController.dispose();
     super.dispose();
   }
 
   void fetchMessages() {
-    if (controller.isEmpty) return;
     controller.fetchItemList();
   }
 
@@ -133,7 +133,6 @@ class _MessageListViewState extends State<MessageListView> {
                   int index = controller.msgList.indexWhere(
                     (msg) => msg.id == valueKey.value,
                   );
-                  debugPrint('findChildIndexCallback: $index');
                   return index > -1 ? index : null;
                 } else {
                   return null;
@@ -150,6 +149,15 @@ class _MessageListViewState extends State<MessageListView> {
           ),
         ),
       ],
+    );
+    content = Padding(
+      padding: const EdgeInsets.only(left: 12, right: 12),
+      child: content,
+    );
+    content = Scrollbar(
+      controller: _scrollController,
+      scrollbarOrientation: ScrollbarOrientation.right,
+      child: content,
     );
 
     content = MessageListShareUserData(

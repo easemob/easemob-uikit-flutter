@@ -1,8 +1,8 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/widgets.dart';
 
-class SearchUsersViewArguments implements ChatUIKitViewArguments {
-  SearchUsersViewArguments({
+class SearchViewArguments implements ChatUIKitViewArguments {
+  SearchViewArguments({
     required this.searchData,
     required this.searchHideText,
     this.onTap,
@@ -26,7 +26,7 @@ class SearchUsersViewArguments implements ChatUIKitViewArguments {
   @override
   String? attributes;
 
-  SearchUsersViewArguments copyWith({
+  SearchViewArguments copyWith({
     List<NeedSearch>? searchData,
     String? searchHideText,
     void Function(BuildContext context, ChatUIKitProfile profile)? onTap,
@@ -39,7 +39,7 @@ class SearchUsersViewArguments implements ChatUIKitViewArguments {
     String? selectedTitle,
     String? attributes,
   }) {
-    return SearchUsersViewArguments(
+    return SearchViewArguments(
       searchData: searchData ?? this.searchData,
       searchHideText: searchHideText ?? this.searchHideText,
       onTap: onTap ?? this.onTap,

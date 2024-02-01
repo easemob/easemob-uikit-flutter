@@ -206,7 +206,7 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
     ChatUIKitRoute.pushOrPushNamed(
         context,
         ChatUIKitRouteNames.searchUsersView,
-        SearchUsersViewArguments(
+        SearchViewArguments(
           onTap: (ctx, profile) {
             Navigator.of(ctx).pop(profile);
           },

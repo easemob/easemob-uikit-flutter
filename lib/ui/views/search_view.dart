@@ -2,9 +2,9 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
-class SearchUsersView extends StatefulWidget {
-  SearchUsersView.arguments(
-    SearchUsersViewArguments arguments, {
+class SearchView extends StatefulWidget {
+  SearchView.arguments(
+    SearchViewArguments arguments, {
     super.key,
   })  : searchData = arguments.searchData,
         searchHideText = arguments.searchHideText,
@@ -16,7 +16,7 @@ class SearchUsersView extends StatefulWidget {
         selectedTitle = arguments.selectedTitle,
         attributes = arguments.attributes;
 
-  const SearchUsersView({
+  const SearchView({
     required this.searchData,
     required this.searchHideText,
     this.itemBuilder,
@@ -42,10 +42,10 @@ class SearchUsersView extends StatefulWidget {
   final String? attributes;
 
   @override
-  State<SearchUsersView> createState() => _SearchUsersViewState();
+  State<SearchView> createState() => _SearchViewState();
 }
 
-class _SearchUsersViewState extends State<SearchUsersView> {
+class _SearchViewState extends State<SearchView> {
   ValueNotifier<List<ChatUIKitProfile>> selectedProfiles = ValueNotifier([]);
 
   @override

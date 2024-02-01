@@ -1,11 +1,14 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 // import 'package:username/username.dart';
 
+/// 联系人列表控制器
 class ContactListViewController with ChatUIKitListViewControllerBase {
   ContactListViewController();
 
   String? cursor;
 
+  /// 获取联系人列表，会优先从本地获取，如果本地没有，并且没有从服务器获取过，则从服务器获取。
+  /// `force` (bool) 是否强制从服务器获取，默认为 `false`。
   @override
   Future<void> fetchItemList({bool force = false}) async {
     loadingType.value = ChatUIKitListViewType.loading;
@@ -17,7 +20,7 @@ class ContactListViewController with ChatUIKitListViewControllerBase {
         items = await _fetchContacts();
       }
       ChatUIKitContext.instance.removeRequests(items);
-      List<ContactItemModel> tmp = mappers(items);
+      List<ContactItemModel> tmp = _mappers(items);
       list.clear();
       list.addAll(tmp);
       if (list.isEmpty) {
@@ -40,7 +43,7 @@ class ContactListViewController with ChatUIKitListViewControllerBase {
     return result;
   }
 
-  List<ContactItemModel> mappers(List<String> contacts) {
+  List<ContactItemModel> _mappers(List<String> contacts) {
     List<ContactItemModel> list = [];
     Map<String, ChatUIKitProfile> map =
         ChatUIKitProvider.instance.getProfiles(() {
@@ -63,16 +66,17 @@ class ContactListViewController with ChatUIKitListViewControllerBase {
         .any((element) => element.profile.id == userId)) {
       return;
     }
-    List<ContactItemModel> tmp = mappers([userId]);
+    List<ContactItemModel> tmp = _mappers([userId]);
     list.addAll(tmp);
   }
 
+  /// 从新从本地获取联系人列表
   @override
   Future<void> reload() async {
     loadingType.value = ChatUIKitListViewType.refresh;
     List<String> items = await ChatUIKit.instance.getAllContacts();
     ChatUIKitContext.instance.removeRequests(items);
-    List<ContactItemModel> tmp = mappers(items);
+    List<ContactItemModel> tmp = _mappers(items);
     list.clear();
     list.addAll(tmp);
     loadingType.value = ChatUIKitListViewType.normal;

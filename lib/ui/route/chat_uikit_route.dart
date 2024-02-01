@@ -94,8 +94,8 @@ class ChatUIKitRoute {
       );
     },
     ChatUIKitRouteNames.searchUsersView: (context, arguments) {
-      return SearchUsersView.arguments(
-        arguments as SearchUsersViewArguments,
+      return SearchView.arguments(
+        arguments as SearchViewArguments,
       );
     },
     ChatUIKitRouteNames.groupMembersView: (context, arguments) {

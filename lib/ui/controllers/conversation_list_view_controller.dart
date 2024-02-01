@@ -4,16 +4,22 @@ import 'package:flutter/foundation.dart';
 typedef ConversationListViewShowHandler = List<ConversationModel> Function(
     List<ConversationModel> conversations);
 
+/// 会话列表控制器
 class ConversationListViewController extends ChatUIKitListViewControllerBase {
   ConversationListViewController({
-    this.pageSize = 50,
     this.willShowHandler,
   });
-  final int pageSize;
+
+  /// 一次从服务器获取的会话列表数量，默认为 `50`。
+  final int pageSize = 50;
+
+  /// 会话列表显示前的回调，你可以在这里对会话列表进行处理，比如排序或者加减等。如果不设置将会直接显示。
   final ConversationListViewShowHandler? willShowHandler;
 
   String? cursor;
 
+  /// 获取会话列表，会优先从本地获取，如果本地没有，并且没有从服务器获取过，则从服务器获取。
+  ///`force` (bool) 是否强制从服务器获取，默认为 `false`。
   @override
   Future<void> fetchItemList({bool force = false}) async {
     loadingType.value = ChatUIKitListViewType.loading;
@@ -25,8 +31,8 @@ class ConversationListViewController extends ChatUIKitListViewControllerBase {
         await fetchConversations();
         items = await ChatUIKit.instance.getAllConversations();
       }
-      items = await clearEmpty(items);
-      List<ConversationModel> tmp = await mappers(items);
+      items = await _clearEmpty(items);
+      List<ConversationModel> tmp = await _mappers(items);
       list.clear();
       list.addAll(tmp);
       list = willShowHandler?.call(list.cast<ConversationModel>()) ?? list;
@@ -41,12 +47,13 @@ class ConversationListViewController extends ChatUIKitListViewControllerBase {
     }
   }
 
+  /// 从新从本地获取会话列表
   @override
   Future<void> reload() async {
     loadingType.value = ChatUIKitListViewType.refresh;
     List<Conversation> items = await ChatUIKit.instance.getAllConversations();
-    items = await clearEmpty(items);
-    List<ConversationModel> tmp = await mappers(items);
+    items = await _clearEmpty(items);
+    List<ConversationModel> tmp = await _mappers(items);
     list.clear();
     list.addAll(tmp);
     list = willShowHandler?.call(list.cast<ConversationModel>()) ?? list;
@@ -63,7 +70,7 @@ class ConversationListViewController extends ChatUIKitListViewControllerBase {
   //   return list;
   // }
 
-  Future<List<Conversation>> clearEmpty(List<Conversation> list) async {
+  Future<List<Conversation>> _clearEmpty(List<Conversation> list) async {
     List<Conversation> tmp = [];
     for (var item in list) {
       final latest = await item.latestMessage();
@@ -100,7 +107,7 @@ class ConversationListViewController extends ChatUIKitListViewControllerBase {
       // ignore: empty_catches
     } catch (e) {}
 
-    await updateMuteType(items);
+    await _updateMuteType(items);
 
     if (hasMore) {
       List<Conversation> tmp = await fetchConversations();
@@ -109,7 +116,7 @@ class ConversationListViewController extends ChatUIKitListViewControllerBase {
     return items;
   }
 
-  Future<void> updateMuteType(List<Conversation> items) async {
+  Future<void> _updateMuteType(List<Conversation> items) async {
     try {
       await ChatUIKit.instance.fetchSilentModel(conversations: items);
 
@@ -117,7 +124,7 @@ class ConversationListViewController extends ChatUIKitListViewControllerBase {
     } catch (e) {}
   }
 
-  Future<List<ConversationModel>> mappers(
+  Future<List<ConversationModel>> _mappers(
       List<Conversation> conversations) async {
     List<ChatUIKitProfile> tmp = () {
       List<ChatUIKitProfile> ret = [];

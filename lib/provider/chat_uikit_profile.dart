@@ -12,7 +12,7 @@ class ChatUIKitProfile {
   final String id;
   final String? name;
   final String? avatarUrl;
-  final ImageProvider? avatarProvider;
+  // final ImageProvider? avatarProvider;
   final ChatUIKitProfileType? type;
   final Map<String, String>? extension;
   final int timestamp;
@@ -24,7 +24,7 @@ class ChatUIKitProfile {
     required this.type,
     this.name,
     this.avatarUrl,
-    this.avatarProvider,
+    // this.avatarProvider,
     this.extension,
     this.timestamp = 0,
   });
@@ -40,7 +40,7 @@ class ChatUIKitProfile {
           id: id,
           name: name,
           avatarUrl: avatarUrl,
-          avatarProvider: avatarProvider,
+          // avatarProvider: avatarProvider,
           type: ChatUIKitProfileType.contact,
           extension: extension,
           timestamp: timestamp,
@@ -57,7 +57,7 @@ class ChatUIKitProfile {
           id: id,
           name: name,
           avatarUrl: avatarUrl,
-          avatarProvider: avatarProvider,
+          // avatarProvider: avatarProvider,
           type: ChatUIKitProfileType.group,
           extension: extension,
           timestamp: timestamp,
@@ -74,7 +74,7 @@ class ChatUIKitProfile {
       id: id,
       name: name ?? this.name,
       avatarUrl: avatarUrl ?? this.avatarUrl,
-      avatarProvider: avatarProvider,
+      // avatarProvider: avatarProvider,
       type: type,
       extension: extension ?? this.extension,
       timestamp: timestamp ?? this.timestamp,

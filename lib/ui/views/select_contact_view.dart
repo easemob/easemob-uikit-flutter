@@ -119,7 +119,7 @@ class _SelectContactViewState extends State<SelectContactView> {
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.searchUsersView,
-      SearchUsersViewArguments(
+      SearchViewArguments(
         onTap: (ctx, profile) {
           Navigator.of(ctx).pop(profile);
         },

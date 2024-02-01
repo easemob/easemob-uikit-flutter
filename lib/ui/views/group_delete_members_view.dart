@@ -182,7 +182,7 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
     ChatUIKitRoute.pushOrPushNamed(
         context,
         ChatUIKitRouteNames.searchUsersView,
-        SearchUsersViewArguments(
+        SearchViewArguments(
           onTap: (ctx, profile) {
             Navigator.of(ctx).pop(profile);
           },

@@ -25,7 +25,8 @@ class ChatUIKitRouteNames {
   static const String groupMentionView = '/GroupMentionView';
   static const String reportMessageView = '/ReportMessageView';
 
-  static Widget getWidthFromName(String name, ChatUIKitViewArguments arguments) {
+  static Widget getWidthFromName(
+      String name, ChatUIKitViewArguments arguments) {
     switch (name) {
       case ChatUIKitRouteNames.changeInfoView:
         return ChangeInfoView.arguments(
@@ -76,8 +77,8 @@ class ChatUIKitRouteNames {
           arguments as NewRequestsViewArguments,
         );
       case ChatUIKitRouteNames.searchUsersView:
-        return SearchUsersView.arguments(
-          arguments as SearchUsersViewArguments,
+        return SearchView.arguments(
+          arguments as SearchViewArguments,
         );
       case ChatUIKitRouteNames.searchGroupMembersView:
         return SearchGroupMembersView.arguments(

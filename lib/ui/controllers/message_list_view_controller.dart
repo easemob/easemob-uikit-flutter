@@ -14,26 +14,49 @@ enum MessageLastActionType {
   none,
 }
 
+/// 消息列表控制器
 class MessageListViewController extends ChangeNotifier
     with ChatObserver, MessageObserver {
+  /// 用户信息对象，用于设置对方信息, 详细参考 [ChatUIKitProfile]。如果你自己设置了 `MessageListViewController` 需要确保 `profile` 与 [MessagesView] 传入的 `profile` 一致。
   ChatUIKitProfile profile;
+
+  /// 一次获取的消息数量，默认为 30
   final int pageSize;
-  late final ConversationType conversationType;
-  bool isEmpty = false;
-  String? lastMessageId;
-  bool hasNew = false;
-  bool isFetching = false;
-  MessageLastActionType lastActionType = MessageLastActionType.none;
+
   final Message? Function(Message)? willSendHandler;
 
+  /// 消息列表
   final List<MessageModel> msgList = [];
+
+  /// 用户信息缓存，用于显示头像昵称, 不建议修改， 详细参考 [UserData]
   final Map<String, UserData> userMap = {};
+
+  /// 会话类型, 不可修改，会根据 `profile` 自动设置。 详细参考 [ConversationType]
+  late final ConversationType conversationType;
+
+  /// 不可修改
+  MessageLastActionType lastActionType = MessageLastActionType.none;
+
+  /// 不可修改
+  bool _isEmpty = false;
+
+  /// 不可修改
+  String? _lastMessageId;
+
+  /// 不可修改
+  bool hasNew = false;
+
+  /// 不可修改
+  bool _isFetching = false;
+
+  /// 不可修改
+  bool isDisposed = false;
 
   void clearMessages() {
     msgList.clear();
     lastActionType = MessageLastActionType.none;
     hasNew = false;
-    lastMessageId = null;
+    _lastMessageId = null;
   }
 
   MessageListViewController({
@@ -65,25 +88,27 @@ class MessageListViewController extends ChangeNotifier
   }
 
   void fetchItemList() async {
-    if (isEmpty) {
+    if (_isEmpty) {
       return;
     }
-    if (isFetching) return;
-    isFetching = true;
+    if (_isFetching) return;
+    _isFetching = true;
     List<Message> list = await ChatUIKit.instance.getMessages(
       conversationId: profile.id,
       type: conversationType,
       count: pageSize,
-      startId: lastMessageId,
+      startId: _lastMessageId,
     );
     if (list.length < pageSize) {
-      isEmpty = true;
+      _isEmpty = true;
     }
     if (list.isNotEmpty) {
       List<MessageModel> modelLists = [];
-      lastMessageId = list.first.msgId;
+      _lastMessageId = list.first.msgId;
       for (var msg in list) {
-        modelLists.add(MessageModel(id: getModelId(msg), message: msg));
+        modelLists.add(
+          MessageModel(id: getModelId(msg), message: msg),
+        );
         UserData? userData = userMap[msg.from!];
         if ((userData?.time ?? 0) < msg.serverTime) {
           userData = UserData(
@@ -100,7 +125,7 @@ class MessageListViewController extends ChangeNotifier
 
       updateView();
     }
-    isFetching = false;
+    _isFetching = false;
   }
 
   @override
@@ -199,6 +224,7 @@ class MessageListViewController extends ChangeNotifier
   }
 
   void updateView() {
+    if (isDisposed) return;
     notifyListeners();
   }
 
