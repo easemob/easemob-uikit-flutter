@@ -7,15 +7,20 @@ typedef ChatUIKitWidgetBuilder = Widget Function(
   Object? arguments,
 );
 
+/// 用于标记路由 [ChatUIKitRouteBackModel] 类型。
 enum ChatUIKitRouteBackType { add, remove, update }
 
+/// 路由返回信息，用于标记路由返回到上一页时的变更类型和 profileId
 class ChatUIKitRouteBackModel {
+  /// profileId对应信息更新。
   ChatUIKitRouteBackModel.update(this.profileId)
       : type = ChatUIKitRouteBackType.update;
 
+  /// 信息添加。
   ChatUIKitRouteBackModel.add(this.profileId)
       : type = ChatUIKitRouteBackType.add;
 
+  /// 信息删除。
   ChatUIKitRouteBackModel.remove(this.profileId)
       : type = ChatUIKitRouteBackType.remove;
 
@@ -24,6 +29,7 @@ class ChatUIKitRouteBackModel {
     required this.profileId,
   });
 
+  /// 用于复制当前对象。 [ChatUIKitRouteBackModel] 为不可变对象，当需要修改时，需要复制一份新的对象。
   ChatUIKitRouteBackModel copy() {
     return ChatUIKitRouteBackModel(
       type: type,
@@ -31,15 +37,22 @@ class ChatUIKitRouteBackModel {
     );
   }
 
+  /// 信息变更类型。
   final ChatUIKitRouteBackType type;
+
+  /// profileId。
   final String profileId;
 }
 
+/// 路由
 class ChatUIKitRoute {
   static ChatUIKitRoute? _instance;
   static bool hasInit = false;
   static ChatUIKitRouteBackModel? _lastBackModel;
+
+  /// 路由初始化，如果使用路由，需要先调用此方法。`ChatUIKitRoute.instance;`
   static ChatUIKitRoute get instance => _instance ??= ChatUIKitRoute._();
+
   factory ChatUIKitRoute() => _instance ??= ChatUIKitRoute._();
 
   ChatUIKitRoute._() {
@@ -166,6 +179,7 @@ class ChatUIKitRoute {
     return ret;
   }
 
+  /// 返回到根页面
   static popToRoot(
     BuildContext context, {
     ChatUIKitRouteBackModel? model,
@@ -174,6 +188,7 @@ class ChatUIKitRoute {
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
+  /// 返回到群组列表页面，如果没找到，则返回根页面
   static popToGroupsView(
     BuildContext context, {
     ChatUIKitRouteBackModel? model,
@@ -185,6 +200,7 @@ class ChatUIKitRoute {
     });
   }
 
+  /// 返回到联系人列表页面，如果没找到，则返回根页面
   static popToContactsView(
     BuildContext context, {
     ChatUIKitRouteBackModel? model,
@@ -196,6 +212,19 @@ class ChatUIKitRoute {
     });
   }
 
+  /// ChatUIKit 路由拦截器, 可以在 `onGenerateRoute` 中进行拦截，如果拦截失败，再进行你自己的路由跳转。
+  ///
+  /// ```dart
+  ///   onGenerateRoute: (settings) {
+  ///     RouteSettings newSettings = ChatRouteFilter.chatRouteSettings(settings);
+  ///     return ChatUIKitRoute().generateRoute(newSettings) ??
+  ///         MaterialPageRoute(
+  ///             builder: (context) {
+  ///               return const HomePage();
+  ///             },
+  ///         );
+  ///   },
+  /// ```
   Route? generateRoute<T extends Object>(RouteSettings settings) {
     if (settings.arguments is ChatUIKitViewArguments) {
       ChatUIKitWidgetBuilder? builder = _uikitRoutes[settings.name];
@@ -215,6 +244,7 @@ class ChatUIKitRoute {
     }
   }
 
+  /// 路由跳转，如果没有初始化，则使用 [MaterialPageRoute] 进行跳转。
   static Future<T?> pushOrPushNamed<T extends Object?>(
     BuildContext context,
     String pushNamed,

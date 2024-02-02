@@ -43,6 +43,25 @@ class ConversationModel with ChatUIKitListItemModelBase, NeedSearch {
     return info;
   }
 
+  ConversationModel copyWith({
+    Message? lastMessage,
+    int? unreadCount,
+    bool? pinned,
+    bool? noDisturb,
+    bool? hasMention,
+    String? attribute,
+  }) {
+    return ConversationModel(
+      profile: profile,
+      lastMessage: lastMessage ?? this.lastMessage,
+      unreadCount: unreadCount ?? this.unreadCount,
+      pinned: pinned ?? this.pinned,
+      noDisturb: noDisturb ?? this.noDisturb,
+      hasMention: hasMention ?? this.hasMention,
+      attribute: attribute ?? this.attribute,
+    );
+  }
+
   @override
   String get showName {
     return profile.showName;

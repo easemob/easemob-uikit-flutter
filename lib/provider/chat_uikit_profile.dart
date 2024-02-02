@@ -1,22 +1,36 @@
 import 'package:flutter/material.dart';
 
+/// Profile 类型，用于区分是联系人还是群组。
 enum ChatUIKitProfileType {
-  /// Profile type for contact
+  /// 联系人类型。
   contact,
 
-  /// Profile type for group
+  /// 群类型。
   group,
 }
 
+/// ChatUIKitProfile 类，用于存储联系人或群组的信息。
 class ChatUIKitProfile {
+
+  /// id ,如果是联系人，则为用户 id，如果是群组，则为群组 id。
   final String id;
+
+  /// 名称,如果是联系人，则为用户名称，如果是群组，则为群组名称。
   final String? name;
+
+  /// 头像地址, 如果是联系人，则为用户头像地址，如果是群组，则为群组头像地址。
   final String? avatarUrl;
-  // final ImageProvider? avatarProvider;
+
+  /// profile 类型，用于区分是联系人还是群组，详见 [ChatUIKitProfileType]。
   final ChatUIKitProfileType? type;
+
+  /// 扩展字段，用于存储一些额外的信息。
   final Map<String, String>? extension;
+
+  /// 时间戳，uikit 内部不使用。开发者可以使用该字段存储一些时间戳信息。
   final int timestamp;
 
+  /// 用于展示的名称，如果 name 为空，则展示 id
   String get showName => name?.isNotEmpty == true ? name! : id;
 
   ChatUIKitProfile({
@@ -24,7 +38,6 @@ class ChatUIKitProfile {
     required this.type,
     this.name,
     this.avatarUrl,
-    // this.avatarProvider,
     this.extension,
     this.timestamp = 0,
   });
@@ -40,7 +53,6 @@ class ChatUIKitProfile {
           id: id,
           name: name,
           avatarUrl: avatarUrl,
-          // avatarProvider: avatarProvider,
           type: ChatUIKitProfileType.contact,
           extension: extension,
           timestamp: timestamp,
@@ -57,12 +69,12 @@ class ChatUIKitProfile {
           id: id,
           name: name,
           avatarUrl: avatarUrl,
-          // avatarProvider: avatarProvider,
           type: ChatUIKitProfileType.group,
           extension: extension,
           timestamp: timestamp,
         );
 
+  /// 用于复制一个新的 profile 对象，如果传入的参数不为空，则使用传入的参数，否则使用当前 profile 的参数。
   ChatUIKitProfile copy({
     String? name,
     String? avatarUrl,
@@ -74,7 +86,6 @@ class ChatUIKitProfile {
       id: id,
       name: name ?? this.name,
       avatarUrl: avatarUrl ?? this.avatarUrl,
-      // avatarProvider: avatarProvider,
       type: type,
       extension: extension ?? this.extension,
       timestamp: timestamp ?? this.timestamp,

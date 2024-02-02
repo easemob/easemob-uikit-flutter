@@ -212,10 +212,7 @@ class _ChatUIKitListViewState extends State<ChatUIKitListView> {
       ],
     );
 
-    content = Scrollbar(
-      controller: controller,
-      child: content,
-    );
+ 
 
     content = NotificationListener(
       onNotification: (notification) {

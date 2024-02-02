@@ -77,17 +77,27 @@ class _ConversationListViewState extends State<ConversationListView>
 
   @override
   void onMessagesReceived(List<Message> messages) async {
-    // for (var msg in messages) {
-    //   if (msg.hasMention) {
-    //     Conversation? conversation = await ChatUIKit.instance.getConversation(
-    //       conversationId: msg.conversationId!,
-    //       type: ConversationType.values[msg.chatType.index],
-    //     );
-    //     await conversation?.addMention();
-    //   }
-    // }
     if (mounted) {
       controller.reload();
+    }
+  }
+
+  @override
+  void onMessageContentChanged(
+      Message message, String operatorId, int operationTime) {
+    int index = controller.list.cast<ConversationModel>().indexWhere((element) {
+      return element.lastMessage?.msgId == message.msgId;
+    });
+
+    if (index != -1) {
+      controller.list.cast<ConversationModel>()[index] =
+          controller.list.cast<ConversationModel>()[index].copyWith(
+                lastMessage: message,
+              );
+    }
+
+    if (mounted) {
+      controller.refresh();
     }
   }
 
