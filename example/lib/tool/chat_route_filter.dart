@@ -37,7 +37,7 @@ class ChatRouteFilter {
     return RouteSettings(name: settings.name, arguments: arguments);
   }
 
-  // 为 MessagesView 添加文件点击下载
+  // 添加创建群组拦截，并添加设置群名称功能
   static RouteSettings createGroupView(RouteSettings settings) {
     CreateGroupViewArguments arguments =
         settings.arguments as CreateGroupViewArguments;
