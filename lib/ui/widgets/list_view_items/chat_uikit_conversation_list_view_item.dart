@@ -243,9 +243,9 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
           ? (theme.color.isDark
               ? theme.color.neutralColor2
               : theme.color.neutralColor95)
-          : theme.color.isDark
+          : (theme.color.isDark
               ? theme.color.neutralColor1
-              : theme.color.neutralColor98,
+              : theme.color.neutralColor98),
       child: content,
     );
 

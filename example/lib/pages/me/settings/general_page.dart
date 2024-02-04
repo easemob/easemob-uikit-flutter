@@ -53,7 +53,7 @@ class _GeneralPageState extends State<GeneralPage> {
         ListItem(
           title: '暗黑模式',
           trailingWidget: CupertinoSwitch(
-              value: ThemeNotification.isLight,
+              value: !ThemeNotification.isLight,
               onChanged: (value) {
                 ThemeNotification.isLight = !ThemeNotification.isLight;
                 ThemeNotification().dispatch(context);
@@ -68,7 +68,10 @@ class _GeneralPageState extends State<GeneralPage> {
       backgroundColor: theme.color.isDark
           ? theme.color.neutralColor1
           : theme.color.neutralColor98,
-      appBar: const ChatUIKitAppBar(
+      appBar: ChatUIKitAppBar(
+        backgroundColor: theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98,
         title: '通用',
         centerTitle: false,
       ),

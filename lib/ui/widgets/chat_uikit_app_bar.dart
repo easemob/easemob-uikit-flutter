@@ -57,9 +57,10 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
 
-    Color backgroundColor = theme.color.isDark
-        ? theme.color.neutralColor1
-        : theme.color.neutralColor98;
+    Color backgroundColor = widget.backgroundColor ??
+        (theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98);
 
     Widget? title;
     if (widget.title?.isNotEmpty == true) {
@@ -209,6 +210,7 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: overlayStyle,
         child: Material(
+          color: backgroundColor,
           child: Semantics(
             explicitChildNodes: true,
             child: content,

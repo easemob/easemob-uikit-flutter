@@ -43,6 +43,12 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
       backgroundColor: theme.color.isDark
           ? theme.color.neutralColor1
           : theme.color.neutralColor98,
+      appBar: ChatUIKitAppBar(
+        showBackButton: false,
+        backgroundColor: theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98,
+      ),
       body: SafeArea(
         top: false,
         bottom: false,
@@ -127,9 +133,9 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
       children: [
         content,
         const SizedBox(height: 20),
-        const Text(
-          '设置',
-          textScaleFactor: 1.0,
+        const Padding(
+          padding: EdgeInsets.only(left: 16, right: 16),
+          child: Text('设置', textScaleFactor: 1.0),
         ),
         InkWell(
           onTap: nonsupport,
@@ -177,28 +183,26 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
           ),
         ),
         const SizedBox(height: 16),
-        InkWell(
-          onTap: () {
-            logout();
-          },
-          child: Text(
-            '退出登录',
-            textScaleFactor: 1.0,
-            style: TextStyle(
-              fontWeight: theme.font.titleMedium.fontWeight,
-              fontSize: theme.font.titleMedium.fontSize,
-              color: theme.color.isDark
-                  ? theme.color.primaryColor6
-                  : theme.color.primaryColor5,
+        Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          child: InkWell(
+            onTap: () {
+              logout();
+            },
+            child: Text(
+              '退出登录',
+              textScaleFactor: 1.0,
+              style: TextStyle(
+                fontWeight: theme.font.titleMedium.fontWeight,
+                fontSize: theme.font.titleMedium.fontSize,
+                color: theme.color.isDark
+                    ? theme.color.primaryColor6
+                    : theme.color.primaryColor5,
+              ),
             ),
           ),
         ),
       ],
-    );
-
-    content = Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 60, bottom: 10),
-      child: content,
     );
 
     return content;

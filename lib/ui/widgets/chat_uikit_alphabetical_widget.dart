@@ -117,11 +117,13 @@ class _ChatUIKitAlphabeticalWidgetState
             bottom: 0,
             width: 30,
             right: widget.rightPadding,
-            child: SafeArea(child: LayoutBuilder(
-              builder: (context, constraints) {
-                return letterWidget(constraints.maxHeight);
-              },
-            )),
+            child: SafeArea(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return letterWidget(constraints.maxHeight);
+                },
+              ),
+            ),
           ),
         ],
       );
