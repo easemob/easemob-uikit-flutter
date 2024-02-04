@@ -1,4 +1,5 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:async';
 import 'dart:io';
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/ui/custom/chat_uikit_emoji_data.dart';
@@ -191,7 +192,7 @@ class MessagesView extends StatefulWidget {
 }
 
 class _MessagesViewState extends State<MessagesView>
-    with ChatUIKitProviderObserver {
+    with ChatUIKitProviderObserver, ChatObserver {
   late final MessageListViewController controller;
   late final CustomTextEditingController inputBarTextEditingController;
 
@@ -208,14 +209,19 @@ class _MessagesViewState extends State<MessagesView>
   Message? replyMessage;
   ChatUIKitProfile? profile;
   Message? _playingMessage;
+  final ValueNotifier<bool> _remoteTyping = ValueNotifier(false);
+  Timer? _typingTimer;
 
   @override
   void initState() {
     super.initState();
     profile = widget.profile;
+    ChatUIKitProvider.instance.addObserver(this);
+    ChatUIKit.instance.addObserver(this);
     inputBarTextEditingController =
         widget.inputBarTextEditingController ?? CustomTextEditingController();
     inputBarTextEditingController.addListener(() {
+      attemptSendInputType();
       if (showMoreBtn !=
           !inputBarTextEditingController.text.trim().isNotEmpty) {
         showMoreBtn = !inputBarTextEditingController.text.trim().isNotEmpty;
@@ -227,7 +233,7 @@ class _MessagesViewState extends State<MessagesView>
         }
       }
     });
-    ChatUIKitProvider.instance.addObserver(this);
+
     controller =
         widget.controller ?? MessageListViewController(profile: profile!);
     focusNode = widget.focusNode ?? FocusNode();
@@ -280,8 +286,32 @@ class _MessagesViewState extends State<MessagesView>
   ) {}
 
   @override
+  void onTyping(List<String> fromUsers) {
+    if (fromUsers.contains(controller.profile.id)) {
+      updateInputType();
+    }
+  }
+
+  void updateInputType() {
+    if (_typingTimer != null) {
+      _typingTimer?.cancel();
+      _typingTimer = null;
+    }
+
+    _remoteTyping.value = true;
+    _typingTimer = Timer(const Duration(seconds: 6), () {
+      if (mounted) {
+        _remoteTyping.value = false;
+      }
+    });
+  }
+
+  @override
   void dispose() {
+    _typingTimer?.cancel();
+    _typingTimer = null;
     ChatUIKitProvider.instance.removeObserver(this);
+    ChatUIKit.instance.removeObserver(this);
     editBarTextEditingController?.dispose();
     inputBarTextEditingController.dispose();
     _player.dispose();
@@ -362,7 +392,7 @@ class _MessagesViewState extends State<MessagesView>
           child: content,
         ),
         if (replyMessage != null) replyMessageBar(theme),
-        widget.inputBar ?? inputBar(),
+        widget.inputBar ?? inputBar(theme),
         AnimatedContainer(
           curve: Curves.linearToEaseOut,
           duration: const Duration(milliseconds: 250),
@@ -736,9 +766,8 @@ class _MessagesViewState extends State<MessagesView>
     return content;
   }
 
-  Widget inputBar() {
-    final theme = ChatUIKitTheme.of(context);
-    return ChatUIKitInputBar(
+  Widget inputBar(ChatUIKitTheme theme) {
+    Widget content = ChatUIKitInputBar(
       key: const ValueKey('inputKey'),
       focusNode: focusNode,
       textEditingController: inputBarTextEditingController,
@@ -928,6 +957,54 @@ class _MessagesViewState extends State<MessagesView>
         ),
       ),
     );
+
+    content = Stack(
+      children: [
+        content,
+        Transform.translate(
+          offset: const Offset(0, -20),
+          child: typingWidget(theme),
+        ),
+      ],
+    );
+
+    return content;
+  }
+
+  Widget typingWidget(ChatUIKitTheme theme) {
+    return ValueListenableBuilder(
+      valueListenable: _remoteTyping,
+      builder: (BuildContext context, bool value, Widget? child) {
+        return AnimatedOpacity(
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.linearToEaseOut,
+          opacity: value ? 1 : 0,
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
+            color: theme.color.isDark
+                ? theme.color.neutralColor1
+                : theme.color.neutralColor98,
+            child: Row(children: [
+              SizedBox(
+                width: 16,
+                height: 16,
+                child: ChatUIKitAvatar(avatarUrl: profile?.avatarUrl),
+              ),
+              const SizedBox(width: 5),
+              Text(
+                '对方正在输入...',
+                style: TextStyle(
+                    fontWeight: theme.font.bodyExtraSmall.fontWeight,
+                    fontSize: theme.font.bodyExtraSmall.fontSize,
+                    color: theme.color.isDark
+                        ? theme.color.neutralColor6
+                        : theme.color.neutralColor5),
+              ),
+            ]),
+          ),
+        );
+      },
+    );
   }
 
   void clearAllType() {
@@ -965,146 +1042,7 @@ class _MessagesViewState extends State<MessagesView>
     final theme = ChatUIKitTheme.of(context);
     clearAllType();
     List<ChatUIKitBottomSheetItem>? items = widget.longPressActions;
-    if (items == null) {
-      items = [];
-      if (message.bodyType == MessageType.TXT) {
-        items.add(ChatUIKitBottomSheetItem.normal(
-          label: ChatUIKitLocal.messagesViewLongPressActionsTitleCopy
-              .getString(context),
-          style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralColor98
-                : theme.color.neutralColor1,
-            fontWeight: theme.font.bodyLarge.fontWeight,
-            fontSize: theme.font.bodyLarge.fontSize,
-          ),
-          icon: ChatUIKitImageLoader.messageLongPressCopy(
-            color: theme.color.isDark
-                ? theme.color.neutralColor7
-                : theme.color.neutralColor3,
-          ),
-          onTap: () async {
-            Clipboard.setData(ClipboardData(text: message.textContent));
-            ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.messageCopied);
-            Navigator.of(context).pop();
-          },
-        ));
-      }
-
-      if (message.status == MessageStatus.SUCCESS) {
-        items.add(ChatUIKitBottomSheetItem.normal(
-          icon: ChatUIKitImageLoader.messageLongPressReply(
-            color: theme.color.isDark
-                ? theme.color.neutralColor7
-                : theme.color.neutralColor3,
-          ),
-          style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralColor98
-                : theme.color.neutralColor1,
-            fontWeight: theme.font.bodyLarge.fontWeight,
-            fontSize: theme.font.bodyLarge.fontSize,
-          ),
-          label: ChatUIKitLocal.messagesViewLongPressActionsTitleReply
-              .getString(context),
-          onTap: () async {
-            Navigator.of(context).pop();
-            replyMessaged(message);
-          },
-        ));
-      }
-
-      if (message.bodyType == MessageType.TXT &&
-          message.direction == MessageDirection.SEND) {
-        items.add(ChatUIKitBottomSheetItem.normal(
-          label: ChatUIKitLocal.messagesViewLongPressActionsTitleEdit
-              .getString(context),
-          style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralColor98
-                : theme.color.neutralColor1,
-            fontWeight: theme.font.bodyLarge.fontWeight,
-            fontSize: theme.font.bodyLarge.fontSize,
-          ),
-          icon: ChatUIKitImageLoader.messageLongPressEdit(
-            color: theme.color.isDark
-                ? theme.color.neutralColor7
-                : theme.color.neutralColor3,
-          ),
-          onTap: () async {
-            Navigator.of(context).pop();
-            textMessageEdit(message);
-          },
-        ));
-      }
-
-      items.add(ChatUIKitBottomSheetItem.normal(
-        label: ChatUIKitLocal.messagesViewLongPressActionsTitleReport
-            .getString(context),
-        style: TextStyle(
-          color: theme.color.isDark
-              ? theme.color.neutralColor98
-              : theme.color.neutralColor1,
-          fontWeight: theme.font.bodyLarge.fontWeight,
-          fontSize: theme.font.bodyLarge.fontSize,
-        ),
-        icon: ChatUIKitImageLoader.messageLongPressReport(
-          color: theme.color.isDark
-              ? theme.color.neutralColor7
-              : theme.color.neutralColor3,
-        ),
-        onTap: () async {
-          Navigator.of(context).pop();
-          reportMessage(message);
-        },
-      ));
-      items.add(ChatUIKitBottomSheetItem.normal(
-        label: ChatUIKitLocal.messagesViewLongPressActionsTitleDelete
-            .getString(context),
-        style: TextStyle(
-          color: theme.color.isDark
-              ? theme.color.neutralColor98
-              : theme.color.neutralColor1,
-          fontWeight: theme.font.bodyLarge.fontWeight,
-          fontSize: theme.font.bodyLarge.fontSize,
-        ),
-        icon: ChatUIKitImageLoader.messageLongPressDelete(
-          color: theme.color.isDark
-              ? theme.color.neutralColor7
-              : theme.color.neutralColor3,
-        ),
-        onTap: () async {
-          Navigator.of(context).pop();
-          deleteMessage(message);
-        },
-      ));
-
-      if (message.direction == MessageDirection.SEND &&
-          message.serverTime >=
-              DateTime.now().millisecondsSinceEpoch -
-                  ChatUIKitSettings.recallExpandTime * 1000) {
-        items.add(ChatUIKitBottomSheetItem.normal(
-          label: ChatUIKitLocal.messagesViewLongPressActionsTitleRecall
-              .getString(context),
-          style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralColor98
-                : theme.color.neutralColor1,
-            fontWeight: theme.font.bodyLarge.fontWeight,
-            fontSize: theme.font.bodyLarge.fontSize,
-          ),
-          icon: ChatUIKitImageLoader.messageLongPressRecall(
-            color: theme.color.isDark
-                ? theme.color.neutralColor7
-                : theme.color.neutralColor3,
-          ),
-          onTap: () async {
-            Navigator.of(context).pop();
-            recallMessage(message);
-          },
-        ));
-      }
-    }
+    items ??= defaultItemLongPressed(message, theme);
 
     if (widget.onItemLongPressHandler != null) {
       items = widget.onItemLongPressHandler!.call(
@@ -1572,5 +1510,251 @@ class _MessagesViewState extends State<MessagesView>
         attributes: widget.attributes,
       ),
     );
+  }
+
+  List<ChatUIKitBottomSheetItem> defaultItemLongPressed(
+      Message message, ChatUIKitTheme theme) {
+    List<ChatUIKitBottomSheetItem> items = [];
+    // 复制
+    if (message.bodyType == MessageType.TXT) {
+      items.add(ChatUIKitBottomSheetItem.normal(
+        label: ChatUIKitLocal.messagesViewLongPressActionsTitleCopy
+            .getString(context),
+        style: TextStyle(
+          color: theme.color.isDark
+              ? theme.color.neutralColor98
+              : theme.color.neutralColor1,
+          fontWeight: theme.font.bodyLarge.fontWeight,
+          fontSize: theme.font.bodyLarge.fontSize,
+        ),
+        icon: ChatUIKitImageLoader.messageLongPressCopy(
+          color: theme.color.isDark
+              ? theme.color.neutralColor7
+              : theme.color.neutralColor3,
+        ),
+        onTap: () async {
+          Clipboard.setData(ClipboardData(text: message.textContent));
+          ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.messageCopied);
+          Navigator.of(context).pop();
+        },
+      ));
+    }
+
+    // 回复
+    if (message.status == MessageStatus.SUCCESS) {
+      items.add(ChatUIKitBottomSheetItem.normal(
+        icon: ChatUIKitImageLoader.messageLongPressReply(
+          color: theme.color.isDark
+              ? theme.color.neutralColor7
+              : theme.color.neutralColor3,
+        ),
+        style: TextStyle(
+          color: theme.color.isDark
+              ? theme.color.neutralColor98
+              : theme.color.neutralColor1,
+          fontWeight: theme.font.bodyLarge.fontWeight,
+          fontSize: theme.font.bodyLarge.fontSize,
+        ),
+        label: ChatUIKitLocal.messagesViewLongPressActionsTitleReply
+            .getString(context),
+        onTap: () async {
+          Navigator.of(context).pop();
+          replyMessaged(message);
+        },
+      ));
+    }
+    // 转发
+    if (message.status == MessageStatus.SUCCESS) {
+      items.add(ChatUIKitBottomSheetItem.normal(
+        icon: ChatUIKitImageLoader.messageLongPressReply(
+          color: theme.color.isDark
+              ? theme.color.neutralColor7
+              : theme.color.neutralColor3,
+        ),
+        style: TextStyle(
+          color: theme.color.isDark
+              ? theme.color.neutralColor98
+              : theme.color.neutralColor1,
+          fontWeight: theme.font.bodyLarge.fontWeight,
+          fontSize: theme.font.bodyLarge.fontSize,
+        ),
+        label: '转发(TODO)',
+        onTap: () async {
+          Navigator.of(context).pop();
+          replyMessaged(message);
+        },
+      ));
+    }
+
+    // 多选
+    if (message.status == MessageStatus.SUCCESS) {
+      items.add(ChatUIKitBottomSheetItem.normal(
+        icon: ChatUIKitImageLoader.messageLongPressReply(
+          color: theme.color.isDark
+              ? theme.color.neutralColor7
+              : theme.color.neutralColor3,
+        ),
+        style: TextStyle(
+          color: theme.color.isDark
+              ? theme.color.neutralColor98
+              : theme.color.neutralColor1,
+          fontWeight: theme.font.bodyLarge.fontWeight,
+          fontSize: theme.font.bodyLarge.fontSize,
+        ),
+        label: '多选(TODO)',
+        onTap: () async {
+          Navigator.of(context).pop();
+          replyMessaged(message);
+        },
+      ));
+    }
+
+    // 翻译
+    if (message.status == MessageStatus.SUCCESS &&
+        message.bodyType == MessageType.TXT) {
+      items.add(ChatUIKitBottomSheetItem.normal(
+        icon: ChatUIKitImageLoader.messageLongPressReply(
+          color: theme.color.isDark
+              ? theme.color.neutralColor7
+              : theme.color.neutralColor3,
+        ),
+        style: TextStyle(
+          color: theme.color.isDark
+              ? theme.color.neutralColor98
+              : theme.color.neutralColor1,
+          fontWeight: theme.font.bodyLarge.fontWeight,
+          fontSize: theme.font.bodyLarge.fontSize,
+        ),
+        label: '翻译(TODO)',
+        onTap: () async {
+          Navigator.of(context).pop();
+          replyMessaged(message);
+        },
+      ));
+    }
+
+    // 创建话题
+    if (message.status == MessageStatus.SUCCESS) {
+      items.add(ChatUIKitBottomSheetItem.normal(
+        label: '创建话题(TODO)',
+        icon: ChatUIKitImageLoader.messageLongPressReply(
+          color: theme.color.isDark
+              ? theme.color.neutralColor7
+              : theme.color.neutralColor3,
+        ),
+        style: TextStyle(
+          color: theme.color.isDark
+              ? theme.color.neutralColor98
+              : theme.color.neutralColor1,
+          fontWeight: theme.font.bodyLarge.fontWeight,
+          fontSize: theme.font.bodyLarge.fontSize,
+        ),
+        onTap: () async {
+          Navigator.of(context).pop();
+          replyMessaged(message);
+        },
+      ));
+    }
+
+    // 编辑
+    if (message.bodyType == MessageType.TXT &&
+        message.direction == MessageDirection.SEND) {
+      items.add(ChatUIKitBottomSheetItem.normal(
+        label: ChatUIKitLocal.messagesViewLongPressActionsTitleEdit
+            .getString(context),
+        style: TextStyle(
+          color: theme.color.isDark
+              ? theme.color.neutralColor98
+              : theme.color.neutralColor1,
+          fontWeight: theme.font.bodyLarge.fontWeight,
+          fontSize: theme.font.bodyLarge.fontSize,
+        ),
+        icon: ChatUIKitImageLoader.messageLongPressEdit(
+          color: theme.color.isDark
+              ? theme.color.neutralColor7
+              : theme.color.neutralColor3,
+        ),
+        onTap: () async {
+          Navigator.of(context).pop();
+          textMessageEdit(message);
+        },
+      ));
+    }
+
+    // 举报
+    items.add(ChatUIKitBottomSheetItem.normal(
+      label: ChatUIKitLocal.messagesViewLongPressActionsTitleReport
+          .getString(context),
+      style: TextStyle(
+        color: theme.color.isDark
+            ? theme.color.neutralColor98
+            : theme.color.neutralColor1,
+        fontWeight: theme.font.bodyLarge.fontWeight,
+        fontSize: theme.font.bodyLarge.fontSize,
+      ),
+      icon: ChatUIKitImageLoader.messageLongPressReport(
+        color: theme.color.isDark
+            ? theme.color.neutralColor7
+            : theme.color.neutralColor3,
+      ),
+      onTap: () async {
+        Navigator.of(context).pop();
+        reportMessage(message);
+      },
+    ));
+
+    // 删除
+    items.add(ChatUIKitBottomSheetItem.normal(
+      label: ChatUIKitLocal.messagesViewLongPressActionsTitleDelete
+          .getString(context),
+      style: TextStyle(
+        color: theme.color.isDark
+            ? theme.color.neutralColor98
+            : theme.color.neutralColor1,
+        fontWeight: theme.font.bodyLarge.fontWeight,
+        fontSize: theme.font.bodyLarge.fontSize,
+      ),
+      icon: ChatUIKitImageLoader.messageLongPressDelete(
+        color: theme.color.isDark
+            ? theme.color.neutralColor7
+            : theme.color.neutralColor3,
+      ),
+      onTap: () async {
+        Navigator.of(context).pop();
+        deleteMessage(message);
+      },
+    ));
+
+    // 撤回
+    if (message.direction == MessageDirection.SEND &&
+        message.serverTime >=
+            DateTime.now().millisecondsSinceEpoch -
+                ChatUIKitSettings.recallExpandTime * 1000) {
+      items.add(ChatUIKitBottomSheetItem.normal(
+        label: ChatUIKitLocal.messagesViewLongPressActionsTitleRecall
+            .getString(context),
+        style: TextStyle(
+          color: theme.color.isDark
+              ? theme.color.neutralColor98
+              : theme.color.neutralColor1,
+          fontWeight: theme.font.bodyLarge.fontWeight,
+          fontSize: theme.font.bodyLarge.fontSize,
+        ),
+        icon: ChatUIKitImageLoader.messageLongPressRecall(
+          color: theme.color.isDark
+              ? theme.color.neutralColor7
+              : theme.color.neutralColor3,
+        ),
+        onTap: () async {
+          Navigator.of(context).pop();
+          recallMessage(message);
+        },
+      ));
+    }
+    return items;
+  }
+
+  void attemptSendInputType() {
+    controller.attemptSendInputType();
   }
 }

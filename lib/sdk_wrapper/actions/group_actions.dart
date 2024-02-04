@@ -58,7 +58,9 @@ mixin GroupActions on GroupWrapper {
         options: options,
       );
 
+      await SDKWrapperTools.insertCreateGroupMessage(group: group);
       onGroupCreatedByMyself(group);
+
       return group;
     });
   }

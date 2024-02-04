@@ -425,9 +425,6 @@ class _ConversationsViewState extends State<ConversationsView> {
     );
 
     if (group is Group) {
-      await ChatUIKitInsertMessageTool.insertCreateGroupMessage(
-        group: group,
-      );
       pushNewConversation(ChatUIKitProfile.group(
         id: group.groupId,
         name: group.name,

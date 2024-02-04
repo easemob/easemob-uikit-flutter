@@ -8,6 +8,20 @@ mixin ChatActions on ChatWrapper {
     });
   }
 
+  /// 只支持单聊
+  Future<void> sendTyping({
+    required String userId,
+  }) async {
+    return checkResult(ChatSDKEvent.sendTypingMessage, () async {
+      Message msg = Message.createCmdSendMessage(
+        targetId: userId,
+        action: 'chat_uikit_message_typing',
+        deliverOnlineOnly: true,
+      );
+      await Client.getInstance.chatManager.sendMessage(msg);
+    });
+  }
+
   Future<Message> resendMessage({required Message message}) async {
     return checkResult(ChatSDKEvent.sendMessage, () async {
       return Client.getInstance.chatManager.resendMessage(message);

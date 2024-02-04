@@ -35,6 +35,17 @@ mixin ChatWrapper on ChatUIKitWrapperBase {
 
   @protected
   void onCmdMessagesReceived(List<Message> messages) {
+    List<Message> list = [];
+    for (var msg in messages) {
+      if ((msg.body as CmdMessageBody).action == 'chat_uikit_message_typing') {
+        list.add(msg);
+      }
+    }
+    if (list.isNotEmpty) {
+      onTypingMessagesReceived(messages);
+      messages.removeWhere((element) => list.contains(element));
+    }
+
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
         observer.onCmdMessagesReceived(messages);
@@ -152,6 +163,19 @@ mixin ChatWrapper on ChatUIKitWrapperBase {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
         observer.onMessagesReceived(messages);
+      }
+    }
+  }
+
+  void onTypingMessagesReceived(List<Message> messages) {
+    List<String> fromUsers = [];
+    for (var msg in messages) {
+      if (fromUsers.contains(msg.from)) continue;
+      fromUsers.add(msg.from!);
+    }
+    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
+      if (observer is ChatObserver) {
+        observer.onTyping(fromUsers);
       }
     }
   }

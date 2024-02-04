@@ -119,7 +119,7 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
     );
 
     middle = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.only(right: 12),
       child: middle,
     );
 
@@ -164,6 +164,7 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
     }
     if (widget.leading != null) {
       leadingWidgets.add(widget.leading!);
+      leadingWidgets.add(const SizedBox(width: 12));
     }
 
     if (leadingWidgets.isNotEmpty) {

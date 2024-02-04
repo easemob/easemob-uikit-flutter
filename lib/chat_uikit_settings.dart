@@ -44,4 +44,8 @@ class ChatUIKitSettings {
     'tag8': '虚假信息',
     'tag9': '其他',
   };
+
+  // v2
+  static String translateLanguage = 'zh';
+  static bool enableInputStatus = true;
 }

@@ -2,8 +2,9 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit_example/home_page.dart';
 import 'package:em_chat_uikit_example/login_page.dart';
 import 'package:em_chat_uikit_example/notifications/theme_notification.dart';
-import 'package:em_chat_uikit_example/pages/me/change_avatar_page.dart';
-import 'package:em_chat_uikit_example/pages/me/personal_info_page.dart';
+import 'package:em_chat_uikit_example/pages/me/personal/change_avatar_page.dart';
+import 'package:em_chat_uikit_example/pages/me/personal/personal_info_page.dart';
+import 'package:em_chat_uikit_example/pages/me/settings/general_page.dart';
 import 'package:em_chat_uikit_example/tool/chat_route_filter.dart';
 import 'package:em_chat_uikit_example/welcome_page.dart';
 
@@ -83,6 +84,8 @@ class _MyAppState extends State<MyApp> {
                   return const PersonalInfoPage();
                 } else if (settings.name == '/change_avatar') {
                   return const ChangeAvatarPage();
+                } else if (settings.name == '/general_page') {
+                  return const GeneralPage();
                 } else {
                   return const WelcomePage();
                 }

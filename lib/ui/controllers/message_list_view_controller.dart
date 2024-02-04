@@ -52,6 +52,9 @@ class MessageListViewController extends ChangeNotifier
   /// 不可修改
   bool isDisposed = false;
 
+  /// 不可修改
+  bool _typing = false;
+
   void clearMessages() {
     msgList.clear();
     lastActionType = MessageLastActionType.none;
@@ -581,5 +584,18 @@ class MessageListViewController extends ChangeNotifier
   String getModelId(Message message) {
     return Random().nextInt(999999999).toString() +
         message.localTime.toString();
+  }
+
+  void attemptSendInputType() {
+    if (profile.type == ChatUIKitProfileType.contact) {
+      if (_typing || ChatUIKitSettings.enableInputStatus == false) {
+        return;
+      }
+      ChatUIKit.instance.sendTyping(userId: profile.id);
+      _typing = true;
+      Future.delayed(const Duration(seconds: 4), () {
+        _typing = false;
+      });
+    }
   }
 }

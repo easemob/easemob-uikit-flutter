@@ -3,6 +3,7 @@ enum ChatSDKEvent {
   loginWithToken,
   logout,
   sendMessage,
+  sendTypingMessage,
   recallMessage,
   loadMessage,
   sendMessageReadAck,

@@ -1,8 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/notifications/theme_notification.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:em_chat_uikit_example/widgets/list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -148,22 +147,12 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
           ),
         ),
         InkWell(
-          onTap: nonsupport,
+          onTap: generalSettings,
           child: ListItem(
             imageWidget: Image.asset('assets/images/settings.png'),
             title: '通用',
+            enableArrow: true,
           ),
-        ),
-        ListItem(
-          imageWidget: Image.asset('assets/images/settings.png'),
-          title: '切换主题',
-          trailingWidget: CupertinoSwitch(
-              value: ThemeNotification.isLight,
-              onChanged: (value) {
-                ThemeNotification.isLight = !ThemeNotification.isLight;
-                ThemeNotification().dispatch(context);
-                setState(() {});
-              }),
         ),
         InkWell(
           onTap: nonsupport,
@@ -216,9 +205,19 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
   }
 
   void pushToPersonalInfoPage() {
-    Navigator.of(context)
-        .pushNamed('/personal_info')
-        .then((value) => setState(() {}));
+    Navigator.of(context).pushNamed('/personal_info').then(
+      (value) {
+        setState(() {});
+      },
+    );
+  }
+
+  void generalSettings() {
+    Navigator.of(context).pushNamed('/general_page').then(
+      (value) {
+        setState(() {});
+      },
+    );
   }
 
   void nonsupport() {
@@ -258,82 +257,5 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
         ),
       ],
     );
-  }
-}
-
-class ListItem extends StatelessWidget {
-  const ListItem({
-    required this.imageWidget,
-    required this.title,
-    this.trailingString,
-    this.trailingWidget,
-    this.enableArrow = false,
-    super.key,
-  });
-
-  final Widget imageWidget;
-  final String title;
-  final String? trailingString;
-  final Widget? trailingWidget;
-  final bool enableArrow;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
-    Widget content = SizedBox(
-      height: 54,
-      child: Row(
-        children: [
-          SizedBox(
-            width: 28,
-            height: 28,
-            child: imageWidget,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            title,
-            textScaleFactor: 1.0,
-            style: TextStyle(
-              fontSize: theme.font.titleMedium.fontSize,
-              fontWeight: theme.font.titleMedium.fontWeight,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor100
-                  : theme.color.neutralColor1,
-            ),
-          ),
-          Expanded(child: Container()),
-          if (trailingWidget != null) trailingWidget!,
-          if (trailingWidget == null)
-            Text(
-              trailingString ?? '',
-              textAlign: TextAlign.right,
-              textScaleFactor: 1.0,
-              style: TextStyle(
-                fontSize: theme.font.labelMedium.fontSize,
-                fontWeight: theme.font.labelMedium.fontWeight,
-                color: theme.color.isDark
-                    ? theme.color.neutralColor7
-                    : theme.color.neutralColor5,
-              ),
-            ),
-          if (enableArrow) const Icon(Icons.arrow_forward_ios, size: 16),
-        ],
-      ),
-    );
-
-    content = Column(
-      children: [
-        content,
-        Divider(
-          height: 0.5,
-          indent: 36,
-          color: theme.color.isDark
-              ? theme.color.neutralColor2
-              : theme.color.neutralColor9,
-        )
-      ],
-    );
-
-    return content;
   }
 }
