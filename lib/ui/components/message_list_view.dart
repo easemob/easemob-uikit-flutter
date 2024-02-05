@@ -154,7 +154,7 @@ class _MessageListViewState extends State<MessageListView> {
       padding: const EdgeInsets.only(left: 12, right: 12),
       child: content,
     );
-    
+
     // content = Scrollbar(
     //   controller: _scrollController,
     //   scrollbarOrientation: ScrollbarOrientation.right,

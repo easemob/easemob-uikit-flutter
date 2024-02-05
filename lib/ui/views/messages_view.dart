@@ -456,6 +456,7 @@ class _MessagesViewState extends State<MessagesView>
               splashColor: Colors.transparent,
               onTap: () {
                 editMessage = null;
+                messageEditCanSend = false;
                 setState(() {});
               },
               child: Opacity(
@@ -465,16 +466,16 @@ class _MessagesViewState extends State<MessagesView>
             ),
           ),
         if (editMessage != null)
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: editMessageBar(theme),
-              )
-            ],
-          ),
+          Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                editMessageBar(theme),
+              ],
+            ),
+          )
       ],
     );
 
@@ -694,8 +695,10 @@ class _MessagesViewState extends State<MessagesView>
       key: const ValueKey('editKey'),
       autofocus: true,
       onChanged: (input) {
-        if (messageEditCanSend != (input.trim() != editMessage?.textContent)) {
-          messageEditCanSend = input.trim() != editMessage?.textContent;
+        final canSend =
+            input.trim() != editMessage?.textContent && input.isNotEmpty;
+        if (messageEditCanSend != canSend) {
+          messageEditCanSend = canSend;
           setState(() {});
         }
       },
@@ -710,6 +713,7 @@ class _MessagesViewState extends State<MessagesView>
             controller.editMessage(editMessage!, text);
             editBarTextEditingController?.clear();
             editMessage = null;
+            messageEditCanSend = false;
             setState(() {});
           }
         },
@@ -760,7 +764,7 @@ class _MessagesViewState extends State<MessagesView>
       children: [header, content],
     );
 
-    content = SafeArea(child: content);
+    // content = SafeArea(child: content);
 
     return content;
   }
@@ -1027,6 +1031,7 @@ class _MessagesViewState extends State<MessagesView>
 
     if (editMessage != null) {
       editMessage = null;
+      messageEditCanSend = false;
       needUpdate = true;
     }
 
