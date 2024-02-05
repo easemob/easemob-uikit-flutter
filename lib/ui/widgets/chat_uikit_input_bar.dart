@@ -48,7 +48,9 @@ class _ChatUIKitInputBarState extends State<ChatUIKitInputBar> {
   }
 
   void textFieldOnChange() {
-    _scrollController!.jumpTo(_scrollController!.position.maxScrollExtent);
+    if (_scrollController?.positions.isNotEmpty == true) {
+      _scrollController!.jumpTo(_scrollController!.position.maxScrollExtent);
+    }
   }
 
   @override

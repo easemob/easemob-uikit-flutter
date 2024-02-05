@@ -270,9 +270,7 @@ class _MessagesViewState extends State<MessagesView>
   }
 
   @override
-  void onProfilesUpdate(
-    Map<String, ChatUIKitProfile> map,
-  ) {
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
     if (map.keys.contains(controller.profile.id)) {
       controller.profile = map[controller.profile.id]!;
       profile = map[controller.profile.id]!;
@@ -451,6 +449,7 @@ class _MessagesViewState extends State<MessagesView>
       children: [
         content,
         if (editMessage != null)
+          // 背景色
           Positioned.fill(
             child: InkWell(
               highlightColor: Colors.transparent,
@@ -958,15 +957,17 @@ class _MessagesViewState extends State<MessagesView>
       ),
     );
 
-    content = Stack(
-      children: [
-        content,
-        Transform.translate(
-          offset: const Offset(0, -20),
-          child: typingWidget(theme),
-        ),
-      ],
-    );
+    if (editMessage == null && replyMessage == null) {
+      content = Stack(
+        children: [
+          content,
+          Transform.translate(
+            offset: const Offset(0, -20),
+            child: typingWidget(theme),
+          ),
+        ],
+      );
+    }
 
     return content;
   }
