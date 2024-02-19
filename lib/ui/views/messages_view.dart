@@ -680,7 +680,7 @@ class _MessagesViewState extends State<MessagesView>
   }
 
   Widget replyMessageBar(ChatUIKitTheme theme) {
-    return widget.replyBarBuilder?.call(context, replyMessage!) ??
+    Widget content = widget.replyBarBuilder?.call(context, replyMessage!) ??
         ChatUIKitReplyBar(
           message: replyMessage!,
           onCancelTap: () {
@@ -688,6 +688,18 @@ class _MessagesViewState extends State<MessagesView>
             setState(() {});
           },
         );
+
+    content = Stack(
+      children: [
+        content,
+        Transform.translate(
+          offset: const Offset(0, -25),
+          child: typingWidget(theme),
+        ),
+      ],
+    );
+
+    return content;
   }
 
   Widget editMessageBar(ChatUIKitTheme theme) {
@@ -761,7 +773,11 @@ class _MessagesViewState extends State<MessagesView>
       child: header,
     );
     content = Column(
-      children: [header, content],
+      children: [
+        typingWidget(theme),
+        header,
+        content,
+      ],
     );
 
     // content = SafeArea(child: content);

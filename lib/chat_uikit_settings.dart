@@ -47,5 +47,5 @@ class ChatUIKitSettings {
 
   // v2
   static String translateLanguage = 'zh';
-  static bool enableInputStatus = true;
+  static bool enableInputStatus = false;
 }
