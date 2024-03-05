@@ -66,11 +66,7 @@ class _MessageListViewState extends State<MessageListView> {
   @override
   void initState() {
     super.initState();
-    _scrollController = AutoScrollController(
-        // viewportBoundaryGetter: () =>
-        //     Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-        // axis: Axis.vertical,
-        );
+    _scrollController = AutoScrollController();
     controller =
         widget.controller ?? MessageListViewController(profile: widget.profile);
     controller.addListener(() {
@@ -154,12 +150,6 @@ class _MessageListViewState extends State<MessageListView> {
       padding: const EdgeInsets.only(left: 12, right: 12),
       child: content,
     );
-
-    // content = Scrollbar(
-    //   controller: _scrollController,
-    //   scrollbarOrientation: ScrollbarOrientation.right,
-    //   child: content,
-    // );
 
     content = MessageListShareUserData(
       data: controller.userMap,
@@ -245,6 +235,16 @@ class _MessageListViewState extends State<MessageListView> {
 
     Widget? content = widget.itemBuilder?.call(context, model.message);
     content ??= ChatUIKitMessageListViewMessageItem(
+      enableSelected: controller.isMultiSelectMode
+          ? () {
+              if (controller.selectedMessageIds.contains(model.message.msgId)) {
+                controller.selectedMessageIds.remove(model.message.msgId);
+              } else {
+                controller.selectedMessageIds.add(model.message.msgId);
+              }
+              setState(() {});
+            }
+          : null,
       forceLeft: widget.forceLeft,
       bubbleContentBuilder: widget.bubbleContentBuilder,
       bubbleBuilder: widget.bubbleBuilder,
@@ -300,6 +300,43 @@ class _MessageListViewState extends State<MessageListView> {
               : Alignment.centerLeft,
       child: content,
     );
+
+    if (controller.isMultiSelectMode) {
+      content = Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          InkWell(
+            onTap: () {
+              if (controller.selectedMessageIds.contains(model.message.msgId)) {
+                controller.selectedMessageIds.remove(model.message.msgId);
+              } else {
+                controller.selectedMessageIds.add(model.message.msgId);
+              }
+              setState(() {});
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 0, right: 10, bottom: 20),
+              child: controller.selectedMessageIds.contains(model.message.msgId)
+                  ? Icon(
+                      Icons.check_box,
+                      size: 28,
+                      color: theme!.color.isDark
+                          ? theme!.color.primaryColor6
+                          : theme!.color.primaryColor5,
+                    )
+                  : Icon(
+                      Icons.check_box_outline_blank,
+                      size: 28,
+                      color: theme!.color.isDark
+                          ? theme!.color.neutralColor4
+                          : theme!.color.neutralColor7,
+                    ),
+            ),
+          ),
+          Expanded(child: content)
+        ],
+      );
+    }
 
     content = AutoScrollTag(
       key: ValueKey(model.id),

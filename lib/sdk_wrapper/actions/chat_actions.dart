@@ -489,12 +489,26 @@ mixin ChatActions on ChatWrapper {
     required ConversationType type,
     required String messageId,
   }) async {
-    return checkResult(ChatSDKEvent.getMessages, () async {
+    return checkResult(ChatSDKEvent.deleteLocalMessageById, () async {
       final conversation = await getConversation(
         conversationId: conversationId,
         type: type,
       );
-      return conversation!.deleteMessage(messageId);
+      return await conversation!.deleteMessage(messageId);
+    });
+  }
+
+  Future<void> deleteLocalMessageByIds({
+    required String conversationId,
+    required ConversationType type,
+    required List<String> messageIds,
+  }) async {
+    return checkResult(ChatSDKEvent.deleteLocalMessageByIds, () async {
+      final conversation = await getConversation(
+        conversationId: conversationId,
+        type: type,
+      );
+      return await conversation!.deleteMessageByIds(messageIds);
     });
   }
 }

@@ -35,6 +35,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     this.onErrorTap,
     this.bubbleBuilder,
     this.bubbleContentBuilder,
+    this.enableSelected,
     super.key,
   });
 
@@ -54,6 +55,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   final VoidCallback? onBubbleTap;
   final VoidCallback? onBubbleLongPressed;
   final VoidCallback? onBubbleDoubleTap;
+  final VoidCallback? enableSelected;
   final Widget Function(BuildContext context, QuoteModel model)? quoteBuilder;
   final VoidCallback? onErrorTap;
   final MessageItemBubbleBuilder? bubbleBuilder;
@@ -122,9 +124,9 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     content = InkWell(
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-      onTap: onBubbleTap,
-      onDoubleTap: onBubbleDoubleTap,
-      onLongPress: onBubbleLongPressed,
+      onTap: enableSelected != null ? null : onBubbleTap,
+      onDoubleTap: enableSelected != null ? null : onBubbleDoubleTap,
+      onLongPress: enableSelected != null ? null : onBubbleLongPressed,
       child: content,
     );
 
@@ -230,6 +232,13 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
       child: content,
     );
 
+    if (enableSelected != null) {
+      content = InkWell(
+        onTap: enableSelected,
+        child: content,
+      );
+    }
+
     return content;
   }
 
@@ -311,8 +320,8 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     content = InkWell(
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-      onTap: onAvatarTap,
-      onLongPress: onAvatarLongPressed,
+      onTap: enableSelected != null ? null : onAvatarTap,
+      onLongPress: enableSelected != null ? null : onAvatarLongPressed,
       child: content,
     );
 
@@ -341,7 +350,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
         );
 
     content = InkWell(
-      onTap: onNicknameTap,
+      onTap: enableSelected != null ? null : onNicknameTap,
       child: content,
     );
 

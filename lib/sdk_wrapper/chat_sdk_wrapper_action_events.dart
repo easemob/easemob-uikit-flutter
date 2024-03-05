@@ -31,6 +31,7 @@ enum ChatSDKEvent {
   fetchGroupAckList,
   deleteRemoteConversation,
   deleteLocalMessages,
+  deleteLocalMessageById,
   deleteLocalMessageByIds,
   reportMessage,
   addReaction,

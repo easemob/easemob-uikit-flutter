@@ -465,4 +465,16 @@ class ChatUIKitImageLoader {
       fit: BoxFit.fill,
     );
   }
+
+  static Widget messageTrash(
+      {double width = 24, double height = 24, Color? color}) {
+    return Image(
+      color: color,
+      gaplessPlayback: true,
+      width: width,
+      height: height,
+      image: AssetImage('assets/images/trash.png', package: packageName),
+      fit: BoxFit.fill,
+    );
+  }
 }

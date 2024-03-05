@@ -195,13 +195,11 @@ class _MessagesViewState extends State<MessagesView>
     with ChatUIKitProviderObserver, ChatObserver {
   late final MessageListViewController controller;
   late final CustomTextEditingController inputBarTextEditingController;
-
+  late final ImagePicker _picker;
+  late final AudioPlayer _player;
   late final FocusNode focusNode;
   bool showEmoji = false;
   bool showMoreBtn = true;
-  late final ImagePicker _picker;
-
-  late final AudioPlayer _player;
 
   bool messageEditCanSend = false;
   TextEditingController? editBarTextEditingController;
@@ -236,6 +234,9 @@ class _MessagesViewState extends State<MessagesView>
 
     controller =
         widget.controller ?? MessageListViewController(profile: profile!);
+    controller.addListener(() {
+      setState(() {});
+    });
     focusNode = widget.focusNode ?? FocusNode();
     _picker = ImagePicker();
     _player = AudioPlayer();
@@ -322,6 +323,7 @@ class _MessagesViewState extends State<MessagesView>
     final theme = ChatUIKitTheme.of(context);
 
     Widget content = MessageListView(
+      // multiSelect: controller.enableMultiSelectMode();,
       forceLeft: widget.forceLeft,
       bubbleContentBuilder: widget.bubbleContentBuilder,
       bubbleBuilder: widget.bubbleBuilder,
@@ -384,13 +386,13 @@ class _MessagesViewState extends State<MessagesView>
       child: content,
     );
 
-    content = Column(
-      children: [
-        Expanded(
-          child: content,
-        ),
-        if (replyMessage != null) replyMessageBar(theme),
-        widget.inputBar ?? inputBar(theme),
+    List<Widget> list = [Expanded(child: content)];
+    if (controller.isMultiSelectMode) {
+      list.add(multiWidget(theme));
+    } else {
+      if (replyMessage != null) list.add(replyMessageBar(theme));
+      widget.inputBar ?? list.add(inputBar(theme));
+      list.add(
         AnimatedContainer(
           curve: Curves.linearToEaseOut,
           duration: const Duration(milliseconds: 250),
@@ -415,8 +417,10 @@ class _MessagesViewState extends State<MessagesView>
                   )
               : const SizedBox(),
         ),
-      ],
-    );
+      );
+    }
+
+    content = Column(children: list);
 
     content = SafeArea(
       child: content,
@@ -433,6 +437,8 @@ class _MessagesViewState extends State<MessagesView>
                 title: widget.title ?? profile!.showName,
                 centerTitle: false,
                 leading: InkWell(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
                   onTap: () {
                     pushNextPage(widget.profile);
                   },
@@ -440,6 +446,28 @@ class _MessagesViewState extends State<MessagesView>
                     avatarUrl: widget.profile.avatarUrl,
                   ),
                 ),
+                trailing: controller.isMultiSelectMode
+                    ? InkWell(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        onTap: () {
+                          controller.disableMultiSelectMode();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(24, 5, 24, 5),
+                          child: Text(
+                            '取消',
+                            style: TextStyle(
+                              color: theme.color.isDark
+                                  ? theme.color.primaryColor6
+                                  : theme.color.primaryColor5,
+                              fontWeight: theme.font.labelMedium.fontWeight,
+                              fontSize: theme.font.labelMedium.fontSize,
+                            ),
+                          ),
+                        ),
+                      )
+                    : null,
               ),
       // body: content,
       body: content,
@@ -1026,6 +1054,39 @@ class _MessagesViewState extends State<MessagesView>
         );
       },
     );
+  }
+
+  Widget multiWidget(ChatUIKitTheme theme) {
+    Widget content = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        InkWell(
+          onTap: () {
+            controller.deleteSelectedMessages();
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+            child: ChatUIKitImageLoader.messageTrash(
+              color: theme.color.isDark
+                  ? theme.color.errorColor6
+                  : theme.color.errorColor5,
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () {},
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+            child: ChatUIKitImageLoader.messageLongPressForward(
+              color: theme.color.isDark
+                  ? theme.color.primaryColor6
+                  : theme.color.primaryColor5,
+            ),
+          ),
+        ),
+      ],
+    );
+    return content;
   }
 
   void clearAllType() {
@@ -1623,10 +1684,10 @@ class _MessagesViewState extends State<MessagesView>
           fontWeight: theme.font.bodyLarge.fontWeight,
           fontSize: theme.font.bodyLarge.fontSize,
         ),
-        label: '多选(TODO)',
+        label: '多选',
         onTap: () async {
           Navigator.of(context).pop();
-          replyMessaged(message);
+          controller.enableMultiSelectMode();
         },
       ));
     }

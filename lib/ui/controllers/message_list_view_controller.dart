@@ -55,6 +55,10 @@ class MessageListViewController extends ChangeNotifier
   /// 不可修改
   bool _typing = false;
 
+  List<String> selectedMessageIds = [];
+
+  bool isMultiSelectMode = false;
+
   void clearMessages() {
     msgList.clear();
     lastActionType = MessageLastActionType.none;
@@ -269,7 +273,8 @@ class MessageListViewController extends ChangeNotifier
     }
   }
 
-  Future<void> translateMessage(Message message, {bool showTranslate = true}) async {
+  Future<void> translateMessage(Message message,
+      {bool showTranslate = true}) async {
     Message msg = await ChatUIKit.instance.translateMessage(
       msg: message,
       languages: [ChatUIKitSettings.translateLanguage],
@@ -614,5 +619,37 @@ class MessageListViewController extends ChangeNotifier
         _typing = false;
       });
     }
+  }
+
+  void enableMultiSelectMode() {
+    isMultiSelectMode = true;
+    selectedMessageIds.clear();
+    notifyListeners();
+  }
+
+  void disableMultiSelectMode() {
+    isMultiSelectMode = false;
+    selectedMessageIds.clear();
+    notifyListeners();
+  }
+
+  void deleteSelectedMessages() async {
+    await deleteMessages(messageIds: selectedMessageIds);
+    disableMultiSelectMode();
+  }
+
+  Future<void> deleteMessages({required List<String> messageIds}) async {
+    try {
+      await ChatUIKit.instance.deleteLocalMessageByIds(
+        conversationId: profile.id,
+        type: conversationType,
+        messageIds: messageIds,
+      );
+      msgList
+          .removeWhere((element) => messageIds.contains(element.message.msgId));
+
+      updateView();
+      // ignore: empty_catches
+    } catch (e) {}
   }
 }
