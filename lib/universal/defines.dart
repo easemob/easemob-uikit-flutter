@@ -34,3 +34,4 @@ const String hasMentionKey = 'mention';
 const String hasMentionValue = 'mention';
 
 const String voiceHasReadKey = 'voiceHasRead';
+const String hasTranslatedKey = 'hasTranslatedKey';

@@ -3,6 +3,9 @@ import 'dart:convert';
 
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit_example/home_page.dart';
+import 'package:flutter/widgets.dart';
+
+const String languageKey = 'languageKey';
 
 class UserDataStore {
   static UserDataStore? _instance;
@@ -18,6 +21,7 @@ class UserDataStore {
   UserDataStore._();
 
   Future<void> init() async {
+    WidgetsFlutterBinding.ensureInitialized();
     _sharedPreferences ??= await SharedPreferences.getInstance();
     String? currentUser = ChatUIKit.instance.currentUserId;
     if (currentUser?.isNotEmpty == true) {
@@ -45,5 +49,14 @@ class UserDataStore {
         }),
       );
     }
+  }
+
+  Future<void> languageChange({String language = 'zh'}) async {
+    _sharedPreferences ??= await SharedPreferences.getInstance();
+    _sharedPreferences?.setString(languageKey, language);
+  }
+
+  String getLanguage() {
+    return _sharedPreferences?.getString(languageKey) ?? 'en';
   }
 }

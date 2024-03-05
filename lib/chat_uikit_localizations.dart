@@ -648,7 +648,14 @@ class ChatUIKitLocalizations {
     );
   }
 
+  void translate(String languageCode) {
+    _localization.translate(languageCode);
+  }
+
+  Locale? get currentLocale => _localization.currentLocale;
+
   Iterable<Locale> get supportedLocales => _localization.supportedLocales;
+
   Iterable<LocalizationsDelegate<dynamic>> get localizationsDelegates =>
       _localization.localizationsDelegates;
 

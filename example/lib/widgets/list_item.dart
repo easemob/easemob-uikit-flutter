@@ -8,6 +8,7 @@ class ListItem extends StatelessWidget {
     required this.title,
     this.imageWidget,
     this.trailingString,
+    this.trailingStyle,
     this.trailingWidget,
     this.enableArrow = false,
     super.key,
@@ -16,6 +17,7 @@ class ListItem extends StatelessWidget {
   final Widget? imageWidget;
   final String title;
   final String? trailingString;
+  final TextStyle? trailingStyle;
   final Widget? trailingWidget;
   final bool enableArrow;
 
@@ -51,15 +53,24 @@ class ListItem extends StatelessWidget {
               trailingString ?? '',
               textAlign: TextAlign.right,
               textScaleFactor: 1.0,
-              style: TextStyle(
-                fontSize: theme.font.labelMedium.fontSize,
-                fontWeight: theme.font.labelMedium.fontWeight,
-                color: theme.color.isDark
-                    ? theme.color.neutralColor7
-                    : theme.color.neutralColor5,
-              ),
+              style: trailingStyle ??
+                  TextStyle(
+                    fontSize: theme.font.labelMedium.fontSize,
+                    fontWeight: theme.font.labelMedium.fontWeight,
+                    color: theme.color.isDark
+                        ? theme.color.neutralColor7
+                        : theme.color.neutralColor5,
+                  ),
             ),
-          if (enableArrow) const Icon(Icons.arrow_forward_ios, size: 16),
+          const SizedBox(width: 4),
+          if (enableArrow)
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+              color: theme.color.isDark
+                  ? theme.color.neutralColor95
+                  : theme.color.neutralColor3,
+            ),
         ],
       ),
     );

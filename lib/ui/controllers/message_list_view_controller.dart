@@ -269,6 +269,23 @@ class MessageListViewController extends ChangeNotifier
     }
   }
 
+  Future<void> translateMessage(Message message, {bool showTranslate = true}) async {
+    Message msg = await ChatUIKit.instance.translateMessage(
+      msg: message,
+      languages: [ChatUIKitSettings.translateLanguage],
+    );
+    Map<String, dynamic>? map = msg.attributes;
+    map ??= {};
+    if (showTranslate) {
+      map[hasTranslatedKey] = true;
+    } else {
+      map.remove(hasTranslatedKey);
+    }
+    msg.attributes = map;
+    await ChatUIKit.instance.updateMessage(message: msg);
+    replaceMessage(msg);
+  }
+
   Future<void> _clearMention(List<MessageModel> msgs) async {
     if (profile.type == ChatUIKitProfileType.group) {
       return;

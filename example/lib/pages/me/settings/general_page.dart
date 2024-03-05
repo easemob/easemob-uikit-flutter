@@ -1,5 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/notifications/theme_notification.dart';
+import 'package:em_chat_uikit_example/notifications/app_settings_notification.dart';
 
 import 'package:em_chat_uikit_example/widgets/list_item.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,12 +53,56 @@ class _GeneralPageState extends State<GeneralPage> {
         ListItem(
           title: '暗黑模式',
           trailingWidget: CupertinoSwitch(
-              value: !ThemeNotification.isLight,
+              value: !AppSettingsNotification.isLight,
               onChanged: (value) {
-                ThemeNotification.isLight = !ThemeNotification.isLight;
-                ThemeNotification().dispatch(context);
+                AppSettingsNotification.isLight =
+                    !AppSettingsNotification.isLight;
+                AppSettingsNotification().dispatch(context);
                 setState(() {});
               }),
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).pushNamed('/language_page').then((value) {
+              setState(() {});
+            });
+          },
+          child: ListItem(
+            title: '语言设置',
+            trailingString:
+                ChatUIKitLocalizations().currentLocale?.languageCode == 'zh'
+                    ? '中文'
+                    : 'English',
+            trailingStyle: TextStyle(
+              fontSize: theme.font.labelMedium.fontSize,
+              fontWeight: theme.font.labelMedium.fontWeight,
+              color: theme.color.isDark
+                  ? theme.color.neutralColor7
+                  : theme.color.neutralColor5,
+            ),
+            enableArrow: true,
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).pushNamed('/translate_page').then((value) {
+              setState(() {});
+            });
+          },
+          child: ListItem(
+            title: '翻译目标语言',
+            trailingString: ChatUIKitSettings.translateLanguage == 'zh-Hans'
+                ? '简体中文'
+                : 'English',
+            trailingStyle: TextStyle(
+              fontSize: theme.font.labelMedium.fontSize,
+              fontWeight: theme.font.labelMedium.fontWeight,
+              color: theme.color.isDark
+                  ? theme.color.neutralColor7
+                  : theme.color.neutralColor5,
+            ),
+            enableArrow: true,
+          ),
         ),
       ],
     );

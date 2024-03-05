@@ -1588,7 +1588,7 @@ class _MessagesViewState extends State<MessagesView>
     // 转发
     if (message.status == MessageStatus.SUCCESS) {
       items.add(ChatUIKitBottomSheetItem.normal(
-        icon: ChatUIKitImageLoader.messageLongPressReply(
+        icon: ChatUIKitImageLoader.messageLongPressForward(
           color: theme.color.isDark
               ? theme.color.neutralColor7
               : theme.color.neutralColor3,
@@ -1611,7 +1611,7 @@ class _MessagesViewState extends State<MessagesView>
     // 多选
     if (message.status == MessageStatus.SUCCESS) {
       items.add(ChatUIKitBottomSheetItem.normal(
-        icon: ChatUIKitImageLoader.messageLongPressReply(
+        icon: ChatUIKitImageLoader.messageLongPressMultiSelected(
           color: theme.color.isDark
               ? theme.color.neutralColor7
               : theme.color.neutralColor3,
@@ -1635,7 +1635,7 @@ class _MessagesViewState extends State<MessagesView>
     if (message.status == MessageStatus.SUCCESS &&
         message.bodyType == MessageType.TXT) {
       items.add(ChatUIKitBottomSheetItem.normal(
-        icon: ChatUIKitImageLoader.messageLongPressReply(
+        icon: ChatUIKitImageLoader.messageLongPressTranslate(
           color: theme.color.isDark
               ? theme.color.neutralColor7
               : theme.color.neutralColor3,
@@ -1647,19 +1647,23 @@ class _MessagesViewState extends State<MessagesView>
           fontWeight: theme.font.bodyLarge.fontWeight,
           fontSize: theme.font.bodyLarge.fontSize,
         ),
-        label: '翻译(TODO)',
+        label: message.hasTranslate ? '显示原文' : '翻译',
         onTap: () async {
           Navigator.of(context).pop();
-          replyMessaged(message);
+          controller.translateMessage(
+            message,
+            showTranslate: !message.hasTranslate,
+          );
         },
       ));
     }
 
     // 创建话题
-    if (message.status == MessageStatus.SUCCESS) {
+    if (message.status == MessageStatus.SUCCESS &&
+        message.chatType == ChatType.GroupChat) {
       items.add(ChatUIKitBottomSheetItem.normal(
         label: '创建话题(TODO)',
-        icon: ChatUIKitImageLoader.messageLongPressReply(
+        icon: ChatUIKitImageLoader.messageLongPressThread(
           color: theme.color.isDark
               ? theme.color.neutralColor7
               : theme.color.neutralColor3,

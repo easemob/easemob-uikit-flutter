@@ -48,7 +48,7 @@ class ChatUIKitImageLoader {
     );
   }
 
-    static Widget card({double width = 30, double height = 30, Color? color}) {
+  static Widget card({double width = 30, double height = 30, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
@@ -370,6 +370,58 @@ class ChatUIKitImageLoader {
       width: width,
       height: height,
       image: AssetImage('assets/images/message_long_press_edit.png',
+          package: packageName),
+      fit: BoxFit.fill,
+    );
+  }
+
+  static Widget messageLongPressTranslate(
+      {double width = 24, double height = 24, Color? color}) {
+    return Image(
+      gaplessPlayback: true,
+      color: color,
+      width: width,
+      height: height,
+      image: AssetImage('assets/images/message_long_press_translate.png',
+          package: packageName),
+      fit: BoxFit.fill,
+    );
+  }
+
+  static Widget messageLongPressMultiSelected(
+      {double width = 24, double height = 24, Color? color}) {
+    return Image(
+      gaplessPlayback: true,
+      color: color,
+      width: width,
+      height: height,
+      image: AssetImage('assets/images/message_long_press_multi_selected.png',
+          package: packageName),
+      fit: BoxFit.fill,
+    );
+  }
+
+  static Widget messageLongPressForward(
+      {double width = 24, double height = 24, Color? color}) {
+    return Image(
+      gaplessPlayback: true,
+      color: color,
+      width: width,
+      height: height,
+      image: AssetImage('assets/images/message_long_press_forward.png',
+          package: packageName),
+      fit: BoxFit.fill,
+    );
+  }
+
+  static Widget messageLongPressThread(
+      {double width = 24, double height = 24, Color? color}) {
+    return Image(
+      gaplessPlayback: true,
+      color: color,
+      width: width,
+      height: height,
+      image: AssetImage('assets/images/message_long_press_thread.png',
           package: packageName),
       fit: BoxFit.fill,
     );

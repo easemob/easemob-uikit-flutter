@@ -46,6 +46,7 @@ class ChatUIKitSettings {
   };
 
   // v2
-  static String translateLanguage = 'zh';
+  static String translateLanguage = 'zh-Hans';
+
   static bool enableInputStatus = false;
 }

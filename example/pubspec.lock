@@ -172,10 +172,10 @@ packages:
     dependency: transitive
     description:
       name: file_picker
-      sha256: "4e42aacde3b993c5947467ab640882c56947d9d27342a5b6f2895b23956954a6"
+      sha256: caa6bc229eab3e32eb2f37b53a5f9d22a6981474afd210c512a7546c1e1a04f6
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.1"
+    version: "6.2.0"
   file_selector_linux:
     dependency: transitive
     description:
@@ -337,10 +337,9 @@ packages:
   im_flutter_sdk:
     dependency: transitive
     description:
-      name: im_flutter_sdk
-      sha256: b66d8fc29c0324f50f4a4e58a260db190813846633c777093303813ec2e3d2c6
-      url: "https://pub.dev"
-    source: hosted
+      path: "../../../../im_flutter_sdk"
+      relative: true
+    source: path
     version: "4.2.0"
   image_picker:
     dependency: transitive
@@ -724,10 +723,10 @@ packages:
     dependency: transitive
     description:
       name: video_player_android
-      sha256: "7f8f25d7ad56819a82b2948357f3c3af071f6a678db33833b26ec36bbc221316"
+      sha256: "4dd9b8b86d70d65eecf3dcabfcdfbb9c9115d244d022654aba49a00336d540c2"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.11"
+    version: "2.4.12"
   video_player_avfoundation:
     dependency: transitive
     description:

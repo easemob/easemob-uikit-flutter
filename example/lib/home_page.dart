@@ -1,5 +1,4 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/notifications/theme_notification.dart';
 import 'package:em_chat_uikit_example/pages/contact/contact_page.dart';
 import 'package:em_chat_uikit_example/pages/conversation/conversation_page.dart';
 import 'package:em_chat_uikit_example/pages/me/my_page.dart';
@@ -53,6 +52,7 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     super.build(context);
     final theme = ChatUIKitTheme.of(context);
+
     Widget content = Scaffold(
       body: IndexedStack(
         index: _currentIndex,
@@ -142,16 +142,6 @@ class _HomePageState extends State<HomePage>
     content = ToastPage(child: content);
 
     content = UserProviderWidget(child: content);
-
-    content = NotificationListener(
-      onNotification: (notification) {
-        if (notification is ThemeNotification) {
-          setState(() {});
-        }
-        return false;
-      },
-      child: content,
-    );
 
     return content;
   }

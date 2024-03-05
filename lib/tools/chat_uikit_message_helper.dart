@@ -300,7 +300,7 @@ extension MessageHelper on Message {
                 .getString(context!);
           }
 
-          if(isKickedGroupAlert) {
+          if (isKickedGroupAlert) {
             return ChatUIKitLocal.messagesViewGroupKickedInfo
                 .getString(context!);
           }
@@ -387,6 +387,21 @@ extension MessageHelper on Message {
     return false;
   }
 
+  bool get hasTranslate {
+    return attributes?[hasTranslatedKey] == true;
+  }
+
+  String get translateText {
+    if (hasTranslate) {
+      Map<String, String>? map = (body as TextMessageBody).translations;
+      if (map != null) {
+        return map[ChatUIKitSettings.translateLanguage] ??
+            map[(body as TextMessageBody).targetLanguages?.first] ??
+            '';
+      }
+    }
+    return '';
+  }
 
   bool get isKickedGroupAlert {
     if (bodyType == MessageType.CUSTOM) {

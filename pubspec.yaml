@@ -12,7 +12,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  im_flutter_sdk: ^4.2.0
+  # im_flutter_sdk: ^4.2.0
+  im_flutter_sdk:
+    path: ../../../im_flutter_sdk
 
   flutter_sound_record: ^3.3.2
 
