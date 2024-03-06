@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit_example/tool/user_data_store.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +137,7 @@ class PersonalInfoItem extends StatelessWidget {
         children: [
           Text(
             title,
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             style: TextStyle(
               fontSize: theme.font.titleMedium.fontSize,
               fontWeight: theme.font.titleMedium.fontWeight,
@@ -151,7 +149,7 @@ class PersonalInfoItem extends StatelessWidget {
           Expanded(
             child: Text(
               trailing ?? '',
-              textScaleFactor: 1.0,
+              textScaler: TextScaler.noScaling,
               textAlign: TextAlign.right,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(

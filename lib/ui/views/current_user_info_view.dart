@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -60,7 +58,7 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> {
           ChatUIKit.instance.currentUserId ??
           '',
       overflow: TextOverflow.ellipsis,
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       maxLines: 1,
       style: TextStyle(
         fontSize: theme.font.headlineLarge.fontSize,
@@ -75,7 +73,7 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> {
       'ID: ${widget.profile.id}',
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       style: TextStyle(
         fontSize: theme.font.bodySmall.fontSize,
         fontWeight: theme.font.bodySmall.fontWeight,

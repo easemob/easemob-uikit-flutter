@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'dart:math';
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
 import 'package:em_chat_uikit/chat_uikit_settings.dart';
@@ -208,7 +207,7 @@ class _ChatUIKitDialogState extends State<ChatUIKitDialog> {
                   right: widget.leftRightPadding),
               child: Text(
                 widget.title!,
-                textScaleFactor: 1.0,
+                textScaler: TextScaler.noScaling,
                 textAlign: TextAlign.center,
                 style: widget.titleStyle ??
                     TextStyle(
@@ -228,7 +227,7 @@ class _ChatUIKitDialogState extends State<ChatUIKitDialog> {
                   right: widget.leftRightPadding),
               child: Text(
                 widget.content!,
-                textScaleFactor: 1.0,
+                textScaler: TextScaler.noScaling,
                 textAlign: TextAlign.center,
                 style: widget.contentStyle ??
                     TextStyle(
@@ -443,7 +442,7 @@ class _ChatUIKitDialogState extends State<ChatUIKitDialog> {
                     child: Center(
                       child: Text(
                         item.label,
-                        textScaleFactor: 1.0,
+                        textScaler: TextScaler.noScaling,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: themeFont.headlineSmall.fontSize,

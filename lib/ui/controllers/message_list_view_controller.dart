@@ -55,7 +55,7 @@ class MessageListViewController extends ChangeNotifier
   /// 不可修改
   bool _typing = false;
 
-  List<String> selectedMessageIds = [];
+  List<Message> selectedMessages = [];
 
   bool isMultiSelectMode = false;
 
@@ -623,18 +623,20 @@ class MessageListViewController extends ChangeNotifier
 
   void enableMultiSelectMode() {
     isMultiSelectMode = true;
-    selectedMessageIds.clear();
+    selectedMessages.clear();
     notifyListeners();
   }
 
   void disableMultiSelectMode() {
     isMultiSelectMode = false;
-    selectedMessageIds.clear();
+    selectedMessages.clear();
     notifyListeners();
   }
 
   void deleteSelectedMessages() async {
-    await deleteMessages(messageIds: selectedMessageIds);
+    await deleteMessages(
+      messageIds: selectedMessages.map((e) => e.msgId).toList(),
+    );
     disableMultiSelectMode();
   }
 

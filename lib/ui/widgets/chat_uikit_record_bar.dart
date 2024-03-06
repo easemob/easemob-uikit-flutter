@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'dart:async';
 import 'dart:io';
 import 'package:em_chat_uikit/chat_uikit.dart';
@@ -268,7 +267,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
     if (statusType == ChatUIKitVoiceBarStatusType.none) {
       return Text(
         widget.hintText ?? ChatUIKitLocal.recordBarRecord.getString(context),
-        textScaleFactor: 1.0,
+        textScaler: TextScaler.noScaling,
         overflow: TextOverflow.ellipsis,
         style: widget.hintTextStyle ?? style,
       );
@@ -276,14 +275,14 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
       return Text(
         widget.recordText ??
             ChatUIKitLocal.recordBarRecording.getString(context),
-        textScaleFactor: 1.0,
+        textScaler: TextScaler.noScaling,
         overflow: TextOverflow.ellipsis,
         style: widget.recordTextStyle ?? style,
       );
     } else if (statusType == ChatUIKitVoiceBarStatusType.ready) {
       return Text(
         widget.playText ?? ChatUIKitLocal.recordBarPlay.getString(context),
-        textScaleFactor: 1.0,
+        textScaler: TextScaler.noScaling,
         overflow: TextOverflow.ellipsis,
         style: widget.playTextStyle ?? style,
       );
@@ -291,7 +290,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
       return Text(
         widget.playingText ??
             ChatUIKitLocal.recordBarPlaying.getString(context),
-        textScaleFactor: 1.0,
+        textScaler: TextScaler.noScaling,
         overflow: TextOverflow.ellipsis,
         style: widget.playingTextStyle ?? style,
       );
@@ -309,7 +308,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
           context.formatString(ChatUIKitLocal.recordBarAutoStop,
               ['${widget.maxDuration - recordCounter}']),
           overflow: TextOverflow.ellipsis,
-          textScaleFactor: 1.0,
+          textScaler: TextScaler.noScaling,
           style: TextStyle(
             fontWeight: theme.font.bodySmall.fontWeight,
             fontSize: theme.font.bodySmall.fontSize,
@@ -358,7 +357,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
                   statusType == ChatUIKitVoiceBarStatusType.ready) {
                 return Text(
                   '${recordCounter}s',
-                  textScaleFactor: 1.0,
+                  textScaler: TextScaler.noScaling,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       color: theme.color.isDark
@@ -370,7 +369,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
               } else if (statusType == ChatUIKitVoiceBarStatusType.playing) {
                 return Text(
                   '${playCounter}s',
-                  textScaleFactor: 1.0,
+                  textScaler: TextScaler.noScaling,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       color: theme.color.isDark

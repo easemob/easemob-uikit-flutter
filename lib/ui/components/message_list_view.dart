@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
@@ -180,11 +178,10 @@ class _MessageListViewState extends State<MessageListView> {
       child: content,
     );
 
-    content = WillPopScope(
+    content = PopScope(
       child: content,
-      onWillPop: () async {
-        controller.markAllMessageAsRead();
-        return true;
+      onPopInvoked: (canPop) async {
+        await controller.markAllMessageAsRead();
       },
     );
 
@@ -237,10 +234,14 @@ class _MessageListViewState extends State<MessageListView> {
     content ??= ChatUIKitMessageListViewMessageItem(
       enableSelected: controller.isMultiSelectMode
           ? () {
-              if (controller.selectedMessageIds.contains(model.message.msgId)) {
-                controller.selectedMessageIds.remove(model.message.msgId);
+              if (controller.selectedMessages
+                  .map((e) => e.msgId)
+                  .toList()
+                  .contains(model.message.msgId)) {
+                controller.selectedMessages
+                    .removeWhere((e) => model.message.msgId == e.msgId);
               } else {
-                controller.selectedMessageIds.add(model.message.msgId);
+                controller.selectedMessages.add(model.message);
               }
               setState(() {});
             }
@@ -307,16 +308,23 @@ class _MessageListViewState extends State<MessageListView> {
         children: [
           InkWell(
             onTap: () {
-              if (controller.selectedMessageIds.contains(model.message.msgId)) {
-                controller.selectedMessageIds.remove(model.message.msgId);
+              if (controller.selectedMessages
+                  .map((e) => e.msgId)
+                  .toList()
+                  .contains(model.message.msgId)) {
+                controller.selectedMessages
+                    .removeWhere((e) => e.msgId == model.message.msgId);
               } else {
-                controller.selectedMessageIds.add(model.message.msgId);
+                controller.selectedMessages.add(model.message);
               }
               setState(() {});
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 0, right: 10, bottom: 20),
-              child: controller.selectedMessageIds.contains(model.message.msgId)
+              child: controller.selectedMessages
+                      .map((e) => e.msgId)
+                      .toList()
+                      .contains(model.message.msgId)
                   ? Icon(
                       Icons.check_box,
                       size: 28,

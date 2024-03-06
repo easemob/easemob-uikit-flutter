@@ -171,6 +171,11 @@ class ChatUIKitRoute {
         arguments as ReportMessageViewArguments,
       );
     }),
+    ChatUIKitRouteNames.forwardMessageView: (context, arguments) {
+      return ForwardMessageView.arguments(
+        arguments as ForwardMessageViewArguments,
+      );
+    },
   };
 
   static ChatUIKitRouteBackModel? get lastModel {

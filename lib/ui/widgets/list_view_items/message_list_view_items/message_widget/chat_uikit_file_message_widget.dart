@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +25,7 @@ class ChatUIKitFileMessageWidget extends StatelessWidget {
 
     Widget title = Text(
       message.displayName ?? '',
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
       style: titleStyle ??
@@ -44,7 +43,7 @@ class ChatUIKitFileMessageWidget extends StatelessWidget {
     );
     Widget subTitle = Text(
       message.fileSizeStr,
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
       style: subTitleStyle ??

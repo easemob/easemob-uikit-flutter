@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +44,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
     Widget title = showTitle
         ? Text(
             info.showName,
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style: TextStyle(
@@ -81,7 +80,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
                     timestamp ?? info.lastMessage?.serverTime ?? 0) ??
                 ChatUIKitTimeTool.getChatTimeStr(
                     timestamp ?? info.lastMessage?.serverTime ?? 0),
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: theme.color.isDark
@@ -130,7 +129,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
               style: style,
             )
           : RichText(
-              textScaleFactor: 1.0,
+              textScaler: TextScaler.noScaling,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               text: TextSpan(
@@ -194,7 +193,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
               ),
               child: Text(
                 info.unreadCount > 99 ? '99+' : info.unreadCount.toString(),
-                textScaleFactor: 1.0,
+                textScaler: TextScaler.noScaling,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: theme.color.isDark

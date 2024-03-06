@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +25,7 @@ class ChatUIKitNewRequestListViewItem extends StatelessWidget {
 
     Widget name = Text(
       model.showName,
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
       style: normalStyle,
@@ -36,7 +35,7 @@ class ChatUIKitNewRequestListViewItem extends StatelessWidget {
       model.reason?.isNotEmpty == true
           ? model.reason!
           : ChatUIKitLocal.newRequestItemAddReason.getString(context),
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
       style: TextStyle(
@@ -78,7 +77,7 @@ class ChatUIKitNewRequestListViewItem extends StatelessWidget {
             child: Center(
               child: Text(
                 ChatUIKitLocal.newRequestItemAdd.getString(context),
-                textScaleFactor: 1.0,
+                textScaler: TextScaler.noScaling,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: theme.color.isDark

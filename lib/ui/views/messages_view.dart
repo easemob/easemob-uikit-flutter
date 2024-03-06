@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'dart:async';
 import 'dart:io';
 import 'package:em_chat_uikit/chat_uikit.dart';
@@ -56,6 +55,7 @@ class MessagesView extends StatefulWidget {
         bubbleContentBuilder = arguments.bubbleContentBuilder,
         inputBarTextEditingController = arguments.inputBarTextEditingController,
         forceLeft = arguments.forceLeft,
+        multiSelectBottomBar = arguments.multiSelectBottomBar,
         attributes = arguments.attributes;
 
   /// 构造函数。
@@ -90,6 +90,7 @@ class MessagesView extends StatefulWidget {
     this.onItemLongPressHandler,
     this.forceLeft,
     this.inputBarTextEditingController,
+    this.multiSelectBottomBar,
     this.attributes,
     super.key,
   });
@@ -186,6 +187,9 @@ class MessagesView extends StatefulWidget {
 
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   final String? attributes;
+
+  /// 多选时显示的 bottom bar
+  final Widget? multiSelectBottomBar;
 
   @override
   State<MessagesView> createState() => _MessagesViewState();
@@ -323,7 +327,6 @@ class _MessagesViewState extends State<MessagesView>
     final theme = ChatUIKitTheme.of(context);
 
     Widget content = MessageListView(
-      // multiSelect: controller.enableMultiSelectMode();,
       forceLeft: widget.forceLeft,
       bubbleContentBuilder: widget.bubbleContentBuilder,
       bubbleBuilder: widget.bubbleBuilder,
@@ -388,7 +391,7 @@ class _MessagesViewState extends State<MessagesView>
 
     List<Widget> list = [Expanded(child: content)];
     if (controller.isMultiSelectMode) {
-      list.add(multiWidget(theme));
+      list.add(multiSelectBar(theme));
     } else {
       if (replyMessage != null) list.add(replyMessageBar(theme));
       widget.inputBar ?? list.add(inputBar(theme));
@@ -781,7 +784,7 @@ class _MessagesViewState extends State<MessagesView>
         const SizedBox(width: 2),
         Text(
           ChatUIKitLocal.messagesViewEditMessageTitle.getString(context),
-          textScaleFactor: 1.0,
+          textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
               fontWeight: theme.font.labelSmall.fontWeight,
@@ -1056,36 +1059,58 @@ class _MessagesViewState extends State<MessagesView>
     );
   }
 
-  Widget multiWidget(ChatUIKitTheme theme) {
-    Widget content = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        InkWell(
-          onTap: () {
-            controller.deleteSelectedMessages();
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
-            child: ChatUIKitImageLoader.messageTrash(
-              color: theme.color.isDark
-                  ? theme.color.errorColor6
-                  : theme.color.errorColor5,
+  Widget multiSelectBar(ChatUIKitTheme theme) {
+    Widget content = widget.multiSelectBottomBar ??
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: () async {
+                if (controller.selectedMessages.isEmpty) {
+                  return;
+                }
+                bool? ret = await showChatUIKitDialog(
+                    context: context,
+                    items: [
+                      ChatUIKitDialogItem.cancel(label: '取消'),
+                      ChatUIKitDialogItem.confirm(
+                        label: '确认',
+                        onTap: () async {
+                          Navigator.of(context).pop(true);
+                        },
+                      )
+                    ],
+                    title: '删除${controller.selectedMessages.length}条消息?');
+                if (ret == true) {
+                  controller.deleteSelectedMessages();
+                }
+              },
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+                child: ChatUIKitImageLoader.messageTrash(
+                  color: theme.color.isDark
+                      ? theme.color.errorColor6
+                      : theme.color.errorColor5,
+                ),
+              ),
             ),
-          ),
-        ),
-        InkWell(
-          onTap: () {},
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
-            child: ChatUIKitImageLoader.messageLongPressForward(
-              color: theme.color.isDark
-                  ? theme.color.primaryColor6
-                  : theme.color.primaryColor5,
+            InkWell(
+              onTap: () {
+                multiSelectForward();
+              },
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+                child: ChatUIKitImageLoader.messageLongPressForward(
+                  color: theme.color.isDark
+                      ? theme.color.primaryColor6
+                      : theme.color.primaryColor5,
+                ),
+              ),
             ),
-          ),
-        ),
-      ],
-    );
+          ],
+        );
     return content;
   }
 
@@ -1843,5 +1868,20 @@ class _MessagesViewState extends State<MessagesView>
 
   void attemptSendInputType() {
     controller.attemptSendInputType();
+  }
+
+  void multiSelectForward() {
+    ChatUIKitRoute.pushOrPushNamed(
+      context,
+      ChatUIKitRouteNames.forwardMessageView,
+      ForwardMessageViewArguments(
+        messages: controller.selectedMessages,
+        attributes: widget.attributes,
+      ),
+    ).then((value) {
+      if (value == true) {
+        controller.disableMultiSelectMode();
+      }
+    });
   }
 }

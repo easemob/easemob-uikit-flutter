@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
@@ -96,7 +94,7 @@ class _ChangeInfoViewState extends State<ChangeInfoView> {
                     child: Text(
                       "$currentLength/$maxLength",
                       overflow: TextOverflow.ellipsis,
-                      textScaleFactor: 1.0,
+                      textScaler: TextScaler.noScaling,
                       style: TextStyle(
                           color: theme.color.isDark
                               ? theme.color.neutralColor5
@@ -150,7 +148,7 @@ class _ChangeInfoViewState extends State<ChangeInfoView> {
               child: Text(
                 widget.title ?? '',
                 overflow: TextOverflow.ellipsis,
-                textScaleFactor: 1.0,
+                textScaler: TextScaler.noScaling,
                 style: TextStyle(
                     fontWeight: theme.font.titleMedium.fontWeight,
                     fontSize: theme.font.titleMedium.fontSize,
@@ -176,7 +174,7 @@ class _ChangeInfoViewState extends State<ChangeInfoView> {
                     child: Text(
                       widget.saveButtonTitle ??
                           ChatUIKitLocal.changInfoViewSave.getString(context),
-                      textScaleFactor: 1.0,
+                      textScaler: TextScaler.noScaling,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontWeight: theme.font.labelMedium.fontWeight,

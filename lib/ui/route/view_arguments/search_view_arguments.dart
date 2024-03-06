@@ -11,6 +11,7 @@ class SearchViewArguments implements ChatUIKitViewArguments {
     this.cantChangeSelected,
     this.canChangeSelected,
     this.selectedTitle,
+    this.viewObserver,
     this.attributes,
   });
 
@@ -23,6 +24,7 @@ class SearchViewArguments implements ChatUIKitViewArguments {
   final List<ChatUIKitProfile>? cantChangeSelected;
   final List<ChatUIKitProfile>? canChangeSelected;
   final String? selectedTitle;
+  final ChatUIKitViewObserver? viewObserver;
   @override
   String? attributes;
 
@@ -37,6 +39,7 @@ class SearchViewArguments implements ChatUIKitViewArguments {
     List<ChatUIKitProfile>? cantChangeSelected,
     List<ChatUIKitProfile>? canChangeSelected,
     String? selectedTitle,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return SearchViewArguments(
@@ -48,6 +51,7 @@ class SearchViewArguments implements ChatUIKitViewArguments {
       cantChangeSelected: cantChangeSelected ?? this.cantChangeSelected,
       canChangeSelected: canChangeSelected ?? this.canChangeSelected,
       selectedTitle: selectedTitle ?? this.selectedTitle,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

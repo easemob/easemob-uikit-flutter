@@ -39,7 +39,7 @@ class _GeneralPageState extends State<GeneralPage> {
             '开启后，对方将看见你的输入状态',
             textAlign: TextAlign.right,
             // ignore: deprecated_member_use
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             style: TextStyle(
               height: 0.9,
               fontSize: theme.font.bodyMedium.fontSize,

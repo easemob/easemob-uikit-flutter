@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +36,7 @@ class ChatUIKitBadge extends StatelessWidget {
       ),
       child: Text(
         count > 99 ? '99+' : count.toString(),
-        textScaleFactor: 1.0,
+        textScaler: TextScaler.noScaling,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: textColor ??

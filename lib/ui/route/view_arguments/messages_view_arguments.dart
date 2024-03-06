@@ -33,6 +33,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     this.onItemLongPressHandler,
     this.inputBarTextEditingController,
     this.forceLeft,
+    this.multiSelectBottomBar,
     this.attributes,
   });
 
@@ -126,6 +127,9 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   /// 输入框控制器，如果设置后将会替换默认的输入框控制器。详细参考 [CustomTextEditingController]。
   final CustomTextEditingController? inputBarTextEditingController;
 
+  /// 多选消息时显示的bottom bar.
+  final Widget? multiSelectBottomBar;
+
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   @override
   String? attributes;
@@ -161,6 +165,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     CustomTextEditingController? inputBarTextEditingController,
     bool? enableAppBar,
     bool? forceLeft,
+    Widget? multiSelectBottomBar,
     String? attributes,
   }) {
     return MessagesViewArguments(
@@ -199,6 +204,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       inputBarTextEditingController:
           inputBarTextEditingController ?? this.inputBarTextEditingController,
       forceLeft: forceLeft ?? this.forceLeft,
+      multiSelectBottomBar: multiSelectBottomBar ?? this.multiSelectBottomBar,
       attributes: attributes ?? this.attributes,
     );
   }

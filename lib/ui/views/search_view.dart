@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +13,7 @@ class SearchView extends StatefulWidget {
         cantChangeSelected = arguments.cantChangeSelected,
         canChangeSelected = arguments.canChangeSelected,
         selectedTitle = arguments.selectedTitle,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const SearchView({
@@ -25,6 +25,7 @@ class SearchView extends StatefulWidget {
     this.cantChangeSelected,
     this.canChangeSelected,
     this.selectedTitle,
+    this.viewObserver,
     this.attributes,
     super.key,
   });
@@ -40,6 +41,7 @@ class SearchView extends StatefulWidget {
   final List<ChatUIKitProfile>? canChangeSelected;
   final String? selectedTitle;
   final String? attributes;
+  final ChatUIKitViewObserver? viewObserver;
 
   @override
   State<SearchView> createState() => _SearchViewState();
@@ -51,9 +53,21 @@ class _SearchViewState extends State<SearchView> {
   @override
   void initState() {
     super.initState();
+
+    if (widget.viewObserver != null) {
+      widget.viewObserver!.addListener(() {
+        setState(() {});
+      });
+    }
     if (widget.canChangeSelected?.isNotEmpty == true) {
       selectedProfiles.value = widget.canChangeSelected!;
     }
+  }
+
+  @override
+  void dispose() {
+    widget.viewObserver?.dispose();
+    super.dispose();
   }
 
   @override

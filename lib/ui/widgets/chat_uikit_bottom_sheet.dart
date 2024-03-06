@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
@@ -155,7 +154,7 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 13),
           child: Text(
             title!,
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             style: titleStyle ??
                 TextStyle(
                   fontWeight:
@@ -208,7 +207,7 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
                         fit: FlexFit.loose,
                         child: Text(
                           element.label,
-                          textScaleFactor: 1.0,
+                          textScaler: TextScaler.noScaling,
                           overflow: TextOverflow.ellipsis,
                           style: element.style ??
                               (element.type ==
@@ -221,7 +220,7 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
                   )
                 : Text(
                     element.label,
-                    textScaleFactor: 1.0,
+                    textScaler: TextScaler.noScaling,
                     overflow: TextOverflow.ellipsis,
                     style: element.style ??
                         (element.type == ChatUIKitBottomSheetItemType.normal
@@ -255,7 +254,7 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               str,
-              textScaleFactor: 1.0,
+              textScaler: TextScaler.noScaling,
               overflow: TextOverflow.ellipsis,
               style: cancelStyle ??
                   TextStyle(

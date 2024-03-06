@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +35,7 @@ class ListItem extends StatelessWidget {
           if (imageWidget != null) const SizedBox(width: 8),
           Text(
             title,
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             style: TextStyle(
               fontSize: theme.font.titleMedium.fontSize,
               fontWeight: theme.font.titleMedium.fontWeight,
@@ -52,7 +50,7 @@ class ListItem extends StatelessWidget {
             Text(
               trailingString ?? '',
               textAlign: TextAlign.right,
-              textScaleFactor: 1.0,
+              textScaler: TextScaler.noScaling,
               style: trailingStyle ??
                   TextStyle(
                     fontSize: theme.font.labelMedium.fontSize,

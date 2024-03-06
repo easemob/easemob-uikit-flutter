@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'dart:io';
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +101,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       children: [
         Text(
           message.nickname ?? message.from ?? '',
-          textScaleFactor: 1.0,
+          textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             color: theme.color.isDark
@@ -115,7 +114,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
         Text(
           message.textContent,
           overflow: TextOverflow.ellipsis,
-          textScaleFactor: 1.0,
+          textScaler: TextScaler.noScaling,
           maxLines: 2,
           style: TextStyle(
             color: theme.color.isDark
@@ -145,7 +144,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
           child: Text(
             ChatUIKitLocal.quoteWidgetTitleImage.getString(context),
             overflow: TextOverflow.ellipsis,
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             maxLines: 1,
             style: TextStyle(
               fontWeight: theme.font.labelMedium.fontWeight,
@@ -163,7 +162,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       children: [
         Text(
           message.nickname ?? message.from ?? '',
-          textScaleFactor: 1.0,
+          textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             color: theme.color.isDark
@@ -304,7 +303,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
         Flexible(
           child: Text(
             ChatUIKitLocal.quoteWidgetTitleVideo.getString(context),
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontWeight: theme.font.labelMedium.fontWeight,
@@ -322,7 +321,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       children: [
         Text(
           message.nickname ?? message.from ?? '',
-          textScaleFactor: 1.0,
+          textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             color: theme.color.isDark
@@ -466,7 +465,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
           child: RichText(
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             text: TextSpan(
               children: [
                 TextSpan(
@@ -501,7 +500,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
         Text(
           message.nickname ?? message.from ?? '',
           overflow: TextOverflow.ellipsis,
-          textScaleFactor: 1.0,
+          textScaler: TextScaler.noScaling,
           maxLines: 1,
           style: TextStyle(
             color: theme.color.isDark
@@ -536,7 +535,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
           child: RichText(
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             text: TextSpan(
               children: [
                 TextSpan(
@@ -570,7 +569,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       children: [
         Text(
           message.nickname ?? message.from ?? '',
-          textScaleFactor: 1.0,
+          textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             color: theme.color.isDark
@@ -606,7 +605,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
           const SizedBox(width: 4),
           Flexible(
             child: RichText(
-              textScaleFactor: 1.0,
+              textScaler: TextScaler.noScaling,
               overflow: TextOverflow.ellipsis,
               text: TextSpan(
                 children: [
@@ -643,7 +642,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
         children: [
           Text(
             message.nickname ?? message.from ?? '',
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: theme.color.isDark
@@ -665,7 +664,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
   Widget _emptyWidget(ChatUIKitTheme theme) {
     return Text(
       ChatUIKitLocal.quoteWidgetTitleUnFind.getString(context),
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         color: theme.color.isDark
@@ -680,7 +679,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
   Widget _unSupportWidget(ChatUIKitTheme theme) {
     return Text(
       ChatUIKitLocal.nonSupportMessage.getString(context),
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         color: theme.color.isDark

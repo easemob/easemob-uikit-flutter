@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/widgets.dart';
 
@@ -50,7 +48,7 @@ class HighlightTool {
           children: tmp,
           style: normalStyle,
         ),
-        textScaleFactor: 1.0,
+        textScaler: TextScaler.noScaling,
       );
     }
 
@@ -58,7 +56,7 @@ class HighlightTool {
       text,
       overflow: TextOverflow.ellipsis,
       style: normalStyle,
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
     );
     return name;
   }

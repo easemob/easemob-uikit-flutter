@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'dart:io';
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
@@ -95,7 +94,7 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
   Widget title(ChatUIKitTheme theme) {
     return widget.title ??
         RichText(
-          textScaleFactor: 1.0,
+          textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           text: TextSpan(
             children: [
@@ -149,7 +148,7 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
   Widget _textWidget(ChatUIKitTheme theme) {
     return Text(
       widget.message.textContent,
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
@@ -175,7 +174,7 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
           child: Text(
             ChatUIKitLocal.replayBarTitleImage.getString(context),
             overflow: TextOverflow.ellipsis,
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             style: TextStyle(
               fontWeight: theme.font.labelSmall.fontWeight,
               fontSize: theme.font.labelSmall.fontSize,
@@ -201,7 +200,7 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
         Expanded(
           child: Text(
             ChatUIKitLocal.replayBarTitleVideo.getString(context),
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontWeight: theme.font.labelSmall.fontWeight,
@@ -230,7 +229,7 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
         const SizedBox(width: 4),
         Expanded(
           child: RichText(
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             text: TextSpan(
               children: [
@@ -278,7 +277,7 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
         const SizedBox(width: 4),
         Expanded(
             child: RichText(
-          textScaleFactor: 1.0,
+          textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           text: TextSpan(
             children: [
@@ -323,7 +322,7 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
           const SizedBox(width: 4),
           Expanded(
             child: RichText(
-              textScaleFactor: 1.0,
+              textScaler: TextScaler.noScaling,
               overflow: TextOverflow.ellipsis,
               text: TextSpan(
                 children: [

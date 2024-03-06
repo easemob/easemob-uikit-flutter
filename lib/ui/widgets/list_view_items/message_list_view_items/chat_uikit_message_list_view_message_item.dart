@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/universal/defines.dart';
 import 'package:flutter/material.dart';
@@ -186,7 +185,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
             children: [
               SizedBox(width: getArrowWidth),
               Text(
-                textScaleFactor: 1.0,
+                textScaler: TextScaler.noScaling,
                 overflow: TextOverflow.ellipsis,
                 ChatUIKitTimeFormatter.instance.formatterHandler?.call(
                       context,
@@ -338,7 +337,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     Widget content = nicknameWidget ??
         Text(
           nickname,
-          textScaleFactor: 1.0,
+          textScaler: TextScaler.noScaling,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(

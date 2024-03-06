@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
@@ -201,7 +200,7 @@ class _ChatUIKitSearchWidgetState extends State<ChatUIKitSearchWidget> {
                 child: Text(
                   ChatUIKitLocal.searchWidgetCancel.getString(context),
                   overflow: TextOverflow.ellipsis,
-                  textScaleFactor: 1.0,
+                  textScaler: TextScaler.noScaling,
                   style: TextStyle(
                     color: theme.color.isDark
                         ? theme.color.primaryColor6
@@ -254,7 +253,7 @@ class _ChatUIKitSearchWidgetState extends State<ChatUIKitSearchWidget> {
                 Text(
                   widget.searchHideText,
                   overflow: TextOverflow.ellipsis,
-                  textScaleFactor: 1.0,
+                  textScaler: TextScaler.noScaling,
                   style: TextStyle(
                     color: ChatUIKitTheme.of(context).color.isDark
                         ? ChatUIKitTheme.of(context).color.neutralColor4

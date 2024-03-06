@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -68,7 +67,7 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
         widget.title!,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
-        textScaleFactor: 1.0,
+        textScaler: TextScaler.noScaling,
         style: widget.titleTextStyle ??
             TextStyle(
               fontSize: theme.font.titleMedium.fontSize,
@@ -94,7 +93,7 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
     if (widget.subTitle?.isNotEmpty == true) {
       subTitle = Text(
         widget.subTitle!,
-        textScaleFactor: 1.0,
+        textScaler: TextScaler.noScaling,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
         style: widget.subTitleTextStyle ??

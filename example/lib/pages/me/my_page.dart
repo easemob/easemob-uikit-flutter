@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit_example/widgets/list_item.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +66,7 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
 
     Widget name = Text(
       _userData?.nickname ?? ChatUIKit.instance.currentUserId ?? '',
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
       style: TextStyle(
@@ -84,7 +82,7 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
       'ID: ${ChatUIKit.instance.currentUserId}',
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       style: TextStyle(
         fontSize: theme.font.bodySmall.fontSize,
         fontWeight: theme.font.bodySmall.fontWeight,
@@ -135,7 +133,7 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
         const SizedBox(height: 20),
         const Padding(
           padding: EdgeInsets.only(left: 16, right: 16),
-          child: Text('设置', textScaleFactor: 1.0),
+          child: Text('设置', textScaler: TextScaler.noScaling),
         ),
         InkWell(
           onTap: nonsupport,
@@ -191,7 +189,7 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
             },
             child: Text(
               '退出登录',
-              textScaleFactor: 1.0,
+              textScaler: TextScaler.noScaling,
               style: TextStyle(
                 fontWeight: theme.font.titleMedium.fontWeight,
                 fontSize: theme.font.titleMedium.fontSize,

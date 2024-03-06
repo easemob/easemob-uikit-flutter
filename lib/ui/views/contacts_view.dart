@@ -115,36 +115,38 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
       backgroundColor: theme.color.isDark
           ? theme.color.neutralColor1
           : theme.color.neutralColor98,
-      appBar: widget.appBar ??
-          ChatUIKitAppBar(
-            title: widget.title ?? 'Contacts',
-            titleTextStyle: TextStyle(
-              color: theme.color.isDark
-                  ? theme.color.primaryColor6
-                  : theme.color.primaryColor5,
-              fontSize: theme.font.titleLarge.fontSize,
-              fontWeight: FontWeight.w900,
-            ),
-            showBackButton: false,
-            leading: Container(
-              margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
-              child: ChatUIKitAvatar.current(
-                size: 32,
-                avatarUrl:
-                    ChatUIKitProvider.instance.currentUserData?.avatarUrl,
+      appBar: !widget.enableAppBar
+          ? null
+          : widget.appBar ??
+              ChatUIKitAppBar(
+                title: widget.title ?? 'Contacts',
+                titleTextStyle: TextStyle(
+                  color: theme.color.isDark
+                      ? theme.color.primaryColor6
+                      : theme.color.primaryColor5,
+                  fontSize: theme.font.titleLarge.fontSize,
+                  fontWeight: FontWeight.w900,
+                ),
+                showBackButton: false,
+                leading: Container(
+                  margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
+                  child: ChatUIKitAvatar.current(
+                    size: 32,
+                    avatarUrl:
+                        ChatUIKitProvider.instance.currentUserData?.avatarUrl,
+                  ),
+                ),
+                trailing: IconButton(
+                  iconSize: 24,
+                  color: theme.color.isDark
+                      ? theme.color.neutralColor95
+                      : theme.color.neutralColor3,
+                  icon: const Icon(Icons.person_add_alt_1_outlined),
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  onPressed: addContact,
+                ),
               ),
-            ),
-            trailing: IconButton(
-              iconSize: 24,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor95
-                  : theme.color.neutralColor3,
-              icon: const Icon(Icons.person_add_alt_1_outlined),
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onPressed: addContact,
-            ),
-          ),
       body: SafeArea(
         child: ContactListView(
           controller: controller,

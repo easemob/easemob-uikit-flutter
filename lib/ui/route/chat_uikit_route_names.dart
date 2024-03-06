@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/widgets.dart';
 
 class ChatUIKitRouteNames {
@@ -7,6 +8,7 @@ class ChatUIKitRouteNames {
   static const String contactsView = '/ContactsView';
   static const String conversationsView = '/ConversationsView';
   static const String createGroupView = '/CreateGroupView';
+  static const String forwardMessageView = '/ForwardMessageView';
   static const String groupChangeOwnerView = '/GroupChangeOwnerView';
   static const String groupDetailsView = '/GroupDetailsView';
   static const String groupsView = '/GroupsView';
@@ -47,6 +49,10 @@ class ChatUIKitRouteNames {
       case ChatUIKitRouteNames.createGroupView:
         return CreateGroupView.arguments(
           arguments as CreateGroupViewArguments,
+        );
+      case ChatUIKitRouteNames.forwardMessageView:
+        return ForwardMessageView.arguments(
+          arguments as ForwardMessageViewArguments,
         );
       case ChatUIKitRouteNames.groupChangeOwnerView:
         return GroupChangeOwnerView.arguments(

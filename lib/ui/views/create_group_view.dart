@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
@@ -92,7 +90,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                   },
                   child: Text(
                     ChatUIKitLocal.createGroupViewTitle.getString(context),
-                    textScaleFactor: 1.0,
+                    textScaler: TextScaler.noScaling,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: theme.color.isDark
@@ -119,7 +117,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                           ? ChatUIKitLocal.createGroupViewCreate
                               .getString(context)
                           : '${ChatUIKitLocal.createGroupViewCreate.getString(context)}(${selectedProfiles.length})',
-                      textScaleFactor: 1.0,
+                      textScaler: TextScaler.noScaling,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: theme.color.isDark

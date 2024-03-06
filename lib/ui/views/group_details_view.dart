@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -190,7 +189,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     Widget name = Text(
       profile!.showName,
       overflow: TextOverflow.ellipsis,
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       maxLines: 1,
       style: TextStyle(
         fontSize: theme.font.headlineLarge.fontSize,
@@ -206,7 +205,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
             group?.description ?? '',
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
-            textScaleFactor: 1.0,
+            textScaler: TextScaler.noScaling,
             maxLines: 3,
             style: TextStyle(
               fontSize: theme.font.bodySmall.fontSize,
@@ -222,7 +221,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       'ID: ${profile!.id}',
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       style: TextStyle(
         fontSize: theme.font.bodySmall.fontSize,
         fontWeight: theme.font.bodySmall.fontWeight,
@@ -306,7 +305,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                   child: Text(
                     action.title,
                     maxLines: 1,
-                    textScaleFactor: 1.0,
+                    textScaler: TextScaler.noScaling,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: theme.font.bodySmall.fontSize,
@@ -384,7 +383,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                     } else {
                       return Text(
                         '$memberCount',
-                        textScaleFactor: 1.0,
+                        textScaler: TextScaler.noScaling,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: theme.color.isDark
@@ -472,7 +471,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                     child: Text(
                       group?.name ?? "",
                       overflow: TextOverflow.ellipsis,
-                      textScaleFactor: 1.0,
+                      textScaler: TextScaler.noScaling,
                       maxLines: 1,
                       textAlign: TextAlign.end,
                       style: TextStyle(
@@ -514,7 +513,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.end,
                       maxLines: 1,
-                      textScaleFactor: 1.0,
+                      textScaler: TextScaler.noScaling,
                       style: TextStyle(
                         color: theme.color.isDark
                             ? theme.color.neutralColor6

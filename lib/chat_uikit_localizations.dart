@@ -100,6 +100,8 @@ mixin ChatUIKitLocal {
   static const contactDetailViewDeleteAlertButtonCancel =
       'contact_detail_view_delete_alert_button_cancel';
 
+  static const forwardMessageViewTitle = 'forward_message_view_title';
+
   static const groupDetailViewSend = 'group_detail_view_send';
   static const groupDetailViewDoNotDisturb = 'group_detail_view_do_not_disturb';
   static const groupDetailViewClearChatHistory =
@@ -340,6 +342,7 @@ mixin ChatUIKitLocal {
     contactDetailViewDeleteAlertSubTitle: '确定要删除联系人同时删除与该联系人的聊天记录。',
     contactDetailViewDeleteAlertButtonConfirm: '确认',
     contactDetailViewDeleteAlertButtonCancel: '取消',
+    forwardMessageViewTitle: '转发给',
     groupDetailViewSend: '发消息',
     groupDetailViewDoNotDisturb: '消息免打扰',
     groupDetailViewClearChatHistory: '清空聊天记录',
@@ -511,6 +514,7 @@ mixin ChatUIKitLocal {
         'Deleting a contact will also delete the chat history.',
     contactDetailViewDeleteAlertButtonConfirm: 'Confirm',
     contactDetailViewDeleteAlertButtonCancel: 'Cancel',
+    forwardMessageViewTitle: 'Forward to',
     groupDetailViewSend: 'Send message',
     groupDetailViewDoNotDisturb: 'Do not disturb',
     groupDetailViewClearChatHistory: 'Clear chat history',

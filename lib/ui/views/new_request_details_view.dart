@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -65,7 +64,7 @@ class _NewRequestDetailsViewState extends State<NewRequestDetailsView> {
       widget.profile.showName,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       style: TextStyle(
         fontSize: theme.font.headlineLarge.fontSize,
         fontWeight: theme.font.headlineLarge.fontWeight,
@@ -78,7 +77,7 @@ class _NewRequestDetailsViewState extends State<NewRequestDetailsView> {
     Widget easeId = Text(
       'ID: ${widget.profile.id}',
       overflow: TextOverflow.ellipsis,
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       maxLines: 1,
       style: TextStyle(
         fontSize: theme.font.bodySmall.fontSize,
@@ -129,7 +128,7 @@ class _NewRequestDetailsViewState extends State<NewRequestDetailsView> {
         child: Text(
           widget.btnText ??
               ChatUIKitLocal.newRequestDetailsViewAddContact.getString(context),
-          textScaleFactor: 1.0,
+          textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontSize: theme.font.headlineSmall.fontSize,

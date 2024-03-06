@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
@@ -105,7 +104,7 @@ class _ChatUIKitListViewState extends State<ChatUIKitListView> {
             Text(
               widget.errorMessage ??
                   ChatUIKitLocal.listViewLoadFailed.getString(context),
-              textScaleFactor: 1.0,
+              textScaler: TextScaler.noScaling,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: theme.color.isDark
@@ -133,7 +132,7 @@ class _ChatUIKitListViewState extends State<ChatUIKitListView> {
                 child: Text(
                   widget.reloadMessage ??
                       ChatUIKitLocal.listViewReload.getString(context),
-                  textScaleFactor: 1.0,
+                  textScaler: TextScaler.noScaling,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: theme.color.isDark
@@ -212,8 +211,6 @@ class _ChatUIKitListViewState extends State<ChatUIKitListView> {
       ],
     );
 
- 
-
     content = NotificationListener(
       onNotification: (notification) {
         if (notification is ScrollEndNotification) {
@@ -282,7 +279,7 @@ class _ChatUIKitListViewState extends State<ChatUIKitListView> {
                     widget.searchBarHideText ??
                         ChatUIKitLocal.conversationsViewSearchHint
                             .getString(context),
-                    textScaleFactor: 1.0,
+                    textScaler: TextScaler.noScaling,
                     style: TextStyle(
                       color: theme.color.isDark
                           ? theme.color.neutralColor4
