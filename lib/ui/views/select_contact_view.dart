@@ -14,6 +14,7 @@ class SelectContactView extends StatefulWidget {
         backText = arguments.backText,
         enableAppBar = arguments.enableAppBar,
         title = arguments.title,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const SelectContactView({
@@ -29,6 +30,7 @@ class SelectContactView extends StatefulWidget {
     this.enableAppBar = true,
     this.controller,
     this.attributes,
+    this.viewObserver,
     super.key,
   });
 
@@ -47,6 +49,9 @@ class SelectContactView extends StatefulWidget {
   final bool enableAppBar;
   final String? attributes;
 
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
+
   @override
   State<SelectContactView> createState() => _SelectContactViewState();
 }
@@ -58,6 +63,15 @@ class _SelectContactViewState extends State<SelectContactView> {
   void initState() {
     super.initState();
     controller = widget.controller ?? ContactListViewController();
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.viewObserver?.dispose();
+    super.dispose();
   }
 
   @override

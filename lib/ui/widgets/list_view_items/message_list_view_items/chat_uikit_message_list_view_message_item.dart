@@ -2,6 +2,8 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/universal/defines.dart';
 import 'package:flutter/material.dart';
 
+import 'message_widget/chat_uikit_combine_message_widget.dart';
+
 typedef MessageItemBubbleBuilder = Widget? Function(
   BuildContext context,
   Widget child,
@@ -78,6 +80,8 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
       msgWidget = _buildVideoMessage(context, message, left);
     } else if (message.bodyType == MessageType.FILE) {
       msgWidget = _buildFileMessage(context, message, left);
+    } else if (message.bodyType == MessageType.COMBINE) {
+      msgWidget = _buildCombineMessage(context, message, left);
     } else if (message.bodyType == MessageType.CUSTOM) {
       if (message.isCardMessage) {
         msgWidget = _buildCardMessage(context, message, left);
@@ -243,7 +247,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
 
   Widget _buildTextMessage(BuildContext context, Message message, bool isLeft) {
     return bubbleContentBuilder?.call(context, message) ??
-        ChatUIKitTextMessageWidget(message: message, isLeft: isLeft);
+        ChatUIKitTextMessageWidget(message: message, forceLeft: isLeft);
   }
 
   Widget _buildImageMessage(
@@ -284,7 +288,19 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   Widget _buildFileMessage(BuildContext context, Message message, bool isLeft) {
     return bubbleContentBuilder?.call(context, message) ??
         ChatUIKitFileMessageWidget(
-            message: message, bubbleStyle: bubbleStyle, forceLeft: isLeft);
+          message: message,
+          bubbleStyle: bubbleStyle,
+          forceLeft: isLeft,
+        );
+  }
+
+  Widget _buildCombineMessage(
+      BuildContext context, Message message, bool isLeft) {
+    return bubbleContentBuilder?.call(context, message) ??
+        ChatUIKitCombineMessageWidget(
+          message: message,
+          forceLeft: isLeft,
+        );
   }
 
   Widget _buildCardMessage(BuildContext context, Message message, bool isLeft) {

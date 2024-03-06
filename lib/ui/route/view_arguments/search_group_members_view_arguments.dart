@@ -9,6 +9,7 @@ class SearchGroupMembersViewArguments implements ChatUIKitViewArguments {
     this.itemBuilder,
     this.appBar,
     this.enableAppBar = false,
+    this.viewObserver,
     this.attributes,
   });
 
@@ -21,6 +22,8 @@ class SearchGroupMembersViewArguments implements ChatUIKitViewArguments {
   final bool enableAppBar;
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   SearchGroupMembersViewArguments copyWith({
     List<NeedSearch>? searchData,
@@ -31,6 +34,7 @@ class SearchGroupMembersViewArguments implements ChatUIKitViewArguments {
         itemBuilder,
     ChatUIKitAppBar? appBar,
     bool? enableAppBar,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return SearchGroupMembersViewArguments(
@@ -40,6 +44,7 @@ class SearchGroupMembersViewArguments implements ChatUIKitViewArguments {
       itemBuilder: itemBuilder ?? this.itemBuilder,
       appBar: appBar ?? this.appBar,
       enableAppBar: enableAppBar ?? this.enableAppBar,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

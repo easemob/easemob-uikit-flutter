@@ -13,6 +13,8 @@ class GroupMentionViewArguments implements ChatUIKitViewArguments {
     this.searchBarHideText,
     this.listViewBackground,
     this.enableAppBar = true,
+    this.title,
+    this.viewObserver,
     this.attributes,
   });
 
@@ -28,9 +30,11 @@ class GroupMentionViewArguments implements ChatUIKitViewArguments {
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final bool enableAppBar;
-
+  final String? title;
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   GroupMentionViewArguments copyWith({
     String? groupId,
@@ -43,6 +47,8 @@ class GroupMentionViewArguments implements ChatUIKitViewArguments {
     String? searchBarHideText,
     Widget? listViewBackground,
     bool? enableAppBar,
+    String? title,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return GroupMentionViewArguments(
@@ -56,6 +62,8 @@ class GroupMentionViewArguments implements ChatUIKitViewArguments {
       searchBarHideText: searchBarHideText ?? this.searchBarHideText,
       listViewBackground: listViewBackground ?? this.listViewBackground,
       enableAppBar: enableAppBar ?? this.enableAppBar,
+      title: title ?? this.title,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

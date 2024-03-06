@@ -10,6 +10,8 @@ class NewRequestDetailsView extends StatefulWidget {
         appBar = arguments.appBar,
         enableAppBar = arguments.enableAppBar,
         isReceivedRequest = arguments.isReceivedRequest,
+        title = arguments.title,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const NewRequestDetailsView({
@@ -19,6 +21,8 @@ class NewRequestDetailsView extends StatefulWidget {
     this.appBar,
     this.enableAppBar = true,
     this.attributes,
+    this.title,
+    this.viewObserver,
     super.key,
   });
 
@@ -27,7 +31,12 @@ class NewRequestDetailsView extends StatefulWidget {
   final bool isReceivedRequest;
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
+  final String? title;
+
   final String? attributes;
+
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
 
   @override
   State<NewRequestDetailsView> createState() => _NewRequestDetailsViewState();
@@ -37,6 +46,20 @@ class _NewRequestDetailsViewState extends State<NewRequestDetailsView> {
   bool hasSend = false;
 
   @override
+  void initState() {
+    super.initState();
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.viewObserver?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
@@ -44,7 +67,8 @@ class _NewRequestDetailsViewState extends State<NewRequestDetailsView> {
       backgroundColor: theme.color.isDark
           ? theme.color.neutralColor1
           : theme.color.neutralColor98,
-      appBar: const ChatUIKitAppBar(
+      appBar: ChatUIKitAppBar(
+        title: widget.title,
         showBackButton: true,
       ),
       body: _buildContent(),

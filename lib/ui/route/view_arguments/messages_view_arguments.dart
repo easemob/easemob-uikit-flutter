@@ -34,6 +34,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     this.inputBarTextEditingController,
     this.forceLeft,
     this.multiSelectBottomBar,
+    this.viewObserver,
     this.attributes,
   });
 
@@ -134,6 +135,9 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   @override
   String? attributes;
 
+  @override
+  ChatUIKitViewObserver? viewObserver;
+
   MessagesViewArguments copyWith({
     ChatUIKitProfile? profile,
     MessageListViewController? controller,
@@ -166,6 +170,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     bool? enableAppBar,
     bool? forceLeft,
     Widget? multiSelectBottomBar,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return MessagesViewArguments(
@@ -205,6 +210,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
           inputBarTextEditingController ?? this.inputBarTextEditingController,
       forceLeft: forceLeft ?? this.forceLeft,
       multiSelectBottomBar: multiSelectBottomBar ?? this.multiSelectBottomBar,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

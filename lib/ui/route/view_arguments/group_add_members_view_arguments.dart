@@ -13,7 +13,9 @@ class GroupAddMembersViewArguments implements ChatUIKitViewArguments {
     this.searchBarHideText,
     this.listViewBackground,
     this.inGroupMembers,
+    this.title,
     this.enableAppBar = true,
+    this.viewObserver,
     this.attributes,
   });
 
@@ -30,9 +32,11 @@ class GroupAddMembersViewArguments implements ChatUIKitViewArguments {
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final bool enableAppBar;
-
+  final String? title;
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   GroupAddMembersViewArguments copyWith({
     String? groupId,
@@ -46,6 +50,8 @@ class GroupAddMembersViewArguments implements ChatUIKitViewArguments {
     String? searchBarHideText,
     Widget? listViewBackground,
     bool? enableAppBar,
+    String? title,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return GroupAddMembersViewArguments(
@@ -60,6 +66,8 @@ class GroupAddMembersViewArguments implements ChatUIKitViewArguments {
       searchBarHideText: searchBarHideText ?? this.searchBarHideText,
       listViewBackground: listViewBackground ?? this.listViewBackground,
       enableAppBar: enableAppBar ?? this.enableAppBar,
+      title: title ?? this.title,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

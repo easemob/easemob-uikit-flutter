@@ -13,6 +13,8 @@ class NewRequestsView extends StatefulWidget {
         listViewBackground = argument.listViewBackground,
         enableAppBar = argument.enableAppBar,
         loadErrorMessage = argument.loadErrorMessage,
+        title = argument.title,
+        viewObserver = argument.viewObserver,
         attributes = argument.attributes;
 
   const NewRequestsView({
@@ -26,7 +28,9 @@ class NewRequestsView extends StatefulWidget {
     this.listViewBackground,
     this.loadErrorMessage,
     this.enableAppBar = true,
+    this.title,
     this.attributes,
+    this.viewObserver,
     super.key,
   });
 
@@ -41,6 +45,8 @@ class NewRequestsView extends StatefulWidget {
   final Widget? listViewBackground;
   final String? loadErrorMessage;
   final bool enableAppBar;
+  final String? title;
+  final ChatUIKitViewObserver? viewObserver;
   final String? attributes;
 
   @override
@@ -56,10 +62,14 @@ class _NewRequestsViewState extends State<NewRequestsView>
     super.initState();
     ChatUIKit.instance.addObserver(this);
     controller = widget.controller ?? NewRequestListViewController();
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
+    widget.viewObserver?.dispose();
     ChatUIKit.instance.removeObserver(this);
     super.dispose();
   }
@@ -84,7 +94,9 @@ class _NewRequestsViewState extends State<NewRequestsView>
                       Navigator.maybePop(context);
                     },
                     child: Text(
-                      ChatUIKitLocal.newRequestsViewTitle.getString(context),
+                      widget.title ??
+                          ChatUIKitLocal.newRequestsViewTitle
+                              .getString(context),
                       textScaler: TextScaler.noScaling,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

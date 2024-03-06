@@ -16,6 +16,8 @@ class GroupAddMembersView extends StatefulWidget {
         groupId = arguments.groupId,
         enableAppBar = arguments.enableAppBar,
         inGroupMembers = arguments.inGroupMembers,
+        title = arguments.title,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const GroupAddMembersView({
@@ -30,6 +32,8 @@ class GroupAddMembersView extends StatefulWidget {
     this.controller,
     this.inGroupMembers,
     this.enableAppBar = true,
+    this.title,
+    this.viewObserver,
     this.attributes,
     super.key,
   });
@@ -46,7 +50,11 @@ class GroupAddMembersView extends StatefulWidget {
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final bool enableAppBar;
+  final String? title;
   final String? attributes;
+
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
 
   @override
   State<GroupAddMembersView> createState() => _GroupAddMembersViewState();
@@ -60,6 +68,15 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
   void initState() {
     super.initState();
     controller = widget.controller ?? ContactListViewController();
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.viewObserver?.dispose();
+    super.dispose();
   }
 
   @override
@@ -82,7 +99,9 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
                     Navigator.maybePop(context);
                   },
                   child: Text(
-                    ChatUIKitLocal.groupAddMembersViewTitle.getString(context),
+                    widget.title ??
+                        ChatUIKitLocal.groupAddMembersViewTitle
+                            .getString(context),
                     textScaler: TextScaler.noScaling,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(

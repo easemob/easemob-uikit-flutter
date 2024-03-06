@@ -14,6 +14,8 @@ class GroupChangeOwnerViewArguments implements ChatUIKitViewArguments {
     this.controller,
     this.loadErrorMessage,
     this.enableAppBar = true,
+    this.title,
+    this.viewObserver,
     this.attributes,
   });
 
@@ -31,9 +33,12 @@ class GroupChangeOwnerViewArguments implements ChatUIKitViewArguments {
   final Widget? listViewBackground;
   final String? loadErrorMessage;
   final bool enableAppBar;
+  final String? title;
 
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   GroupChangeOwnerViewArguments copyWith({
     String? groupId,
@@ -48,6 +53,8 @@ class GroupChangeOwnerViewArguments implements ChatUIKitViewArguments {
     Widget? listViewBackground,
     String? loadErrorMessage,
     bool? enableAppBar,
+    String? title,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return GroupChangeOwnerViewArguments(
@@ -62,6 +69,8 @@ class GroupChangeOwnerViewArguments implements ChatUIKitViewArguments {
       listViewBackground: listViewBackground ?? this.listViewBackground,
       loadErrorMessage: loadErrorMessage ?? this.loadErrorMessage,
       enableAppBar: enableAppBar ?? this.enableAppBar,
+      title: title ?? this.title,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

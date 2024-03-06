@@ -54,11 +54,9 @@ class _SearchViewState extends State<SearchView> {
   void initState() {
     super.initState();
 
-    if (widget.viewObserver != null) {
-      widget.viewObserver!.addListener(() {
-        setState(() {});
-      });
-    }
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
     if (widget.canChangeSelected?.isNotEmpty == true) {
       selectedProfiles.value = widget.canChangeSelected!;
     }

@@ -9,6 +9,7 @@ class ShowVideoViewArguments implements ChatUIKitViewArguments {
     this.playIcon,
     this.appBar,
     this.enableAppBar = true,
+    this.viewObserver,
   });
 
   final Message message;
@@ -18,6 +19,8 @@ class ShowVideoViewArguments implements ChatUIKitViewArguments {
   final bool enableAppBar;
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   ShowVideoViewArguments copyWith({
     Message? message,
@@ -26,6 +29,7 @@ class ShowVideoViewArguments implements ChatUIKitViewArguments {
     AppBar? appBar,
     bool? enableAppBar,
     String? attributes,
+    ChatUIKitViewObserver? viewObserver,
   }) {
     return ShowVideoViewArguments(
       message: message ?? this.message,
@@ -33,6 +37,7 @@ class ShowVideoViewArguments implements ChatUIKitViewArguments {
       playIcon: playIcon ?? this.playIcon,
       appBar: appBar ?? this.appBar,
       enableAppBar: enableAppBar ?? this.enableAppBar,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

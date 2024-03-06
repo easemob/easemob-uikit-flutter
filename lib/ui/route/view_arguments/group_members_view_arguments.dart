@@ -15,6 +15,8 @@ class GroupMembersViewArguments implements ChatUIKitViewArguments {
     this.loadErrorMessage,
     this.enableAppBar = true,
     this.enableMemberOperation = false,
+    this.title,
+    this.viewObserver,
     this.attributes,
   });
 
@@ -33,8 +35,11 @@ class GroupMembersViewArguments implements ChatUIKitViewArguments {
   final bool enableMemberOperation;
   final bool enableAppBar;
 
+  final String? title;
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   GroupMembersViewArguments copyWith({
     ChatUIKitProfile? profile,
@@ -49,6 +54,8 @@ class GroupMembersViewArguments implements ChatUIKitViewArguments {
     String? loadErrorMessage,
     bool? enableMemberOperation,
     bool? enableAppBar,
+    String? title,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return GroupMembersViewArguments(
@@ -65,6 +72,8 @@ class GroupMembersViewArguments implements ChatUIKitViewArguments {
       enableMemberOperation:
           enableMemberOperation ?? this.enableMemberOperation,
       enableAppBar: enableAppBar ?? this.enableAppBar,
+      title: title ?? this.title,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

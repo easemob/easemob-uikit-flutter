@@ -8,6 +8,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
     this.onMessageDidClear,
     this.enableAppBar = true,
     this.appBar,
+    this.viewObserver,
     this.attributes,
   });
 
@@ -18,6 +19,8 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
   final ChatUIKitAppBar? appBar;
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   ContactDetailsViewArguments copyWith({
     ChatUIKitProfile? profile,
@@ -25,6 +28,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
     VoidCallback? onMessageDidClear,
     bool? enableAppBar,
     ChatUIKitAppBar? appBar,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return ContactDetailsViewArguments(
@@ -33,6 +37,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
       onMessageDidClear: onMessageDidClear ?? this.onMessageDidClear,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       appBar: appBar ?? this.appBar,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

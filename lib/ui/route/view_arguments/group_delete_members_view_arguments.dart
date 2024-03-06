@@ -13,6 +13,8 @@ class GroupDeleteMembersViewArguments implements ChatUIKitViewArguments {
     this.searchBarHideText,
     this.listViewBackground,
     this.enableAppBar = true,
+    this.title,
+    this.viewObserver,
     this.attributes,
   });
 
@@ -29,8 +31,12 @@ class GroupDeleteMembersViewArguments implements ChatUIKitViewArguments {
   final Widget? listViewBackground;
   final bool enableAppBar;
 
+  final String? title;
+
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   GroupDeleteMembersViewArguments copyWith({
     String? groupId,
@@ -43,6 +49,8 @@ class GroupDeleteMembersViewArguments implements ChatUIKitViewArguments {
     String? searchBarHideText,
     Widget? listViewBackground,
     bool? enableAppBar,
+    String? title,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return GroupDeleteMembersViewArguments(
@@ -56,6 +64,8 @@ class GroupDeleteMembersViewArguments implements ChatUIKitViewArguments {
       searchBarHideText: searchBarHideText ?? this.searchBarHideText,
       listViewBackground: listViewBackground ?? this.listViewBackground,
       enableAppBar: enableAppBar ?? this.enableAppBar,
+      title: title ?? this.title,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

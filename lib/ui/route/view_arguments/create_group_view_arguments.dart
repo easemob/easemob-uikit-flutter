@@ -14,6 +14,8 @@ class CreateGroupViewArguments implements ChatUIKitViewArguments {
     this.enableAppBar = true,
     this.willCreateHandler,
     this.createGroupInfo,
+    this.title,
+    this.viewObserver,
     this.attributes,
   });
 
@@ -29,8 +31,11 @@ class CreateGroupViewArguments implements ChatUIKitViewArguments {
   final bool enableAppBar;
   final WillCreateHandler? willCreateHandler;
   final CreateGroupInfo? createGroupInfo;
+  final String? title;
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   CreateGroupViewArguments copyWith({
     ContactListViewController? controller,
@@ -44,6 +49,8 @@ class CreateGroupViewArguments implements ChatUIKitViewArguments {
     bool? enableAppBar,
     WillCreateHandler? willCreateHandler,
     CreateGroupInfo? createGroupInfo,
+    String? title,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return CreateGroupViewArguments(
@@ -58,6 +65,8 @@ class CreateGroupViewArguments implements ChatUIKitViewArguments {
       enableAppBar: enableAppBar ?? this.enableAppBar,
       willCreateHandler: willCreateHandler ?? this.willCreateHandler,
       createGroupInfo: createGroupInfo ?? this.createGroupInfo,
+      title: title ?? this.title,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

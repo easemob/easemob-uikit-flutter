@@ -29,6 +29,7 @@ class ConversationsView extends StatefulWidget {
         enableAppBar = arguments.enableAppBar,
         title = arguments.title,
         enableSearchBar = arguments.enableSearchBar,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   /// 会话列表构造方法，如果需要自定义会话列表可以使用这个方法。
@@ -48,6 +49,7 @@ class ConversationsView extends StatefulWidget {
     this.appBarMoreActionsBuilder,
     this.title,
     this.attributes,
+    this.viewObserver,
     super.key,
   });
 
@@ -96,6 +98,9 @@ class ConversationsView extends StatefulWidget {
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   final String? attributes;
 
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
+
   @override
   State<ConversationsView> createState() => _ConversationsViewState();
 }
@@ -106,10 +111,14 @@ class _ConversationsViewState extends State<ConversationsView> {
   void initState() {
     super.initState();
     controller = widget.controller ?? ConversationListViewController();
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
+    widget.viewObserver?.dispose();
     super.dispose();
   }
 

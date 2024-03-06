@@ -31,6 +31,7 @@ typedef FileMessageBody = chat.EMFileMessageBody;
 typedef VideoMessageBody = chat.EMVideoMessageBody;
 typedef DownloadStatus = chat.DownloadStatus;
 typedef CustomMessageBody = chat.EMCustomMessageBody;
+typedef CombineMessageBody = chat.EMCombineMessageBody;
 typedef CmdMessageBody = chat.EMCmdMessageBody;
 typedef GroupInfo = chat.EMGroupInfo;
 typedef GroupOptions = chat.EMGroupOptions;
@@ -48,4 +49,3 @@ typedef GroupStyle = chat.EMGroupStyle;
 typedef PresenceEventHandler = chat.EMPresenceEventHandler;
 typedef Presence = chat.EMPresence;
 typedef GroupPermissionType = chat.EMGroupPermissionType;
-

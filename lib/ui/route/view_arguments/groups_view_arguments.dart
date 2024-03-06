@@ -13,6 +13,8 @@ class GroupsViewArguments implements ChatUIKitViewArguments {
     this.listViewBackground,
     this.loadErrorMessage,
     this.enableAppBar = true,
+    this.title,
+    this.viewObserver,
     this.attributes,
   });
   final GroupListViewController? controller;
@@ -24,10 +26,13 @@ class GroupsViewArguments implements ChatUIKitViewArguments {
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final String? loadErrorMessage;
+  final String? title;
   final bool enableAppBar;
 
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   GroupsViewArguments copyWith({
     GroupListViewController? controller,
@@ -40,6 +45,8 @@ class GroupsViewArguments implements ChatUIKitViewArguments {
     Widget? listViewBackground,
     String? loadErrorMessage,
     bool? enableAppBar,
+    String? title,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return GroupsViewArguments(
@@ -53,6 +60,8 @@ class GroupsViewArguments implements ChatUIKitViewArguments {
       listViewBackground: listViewBackground ?? this.listViewBackground,
       loadErrorMessage: loadErrorMessage ?? this.loadErrorMessage,
       enableAppBar: enableAppBar ?? this.enableAppBar,
+      title: title ?? this.title,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

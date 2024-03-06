@@ -14,6 +14,7 @@ class SelectContactViewArguments implements ChatUIKitViewArguments {
     this.searchBarHideText,
     this.listViewBackground,
     this.enableAppBar = true,
+    this.viewObserver,
     this.attributes,
   });
   final ContactListViewController? controller;
@@ -31,6 +32,8 @@ class SelectContactViewArguments implements ChatUIKitViewArguments {
 
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   SelectContactViewArguments copyWith({
     ContactListViewController? controller,
@@ -44,6 +47,7 @@ class SelectContactViewArguments implements ChatUIKitViewArguments {
     String? backText,
     String? title,
     bool? enableAppBar,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return SelectContactViewArguments(
@@ -58,6 +62,7 @@ class SelectContactViewArguments implements ChatUIKitViewArguments {
       backText: backText ?? this.backText,
       title: title ?? this.title,
       enableAppBar: enableAppBar ?? this.enableAppBar,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

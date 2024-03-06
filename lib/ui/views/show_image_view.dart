@@ -9,6 +9,7 @@ class ShowImageView extends StatefulWidget {
         appBar = argument.appBar,
         enableAppBar = argument.enableAppBar,
         onLongPressed = argument.onLongPressed,
+        viewObserver = argument.viewObserver,
         attributes = argument.attributes;
 
   const ShowImageView({
@@ -18,6 +19,7 @@ class ShowImageView extends StatefulWidget {
     this.appBar,
     this.enableAppBar = true,
     this.attributes,
+    this.viewObserver,
     super.key,
   });
 
@@ -28,11 +30,28 @@ class ShowImageView extends StatefulWidget {
   final bool enableAppBar;
   final String? attributes;
 
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
+
   @override
   State<ShowImageView> createState() => _ShowImageViewState();
 }
 
 class _ShowImageViewState extends State<ShowImageView> {
+  @override
+  void initState() {
+    super.initState();
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.viewObserver?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);

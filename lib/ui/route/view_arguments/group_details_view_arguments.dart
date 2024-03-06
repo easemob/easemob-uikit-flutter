@@ -8,6 +8,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
     this.appBar,
     this.enableAppBar = true,
     this.onMessageDidClear,
+    this.viewObserver,
     this.attributes,
   });
   final ChatUIKitProfile profile;
@@ -18,6 +19,8 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
 
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   GroupDetailsViewArguments copyWith({
     ChatUIKitProfile? profile,

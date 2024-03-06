@@ -8,6 +8,7 @@ class CurrentUserInfoView extends StatefulWidget {
       : profile = arguments.profile,
         appBar = arguments.appBar,
         enableAppBar = arguments.enableAppBar,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const CurrentUserInfoView({
@@ -15,6 +16,7 @@ class CurrentUserInfoView extends StatefulWidget {
     this.appBar,
     this.enableAppBar = true,
     this.attributes,
+    this.viewObserver,
     super.key,
   });
   final ChatUIKitProfile profile;
@@ -22,11 +24,28 @@ class CurrentUserInfoView extends StatefulWidget {
   final bool enableAppBar;
   final String? attributes;
 
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
+
   @override
   State<CurrentUserInfoView> createState() => _CurrentUserInfoViewState();
 }
 
 class _CurrentUserInfoViewState extends State<CurrentUserInfoView> {
+  @override
+  void initState() {
+    super.initState();
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.viewObserver?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);

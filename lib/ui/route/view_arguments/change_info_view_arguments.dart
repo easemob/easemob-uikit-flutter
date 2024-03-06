@@ -8,8 +8,9 @@ class ChangeInfoViewArguments implements ChatUIKitViewArguments {
     this.saveButtonTitle,
     this.appBar,
     this.maxLength = 128,
-    this.attributes,
     this.enableAppBar = true,
+    this.viewObserver,
+    this.attributes,
   });
 
   final String? title;
@@ -22,6 +23,8 @@ class ChangeInfoViewArguments implements ChatUIKitViewArguments {
 
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   ChangeInfoViewArguments copyWith({
     String? title,
@@ -31,6 +34,7 @@ class ChangeInfoViewArguments implements ChatUIKitViewArguments {
     ChatUIKitAppBar? appBar,
     int? maxLength,
     bool? enableAppBar,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return ChangeInfoViewArguments(
@@ -41,6 +45,7 @@ class ChangeInfoViewArguments implements ChatUIKitViewArguments {
       appBar: appBar ?? this.appBar,
       maxLength: maxLength ?? this.maxLength,
       enableAppBar: enableAppBar ?? this.enableAppBar,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

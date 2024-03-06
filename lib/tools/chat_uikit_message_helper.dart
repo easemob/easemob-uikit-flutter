@@ -225,6 +225,13 @@ extension MessageHelper on Message {
     return null;
   }
 
+  String? get summary {
+    if (bodyType == MessageType.COMBINE) {
+      return (body as CombineMessageBody).summary;
+    }
+    return null;
+  }
+
   String showInfo({BuildContext? context}) {
     String? title;
     if (chatType == ChatType.GroupChat) {

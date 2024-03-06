@@ -9,6 +9,7 @@ class ShowVideoView extends StatefulWidget {
         appBar = argument.appBar,
         enableAppBar = argument.enableAppBar,
         playIcon = argument.playIcon,
+        viewObserver = argument.viewObserver,
         attributes = argument.attributes;
 
   const ShowVideoView({
@@ -18,6 +19,7 @@ class ShowVideoView extends StatefulWidget {
     this.appBar,
     this.enableAppBar = true,
     this.attributes,
+    this.viewObserver,
     super.key,
   });
 
@@ -28,11 +30,28 @@ class ShowVideoView extends StatefulWidget {
   final bool enableAppBar;
   final String? attributes;
 
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
+
   @override
   State<ShowVideoView> createState() => _ShowVideoViewState();
 }
 
 class _ShowVideoViewState extends State<ShowVideoView> {
+  @override
+  void initState() {
+    super.initState();
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.viewObserver?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);

@@ -13,6 +13,8 @@ class GroupMentionView extends StatefulWidget {
         controller = arguments.controller,
         enableAppBar = arguments.enableAppBar,
         groupId = arguments.groupId,
+        title = arguments.title,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const GroupMentionView({
@@ -27,6 +29,8 @@ class GroupMentionView extends StatefulWidget {
     this.controller,
     this.enableAppBar = true,
     this.attributes,
+    this.title,
+    this.viewObserver,
     super.key,
   });
 
@@ -42,8 +46,11 @@ class GroupMentionView extends StatefulWidget {
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final bool enableAppBar;
+  final String? title;
   final String? attributes;
 
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
   @override
   State<GroupMentionView> createState() => _GroupMentionViewState();
 }
@@ -58,6 +65,15 @@ class _GroupMentionViewState extends State<GroupMentionView> {
     super.initState();
     controller = widget.controller ??
         GroupMemberListViewController(groupId: widget.groupId);
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.viewObserver?.dispose();
+    super.dispose();
   }
 
   @override

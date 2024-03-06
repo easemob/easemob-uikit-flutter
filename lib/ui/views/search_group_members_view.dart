@@ -12,6 +12,7 @@ class SearchGroupMembersView extends StatefulWidget {
         enableAppBar = arguments.enableAppBar,
         appBar = arguments.appBar,
         onTap = arguments.onTap,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const SearchGroupMembersView({
@@ -22,6 +23,7 @@ class SearchGroupMembersView extends StatefulWidget {
     this.appBar,
     this.enableAppBar = false,
     this.attributes,
+    this.viewObserver,
     super.key,
   });
 
@@ -34,12 +36,28 @@ class SearchGroupMembersView extends StatefulWidget {
   final bool enableAppBar;
   final String? attributes;
 
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
+
   @override
-  State<SearchGroupMembersView> createState() =>
-      _SSearchGroupMembersViewState();
+  State<SearchGroupMembersView> createState() => _SearchGroupMembersViewState();
 }
 
-class _SSearchGroupMembersViewState extends State<SearchGroupMembersView> {
+class _SearchGroupMembersViewState extends State<SearchGroupMembersView> {
+  @override
+  void initState() {
+    super.initState();
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.viewObserver?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);

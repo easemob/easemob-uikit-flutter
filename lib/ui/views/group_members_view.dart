@@ -15,7 +15,9 @@ class GroupMembersView extends StatefulWidget {
         loadErrorMessage = arguments.loadErrorMessage,
         enableAppBar = arguments.enableAppBar,
         enableMemberOperation = arguments.enableMemberOperation,
+        title = arguments.title,
         attributes = arguments.attributes,
+        viewObserver = arguments.viewObserver,
         super(key: key);
 
   const GroupMembersView({
@@ -31,7 +33,9 @@ class GroupMembersView extends StatefulWidget {
     this.loadErrorMessage,
     this.enableMemberOperation = false,
     this.enableAppBar = true,
+    this.title,
     this.attributes,
+    this.viewObserver,
     super.key,
   });
 
@@ -50,8 +54,11 @@ class GroupMembersView extends StatefulWidget {
   final String? loadErrorMessage;
   final bool enableMemberOperation;
   final bool enableAppBar;
+  final String? title;
   final String? attributes;
 
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
   @override
   State<GroupMembersView> createState() => _GroupMembersViewState();
 }
@@ -69,11 +76,15 @@ class _GroupMembersViewState extends State<GroupMembersView>
     ChatUIKit.instance.addObserver(this);
     controller = widget.controller ??
         GroupMemberListViewController(groupId: widget.profile.id);
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
     fetchGroup();
   }
 
   @override
   void dispose() {
+    widget.viewObserver?.dispose();
     ChatUIKit.instance.removeObserver(this);
     super.dispose();
   }
@@ -126,8 +137,9 @@ class _GroupMembersViewState extends State<GroupMembersView>
                     builder: (context, value, child) {
                       if (memberCount.value == 0) {
                         return Text(
-                          ChatUIKitLocal.groupMembersViewTitle
-                              .getString(context),
+                          widget.title ??
+                              ChatUIKitLocal.groupMembersViewTitle
+                                  .getString(context),
                           textScaler: TextScaler.noScaling,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

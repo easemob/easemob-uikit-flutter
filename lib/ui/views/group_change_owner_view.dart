@@ -16,6 +16,8 @@ class GroupChangeOwnerView extends StatefulWidget {
         controller = arguments.controller,
         enableAppBar = arguments.enableAppBar,
         loadErrorMessage = arguments.loadErrorMessage,
+        title = arguments.title,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const GroupChangeOwnerView({
@@ -30,7 +32,9 @@ class GroupChangeOwnerView extends StatefulWidget {
     this.controller,
     this.loadErrorMessage,
     this.enableAppBar = true,
+    this.title,
     this.attributes,
+    this.viewObserver,
     super.key,
   });
 
@@ -48,7 +52,11 @@ class GroupChangeOwnerView extends StatefulWidget {
   final Widget? listViewBackground;
   final String? loadErrorMessage;
   final bool enableAppBar;
+  final String? title;
   final String? attributes;
+
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
 
   @override
   State<GroupChangeOwnerView> createState() => _GroupChangeOwnerViewState();
@@ -65,6 +73,15 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
           groupId: widget.groupId,
           includeOwner: false,
         );
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.viewObserver?.dispose();
+    super.dispose();
   }
 
   @override
@@ -87,8 +104,9 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
                       Navigator.maybePop(context);
                     },
                     child: Text(
-                      ChatUIKitLocal.groupChangeOwnerViewTitle
-                          .getString(context),
+                      widget.title ??
+                          ChatUIKitLocal.groupChangeOwnerViewTitle
+                              .getString(context),
                       textScaler: TextScaler.noScaling,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

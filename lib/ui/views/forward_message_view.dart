@@ -10,6 +10,7 @@ class ForwardMessageView extends StatefulWidget {
         enableAppBar = arguments.enableAppBar,
         appBar = arguments.appBar,
         title = arguments.title,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const ForwardMessageView({
@@ -18,6 +19,7 @@ class ForwardMessageView extends StatefulWidget {
     this.appBar,
     this.title,
     this.attributes,
+    this.viewObserver,
     super.key,
   });
 
@@ -27,6 +29,9 @@ class ForwardMessageView extends StatefulWidget {
   final String? title;
 
   final String? attributes;
+
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
   @override
   State<ForwardMessageView> createState() => _ForwardMessageViewState();
 }
@@ -39,10 +44,63 @@ class _ForwardMessageViewState extends State<ForwardMessageView>
 
   ChatUIKitViewObserver? viewObserver;
 
+  late String summary;
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
+    summary = messagesInfo();
+  }
+
+  String messagesInfo() {
+    List<Message> msgs = widget.messages.toList();
+    msgs.sort((a, b) => a.serverTime - b.serverTime);
+
+    String str = '';
+    for (var msg in msgs) {
+      str += '${msg.nickname ?? msg.from!}: ';
+      if (msg.bodyType == MessageType.TXT) {
+        str += msg.textContent;
+      }
+
+      if (msg.bodyType == MessageType.IMAGE) {
+        str += '[图片]';
+      }
+
+      if (msg.bodyType == MessageType.VOICE) {
+        str += '[语音]${msg.duration}"';
+      }
+
+      if (msg.bodyType == MessageType.VIDEO) {
+        str += '[视频]';
+      }
+
+      if (msg.bodyType == MessageType.COMBINE) {
+        str += '[聊天记录]';
+      }
+
+      if (msg.bodyType == MessageType.CUSTOM && msg.isCardMessage) {
+        str += '[联系人]${msg.cardUserNickname ?? msg.cardUserId}';
+      }
+
+      if (msg == msgs.last) {
+        continue;
+      }
+      str += "\n";
+    }
+
+    return str;
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    widget.viewObserver?.dispose();
+    super.dispose();
   }
 
   @override
@@ -233,6 +291,7 @@ class _ForwardMessageViewState extends State<ForwardMessageView>
       ),
       onPressed: () {
         forwardedList.add(profileId);
+        forwardMessage(profileId, isGroup);
         setState(() {});
         viewObserver?.refresh();
       },
@@ -252,5 +311,15 @@ class _ForwardMessageViewState extends State<ForwardMessageView>
             fontWeight: theme.font.labelMedium.fontWeight),
       ),
     );
+  }
+
+  void forwardMessage(String to, [bool isGroup = false]) {
+    final message = Message.createCombineSendMessage(
+      targetId: to,
+      msgIds: widget.messages.map((e) => e.msgId).toList(),
+      summary: summary,
+      chatType: isGroup ? ChatType.GroupChat : ChatType.Chat,
+    );
+    ChatUIKit.instance.sendMessage(message: message);
   }
 }

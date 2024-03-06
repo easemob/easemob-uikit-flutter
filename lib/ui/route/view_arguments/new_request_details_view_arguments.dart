@@ -7,6 +7,8 @@ class NewRequestDetailsViewArguments implements ChatUIKitViewArguments {
     this.btnText,
     this.attributes,
     this.appBar,
+    this.title,
+    this.viewObserver,
     this.enableAppBar = true,
   });
   final ChatUIKitProfile profile;
@@ -14,9 +16,11 @@ class NewRequestDetailsViewArguments implements ChatUIKitViewArguments {
   final String? btnText;
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
-
+  final String? title;
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   NewRequestDetailsViewArguments copyWith({
     ChatUIKitProfile? profile,
@@ -24,6 +28,8 @@ class NewRequestDetailsViewArguments implements ChatUIKitViewArguments {
     String? btnText,
     ChatUIKitAppBar? appBar,
     bool? enableAppBar,
+    String? title,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return NewRequestDetailsViewArguments(
@@ -32,6 +38,8 @@ class NewRequestDetailsViewArguments implements ChatUIKitViewArguments {
       btnText: btnText ?? this.btnText,
       appBar: appBar ?? this.appBar,
       enableAppBar: enableAppBar ?? this.enableAppBar,
+      title: title ?? this.title,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

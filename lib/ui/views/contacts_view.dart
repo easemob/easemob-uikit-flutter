@@ -20,6 +20,7 @@ class ContactsView extends StatefulWidget {
         loadErrorMessage = arguments.loadErrorMessage,
         title = arguments.title,
         enableSearchBar = arguments.enableSearchBar,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const ContactsView({
@@ -38,6 +39,7 @@ class ContactsView extends StatefulWidget {
     this.afterItems,
     this.title,
     this.attributes,
+    this.viewObserver,
     super.key,
   });
 
@@ -87,6 +89,9 @@ class ContactsView extends StatefulWidget {
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   final String? attributes;
 
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
+
   @override
   State<ContactsView> createState() => _ContactsViewState();
 }
@@ -97,6 +102,10 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
   @override
   void initState() {
     super.initState();
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
+
     ChatUIKit.instance.addObserver(this);
     controller = widget.controller ?? ContactListViewController();
   }
@@ -104,6 +113,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
   @override
   void dispose() {
     ChatUIKit.instance.removeObserver(this);
+    widget.viewObserver?.dispose();
     super.dispose();
   }
 

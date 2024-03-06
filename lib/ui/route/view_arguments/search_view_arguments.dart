@@ -24,9 +24,12 @@ class SearchViewArguments implements ChatUIKitViewArguments {
   final List<ChatUIKitProfile>? cantChangeSelected;
   final List<ChatUIKitProfile>? canChangeSelected;
   final String? selectedTitle;
-  final ChatUIKitViewObserver? viewObserver;
+
   @override
   String? attributes;
+
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   SearchViewArguments copyWith({
     List<NeedSearch>? searchData,

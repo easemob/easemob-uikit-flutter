@@ -12,6 +12,7 @@ class GroupDetailsView extends StatefulWidget {
         enableAppBar = arguments.enableAppBar,
         actions = arguments.actions,
         onMessageDidClear = arguments.onMessageDidClear,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const GroupDetailsView({
@@ -21,6 +22,7 @@ class GroupDetailsView extends StatefulWidget {
     this.enableAppBar = true,
     this.attributes,
     this.onMessageDidClear,
+    this.viewObserver,
     super.key,
   });
   final List<ChatUIKitActionModel> actions;
@@ -29,6 +31,9 @@ class GroupDetailsView extends StatefulWidget {
   final bool enableAppBar;
   final String? attributes;
   final VoidCallback? onMessageDidClear;
+
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
 
   @override
   State<GroupDetailsView> createState() => _GroupDetailsViewState();
@@ -49,6 +54,9 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
 
     ChatUIKit.instance.addObserver(this);
     ChatUIKitProvider.instance.addObserver(this);
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
     actions = widget.actions;
     profile = widget.profile;
     fetchGroupInfos();
@@ -62,6 +70,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
 
   @override
   void dispose() {
+    widget.viewObserver?.dispose();
     ChatUIKit.instance.removeObserver(this);
     ChatUIKitProvider.instance.removeObserver(this);
     super.dispose();

@@ -8,6 +8,7 @@ class ShowImageViewArguments implements ChatUIKitViewArguments {
     this.onTap,
     this.appBar,
     this.enableAppBar = true,
+    this.viewObserver,
     this.attributes,
   });
 
@@ -18,6 +19,8 @@ class ShowImageViewArguments implements ChatUIKitViewArguments {
   final bool enableAppBar;
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   ShowImageViewArguments copyWith({
     Message? message,
@@ -25,6 +28,7 @@ class ShowImageViewArguments implements ChatUIKitViewArguments {
     void Function(Message message)? onTap,
     AppBar? appBar,
     bool? enableAppBar,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return ShowImageViewArguments(
@@ -33,6 +37,7 @@ class ShowImageViewArguments implements ChatUIKitViewArguments {
       onTap: onTap ?? this.onTap,
       appBar: appBar ?? this.appBar,
       enableAppBar: enableAppBar ?? this.enableAppBar,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

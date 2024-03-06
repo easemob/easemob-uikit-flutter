@@ -9,12 +9,15 @@ class ForwardMessageViewArguments implements ChatUIKitViewArguments {
 
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   ForwardMessageViewArguments({
     required this.messages,
     this.enableAppBar = true,
     this.appBar,
     this.title,
+    this.viewObserver,
     this.attributes,
   });
 
@@ -25,6 +28,7 @@ class ForwardMessageViewArguments implements ChatUIKitViewArguments {
     String? title,
     List<Widget>? pages,
     List<String>? pageTitles,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return ForwardMessageViewArguments(
@@ -32,6 +36,7 @@ class ForwardMessageViewArguments implements ChatUIKitViewArguments {
       enableAppBar: enableAppBar ?? this.enableAppBar,
       appBar: appBar ?? this.appBar,
       title: title ?? this.title,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

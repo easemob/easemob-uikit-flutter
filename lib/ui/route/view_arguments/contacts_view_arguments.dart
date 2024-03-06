@@ -17,6 +17,7 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
     this.beforeItems,
     this.afterItems,
     this.title,
+    this.viewObserver,
     this.attributes,
   });
 
@@ -66,6 +67,8 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   ContactsViewArguments copyWith({
     ContactListViewController? controller,
@@ -79,6 +82,8 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
     String? loadErrorMessage,
     bool? enableSearchBar,
     bool? enableAppBar,
+    String? title,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return ContactsViewArguments(
@@ -93,6 +98,8 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
       listViewBackground: listViewBackground ?? this.listViewBackground,
       loadErrorMessage: loadErrorMessage ?? this.loadErrorMessage,
       enableAppBar: enableAppBar ?? this.enableAppBar,
+      title: title ?? this.title,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

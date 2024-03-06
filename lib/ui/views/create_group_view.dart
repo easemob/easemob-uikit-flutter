@@ -23,6 +23,8 @@ class CreateGroupView extends StatefulWidget {
         willCreateHandler = arguments.willCreateHandler,
         createGroupInfo = arguments.createGroupInfo,
         controller = arguments.controller,
+        title = arguments.title,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const CreateGroupView({
@@ -37,7 +39,9 @@ class CreateGroupView extends StatefulWidget {
     this.controller,
     this.enableAppBar = true,
     this.willCreateHandler,
+    this.title,
     this.attributes,
+    this.viewObserver,
     super.key,
   });
 
@@ -52,8 +56,12 @@ class CreateGroupView extends StatefulWidget {
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final bool enableAppBar;
+  final String? title;
   final WillCreateHandler? willCreateHandler;
   final String? attributes;
+
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
 
   @override
   State<CreateGroupView> createState() => _CreateGroupViewState();
@@ -67,6 +75,15 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   void initState() {
     super.initState();
     controller = widget.controller ?? ContactListViewController();
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.viewObserver?.dispose();
+    super.dispose();
   }
 
   @override
@@ -89,7 +106,8 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                     Navigator.maybePop(context);
                   },
                   child: Text(
-                    ChatUIKitLocal.createGroupViewTitle.getString(context),
+                    widget.title ??
+                        ChatUIKitLocal.createGroupViewTitle.getString(context),
                     textScaler: TextScaler.noScaling,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(

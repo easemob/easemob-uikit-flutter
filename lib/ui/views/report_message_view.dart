@@ -9,6 +9,8 @@ class ReportMessageView extends StatefulWidget {
         appBar = arguments.appBar,
         enableAppBar = arguments.enableAppBar,
         reportReasons = arguments.reportReasons,
+        title = arguments.title,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const ReportMessageView({
@@ -17,13 +19,19 @@ class ReportMessageView extends StatefulWidget {
     this.appBar,
     this.enableAppBar = true,
     this.attributes,
+    this.title,
+    this.viewObserver,
     super.key,
   });
   final ChatUIKitAppBar? appBar;
   final String messageId;
   final List<String> reportReasons;
   final bool enableAppBar;
+  final String? title;
   final String? attributes;
+
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
 
   @override
   State<ReportMessageView> createState() => _ReportMessageViewState();
@@ -33,6 +41,21 @@ class _ReportMessageViewState extends State<ReportMessageView> {
   int selectedIndex = -1;
 
   final scrollController = ScrollController();
+
+  @override
+  initState() {
+    super.initState();
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  dispose() {
+    widget.viewObserver?.dispose();
+    scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +162,8 @@ class _ReportMessageViewState extends State<ReportMessageView> {
           : theme.color.neutralColor98,
       appBar: widget.appBar ??
           ChatUIKitAppBar(
-            title: ChatUIKitLocal.reportMessageViewTitle.getString(context),
+            title: widget.title ??
+                ChatUIKitLocal.reportMessageViewTitle.getString(context),
           ),
       body: content,
     );

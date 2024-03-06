@@ -14,6 +14,8 @@ class GroupDeleteMembersView extends StatefulWidget {
         controller = arguments.controller,
         enableAppBar = arguments.enableAppBar,
         groupId = arguments.groupId,
+        title = arguments.title,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const GroupDeleteMembersView({
@@ -27,7 +29,9 @@ class GroupDeleteMembersView extends StatefulWidget {
     this.appBar,
     this.controller,
     this.enableAppBar = true,
+    this.title,
     this.attributes,
+    this.viewObserver,
     super.key,
   });
 
@@ -43,7 +47,11 @@ class GroupDeleteMembersView extends StatefulWidget {
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final bool enableAppBar;
+  final String? title;
   final String? attributes;
+
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
 
   @override
   State<GroupDeleteMembersView> createState() => _GroupDeleteMembersViewState();
@@ -60,6 +68,15 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
           groupId: widget.groupId,
           includeOwner: false,
         );
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.viewObserver?.dispose();
+    super.dispose();
   }
 
   @override
@@ -82,8 +99,9 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
                     Navigator.maybePop(context);
                   },
                   child: Text(
-                    ChatUIKitLocal.groupDeleteMembersViewTitle
-                        .getString(context),
+                    widget.title ??
+                        ChatUIKitLocal.groupDeleteMembersViewTitle
+                            .getString(context),
                     textScaler: TextScaler.noScaling,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(

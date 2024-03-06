@@ -18,6 +18,7 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
     this.appBarMoreActionsBuilder,
     this.enableSearchBar = true,
     this.title,
+    this.viewObserver,
     this.attributes,
   });
 
@@ -66,6 +67,8 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   @override
   String? attributes;
+  @override
+  ChatUIKitViewObserver? viewObserver;
 
   ConversationsViewArguments copyWith({
     ConversationListViewController? controller,
@@ -81,6 +84,8 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
     bool? enableAppBar,
     bool? enableSearchBar,
     AppBarMoreActionsBuilder? appBarMoreActionsBuilder,
+    String? title,
+    ChatUIKitViewObserver? viewObserver,
     String? attributes,
   }) {
     return ConversationsViewArguments(
@@ -98,6 +103,8 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
       enableAppBar: enableAppBar ?? this.enableAppBar,
       appBarMoreActionsBuilder:
           appBarMoreActionsBuilder ?? this.appBarMoreActionsBuilder,
+      title: title ?? this.title,
+      viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
     );
   }

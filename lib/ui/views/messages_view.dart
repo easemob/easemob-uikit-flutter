@@ -56,6 +56,7 @@ class MessagesView extends StatefulWidget {
         inputBarTextEditingController = arguments.inputBarTextEditingController,
         forceLeft = arguments.forceLeft,
         multiSelectBottomBar = arguments.multiSelectBottomBar,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   /// 构造函数。
@@ -91,6 +92,7 @@ class MessagesView extends StatefulWidget {
     this.forceLeft,
     this.inputBarTextEditingController,
     this.multiSelectBottomBar,
+    this.viewObserver,
     this.attributes,
     super.key,
   });
@@ -191,6 +193,9 @@ class MessagesView extends StatefulWidget {
   /// 多选时显示的 bottom bar
   final Widget? multiSelectBottomBar;
 
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
+
   @override
   State<MessagesView> createState() => _MessagesViewState();
 }
@@ -220,6 +225,9 @@ class _MessagesViewState extends State<MessagesView>
     profile = widget.profile;
     ChatUIKitProvider.instance.addObserver(this);
     ChatUIKit.instance.addObserver(this);
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
     inputBarTextEditingController =
         widget.inputBarTextEditingController ?? CustomTextEditingController();
     inputBarTextEditingController.addListener(() {
@@ -313,6 +321,7 @@ class _MessagesViewState extends State<MessagesView>
   void dispose() {
     _typingTimer?.cancel();
     _typingTimer = null;
+    widget.viewObserver?.dispose();
     ChatUIKitProvider.instance.removeObserver(this);
     ChatUIKit.instance.removeObserver(this);
     editBarTextEditingController?.dispose();
