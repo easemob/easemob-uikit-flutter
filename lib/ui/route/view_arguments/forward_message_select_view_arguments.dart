@@ -7,6 +7,8 @@ class ForwardMessageSelectViewArguments implements ChatUIKitViewArguments {
   final ChatUIKitAppBar? appBar;
   final String? title;
   final String? Function(BuildContext context, Message message)? summaryBuilder;
+
+  final bool isMulti;
   @override
   String? attributes;
   @override
@@ -19,6 +21,7 @@ class ForwardMessageSelectViewArguments implements ChatUIKitViewArguments {
     this.title,
     this.viewObserver,
     this.summaryBuilder,
+    this.isMulti = true,
     this.attributes,
   });
 
@@ -31,6 +34,7 @@ class ForwardMessageSelectViewArguments implements ChatUIKitViewArguments {
     List<String>? pageTitles,
     ChatUIKitViewObserver? viewObserver,
     String? Function(BuildContext context, Message message)? summaryBuilder,
+    bool? multiMessages,
     String? attributes,
   }) {
     return ForwardMessageSelectViewArguments(
@@ -40,6 +44,7 @@ class ForwardMessageSelectViewArguments implements ChatUIKitViewArguments {
       title: title ?? this.title,
       summaryBuilder: summaryBuilder ?? this.summaryBuilder,
       viewObserver: viewObserver ?? this.viewObserver,
+      isMulti: multiMessages ?? this.isMulti,
       attributes: attributes ?? this.attributes,
     );
   }

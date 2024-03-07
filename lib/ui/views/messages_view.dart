@@ -1106,7 +1106,10 @@ class _MessagesViewState extends State<MessagesView>
             ),
             InkWell(
               onTap: () {
-                multiSelectForward();
+                forwardMessage(
+                  controller.selectedMessages,
+                  isMultiSelect: true,
+                );
               },
               child: Padding(
                 padding:
@@ -1706,10 +1709,13 @@ class _MessagesViewState extends State<MessagesView>
           fontWeight: theme.font.bodyLarge.fontWeight,
           fontSize: theme.font.bodyLarge.fontSize,
         ),
-        label: '转发(TODO)',
+        label: '转发',
         onTap: () async {
           Navigator.of(context).pop();
-          replyMessaged(message);
+          forwardMessage(
+            [message],
+            isMultiSelect: false,
+          );
         },
       ));
     }
@@ -1890,12 +1896,13 @@ class _MessagesViewState extends State<MessagesView>
     controller.attemptSendInputType();
   }
 
-  void multiSelectForward() {
+  void forwardMessage(List<Message> message, {bool isMultiSelect = false}) {
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.forwardMessageSelectView,
       ForwardMessageSelectViewArguments(
-        messages: controller.selectedMessages,
+        messages: message,
+        isMulti: isMultiSelect,
         attributes: widget.attributes,
       ),
     ).then((value) {

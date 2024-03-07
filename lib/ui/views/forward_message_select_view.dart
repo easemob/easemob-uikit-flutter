@@ -12,6 +12,7 @@ class ForwardMessageSelectView extends StatefulWidget {
         title = arguments.title,
         viewObserver = arguments.viewObserver,
         summaryBuilder = arguments.summaryBuilder,
+        isMulti = arguments.isMulti,
         attributes = arguments.attributes;
 
   const ForwardMessageSelectView({
@@ -22,6 +23,7 @@ class ForwardMessageSelectView extends StatefulWidget {
     this.attributes,
     this.viewObserver,
     this.summaryBuilder,
+    this.isMulti = true,
     super.key,
   });
 
@@ -30,6 +32,7 @@ class ForwardMessageSelectView extends StatefulWidget {
   final ChatUIKitAppBar? appBar;
   final String? title;
   final String? attributes;
+  final bool isMulti;
   final String? Function(BuildContext context, Message message)? summaryBuilder;
 
   /// 用于刷新页面的Observer
@@ -330,12 +333,21 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
   }
 
   void forwardMessage(String to, [bool isGroup = false]) {
-    final message = Message.createCombineSendMessage(
-      targetId: to,
-      msgIds: widget.messages.map((e) => e.msgId).toList(),
-      summary: summary,
-      chatType: isGroup ? ChatType.GroupChat : ChatType.Chat,
-    );
-    ChatUIKit.instance.sendMessage(message: message);
+    if (widget.isMulti) {
+      final message = Message.createCombineSendMessage(
+        targetId: to,
+        msgIds: widget.messages.map((e) => e.msgId).toList(),
+        summary: summary,
+        chatType: isGroup ? ChatType.GroupChat : ChatType.Chat,
+      );
+      ChatUIKit.instance.sendMessage(message: message);
+    } else {
+      final message = Message.createSendMessage(
+        body: widget.messages.first.body,
+        to: to,
+        chatType: isGroup ? ChatType.GroupChat : ChatType.Chat,
+      );
+      ChatUIKit.instance.sendMessage(message: message);
+    }
   }
 }
