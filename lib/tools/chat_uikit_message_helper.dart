@@ -232,7 +232,7 @@ extension MessageHelper on Message {
     return null;
   }
 
-  String showInfo({BuildContext? context}) {
+  String showInfo(BuildContext context) {
     String? title;
     if (chatType == ChatType.GroupChat) {
       title = "${nickname ?? from ?? ""}: ";
@@ -245,26 +245,30 @@ extension MessageHelper on Message {
         str = (body as TextMessageBody).content;
         break;
       case MessageType.IMAGE:
-        str = '[Image]';
+        str = '${[ChatUIKitLocal.messageCellCombineImage.getString(context)]}';
         break;
       case MessageType.VIDEO:
-        str = '[Video]';
+        str = '${[ChatUIKitLocal.messageCellCombineVideo.getString(context)]}';
         break;
       case MessageType.VOICE:
-        str = '[Voice]';
+        str = '${[ChatUIKitLocal.messageCellCombineVoice.getString(context)]}';
         break;
       case MessageType.LOCATION:
-        str = '[Location]';
+        str =
+            '${[ChatUIKitLocal.messageCellCombineLocation.getString(context)]}';
         break;
       case MessageType.COMBINE:
-        str = '[Combine]';
+        str =
+            '${[ChatUIKitLocal.messageCellCombineCombine.getString(context)]}';
         break;
       case MessageType.FILE:
-        str = '[File]';
+        str = '${[ChatUIKitLocal.messageCellCombineFile.getString(context)]}';
         break;
       case MessageType.CUSTOM:
         if (isCardMessage) {
-          str = '[Card]';
+          str = '${[
+            ChatUIKitLocal.messageCellCombineContact.getString(context)
+          ]}';
         } else {
           if (isRecallAlert) {
             Map<String, String>? map = (body as CustomMessageBody).params;
@@ -273,14 +277,14 @@ extension MessageHelper on Message {
             String? showName;
             if (ChatUIKit.instance.currentUserId == from) {
               showName =
-                  ChatUIKitLocal.messagesViewRecallInfoYou.getString(context!);
+                  ChatUIKitLocal.messagesViewRecallInfoYou.getString(context);
             } else {
               ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
                 ChatUIKitProfile.contact(id: from!),
               );
               showName = profile.showName;
             }
-            return '$showName${ChatUIKitLocal.messagesViewRecallInfo.getString(context!)}';
+            return '$showName${ChatUIKitLocal.messagesViewRecallInfo.getString(context)}';
           }
           if (isCreateGroupAlert) {
             Map<String, String>? map = (body as CustomMessageBody).params;
@@ -288,28 +292,27 @@ extension MessageHelper on Message {
             String? showName;
             if (ChatUIKit.instance.currentUserId == operator) {
               showName =
-                  ChatUIKitLocal.messagesViewRecallInfoYou.getString(context!);
+                  ChatUIKitLocal.messagesViewRecallInfoYou.getString(context);
             } else {
               ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
                 ChatUIKitProfile.contact(id: from!),
               );
               showName = profile.showName;
             }
-            return '$showName ${ChatUIKitLocal.messagesViewAlertGroupInfoTitle.getString(context!)}';
+            return '$showName ${ChatUIKitLocal.messagesViewAlertGroupInfoTitle.getString(context)}';
           }
           if (isDestroyGroupAlert) {
             return ChatUIKitLocal.messagesViewGroupDestroyInfo
-                .getString(context!);
+                .getString(context);
           }
 
           if (isLeaveGroupAlert) {
-            return ChatUIKitLocal.messagesViewGroupLeaveInfo
-                .getString(context!);
+            return ChatUIKitLocal.messagesViewGroupLeaveInfo.getString(context);
           }
 
           if (isKickedGroupAlert) {
             return ChatUIKitLocal.messagesViewGroupKickedInfo
-                .getString(context!);
+                .getString(context);
           }
 
           str = '[Custom]';
@@ -467,7 +470,11 @@ extension MessageHelper on Message {
   }
 
   QuoteModel toQuote() {
-    return QuoteModel.fromMessage(this);
+    if (bodyType == MessageType.TXT) {
+      return QuoteModel.fromMessage(this, textContent);
+    } else {
+      return QuoteModel.fromMessage(this, '');
+    }
   }
 
   bool get hasQuote {

@@ -79,6 +79,7 @@ class _ChatUIKitImageMessageWidgetState
 
     String? localPath = message.localPath;
     String? thumbnailLocalPath = message.thumbnailLocalPath;
+
     double width = message.width;
     double height = message.height;
     if (width == 0) width = maxImageWidth;

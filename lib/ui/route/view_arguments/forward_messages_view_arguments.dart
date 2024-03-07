@@ -1,8 +1,8 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/widgets.dart';
 
-class ForwardMessageViewArguments implements ChatUIKitViewArguments {
-  final List<Message> messages;
+class ForwardMessagesViewArguments implements ChatUIKitViewArguments {
+  final Message message;
   final bool enableAppBar;
   final ChatUIKitAppBar? appBar;
   final String? title;
@@ -12,8 +12,8 @@ class ForwardMessageViewArguments implements ChatUIKitViewArguments {
   @override
   ChatUIKitViewObserver? viewObserver;
 
-  ForwardMessageViewArguments({
-    required this.messages,
+  ForwardMessagesViewArguments({
+    required this.message,
     this.enableAppBar = true,
     this.appBar,
     this.title,
@@ -22,8 +22,8 @@ class ForwardMessageViewArguments implements ChatUIKitViewArguments {
     this.attributes,
   });
 
-  ForwardMessageViewArguments copyWith({
-    List<Message>? messages,
+  ForwardMessagesViewArguments copyWith({
+    Message? message,
     bool? enableAppBar,
     ChatUIKitAppBar? appBar,
     String? title,
@@ -33,8 +33,8 @@ class ForwardMessageViewArguments implements ChatUIKitViewArguments {
     String? Function(BuildContext context, Message message)? summaryBuilder,
     String? attributes,
   }) {
-    return ForwardMessageViewArguments(
-      messages: messages ?? this.messages,
+    return ForwardMessagesViewArguments(
+      message: message ?? this.message,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       appBar: appBar ?? this.appBar,
       title: title ?? this.title,

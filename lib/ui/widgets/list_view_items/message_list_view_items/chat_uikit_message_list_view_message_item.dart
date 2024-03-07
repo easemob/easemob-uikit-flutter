@@ -2,8 +2,6 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/universal/defines.dart';
 import 'package:flutter/material.dart';
 
-import 'message_widget/chat_uikit_combine_message_widget.dart';
-
 typedef MessageItemBubbleBuilder = Widget? Function(
   BuildContext context,
   Widget child,

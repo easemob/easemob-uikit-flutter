@@ -2,9 +2,9 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/ui/custom/custom_tab_indicator.dart';
 import 'package:flutter/material.dart';
 
-class ForwardMessageView extends StatefulWidget {
-  ForwardMessageView.arguments(
-    ForwardMessageViewArguments arguments, {
+class ForwardMessageSelectView extends StatefulWidget {
+  ForwardMessageSelectView.arguments(
+    ForwardMessageSelectViewArguments arguments, {
     super.key,
   })  : messages = arguments.messages,
         enableAppBar = arguments.enableAppBar,
@@ -14,7 +14,7 @@ class ForwardMessageView extends StatefulWidget {
         summaryBuilder = arguments.summaryBuilder,
         attributes = arguments.attributes;
 
-  const ForwardMessageView({
+  const ForwardMessageSelectView({
     required this.messages,
     this.enableAppBar = true,
     this.appBar,
@@ -35,10 +35,11 @@ class ForwardMessageView extends StatefulWidget {
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
   @override
-  State<ForwardMessageView> createState() => _ForwardMessageViewState();
+  State<ForwardMessageSelectView> createState() =>
+      _ForwardMessageSelectViewState();
 }
 
-class _ForwardMessageViewState extends State<ForwardMessageView>
+class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -78,7 +79,7 @@ class _ForwardMessageViewState extends State<ForwardMessageView>
         }
 
         if (msg.bodyType == MessageType.VOICE) {
-          str += '[Voice]${msg.duration}"';
+          str += "[Voice] ${msg.duration}'";
         }
 
         if (msg.bodyType == MessageType.LOCATION) {
@@ -98,7 +99,7 @@ class _ForwardMessageViewState extends State<ForwardMessageView>
         }
 
         if (msg.bodyType == MessageType.CUSTOM && msg.isCardMessage) {
-          str += '[Card]${msg.cardUserNickname ?? msg.cardUserId}';
+          str += '[Card] ${msg.cardUserNickname ?? msg.cardUserId}';
         }
       }
 

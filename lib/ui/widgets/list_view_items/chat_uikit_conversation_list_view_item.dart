@@ -149,8 +149,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
                           );
                           return style;
                         }()),
-                  TextSpan(
-                      text: info.lastMessage?.showInfo(context: context) ?? '')
+                  TextSpan(text: info.lastMessage?.showInfo(context) ?? '')
                 ],
               ),
             );

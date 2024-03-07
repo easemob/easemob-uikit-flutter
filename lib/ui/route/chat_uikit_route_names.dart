@@ -8,7 +8,8 @@ class ChatUIKitRouteNames {
   static const String contactsView = '/ContactsView';
   static const String conversationsView = '/ConversationsView';
   static const String createGroupView = '/CreateGroupView';
-  static const String forwardMessageView = '/ForwardMessageView';
+  static const String forwardMessageSelectView = '/forwardMessageSelectView';
+  static const String forwardMessagesView = '/forwardMessagesView';
   static const String groupChangeOwnerView = '/GroupChangeOwnerView';
   static const String groupDetailsView = '/GroupDetailsView';
   static const String groupsView = '/GroupsView';
@@ -50,9 +51,13 @@ class ChatUIKitRouteNames {
         return CreateGroupView.arguments(
           arguments as CreateGroupViewArguments,
         );
-      case ChatUIKitRouteNames.forwardMessageView:
-        return ForwardMessageView.arguments(
-          arguments as ForwardMessageViewArguments,
+      case ChatUIKitRouteNames.forwardMessageSelectView:
+        return ForwardMessageSelectView.arguments(
+          arguments as ForwardMessageSelectViewArguments,
+        );
+      case ChatUIKitRouteNames.forwardMessagesView:
+        return ForwardMessagesView.arguments(
+          arguments as ForwardMessagesViewArguments,
         );
       case ChatUIKitRouteNames.groupChangeOwnerView:
         return GroupChangeOwnerView.arguments(

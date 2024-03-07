@@ -8,10 +8,9 @@ class QuoteModel {
   final String preview;
   final String sender;
 
-  QuoteModel.fromMessage(Message message)
+  QuoteModel.fromMessage(Message message, this.preview)
       : msgId = message.msgId,
         msgType = message.bodyType.getString,
-        preview = message.showInfo(),
         sender = message.from!;
 
   QuoteModel(

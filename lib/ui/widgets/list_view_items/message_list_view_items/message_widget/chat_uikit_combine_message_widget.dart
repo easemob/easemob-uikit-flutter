@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class ChatUIKitCombineMessageWidget extends StatelessWidget {
@@ -6,11 +7,13 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
     required this.message,
     this.forceLeft,
     this.style,
+    this.summaryBuilder,
     super.key,
   });
   final Message message;
   final TextStyle? style;
   final bool? forceLeft;
+  final String? Function(BuildContext context, String summary)? summaryBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -41,28 +44,26 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
     );
 
     widgets.add(content);
-    widgets.add(const SizedBox(height: 4));
-    widgets.add(
-      RichText(
-        text: TextSpan(
-          children: [
-            WidgetSpan(
-                child: ChatUIKitImageLoader.messageHistory(
-              width: 16,
-              height: 16,
-              color: left
-                  ? theme.color.isDark
-                      ? theme.color.neutralSpecialColor7
-                      : theme.color.neutralSpecialColor5
-                  : theme.color.isDark
-                      ? theme.color.neutralSpecialColor3
-                      : theme.color.neutralSpecialColor98,
-            )),
-            TextSpan(
-              text: '聊天记录',
-              style: TextStyle(
-                fontWeight: theme.font.labelSmall.fontWeight,
-                fontSize: theme.font.labelSmall.fontSize,
+
+    content = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: widgets,
+    );
+
+    content = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        content,
+        const SizedBox(height: 4),
+        RichText(
+          text: TextSpan(
+            children: [
+              WidgetSpan(
+                  child: ChatUIKitImageLoader.messageHistory(
+                width: 16,
+                height: 16,
                 color: left
                     ? theme.color.isDark
                         ? theme.color.neutralSpecialColor7
@@ -70,18 +71,27 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
                     : theme.color.isDark
                         ? theme.color.neutralSpecialColor3
                         : theme.color.neutralSpecialColor98,
+              )),
+              TextSpan(
+                text: '聊天记录',
+                style: TextStyle(
+                  fontWeight: theme.font.labelSmall.fontWeight,
+                  fontSize: theme.font.labelSmall.fontSize,
+                  color: left
+                      ? theme.color.isDark
+                          ? theme.color.neutralSpecialColor7
+                          : theme.color.neutralSpecialColor5
+                      : theme.color.isDark
+                          ? theme.color.neutralSpecialColor3
+                          : theme.color.neutralSpecialColor98,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+          textScaler: TextScaler.noScaling,
+          overflow: TextOverflow.ellipsis,
         ),
-        textScaler: TextScaler.noScaling,
-        overflow: TextOverflow.ellipsis,
-      ),
-    );
-    content = Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: widgets,
+      ],
     );
 
     return content;
@@ -91,6 +101,11 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
     List<String> summaries = [];
     List<String> tmpList = message.summary?.split('\n') ?? [];
     for (var str in tmpList) {
+      String? summaryTmp = summaryBuilder?.call(context, str);
+      if (summaryTmp?.isNotEmpty == true) {
+        summaries.add(summaryTmp!);
+        continue;
+      }
       int begin = str.indexOf('[');
       if (begin == -1) {
         summaries.add(str);
@@ -101,30 +116,45 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
         summaries.add(str);
         continue;
       }
-      String typeStr = str.substring(begin + 1, end);
 
-      if (typeStr == 'Image') {
+      if (begin > end) {
+        summaries.add(str);
+        continue;
+      }
+
+      String typeStr = str.substring(begin, end + 1);
+
+      bool hasCatch = false;
+      if (typeStr == '[Image]') {
         typeStr = ChatUIKitLocal.messageCellCombineImage.getString(context);
+        hasCatch = true;
       }
-      if (typeStr == 'Voice') {
+      if (typeStr == '[Voice]') {
         typeStr = ChatUIKitLocal.messageCellCombineVoice.getString(context);
+        hasCatch = true;
       }
-      if (typeStr == 'Location') {
+      if (typeStr == '[Location]') {
         typeStr = ChatUIKitLocal.messageCellCombineLocation.getString(context);
+        hasCatch = true;
       }
-      if (typeStr == 'Video') {
+      if (typeStr == '[Video]') {
         typeStr = ChatUIKitLocal.messageCellCombineVideo.getString(context);
+        hasCatch = true;
       }
-      if (typeStr == 'File') {
+      if (typeStr == '[File]') {
         typeStr = ChatUIKitLocal.messageCellCombineFile.getString(context);
+        hasCatch = true;
       }
-      if (typeStr == 'Combine') {
+      if (typeStr == '[Combine]') {
         typeStr = ChatUIKitLocal.messageCellCombineCombine.getString(context);
+        hasCatch = true;
       }
-
-      String tmp = str.substring(0, begin + 1) + typeStr + str.substring(end);
-
-      summaries.add(tmp);
+      if (hasCatch == true) {
+        String tmp = str.substring(0, begin + 1) + typeStr + str.substring(end);
+        summaries.add(tmp);
+      } else {
+        summaries.add(str);
+      }
     }
     return summaries.join('\n');
   }

@@ -54,6 +54,7 @@ export 'ui/widgets/list_view_items/message_list_view_items/message_widget/chat_u
 export 'ui/widgets/list_view_items/message_list_view_items/message_widget/chat_uikit_voice_message_widget.dart';
 export 'ui/widgets/list_view_items/message_list_view_items/message_widget/chat_uikit_card_message_widget.dart';
 export 'ui/widgets/list_view_items/message_list_view_items/message_widget/chat_uikit_nonsupport_message_widget.dart';
+export 'ui/widgets/list_view_items/message_list_view_items/message_widget/chat_uikit_combine_message_widget.dart';
 export 'ui/widgets/chat_uikit_app_bar.dart';
 export 'ui/widgets/chat_uikit_avatar.dart';
 export 'ui/widgets/chat_uikit_alphabetical_widget.dart';
@@ -104,7 +105,8 @@ export 'ui/views/conversations_view.dart';
 export 'ui/views/contacts_view.dart';
 export 'ui/views/contact_details_view.dart';
 export 'ui/views/current_user_info_view.dart';
-export 'ui/views/forward_message_view.dart';
+export 'ui/views/forward_message_select_view.dart';
+export 'ui/views/forward_messages_view.dart';
 export 'ui/views/group_details_view.dart';
 export 'ui/views/group_change_owner_view.dart';
 export 'ui/views/group_members_view.dart';
@@ -122,7 +124,6 @@ export 'ui/views/search_group_members_view.dart';
 export 'ui/views/show_image_view.dart';
 export 'ui/views/show_video_view.dart';
 
-
 export 'ui/route/chat_uikit_route.dart';
 export 'ui/route/chat_uikit_route_names.dart';
 export 'ui/route/view_arguments/change_info_view_arguments.dart';
@@ -131,7 +132,8 @@ export 'ui/route/view_arguments/contact_details_view_arguments.dart';
 export 'ui/route/view_arguments/contacts_view_arguments.dart';
 export 'ui/route/view_arguments/create_group_view_arguments.dart';
 export 'ui/route/view_arguments/current_user_info_view_arguments.dart';
-export 'ui/route/view_arguments/forward_message_view_arguments.dart';
+export 'ui/route/view_arguments/forward_message_select_view_arguments.dart';
+export 'ui/route/view_arguments/forward_messages_view_arguments.dart';
 export 'ui/route/view_arguments/group_add_members_view_arguments.dart';
 export 'ui/route/view_arguments/group_change_owner_view_arguments.dart';
 export 'ui/route/view_arguments/group_details_view_arguments.dart';

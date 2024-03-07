@@ -1210,6 +1210,17 @@ class _MessagesViewState extends State<MessagesView>
       playVoiceMessage(message);
     }
 
+    if (message.bodyType == MessageType.COMBINE) {
+      ChatUIKitRoute.pushOrPushNamed(
+        context,
+        ChatUIKitRouteNames.forwardMessagesView,
+        ForwardMessagesViewArguments(
+          message: message,
+          attributes: widget.attributes,
+        ),
+      );
+    }
+
     if (message.bodyType == MessageType.CUSTOM && message.isCardMessage) {
       String? userId =
           (message.body as CustomMessageBody).params?[cardUserIdKey];
@@ -1882,8 +1893,8 @@ class _MessagesViewState extends State<MessagesView>
   void multiSelectForward() {
     ChatUIKitRoute.pushOrPushNamed(
       context,
-      ChatUIKitRouteNames.forwardMessageView,
-      ForwardMessageViewArguments(
+      ChatUIKitRouteNames.forwardMessageSelectView,
+      ForwardMessageSelectViewArguments(
         messages: controller.selectedMessages,
         attributes: widget.attributes,
       ),
