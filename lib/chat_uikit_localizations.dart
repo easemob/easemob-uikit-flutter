@@ -245,6 +245,15 @@ mixin ChatUIKitLocal {
   static const messagesViewShareContactAlertButtonCancel =
       'messages_view_share_contact_alert_cancel';
 
+  static const messageCellCombineText = 'message_cell_combine_text';
+  static const messageCellCombineImage = 'message_cell_combine_image';
+  static const messageCellCombineVoice = 'message_cell_combine_voice';
+  static const messageCellCombineVideo = 'message_cell_combine_video';
+  static const messageCellCombineFile = 'message_cell_combine_file';
+  static const messageCellCombineContact = 'message_cell_combine_contact';
+  static const messageCellCombineLocation = 'message_cell_combine_location';
+  static const messageCellCombineCombine = 'message_cell_combine_combine';
+
   static const newRequestDetailsViewAddContact =
       'new_request_details_view_add_contact';
   static const newRequestsViewTitle = 'new_requests_view_title';
@@ -424,6 +433,14 @@ mixin ChatUIKitLocal {
     messagesViewShareContactAlertSubTitle: '分享名片给对方',
     messagesViewShareContactAlertButtonConfirm: '分享',
     messagesViewShareContactAlertButtonCancel: '取消',
+    messageCellCombineText: '文本',
+    messageCellCombineImage: '图片',
+    messageCellCombineVoice: '语音',
+    messageCellCombineVideo: '视频',
+    messageCellCombineFile: '文件',
+    messageCellCombineContact: '联系人',
+    messageCellCombineLocation: '位置',
+    messageCellCombineCombine: '聊天记录',
     newRequestDetailsViewAddContact: '添加联系人',
     newRequestsViewTitle: '新请求',
     reportMessageViewTitle: '消息举报',
@@ -603,6 +620,14 @@ mixin ChatUIKitLocal {
     messagesViewShareContactAlertSubTitle: 'Share contact with the other party',
     messagesViewShareContactAlertButtonConfirm: 'Share',
     messagesViewShareContactAlertButtonCancel: 'Cancel',
+    messageCellCombineText: 'Text',
+    messageCellCombineImage: 'Image',
+    messageCellCombineVoice: 'Voice',
+    messageCellCombineVideo: 'Video',
+    messageCellCombineFile: 'File',
+    messageCellCombineContact: 'Card',
+    messageCellCombineLocation: 'Location',
+    messageCellCombineCombine: 'History',
     newRequestDetailsViewAddContact: 'Add contact',
     newRequestsViewTitle: 'New Requests',
     reportMessageViewTitle: 'Report message',

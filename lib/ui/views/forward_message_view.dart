@@ -11,6 +11,7 @@ class ForwardMessageView extends StatefulWidget {
         appBar = arguments.appBar,
         title = arguments.title,
         viewObserver = arguments.viewObserver,
+        summaryBuilder = arguments.summaryBuilder,
         attributes = arguments.attributes;
 
   const ForwardMessageView({
@@ -20,6 +21,7 @@ class ForwardMessageView extends StatefulWidget {
     this.title,
     this.attributes,
     this.viewObserver,
+    this.summaryBuilder,
     super.key,
   });
 
@@ -27,8 +29,8 @@ class ForwardMessageView extends StatefulWidget {
   final bool enableAppBar;
   final ChatUIKitAppBar? appBar;
   final String? title;
-
   final String? attributes;
+  final String? Function(BuildContext context, Message message)? summaryBuilder;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
@@ -62,29 +64,42 @@ class _ForwardMessageViewState extends State<ForwardMessageView>
 
     String str = '';
     for (var msg in msgs) {
-      str += '${msg.nickname ?? msg.from!}: ';
-      if (msg.bodyType == MessageType.TXT) {
-        str += msg.textContent;
-      }
+      String? typeBuilder = widget.summaryBuilder?.call(context, msg);
+      if (typeBuilder?.isNotEmpty == true) {
+        str += typeBuilder!;
+      } else {
+        str += '${msg.nickname ?? msg.from!}: ';
+        if (msg.bodyType == MessageType.TXT) {
+          str += msg.textContent;
+        }
 
-      if (msg.bodyType == MessageType.IMAGE) {
-        str += '[图片]';
-      }
+        if (msg.bodyType == MessageType.IMAGE) {
+          str += '[Image]';
+        }
 
-      if (msg.bodyType == MessageType.VOICE) {
-        str += '[语音]${msg.duration}"';
-      }
+        if (msg.bodyType == MessageType.VOICE) {
+          str += '[Voice]${msg.duration}"';
+        }
 
-      if (msg.bodyType == MessageType.VIDEO) {
-        str += '[视频]';
-      }
+        if (msg.bodyType == MessageType.LOCATION) {
+          str += '[Location]';
+        }
 
-      if (msg.bodyType == MessageType.COMBINE) {
-        str += '[聊天记录]';
-      }
+        if (msg.bodyType == MessageType.VIDEO) {
+          str += '[Video]';
+        }
 
-      if (msg.bodyType == MessageType.CUSTOM && msg.isCardMessage) {
-        str += '[联系人]${msg.cardUserNickname ?? msg.cardUserId}';
+        if (msg.bodyType == MessageType.FILE) {
+          str += '[File]';
+        }
+
+        if (msg.bodyType == MessageType.COMBINE) {
+          str += '[Combine]';
+        }
+
+        if (msg.bodyType == MessageType.CUSTOM && msg.isCardMessage) {
+          str += '[Card]${msg.cardUserNickname ?? msg.cardUserId}';
+        }
       }
 
       if (msg == msgs.last) {
