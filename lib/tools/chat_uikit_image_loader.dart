@@ -478,4 +478,17 @@ class ChatUIKitImageLoader {
       fit: BoxFit.fill,
     );
   }
+
+  static Widget moreReactions(
+      {double width = 36, double height = 36, Color? color}) {
+    return Image(
+      color: color,
+      gaplessPlayback: true,
+      width: width,
+      height: height,
+      image:
+          AssetImage('assets/images/more_reactions.png', package: packageName),
+      fit: BoxFit.fill,
+    );
+  }
 }

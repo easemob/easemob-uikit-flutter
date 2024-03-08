@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -1906,53 +1907,51 @@ class _MessagesViewState extends State<MessagesView>
   }
 
   Future<Widget?> bottomSheetTitle(Message message) async {
+    if (ChatUIKitSettings.enableReaction == false) return null;
+    List<MessageReaction> reactions = await message.reactionList();
+
     return Padding(
       padding: EdgeInsets.zero,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          List<Widget> reactionListWidget = [];
           double width = constraints.maxWidth;
-          int count = width ~/ (36 + 12);
+          int maxCount = width ~/ (36 + 12) - 1;
+
           List<Widget> items = [];
-          for (var i = 0; i < count; i++) {
+
+          for (var i = 0;
+              i < min(ChatUIKitSettings.favoriteReaction.length, maxCount);
+              i++) {
             items.add(
-              SizedBox(
-                width: 36,
-                height: 36,
-                child: Container(
-                  color: Colors.red,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: Image.asset(
+                  ChatUIKitEmojiData
+                      .emojiMapReversed[ChatUIKitSettings.favoriteReaction[i]]!,
+                  package: ChatUIKitEmojiData.packageName,
+                  width: 36,
+                  height: 36,
                 ),
               ),
             );
           }
 
+          items.add(InkWell(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2),
+              child: ChatUIKitImageLoader.moreReactions(width: 44, height: 44),
+            ),
+          ));
+
           return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: items,
+            mainAxisAlignment:
+                ChatUIKitSettings.favoriteReaction.length + 1 < maxCount
+                    ? MainAxisAlignment.start
+                    : MainAxisAlignment.spaceBetween,
+            children: items.toList(),
           );
         },
       ),
     );
-
-    // if (ChatUIKitSettings.enableReaction == false) return null;
-    // List<MessageReaction> reactions = await message.reactionList();
-
-    // if (reactions.isNotEmpty == true) {
-    //   return Padding(
-    //     padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-    //     child: LayoutBuilder(
-    //       builder: (context, constraints) {
-    //         List<Widget> reactionListWidget = [];
-    //         double width = constraints.maxWidth;
-    //         for (MessageReaction reaction in reactions) {}
-    //         return ListView(
-    //           children: reactionListWidget,
-    //         );
-    //       },
-    //     ),
-    //   );
-    // } else {
-    //   return null;
-    // }
   }
 }

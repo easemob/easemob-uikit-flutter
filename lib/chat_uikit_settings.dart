@@ -53,11 +53,17 @@ class ChatUIKitSettings {
   static bool enableReaction = true;
 
   static List<String> favoriteReaction = [
-    'like',
-    'love',
-    'haha',
-    'wow',
-    'sad',
-    'angry',
+    '\u{1F44D}',
+    '\u{2764}',
+    '\u{1F609}',
+    '\u{1F928}',
+    '\u{1F62D}',
+    '\u{1F389}',
+    '\u{1F44D}',
+    '\u{2764}',
+    '\u{1F609}',
+    // '\u{1F928}',
+    // '\u{1F62D}',
+    // '\u{1F389}',
   ];
 }
