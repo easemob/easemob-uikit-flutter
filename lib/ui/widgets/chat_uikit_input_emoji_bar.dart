@@ -1,5 +1,4 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/ui/custom/chat_uikit_emoji_data.dart';
 import 'package:flutter/material.dart';
 
 typedef EmojiClick = void Function(String emoji);

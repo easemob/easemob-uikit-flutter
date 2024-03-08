@@ -112,4 +112,7 @@ class ChatUIKitEmojiData {
     "\u{1F382}",
     "\u{1F381}"
   ];
+
+  static final emojiMap = Map.fromIterables(emojiImagePaths, emojiList);
+  static final emojiMapReversed = Map.fromIterables(emojiList, emojiImagePaths);
 }

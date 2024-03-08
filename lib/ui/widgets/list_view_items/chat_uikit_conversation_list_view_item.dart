@@ -128,30 +128,38 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
               subTitleLabel!,
               style: style,
             )
-          : RichText(
-              textScaler: TextScaler.noScaling,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              text: TextSpan(
-                style: style,
-                children: [
-                  if (info.hasMention)
-                    TextSpan(
-                        text:
-                            '[${ChatUIKitLocal.conversationListItemMention.getString(context)}]',
-                        style: () {
-                          final style = TextStyle(
-                            color: theme.color.isDark
-                                ? theme.color.primaryColor6
-                                : theme.color.primaryColor5,
-                            fontSize: theme.font.labelMedium.fontSize,
-                            fontWeight: theme.font.labelMedium.fontWeight,
-                          );
-                          return style;
-                        }()),
-                  TextSpan(text: info.lastMessage?.showInfo(context) ?? '')
-                ],
-              ),
+          : Row(
+              children: [
+                RichText(
+                  textScaler: TextScaler.noScaling,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  text: TextSpan(
+                    style: style,
+                    children: [
+                      if (info.hasMention)
+                        TextSpan(
+                            text:
+                                '[${ChatUIKitLocal.conversationListItemMention.getString(context)}]',
+                            style: () {
+                              final style = TextStyle(
+                                color: theme.color.isDark
+                                    ? theme.color.primaryColor6
+                                    : theme.color.primaryColor5,
+                                fontSize: theme.font.labelMedium.fontSize,
+                                fontWeight: theme.font.labelMedium.fontWeight,
+                              );
+                              return style;
+                            }()),
+                    ],
+                  ),
+                ),
+                ChatUIKitEmojiRichText(
+                  text: info.lastMessage?.showInfo(context) ?? '',
+                  emojiSize: const Size(16, 16),
+                  style: style,
+                )
+              ],
             );
     }
 

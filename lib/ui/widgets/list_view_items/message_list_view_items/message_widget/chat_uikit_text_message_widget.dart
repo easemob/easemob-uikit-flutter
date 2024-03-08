@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/ui/custom/chat_uikit_emoji_data.dart';
+
 import 'package:flutter/material.dart';
 
 class ChatUIKitTextMessageWidget extends StatelessWidget {
@@ -20,25 +20,28 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
     final theme = ChatUIKitTheme.of(context);
     bool left = forceLeft ?? message.direction == MessageDirection.RECEIVE;
 
-    Widget content = Text(
-      message.textContent,
-      textScaler: TextScaler.noScaling,
-      style: style ??
-          (left
-              ? TextStyle(
-                  fontWeight: theme.font.bodyLarge.fontWeight,
-                  fontSize: theme.font.bodyLarge.fontSize,
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor98
-                      : theme.color.neutralColor1,
-                )
-              : TextStyle(
-                  fontWeight: theme.font.bodyLarge.fontWeight,
-                  fontSize: theme.font.bodyLarge.fontSize,
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor1
-                      : theme.color.neutralColor98,
-                )),
+    String str = message.textContent;
+
+    TextStyle tmpStyle = style ??
+        (left
+            ? TextStyle(
+                fontWeight: theme.font.bodyLarge.fontWeight,
+                fontSize: theme.font.bodyLarge.fontSize,
+                color: theme.color.isDark
+                    ? theme.color.neutralColor98
+                    : theme.color.neutralColor1,
+              )
+            : TextStyle(
+                fontWeight: theme.font.bodyLarge.fontWeight,
+                fontSize: theme.font.bodyLarge.fontSize,
+                color: theme.color.isDark
+                    ? theme.color.neutralColor1
+                    : theme.color.neutralColor98,
+              ));
+
+    Widget content = ChatUIKitEmojiRichText(
+      text: str,
+      style: tmpStyle,
     );
 
     List<Widget> widgets = [content];

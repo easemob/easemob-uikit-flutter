@@ -178,7 +178,7 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
     if (titleWidget != null) {
       list.add(
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 13),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
           child: titleWidget,
         ),
       );
@@ -191,6 +191,7 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Divider(
               height: .5,
+              thickness: .5,
               color: (theme.color.isDark
                   ? theme.color.neutralColor2
                   : theme.color.neutralColor9),
@@ -204,7 +205,7 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
           splashColor: Colors.transparent,
           onTap: element.onTap,
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 17),
+            padding: const EdgeInsets.symmetric(vertical: 16),
             alignment: Alignment.center,
             child: element.icon != null
                 ? Row(

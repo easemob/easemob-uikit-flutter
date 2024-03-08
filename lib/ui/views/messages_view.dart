@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/ui/custom/chat_uikit_emoji_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../universal/defines.dart';
@@ -416,15 +415,9 @@ class _MessagesViewState extends State<MessagesView>
                       inputBarTextEditingController.deleteTextOnCursor();
                     },
                     emojiClicked: (emoji) {
-                      final index =
-                          ChatUIKitEmojiData.emojiImagePaths.indexWhere(
-                        (element) => element == emoji,
+                      inputBarTextEditingController.addText(
+                        ChatUIKitEmojiData.emojiMap[emoji] ?? emoji,
                       );
-                      if (index != -1) {
-                        inputBarTextEditingController.addText(
-                          ChatUIKitEmojiData.emojiList[index],
-                        );
-                      }
                     },
                   )
               : const SizedBox(),
@@ -1914,7 +1907,7 @@ class _MessagesViewState extends State<MessagesView>
 
   Future<Widget?> bottomSheetTitle(Message message) async {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+      padding: EdgeInsets.zero,
       child: LayoutBuilder(
         builder: (context, constraints) {
           List<Widget> reactionListWidget = [];
