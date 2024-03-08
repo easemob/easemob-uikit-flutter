@@ -5,13 +5,31 @@ class ChatUIKitEmojiRichText extends StatelessWidget {
   const ChatUIKitEmojiRichText({
     required this.text,
     this.style,
-    this.emojiSize = const Size(20, 20),
+    this.strutStyle,
+    this.textAlign = TextAlign.start,
+    this.textDirection,
+    this.locale,
+    this.softWrap = true,
+    this.overflow = TextOverflow.clip,
+    this.emojiSize = const Size(18, 18),
+    this.textScaler = TextScaler.noScaling,
+    this.maxLines,
+    this.selectable = false,
     super.key,
   });
 
   final String text;
   final TextStyle? style;
   final Size emojiSize;
+  final StrutStyle? strutStyle;
+  final TextAlign textAlign;
+  final TextDirection? textDirection;
+  final Locale? locale;
+  final bool softWrap;
+  final TextOverflow overflow;
+  final TextScaler textScaler;
+  final int? maxLines;
+  final bool selectable;
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +64,26 @@ class ChatUIKitEmojiRichText extends StatelessWidget {
       spans.add(TextSpan(text: string));
     }
 
-    return RichText(
-      text: TextSpan(children: spans, style: style),
-      textScaler: TextScaler.noScaling,
-    );
+    if (selectable) {
+      return SelectableText.rich(
+        TextSpan(children: spans, style: style),
+        textAlign: textAlign,
+        textDirection: textDirection,
+        maxLines: maxLines,
+        textScaler: TextScaler.noScaling,
+      );
+    } else {
+      return RichText(
+        textAlign: textAlign,
+        textDirection: textDirection,
+        locale: locale,
+        softWrap: softWrap,
+        overflow: overflow,
+        maxLines: maxLines,
+        text: TextSpan(children: spans, style: style),
+        textScaler: TextScaler.noScaling,
+      );
+    }
   }
 }
 

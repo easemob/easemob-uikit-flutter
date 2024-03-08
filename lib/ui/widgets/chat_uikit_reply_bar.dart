@@ -146,8 +146,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
   }
 
   Widget _textWidget(ChatUIKitTheme theme) {
-    return Text(
-      widget.message.textContent,
+    return ChatUIKitEmojiRichText(
+      emojiSize: const Size(16, 16),
+      text: widget.message.textContent,
       textScaler: TextScaler.noScaling,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,

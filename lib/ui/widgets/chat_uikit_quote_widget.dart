@@ -111,8 +111,9 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
             fontWeight: theme.font.labelSmall.fontWeight,
           ),
         ),
-        Text(
-          message.textContent,
+        ChatUIKitEmojiRichText(
+          emojiSize: const Size(16, 16),
+          text: message.textContent,
           overflow: TextOverflow.ellipsis,
           textScaler: TextScaler.noScaling,
           maxLines: 2,

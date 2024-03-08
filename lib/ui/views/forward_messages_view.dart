@@ -240,8 +240,10 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
 
   Widget textWidget(Message message, ChatUIKitTheme theme) {
     final body = message.body as TextMessageBody;
-    return SelectableText(
-      body.content,
+    return ChatUIKitEmojiRichText(
+      emojiSize: const Size(16, 16),
+      text: body.content,
+      selectable: true,
       style: TextStyle(
         fontWeight: theme.font.bodyMedium.fontWeight,
         fontSize: theme.font.bodyMedium.fontSize,

@@ -21,8 +21,9 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
     bool left = forceLeft ?? message.direction == MessageDirection.RECEIVE;
 
     List<Widget> widgets = [];
-    Widget content = Text(
-      summary(context),
+    Widget content = ChatUIKitEmojiRichText(
+      emojiSize: const Size(14, 14),
+      text: summary(context),
       textScaler: TextScaler.noScaling,
       maxLines: 4,
       style: style ??

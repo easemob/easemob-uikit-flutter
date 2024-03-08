@@ -26,6 +26,7 @@ Future<T?> showChatUIKitBottomSheet<T>({
           ),
     backgroundColor: backgroundColor,
     barrierColor: barrierColor,
+    useSafeArea: true,
     context: context,
     builder: (BuildContext context) {
       return ChatUIKitBottomSheet(
@@ -141,22 +142,24 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
           : theme.color.errorColor5),
     );
 
-    list.add(
-      Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(3)),
-          color: (theme.color.isDark
-              ? theme.color.neutralColor3
-              : theme.color.neutralColor8),
+    List<Widget> titleWidgets = [
+      Center(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(3)),
+            color: (theme.color.isDark
+                ? theme.color.neutralColor3
+                : theme.color.neutralColor8),
+          ),
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          height: 5,
+          width: 36,
         ),
-        margin: const EdgeInsets.symmetric(vertical: 6),
-        height: 5,
-        width: 36,
       ),
-    );
+    ];
 
     if (title != null && titleWidget == null) {
-      list.add(
+      titleWidgets.add(
         Container(
           padding: const EdgeInsets.symmetric(vertical: 13),
           child: Text(
@@ -176,7 +179,7 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
     }
 
     if (titleWidget != null) {
-      list.add(
+      titleWidgets.add(
         Container(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
           child: titleWidget,
@@ -247,14 +250,13 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
       );
     }
 
-    list.add(Container(
-      height: 8,
-      color: (theme.color.isDark
-          ? theme.color.neutralColor0
-          : theme.color.neutralColor95),
-    ));
-
     if (showCancel) {
+      list.add(Container(
+        height: 8,
+        color: (theme.color.isDark
+            ? theme.color.neutralColor0
+            : theme.color.neutralColor95),
+      ));
       String? str = cancelLabel;
       str ??= ChatUIKitLocal.bottomSheetCancel.getString(context);
       list.add(
@@ -285,15 +287,23 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
       );
     }
 
-    Widget content = Column(
-      mainAxisSize: MainAxisSize.min,
+    Widget headWidget = ListView(
+      padding: EdgeInsets.zero,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: titleWidgets,
+    );
+
+    Widget content = ListView(
+      physics: const BouncingScrollPhysics(),
+      shrinkWrap: true,
       children: list,
     );
 
-    content = ListView(
-      physics: const BouncingScrollPhysics(),
-      shrinkWrap: true,
-      children: [content],
+    content = Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [headWidget, Expanded(child: content)],
     );
 
     content = Container(

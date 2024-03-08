@@ -99,8 +99,8 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
             )),
       );
       widgets.add(
-        SelectableText(
-          message.translateText,
+        ChatUIKitEmojiRichText(
+          text: message.translateText,
           style: TextStyle(
             fontWeight: theme.font.bodyLarge.fontWeight,
             fontSize: theme.font.bodyLarge.fontSize,
