@@ -129,8 +129,6 @@ class _ChangeInfoViewState extends State<ChangeInfoView> {
       ],
     );
 
-    content = SafeArea(child: content);
-
     content = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: theme.color.isDark
@@ -193,7 +191,7 @@ class _ChangeInfoViewState extends State<ChangeInfoView> {
               ),
             ),
           ),
-      body: content,
+      body: SafeArea(child: content),
     );
 
     return content;

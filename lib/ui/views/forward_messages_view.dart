@@ -101,7 +101,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
       );
     }
 
-    return Scaffold(
+    content = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: theme.color.isDark
           ? theme.color.neutralColor1
@@ -113,8 +113,10 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
                 title: widget.title ?? '聊天记录',
               )
           : null,
-      body: content,
+      body: SafeArea(child: content),
     );
+
+    return content;
   }
 
   Widget historyWidget(ChatUIKitTheme theme) {

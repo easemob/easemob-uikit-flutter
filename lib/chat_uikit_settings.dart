@@ -49,4 +49,15 @@ class ChatUIKitSettings {
   static String translateLanguage = 'zh-Hans';
 
   static bool enableInputStatus = false;
+
+  static bool enableReaction = true;
+
+  static List<String> favoriteReaction = [
+    'like',
+    'love',
+    'haha',
+    'wow',
+    'sad',
+    'angry',
+  ];
 }

@@ -107,7 +107,6 @@ class _GeneralPageState extends State<GeneralPage> {
       ],
     );
 
-    content = SafeArea(child: content);
     content = Scaffold(
       backgroundColor: theme.color.isDark
           ? theme.color.neutralColor1
@@ -119,7 +118,7 @@ class _GeneralPageState extends State<GeneralPage> {
         title: '通用',
         centerTitle: false,
       ),
-      body: content,
+      body: SafeArea(child: content),
     );
 
     return content;

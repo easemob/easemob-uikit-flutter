@@ -81,7 +81,6 @@ class _LanguagePageState extends State<LanguagePage> {
       ],
     );
 
-    content = SafeArea(child: content);
     content = Scaffold(
       backgroundColor: theme.color.isDark
           ? theme.color.neutralColor1
@@ -93,7 +92,7 @@ class _LanguagePageState extends State<LanguagePage> {
         title: '将文字翻译为',
         centerTitle: false,
       ),
-      body: content,
+      body: SafeArea(child: content),
     );
 
     return content;

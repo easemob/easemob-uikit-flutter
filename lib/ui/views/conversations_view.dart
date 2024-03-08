@@ -241,7 +241,7 @@ class _ConversationsViewState extends State<ConversationsView> {
 
     if (list?.isNotEmpty == true) {
       showChatUIKitBottomSheet(
-        cancelTitle: ChatUIKitLocal.conversationListLongPressMenuCancel
+        cancelLabel: ChatUIKitLocal.conversationListLongPressMenuCancel
             .getString(context),
         context: context,
         items: list!,
@@ -324,7 +324,7 @@ class _ConversationsViewState extends State<ConversationsView> {
     List<ChatUIKitBottomSheetItem> list = defaultItems();
     list = widget.appBarMoreActionsBuilder?.call(context, list) ?? list;
     showChatUIKitBottomSheet(
-      cancelTitle:
+      cancelLabel:
           ChatUIKitLocal.conversationsViewMenuCancel.getString(context),
       context: context,
       items: list,

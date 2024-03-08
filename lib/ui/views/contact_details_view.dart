@@ -344,7 +344,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
 
   void showBottom() async {
     bool? ret = await showChatUIKitBottomSheet(
-      cancelTitle: ChatUIKitLocal.contactDetailViewCancel.getString(context),
+      cancelLabel: ChatUIKitLocal.contactDetailViewCancel.getString(context),
       context: context,
       items: [
         ChatUIKitBottomSheetItem.destructive(

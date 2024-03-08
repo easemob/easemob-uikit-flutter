@@ -12,7 +12,7 @@ import 'package:em_chat_uikit_example/tool/user_data_store.dart';
 import 'package:em_chat_uikit_example/welcome_page.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 const appKey = 'easemob#easeim';
@@ -25,8 +25,9 @@ void main() async {
       deleteMessagesAsExitGroup: false,
     ),
   );
-  return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(const MyApp()));
+  return runApp(const MyApp());
+  // return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+  //     .then((value) => runApp(const MyApp()));
 }
 
 class MyApp extends StatefulWidget {

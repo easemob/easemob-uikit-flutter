@@ -616,7 +616,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     }
 
     showChatUIKitBottomSheet(
-      cancelTitle: ChatUIKitLocal.groupDetailViewCancel.getString(context),
+      cancelLabel: ChatUIKitLocal.groupDetailViewCancel.getString(context),
       context: context,
       items: list,
     );

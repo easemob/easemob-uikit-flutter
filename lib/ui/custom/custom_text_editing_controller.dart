@@ -123,46 +123,6 @@ class CustomTextEditingController extends TextEditingController {
     return mentionList.map((e) => e.profile).toList();
   }
 
-  // @override
-  // TextSpan buildTextSpan({
-  //   required BuildContext context,
-  //   TextStyle? style,
-  //   required bool withComposing,
-  // }) {
-  //   List<InlineSpan> list = [];
-
-  //   List<RegExpMatch> matchList =
-  //       ChatUIKitEmojiData.emojiExp.allMatches(text).toList();
-  //   int start = 0;
-  //   for (var match in matchList) {
-  //     String subText = text.substring(start, match.start);
-  //     if (subText.isNotEmpty) {
-  //       list.add(TextSpan(text: subText));
-  //     }
-  //     String emojiStr = text.substring(match.start, match.end);
-  //     int index = ChatUIKitEmojiData.emojiList.indexOf(emojiStr);
-  //     if (index != -1) {
-  //       list.add(WidgetSpan(
-  //         child: Image.asset(
-  //           ChatUIKitEmojiData.emojiImagePaths[index],
-  //           package: ChatUIKitEmojiData.packageName,
-  //           width: 20,
-  //           height: 20,
-  //         ),
-  //       ));
-  //     } else {
-  //       list.add(TextSpan(text: emojiStr));
-  //     }
-  //     start = match.end;
-  //   }
-  //   String subText = text.substring(start);
-  //   if (subText.isNotEmpty) {
-  //     list.add(TextSpan(text: subText));
-  //   }
-
-  //   return TextSpan(children: list, style: style);
-  // }
-
   @override
   set value(TextEditingValue newValue) {
     newValue = mentionFilter(newValue);

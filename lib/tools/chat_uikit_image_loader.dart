@@ -26,17 +26,6 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget emoji(String imageName, {double width = 36, height = 36}) {
-    String name = imageName.substring(0, imageName.length);
-    return Image(
-      gaplessPlayback: true,
-      width: width,
-      height: height,
-      image: AssetImage('assets/images/emojis/$name.png', package: packageName),
-      fit: BoxFit.fill,
-    );
-  }
-
   static Widget file({double width = 30, double height = 30, Color? color}) {
     return Image(
       gaplessPlayback: true,

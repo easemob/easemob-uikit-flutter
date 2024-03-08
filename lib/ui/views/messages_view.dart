@@ -434,10 +434,6 @@ class _MessagesViewState extends State<MessagesView>
 
     content = Column(children: list);
 
-    content = SafeArea(
-      child: content,
-    );
-
     content = Scaffold(
       backgroundColor: theme.color.isDark
           ? theme.color.neutralColor1
@@ -482,7 +478,7 @@ class _MessagesViewState extends State<MessagesView>
                     : null,
               ),
       // body: content,
-      body: content,
+      body: SafeArea(child: content),
     );
 
     content = Stack(
@@ -1158,7 +1154,7 @@ class _MessagesViewState extends State<MessagesView>
     }
   }
 
-  void onItemLongPress(Message message) {
+  void onItemLongPress(Message message) async {
     final theme = ChatUIKitTheme.of(context);
     clearAllType();
     List<ChatUIKitBottomSheetItem>? items = widget.longPressActions;
@@ -1172,11 +1168,14 @@ class _MessagesViewState extends State<MessagesView>
       );
     }
     if (items != null) {
-      showChatUIKitBottomSheet(
-        context: context,
-        items: items,
-        showCancel: false,
-      );
+      bottomSheetTitle(message).then((value) {
+        showChatUIKitBottomSheet(
+          titleWidget: value,
+          context: context,
+          items: items!,
+          showCancel: false,
+        );
+      });
     }
   }
 
@@ -1897,6 +1896,7 @@ class _MessagesViewState extends State<MessagesView>
   }
 
   void forwardMessage(List<Message> message, {bool isMultiSelect = false}) {
+    clearAllType();
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.forwardMessageSelectView,
@@ -1910,5 +1910,56 @@ class _MessagesViewState extends State<MessagesView>
         controller.disableMultiSelectMode();
       }
     });
+  }
+
+  Future<Widget?> bottomSheetTitle(Message message) async {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          List<Widget> reactionListWidget = [];
+          double width = constraints.maxWidth;
+          int count = width ~/ (36 + 12);
+          List<Widget> items = [];
+          for (var i = 0; i < count; i++) {
+            items.add(
+              SizedBox(
+                width: 36,
+                height: 36,
+                child: Container(
+                  color: Colors.red,
+                ),
+              ),
+            );
+          }
+
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: items,
+          );
+        },
+      ),
+    );
+
+    // if (ChatUIKitSettings.enableReaction == false) return null;
+    // List<MessageReaction> reactions = await message.reactionList();
+
+    // if (reactions.isNotEmpty == true) {
+    //   return Padding(
+    //     padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+    //     child: LayoutBuilder(
+    //       builder: (context, constraints) {
+    //         List<Widget> reactionListWidget = [];
+    //         double width = constraints.maxWidth;
+    //         for (MessageReaction reaction in reactions) {}
+    //         return ListView(
+    //           children: reactionListWidget,
+    //         );
+    //       },
+    //     ),
+    //   );
+    // } else {
+    //   return null;
+    // }
   }
 }

@@ -153,8 +153,6 @@ class _ReportMessageViewState extends State<ReportMessageView> {
       child: content,
     );
 
-    content = SafeArea(child: content);
-
     content = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: theme.color.isDark
@@ -165,7 +163,7 @@ class _ReportMessageViewState extends State<ReportMessageView> {
             title: widget.title ??
                 ChatUIKitLocal.reportMessageViewTitle.getString(context),
           ),
-      body: content,
+      body: SafeArea(child: content),
     );
 
     return content;
