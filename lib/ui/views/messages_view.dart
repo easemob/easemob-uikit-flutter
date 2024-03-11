@@ -1918,7 +1918,7 @@ class _MessagesViewState extends State<MessagesView>
   Widget? bottomSheetTitle(MessageModel model, ChatUIKitTheme theme) {
     if (ChatUIKitSettings.enableReaction == false) return null;
     List<MessageReaction>? reactions = model.reactions;
-    if (reactions == null || reactions.isEmpty) return null;
+
     return Padding(
       padding: EdgeInsets.zero,
       child: LayoutBuilder(
@@ -1930,9 +1930,10 @@ class _MessagesViewState extends State<MessagesView>
               i < min(ChatUIKitSettings.favoriteReaction.length, maxCount);
               i++) {
             String emoji = ChatUIKitSettings.favoriteReaction[i];
-            bool highlight = reactions.any((element) {
-              return element.reaction == emoji && element.isAddedBySelf;
-            });
+            bool highlight = reactions?.any((element) {
+                  return element.reaction == emoji && element.isAddedBySelf;
+                }) ??
+                false;
 
             items.add(
               InkWell(
