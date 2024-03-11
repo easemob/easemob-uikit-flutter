@@ -9,13 +9,13 @@ double maxImageHeight = 300;
 
 class ChatUIKitImageMessageWidget extends StatefulWidget {
   const ChatUIKitImageMessageWidget({
-    required this.message,
+    required this.model,
     this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     this.progressIndicatorColor,
     this.isLeft,
     super.key,
   });
-  final Message message;
+  final MessageModel model;
   final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
   final Color? progressIndicatorColor;
   final bool? isLeft;
@@ -27,7 +27,7 @@ class ChatUIKitImageMessageWidget extends StatefulWidget {
 
 class _ChatUIKitImageMessageWidgetState
     extends State<ChatUIKitImageMessageWidget> with MessageObserver {
-  late final Message message;
+  late final MessageModel model;
   bool downloading = false;
   bool downloadError = false;
 
@@ -41,7 +41,7 @@ class _ChatUIKitImageMessageWidgetState
     super.initState();
 
     ChatUIKit.instance.addObserver(this);
-    message = widget.message;
+    model = widget.model;
   }
 
   @override
@@ -52,7 +52,8 @@ class _ChatUIKitImageMessageWidgetState
 
   @override
   void onSuccess(String msgId, Message msg) {
-    if (msgId == message.msgId) {
+    if (msgId == model.message.msgId) {
+      model = model.copyWith(message: msg);
       safeSetState(() {
         downloading = false;
       });
@@ -61,9 +62,9 @@ class _ChatUIKitImageMessageWidgetState
 
   @override
   void onError(String msgId, Message msg, ChatError error) {
-    if (msgId == message.msgId && msg.bodyType == MessageType.IMAGE) {
+    if (msgId == model.message.msgId && msg.bodyType == MessageType.IMAGE) {
       (msg.body as ImageMessageBody).fileStatus !=
-          (message.body as ImageMessageBody).fileStatus;
+          (model.message.body as ImageMessageBody).fileStatus;
       safeSetState(() {
         downloading = false;
         downloadError = true;
@@ -75,13 +76,14 @@ class _ChatUIKitImageMessageWidgetState
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
 
-    bool left = widget.isLeft ?? message.direction == MessageDirection.RECEIVE;
+    bool left =
+        widget.isLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
-    String? localPath = message.localPath;
-    String? thumbnailLocalPath = message.thumbnailLocalPath;
+    String? localPath = model.message.localPath;
+    String? thumbnailLocalPath = model.message.thumbnailLocalPath;
 
-    double width = message.width;
-    double height = message.height;
+    double width = model.message.width;
+    double height = model.message.height;
     if (width == 0) width = maxImageWidth;
     if (height == 0) height = maxImageHeight;
     double aspectRatio = width / height;
@@ -227,10 +229,10 @@ class _ChatUIKitImageMessageWidgetState
   void download() {
     if (downloading) return;
     downloading = true;
-    if (message.thumbnailLocalPath?.isNotEmpty == true) {
-      ChatUIKit.instance.downloadThumbnail(message: message);
+    if (model.message.thumbnailLocalPath?.isNotEmpty == true) {
+      ChatUIKit.instance.downloadThumbnail(message: model.message);
     } else {
-      ChatUIKit.instance.downloadAttachment(message: message);
+      ChatUIKit.instance.downloadAttachment(message: model.message);
     }
   }
 

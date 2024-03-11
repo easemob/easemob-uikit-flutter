@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 
 class ChatUIKitCardMessageWidget extends StatelessWidget {
   const ChatUIKitCardMessageWidget({
-    required this.message,
+    required this.model,
     this.forceLeft,
     super.key,
   });
 
-  final Message message;
+  final MessageModel model;
   final bool? forceLeft;
 
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    bool left = forceLeft ?? message.direction == MessageDirection.RECEIVE;
+    bool left = forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     Widget content = Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -23,13 +23,13 @@ class ChatUIKitCardMessageWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(6, 12, 12, 12),
           child: ChatUIKitAvatar(
-            avatarUrl: message.cardUserAvatar,
+            avatarUrl: model.message.cardUserAvatar,
             size: 44,
           ),
         ),
         Expanded(
           child: Text(
-            message.cardUserNickname ?? message.cardUserId!,
+            model.message.cardUserNickname ?? model.message.cardUserId!,
             textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,

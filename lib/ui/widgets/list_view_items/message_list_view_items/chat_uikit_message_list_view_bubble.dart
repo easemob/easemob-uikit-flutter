@@ -2,6 +2,7 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
 const double arrowWidth = 4.2;
+const double arrowPadding = 8.0;
 const double arrowHeight = 8.0;
 const double arrowPosition = 10.0;
 

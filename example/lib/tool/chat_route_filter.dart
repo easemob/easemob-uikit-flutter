@@ -19,13 +19,13 @@ class ChatRouteFilter {
     MessagesViewArguments arguments =
         settings.arguments as MessagesViewArguments;
     arguments = arguments.copyWith(
-      onItemTap: (ctx, message) {
-        if (message.bodyType == MessageType.FILE) {
+      onItemTap: (ctx, messageModel) {
+        if (messageModel.message.bodyType == MessageType.FILE) {
           Navigator.of(ctx).push(
             MaterialPageRoute(
               builder: (context) => DownloadFileWidget(
-                message: message,
-                key: ValueKey(message.localTime),
+                message: messageModel.message,
+                key: ValueKey(messageModel.message.localTime),
               ),
             ),
           );

@@ -3,20 +3,20 @@ import 'package:flutter/widgets.dart';
 
 class ChatUIKitNonsupportMessageWidget extends StatelessWidget {
   const ChatUIKitNonsupportMessageWidget({
-    required this.message,
+    required this.model,
     this.style,
     this.forceLeft,
     super.key,
   });
 
   final TextStyle? style;
-  final Message message;
+  final MessageModel model;
   final bool? forceLeft;
 
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    bool left = forceLeft ?? message.direction == MessageDirection.RECEIVE;
+    bool left = forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
     Widget content = Text(
       ChatUIKitLocal.nonSupportMessage.getString(context),
       textScaler: TextScaler.noScaling,

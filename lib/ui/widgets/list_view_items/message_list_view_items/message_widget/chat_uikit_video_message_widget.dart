@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 
 class ChatUIKitVideoMessageWidget extends StatefulWidget {
   const ChatUIKitVideoMessageWidget({
-    required this.message,
+    required this.model,
     this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     this.progressIndicatorColor,
     this.forceLeft,
     super.key,
   });
-  final Message message;
+  final MessageModel model;
   final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
   final Color? progressIndicatorColor;
   final bool? forceLeft;
@@ -23,7 +23,7 @@ class ChatUIKitVideoMessageWidget extends StatefulWidget {
 
 class _ChatUIKitVideoMessageWidgetState
     extends State<ChatUIKitVideoMessageWidget> with MessageObserver {
-  late final Message message;
+  late MessageModel model;
   bool downloading = false;
   bool downloadError = false;
 
@@ -31,7 +31,7 @@ class _ChatUIKitVideoMessageWidgetState
   void initState() {
     super.initState();
     ChatUIKit.instance.addObserver(this);
-    message = widget.message;
+    model = widget.model;
   }
 
   @override
@@ -42,7 +42,8 @@ class _ChatUIKitVideoMessageWidgetState
 
   @override
   void onSuccess(String msgId, Message msg) {
-    if (msgId == message.msgId) {
+    if (msgId == model.message.msgId) {
+      model = model.copyWith(message: msg);
       safeSetState(() {
         downloading = false;
       });
@@ -68,11 +69,10 @@ class _ChatUIKitVideoMessageWidgetState
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    bool left =
-        widget.forceLeft ?? message.direction == MessageDirection.RECEIVE;
-    String? thumbnailLocalPath = message.thumbnailLocalPath;
-    double width = message.width;
-    double height = message.height;
+    bool left = widget.forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
+    String? thumbnailLocalPath = model.message.thumbnailLocalPath;
+    double width = model.message.width;
+    double height = model.message.height;
     if (width == 0) width = maxImageWidth;
     if (height == 0) height = maxImageHeight;
     double aspectRatio = width / height;
@@ -106,7 +106,7 @@ class _ChatUIKitVideoMessageWidgetState
 
     Widget? content;
 
-    if (downloadError && message.direction == MessageDirection.RECEIVE) {
+    if (downloadError && model.message.direction == MessageDirection.RECEIVE) {
       content = loadError(width, height);
     } else {
       if (thumbnailLocalPath?.isNotEmpty == true) {
@@ -213,7 +213,7 @@ class _ChatUIKitVideoMessageWidgetState
 
     safeSetState(() {
       downloading = true;
-      ChatUIKit.instance.downloadThumbnail(message: message);
+      ChatUIKit.instance.downloadThumbnail(message: model.message);
     });
   }
 

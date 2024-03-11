@@ -55,7 +55,7 @@ export 'ui/widgets/list_view_items/message_list_view_items/message_widget/chat_u
 export 'ui/widgets/list_view_items/message_list_view_items/message_widget/chat_uikit_card_message_widget.dart';
 export 'ui/widgets/list_view_items/message_list_view_items/message_widget/chat_uikit_nonsupport_message_widget.dart';
 export 'ui/widgets/list_view_items/message_list_view_items/message_widget/chat_uikit_combine_message_widget.dart';
-
+export 'ui/widgets/list_view_items/message_list_view_items/chat_uikit_message_reactions_row.dart';
 export 'ui/widgets/chat_uikit_app_bar.dart';
 export 'ui/widgets/chat_uikit_avatar.dart';
 export 'ui/widgets/chat_uikit_alphabetical_widget.dart';

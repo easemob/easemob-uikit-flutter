@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class ChatUIKitReplyBar extends StatefulWidget {
   const ChatUIKitReplyBar({
-    required this.message,
+    required this.messageModel,
     this.onCancelTap,
     this.backgroundColor,
     this.title,
@@ -18,7 +18,7 @@ class ChatUIKitReplyBar extends StatefulWidget {
   final Widget? subTitle;
   final Widget? leading;
   final Widget? trailing;
-  final Message message;
+  final MessageModel messageModel;
   final VoidCallback? onCancelTap;
   final Color? backgroundColor;
 
@@ -50,9 +50,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
     if (widget.trailing != null) {
       children.add(widget.trailing!);
     } else {
-      if (widget.message.bodyType == MessageType.IMAGE) {
+      if (widget.messageModel.message.bodyType == MessageType.IMAGE) {
         children.add(_imagePreview());
-      } else if (widget.message.bodyType == MessageType.VIDEO) {
+      } else if (widget.messageModel.message.bodyType == MessageType.VIDEO) {
         children.add(_videoPreview());
       }
       children.add(
@@ -109,7 +109,8 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
                 ),
               ),
               TextSpan(
-                text: widget.message.nickname ?? widget.message.from!,
+                text: widget.messageModel.message.nickname ??
+                    widget.messageModel.message.from!,
                 style: TextStyle(
                   fontWeight: theme.font.labelSmall.fontWeight,
                   fontSize: theme.font.labelSmall.fontSize,
@@ -128,17 +129,17 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
       return widget.subTitle!;
     }
 
-    if (widget.message.bodyType == MessageType.TXT) {
+    if (widget.messageModel.message.bodyType == MessageType.TXT) {
       return _textWidget(theme);
-    } else if (widget.message.bodyType == MessageType.IMAGE) {
+    } else if (widget.messageModel.message.bodyType == MessageType.IMAGE) {
       return _imageWidget(theme);
-    } else if (widget.message.bodyType == MessageType.VIDEO) {
+    } else if (widget.messageModel.message.bodyType == MessageType.VIDEO) {
       return _videoWidget(theme);
-    } else if (widget.message.bodyType == MessageType.VOICE) {
+    } else if (widget.messageModel.message.bodyType == MessageType.VOICE) {
       return _voiceWidget(theme);
-    } else if (widget.message.bodyType == MessageType.FILE) {
+    } else if (widget.messageModel.message.bodyType == MessageType.FILE) {
       return _fileWidget(theme);
-    } else if (widget.message.bodyType == MessageType.CUSTOM) {
+    } else if (widget.messageModel.message.bodyType == MessageType.CUSTOM) {
       return _customWidget(theme);
     } else {
       return const SizedBox();
@@ -148,7 +149,7 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
   Widget _textWidget(ChatUIKitTheme theme) {
     return ChatUIKitEmojiRichText(
       emojiSize: const Size(16, 16),
-      text: widget.message.textContent,
+      text: widget.messageModel.message.textContent,
       textScaler: TextScaler.noScaling,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
@@ -245,7 +246,7 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
                   ),
                 ),
                 TextSpan(
-                  text: "${widget.message.duration}''",
+                  text: "${widget.messageModel.message.duration}''",
                   style: TextStyle(
                     fontWeight: theme.font.labelSmall.fontWeight,
                     fontSize: theme.font.labelSmall.fontSize,
@@ -293,7 +294,7 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
                 ),
               ),
               TextSpan(
-                text: widget.message.displayName,
+                text: widget.messageModel.message.displayName,
                 style: TextStyle(
                   fontWeight: theme.font.bodySmall.fontWeight,
                   fontSize: theme.font.bodySmall.fontSize,
@@ -310,7 +311,7 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
   }
 
   Widget _customWidget(ChatUIKitTheme theme) {
-    if (widget.message.isCardMessage) {
+    if (widget.messageModel.message.isCardMessage) {
       return Row(
         children: [
           Icon(
@@ -339,8 +340,8 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
                     ),
                   ),
                   TextSpan(
-                    text: widget.message.cardUserNickname ??
-                        widget.message.cardUserId,
+                    text: widget.messageModel.message.cardUserNickname ??
+                        widget.messageModel.message.cardUserId,
                     style: TextStyle(
                       fontWeight: theme.font.bodyMedium.fontWeight,
                       fontSize: theme.font.bodyMedium.fontSize,
@@ -362,8 +363,8 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
   Widget _imagePreview() {
     return () {
       Widget? content;
-      if (widget.message.thumbnailLocalPath?.isNotEmpty == true) {
-        File file = File(widget.message.thumbnailLocalPath!);
+      if (widget.messageModel.message.thumbnailLocalPath?.isNotEmpty == true) {
+        File file = File(widget.messageModel.message.thumbnailLocalPath!);
         if (file.existsSync()) {
           content = Image(
             image: ResizeImage(
@@ -378,11 +379,11 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
         }
       }
 
-      if (widget.message.thumbnailRemotePath?.isNotEmpty == true &&
+      if (widget.messageModel.message.thumbnailRemotePath?.isNotEmpty == true &&
           content == null) {
         content = Image(
           image: ResizeImage(
-            NetworkImage(widget.message.thumbnailRemotePath!),
+            NetworkImage(widget.messageModel.message.thumbnailRemotePath!),
             width: 36,
             height: 36,
           ),
@@ -392,8 +393,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
         );
       }
 
-      if (widget.message.localPath?.isNotEmpty == true && content == null) {
-        File file = File(widget.message.localPath!);
+      if (widget.messageModel.message.localPath?.isNotEmpty == true &&
+          content == null) {
+        File file = File(widget.messageModel.message.localPath!);
         if (file.existsSync()) {
           content = Image(
             image: ResizeImage(
@@ -454,8 +456,8 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
     final theme = ChatUIKitTheme.of(context);
     return () {
       Widget? content;
-      if (widget.message.thumbnailLocalPath?.isNotEmpty == true) {
-        File file = File(widget.message.thumbnailLocalPath!);
+      if (widget.messageModel.message.thumbnailLocalPath?.isNotEmpty == true) {
+        File file = File(widget.messageModel.message.thumbnailLocalPath!);
         if (file.existsSync()) {
           content = Image(
             image: ResizeImage(
@@ -470,11 +472,11 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
         }
       }
 
-      if (widget.message.thumbnailRemotePath?.isNotEmpty == true &&
+      if (widget.messageModel.message.thumbnailRemotePath?.isNotEmpty == true &&
           content == null) {
         content = Image(
           image: ResizeImage(
-            NetworkImage(widget.message.thumbnailRemotePath!),
+            NetworkImage(widget.messageModel.message.thumbnailRemotePath!),
             width: 36,
             height: 36,
           ),

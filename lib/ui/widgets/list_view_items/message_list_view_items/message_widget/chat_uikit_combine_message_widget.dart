@@ -4,13 +4,13 @@ import 'package:flutter/widgets.dart';
 
 class ChatUIKitCombineMessageWidget extends StatelessWidget {
   const ChatUIKitCombineMessageWidget({
-    required this.message,
+    required this.model,
     this.forceLeft,
     this.style,
     this.summaryBuilder,
     super.key,
   });
-  final Message message;
+  final MessageModel model;
   final TextStyle? style;
   final bool? forceLeft;
   final String? Function(BuildContext context, String summary)? summaryBuilder;
@@ -18,7 +18,7 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    bool left = forceLeft ?? message.direction == MessageDirection.RECEIVE;
+    bool left = forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     List<Widget> widgets = [];
     Widget content = ChatUIKitEmojiRichText(
@@ -100,7 +100,7 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
 
   String summary(BuildContext context) {
     List<String> summaries = [];
-    List<String> tmpList = message.summary?.split('\n') ?? [];
+    List<String> tmpList = model.message.summary?.split('\n') ?? [];
     for (var str in tmpList) {
       String? summaryTmp = summaryBuilder?.call(context, str);
       if (summaryTmp?.isNotEmpty == true) {

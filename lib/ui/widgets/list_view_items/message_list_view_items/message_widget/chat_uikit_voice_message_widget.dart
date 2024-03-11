@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class ChatUIKitVoiceMessageWidget extends StatefulWidget {
   const ChatUIKitVoiceMessageWidget({
-    required this.message,
+    required this.model,
     this.style,
     this.icon,
     this.playing = false,
@@ -12,7 +12,7 @@ class ChatUIKitVoiceMessageWidget extends StatefulWidget {
     super.key,
   });
   final TextStyle? style;
-  final Message message;
+  final MessageModel model;
   final Widget? icon;
   final bool playing;
   final bool? forceLeft;
@@ -25,13 +25,13 @@ class ChatUIKitVoiceMessageWidget extends StatefulWidget {
 class _ChatUIKitVoiceMessageWidgetState
     extends State<ChatUIKitVoiceMessageWidget>
     with SingleTickerProviderStateMixin {
-  late final Message message;
+  late final MessageModel model;
   late AnimationController controller;
   late Animation<int> animation;
   @override
   void initState() {
     super.initState();
-    message = widget.message;
+    model = widget.model;
     controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 1000));
     animation = IntTween(begin: 0, end: 2).animate(controller)
@@ -57,7 +57,7 @@ class _ChatUIKitVoiceMessageWidgetState
     }
     final theme = ChatUIKitTheme.of(context);
     bool left =
-        widget.forceLeft ?? message.direction == MessageDirection.RECEIVE;
+        widget.forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     Color iconColor = left
         ? theme.color.isDark
@@ -75,7 +75,7 @@ class _ChatUIKitVoiceMessageWidgetState
             : theme.color.neutralColor98;
 
     Widget timeWidget = Text(
-      '${message.duration}"',
+      '${model.message.duration}"',
       textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
@@ -106,18 +106,20 @@ class _ChatUIKitVoiceMessageWidgetState
       children: [iconWidget, const SizedBox(width: 2), timeWidget],
     );
 
+    int duration = model.message.duration;
+
     double width = 70;
-    if (message.duration < 10 && message.duration >= 0) {
+    if (duration < 10 && duration >= 0) {
       width = 70;
-    } else if (message.duration < 20 && message.duration > 9) {
+    } else if (duration < 20 && duration > 9) {
       width = 95;
-    } else if (message.duration < 30 && message.duration > 19) {
+    } else if (duration < 30 && duration > 19) {
       width = 120;
-    } else if (message.duration < 40 && message.duration > 29) {
+    } else if (duration < 40 && duration > 29) {
       width = 145;
-    } else if (message.duration < 50 && message.duration > 39) {
+    } else if (duration < 50 && duration > 39) {
       width = 170;
-    } else if (message.duration < 60 && message.duration > 49) {
+    } else if (duration < 60 && duration > 49) {
       width = 195;
     } else {
       width = 220;

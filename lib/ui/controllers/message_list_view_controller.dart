@@ -26,7 +26,7 @@ class MessageListViewController extends ChangeNotifier
   final Message? Function(Message)? willSendHandler;
 
   /// 消息列表
-  final List<MessageModel> msgList = [];
+  final List<MessageModel> msgModelList = [];
 
   /// 用户信息缓存，用于显示头像昵称, 不建议修改， 详细参考 [UserData]
   final Map<String, UserData> userMap = {};
@@ -60,7 +60,7 @@ class MessageListViewController extends ChangeNotifier
   bool isMultiSelectMode = false;
 
   void clearMessages() {
-    msgList.clear();
+    msgModelList.clear();
     lastActionType = MessageLastActionType.none;
     hasNew = false;
     _lastMessageId = null;
@@ -112,9 +112,14 @@ class MessageListViewController extends ChangeNotifier
     if (list.isNotEmpty) {
       List<MessageModel> modelLists = [];
       _lastMessageId = list.first.msgId;
+
       for (var msg in list) {
+        List<MessageReaction> reactions = await msg.reactionList();
         modelLists.add(
-          MessageModel(id: getModelId(msg), message: msg),
+          MessageModel(
+            message: msg,
+            reactions: reactions,
+          ),
         );
         UserData? userData = userMap[msg.from!];
         if ((userData?.time ?? 0) < msg.serverTime) {
@@ -126,7 +131,7 @@ class MessageListViewController extends ChangeNotifier
           userMap[msg.from!] = userData;
         }
       }
-      msgList.addAll(modelLists.reversed);
+      msgModelList.addAll(modelLists.reversed);
 
       lastActionType = MessageLastActionType.load;
 
@@ -141,10 +146,10 @@ class MessageListViewController extends ChangeNotifier
     String operatorId,
     int operationTime,
   ) {
-    final index =
-        msgList.indexWhere((element) => element.message.msgId == message.msgId);
+    final index = msgModelList
+        .indexWhere((element) => element.message.msgId == message.msgId);
     if (index != -1) {
-      msgList[index] = msgList[index].coyWith(message: message);
+      msgModelList[index] = msgModelList[index].copyWith(message: message);
 
       updateView();
     }
@@ -155,7 +160,7 @@ class MessageListViewController extends ChangeNotifier
     List<MessageModel> list = [];
     for (var element in messages) {
       if (element.conversationId == profile.id) {
-        list.add(MessageModel(id: getModelId(element), message: element));
+        list.add(MessageModel(message: element));
         userMap[element.from!] = UserData(
           nickname: element.nickname,
           avatarUrl: element.avatarUrl,
@@ -164,7 +169,7 @@ class MessageListViewController extends ChangeNotifier
     }
     if (list.isNotEmpty) {
       _clearMention(list);
-      msgList.insertAll(0, list.reversed);
+      msgModelList.insertAll(0, list.reversed);
       hasNew = true;
       lastActionType = MessageLastActionType.receive;
 
@@ -175,7 +180,7 @@ class MessageListViewController extends ChangeNotifier
   @override
   void onConversationRead(String from, String to) {
     if (from == profile.id) {
-      for (var element in msgList) {
+      for (var element in msgModelList) {
         element.message.hasReadAck = true;
       }
 
@@ -185,7 +190,7 @@ class MessageListViewController extends ChangeNotifier
 
   @override
   void onMessagesDelivered(List<Message> messages) {
-    List<MessageModel> list = msgList
+    List<MessageModel> list = msgModelList
         .where((element1) => messages
             .where((element2) => element1.message.msgId == element2.msgId)
             .isNotEmpty)
@@ -201,7 +206,7 @@ class MessageListViewController extends ChangeNotifier
 
   @override
   void onMessagesRead(List<Message> messages) {
-    List<MessageModel> list = msgList
+    List<MessageModel> list = msgModelList
         .where((element1) => messages
             .where((element2) => element1.message.msgId == element2.msgId)
             .isNotEmpty)
@@ -218,10 +223,11 @@ class MessageListViewController extends ChangeNotifier
   void onMessagesRecalled(List<Message> recalled, List<Message> replaces) {
     bool needReload = false;
     for (var i = 0; i < recalled.length; i++) {
-      int index = msgList
+      int index = msgModelList
           .indexWhere((element) => recalled[i].msgId == element.message.msgId);
       if (index != -1) {
-        msgList[index] = msgList[index].coyWith(message: replaces[i]);
+        msgModelList[index] =
+            msgModelList[index].copyWith(message: replaces[i]);
         needReload = true;
       }
     }
@@ -237,29 +243,29 @@ class MessageListViewController extends ChangeNotifier
 
   @override
   void onSuccess(String msgId, Message msg) {
-    final index = msgList.indexWhere((element) =>
+    final index = msgModelList.indexWhere((element) =>
         element.message.msgId == msgId && msg.status != element.message.status);
     if (index != -1) {
-      msgList[index] = msgList[index].coyWith(message: msg);
+      msgModelList[index] = msgModelList[index].copyWith(message: msg);
       updateView();
     }
   }
 
   @override
   void onError(String msgId, Message msg, ChatError error) {
-    final index = msgList.indexWhere((element) =>
+    final index = msgModelList.indexWhere((element) =>
         element.message.msgId == msgId && msg.status != element.message.status);
     if (index != -1) {
-      msgList[index] = msgList[index].coyWith(message: msg);
+      msgModelList[index] = msgModelList[index].copyWith(message: msg);
       updateView();
     }
   }
 
   void replaceMessage(Message message) {
-    final index =
-        msgList.indexWhere((element) => element.message.msgId == message.msgId);
+    final index = msgModelList
+        .indexWhere((element) => element.message.msgId == message.msgId);
     if (index != -1) {
-      msgList[index] = msgList[index].coyWith(message: message);
+      msgModelList[index] = msgModelList[index].copyWith(message: message);
       updateView();
     }
   }
@@ -353,10 +359,10 @@ class MessageListViewController extends ChangeNotifier
         messageId: message.msgId,
         msgBody: msgBody,
       );
-      final index =
-          msgList.indexWhere((element) => msg.msgId == element.message.msgId);
+      final index = msgModelList
+          .indexWhere((element) => msg.msgId == element.message.msgId);
       if (index != -1) {
-        msgList[index] = msgList[index].coyWith(message: msg);
+        msgModelList[index] = msgModelList[index].copyWith(message: msg);
         updateView();
       }
       // ignore: empty_catches
@@ -370,15 +376,15 @@ class MessageListViewController extends ChangeNotifier
         type: conversationType,
         messageId: messageId,
       );
-      msgList.removeWhere((element) => messageId == element.message.msgId);
+      msgModelList.removeWhere((element) => messageId == element.message.msgId);
       updateView();
       // ignore: empty_catches
     } catch (e) {}
   }
 
   Future<void> recallMessage(Message message) async {
-    int index =
-        msgList.indexWhere((element) => message.msgId == element.message.msgId);
+    int index = msgModelList
+        .indexWhere((element) => message.msgId == element.message.msgId);
     if (index != -1) {
       try {
         await ChatUIKit.instance.recallMessage(message: message);
@@ -528,16 +534,17 @@ class MessageListViewController extends ChangeNotifier
       nickname: ChatUIKitProvider.instance.currentUserData?.nickname,
       avatarUrl: ChatUIKitProvider.instance.currentUserData?.avatarUrl,
     );
-    msgList.insert(0, MessageModel(id: getModelId(msg), message: msg));
+    msgModelList.insert(0, MessageModel(message: msg));
     hasNew = true;
     lastActionType = MessageLastActionType.send;
     updateView();
   }
 
   Future<void> resendMessage(Message message) async {
-    msgList.removeWhere((element) => element.message.msgId == message.msgId);
+    msgModelList
+        .removeWhere((element) => element.message.msgId == message.msgId);
     final msg = await ChatUIKit.instance.sendMessage(message: message);
-    msgList.insert(0, MessageModel(id: getModelId(msg), message: msg));
+    msgModelList.insert(0, MessageModel(message: msg));
     hasNew = true;
     lastActionType = MessageLastActionType.send;
     updateView();
@@ -571,7 +578,7 @@ class MessageListViewController extends ChangeNotifier
         if (unreadCount > 0) {
           await ChatUIKit.instance
               .sendConversationReadAck(conversationId: profile.id);
-          for (var element in msgList) {
+          for (var element in msgModelList) {
             element.message.hasReadAck = true;
           }
         }
@@ -647,9 +654,28 @@ class MessageListViewController extends ChangeNotifier
         type: conversationType,
         messageIds: messageIds,
       );
-      msgList
+      msgModelList
           .removeWhere((element) => messageIds.contains(element.message.msgId));
 
+      updateView();
+      // ignore: empty_catches
+    } catch (e) {}
+  }
+
+  Future<void> updateReaction(
+      String messageId, String reaction, bool isAdd) async {
+    try {
+      if (isAdd) {
+        await ChatUIKit.instance.addReaction(
+          messageId: messageId,
+          reaction: reaction,
+        );
+      } else {
+        await ChatUIKit.instance.deleteReaction(
+          messageId: messageId,
+          reaction: reaction,
+        );
+      }
       updateView();
       // ignore: empty_catches
     } catch (e) {}

@@ -39,7 +39,7 @@ class ForwardMessagesView extends StatefulWidget {
 class _ForwardMessagesViewState extends State<ForwardMessagesView>
     with ChatObserver {
   late Message message;
-  List<Message> messages = [];
+  List<MessageModel> models = [];
   @override
   void initState() {
     super.initState();
@@ -60,9 +60,10 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
     try {
       List<Message> fetchedMsgs =
           await ChatUIKit.instance.fetchCombineMessageDetail(message: message);
-      messages.addAll(fetchedMsgs);
+
+      models.addAll(fetchedMsgs.map((e) => MessageModel(message: message)));
     } catch (e) {
-      debugPrint('downloadMessage error: $e');
+      debugPrint('download error: $e');
     } finally {
       ChatUIKit.instance
           .loadMessage(messageId: widget.message.msgId)
@@ -122,7 +123,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
   Widget historyWidget(ChatUIKitTheme theme) {
     return ListView.separated(
       itemBuilder: (context, index) {
-        return item(messages[index], theme);
+        return item(models[index], theme);
       },
       separatorBuilder: (context, index) {
         return Divider(
@@ -135,37 +136,37 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
               : theme.color.neutralColor9,
         );
       },
-      itemCount: messages.length,
+      itemCount: models.length,
     );
   }
 
-  Widget item(Message fetchedMsg, ChatUIKitTheme theme) {
+  Widget item(MessageModel model, ChatUIKitTheme theme) {
     Widget content;
-    switch (fetchedMsg.body.type) {
+    switch (model.message.body.type) {
       case MessageType.TXT:
-        content = textWidget(fetchedMsg, theme);
+        content = textWidget(model, theme);
         break;
       case MessageType.IMAGE:
-        content = imageWidget(fetchedMsg, theme);
+        content = imageWidget(model, theme);
         break;
       case MessageType.VIDEO:
-        content = videoWidget(fetchedMsg, theme);
+        content = videoWidget(model, theme);
         break;
       case MessageType.VOICE:
-        content = voiceWidget(fetchedMsg, theme);
+        content = voiceWidget(model, theme);
         break;
       case MessageType.LOCATION:
-        content = locationWidget(fetchedMsg, theme);
+        content = locationWidget(model, theme);
         break;
       case MessageType.COMBINE:
-        content = combineWidget(fetchedMsg, theme);
+        content = combineWidget(model, theme);
         break;
       case MessageType.FILE:
-        content = fileWidget(fetchedMsg, theme);
+        content = fileWidget(model, theme);
         break;
       case MessageType.CUSTOM:
-        if (fetchedMsg.isCardMessage) {
-          content = cardWidget(fetchedMsg, theme);
+        if (model.message.isCardMessage) {
+          content = cardWidget(model, theme);
         } else {
           content = const SizedBox();
         }
@@ -181,7 +182,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
       children: [
         Expanded(
           child: Text(
-            fetchedMsg.nickname ?? fetchedMsg.from!,
+            model.message.nickname ?? model.message.from!,
             textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
@@ -197,8 +198,8 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
         const SizedBox(width: 10),
         Text(
           ChatUIKitTimeFormatter.instance.formatterHandler?.call(context,
-                  ChatUIKitTimeType.conversation, fetchedMsg.serverTime) ??
-              ChatUIKitTimeTool.getChatTimeStr(fetchedMsg.serverTime),
+                  ChatUIKitTimeType.conversation, model.message.serverTime) ??
+              ChatUIKitTimeTool.getChatTimeStr(model.message.serverTime),
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
@@ -216,7 +217,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: [
-        ChatUIKitAvatar(avatarUrl: fetchedMsg.avatarUrl),
+        ChatUIKitAvatar(avatarUrl: model.message.avatarUrl),
         const SizedBox(width: 10),
         Expanded(
           child: Column(
@@ -238,8 +239,8 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
     return content;
   }
 
-  Widget textWidget(Message message, ChatUIKitTheme theme) {
-    final body = message.body as TextMessageBody;
+  Widget textWidget(MessageModel model, ChatUIKitTheme theme) {
+    final body = model.message.body as TextMessageBody;
     return ChatUIKitEmojiRichText(
       emojiSize: const Size(16, 16),
       text: body.content,
@@ -251,7 +252,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
     );
   }
 
-  Widget imageWidget(Message message, ChatUIKitTheme theme) {
+  Widget imageWidget(MessageModel model, ChatUIKitTheme theme) {
     return InkWell(
       onTap: () {
         ChatUIKitRoute.pushOrPushNamed(
@@ -261,11 +262,11 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
               message: message,
             ));
       },
-      child: ChatUIKitImageMessageWidget(message: message),
+      child: ChatUIKitImageMessageWidget(model: model),
     );
   }
 
-  Widget voiceWidget(Message message, ChatUIKitTheme theme) {
+  Widget voiceWidget(MessageModel model, ChatUIKitTheme theme) {
     final body = message.body as VoiceMessageBody;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -292,7 +293,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
     );
   }
 
-  Widget videoWidget(Message message, ChatUIKitTheme theme) {
+  Widget videoWidget(MessageModel model, ChatUIKitTheme theme) {
     return InkWell(
       onTap: () {
         ChatUIKitRoute.pushOrPushNamed(
@@ -302,11 +303,11 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
               message: message,
             ));
       },
-      child: ChatUIKitVideoMessageWidget(message: message),
+      child: ChatUIKitVideoMessageWidget(model: model),
     );
   }
 
-  Widget locationWidget(Message message, ChatUIKitTheme theme) {
+  Widget locationWidget(MessageModel model, ChatUIKitTheme theme) {
     final body = message.body as LocationMessageBody;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -333,7 +334,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
     );
   }
 
-  Widget cardWidget(Message message, ChatUIKitTheme theme) {
+  Widget cardWidget(MessageModel model, ChatUIKitTheme theme) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -347,7 +348,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
           ),
         ),
         Text(
-          " ${message.cardUserNickname ?? message.cardUserId ?? ''}",
+          " ${model.message.cardUserNickname ?? model.message.cardUserId ?? ''}",
           textScaler: TextScaler.noScaling,
           style: TextStyle(
             textBaseline: TextBaseline.alphabetic,
@@ -359,7 +360,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
     );
   }
 
-  Widget combineWidget(Message message, ChatUIKitTheme theme) {
+  Widget combineWidget(MessageModel model, ChatUIKitTheme theme) {
     return Text(
       "${[ChatUIKitLocal.messageCellCombineCombine.getString(context)]}",
       textScaler: TextScaler.noScaling,
@@ -371,7 +372,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
     );
   }
 
-  Widget fileWidget(Message message, ChatUIKitTheme theme) {
+  Widget fileWidget(MessageModel model, ChatUIKitTheme theme) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [

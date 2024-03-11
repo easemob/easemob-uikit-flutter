@@ -154,11 +154,14 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
                     ],
                   ),
                 ),
-                ChatUIKitEmojiRichText(
-                  text: info.lastMessage?.showInfo(context) ?? '',
-                  emojiSize: const Size(16, 16),
-                  style: style,
-                )
+                Expanded(
+                  child: ChatUIKitEmojiRichText(
+                    text: info.lastMessage?.showInfo(context) ?? '',
+                    emojiSize: const Size(16, 16),
+                    style: style,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             );
     }

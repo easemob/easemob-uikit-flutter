@@ -6,21 +6,22 @@ import 'package:flutter/material.dart';
 
 class ChatUIKitTextMessageWidget extends StatelessWidget {
   const ChatUIKitTextMessageWidget({
-    required this.message,
+    required this.model,
     this.style,
     this.forceLeft,
     super.key,
   });
   final TextStyle? style;
-  final Message message;
+  final MessageModel model;
   final bool? forceLeft;
 
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    bool left = forceLeft ?? message.direction == MessageDirection.RECEIVE;
+    bool left =
+        forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
-    String str = message.textContent;
+    String str = model.message.textContent;
 
     TextStyle tmpStyle = style ??
         (left
@@ -46,7 +47,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
 
     List<Widget> widgets = [content];
 
-    if (message.isEdit) {
+    if (model.message.isEdit) {
       widgets.add(
         RichText(
           text: TextSpan(
@@ -84,7 +85,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
         ),
       );
     }
-    if (message.hasTranslate) {
+    if (model.message.hasTranslate) {
       widgets.add(
         SizedBox(
             width: getSize(theme),
@@ -100,7 +101,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
       );
       widgets.add(
         ChatUIKitEmojiRichText(
-          text: message.translateText,
+          text: model.message.translateText,
           style: TextStyle(
             fontWeight: theme.font.bodyLarge.fontWeight,
             fontSize: theme.font.bodyLarge.fontSize,
@@ -170,7 +171,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
 
     TextPainter painter1 = TextPainter(
       text: TextSpan(
-        text: message.textContent,
+        text: model.message.textContent,
         style: tmpStyle,
       ),
       textDirection: TextDirection.ltr,
@@ -178,7 +179,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
 
     TextPainter painter2 = TextPainter(
       text: TextSpan(
-        text: message.translateText,
+        text: model.message.translateText,
         style: tmpStyle,
       ),
       textDirection: TextDirection.ltr,

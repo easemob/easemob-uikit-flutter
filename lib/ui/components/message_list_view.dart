@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 typedef MessageItemBuilder = Widget? Function(
   BuildContext context,
-  Message message,
+  MessageModel model,
 );
 
 typedef MessageListItemTapHandler = void Function(
-    BuildContext context, Message message);
+    BuildContext context, MessageModel model);
 
 class MessageListView extends StatefulWidget {
   const MessageListView({
@@ -46,7 +46,7 @@ class MessageListView extends StatefulWidget {
   final bool showAvatar;
   final bool showNickname;
   final Widget Function(BuildContext context, QuoteModel model)? quoteBuilder;
-  final void Function(Message message)? onErrorTap;
+  final void Function(MessageModel model)? onErrorTap;
   final MessageItemBubbleBuilder? bubbleBuilder;
   final MessageBubbleContentBuilder? bubbleContentBuilder;
   final bool? forceLeft;
@@ -109,12 +109,12 @@ class _MessageListViewState extends State<MessageListView> {
     theme ??= ChatUIKitTheme.of(context);
     size ??= MediaQuery.of(context).size;
     Widget content = CustomScrollView(
-      physics: controller.msgList.length > 15
+      physics: controller.msgModelList.length > 15
           ? const AlwaysScrollableScrollPhysics()
           : const BouncingScrollPhysics(),
       controller: _scrollController,
       reverse: true,
-      shrinkWrap: controller.msgList.length > 15 ? false : true,
+      shrinkWrap: controller.msgModelList.length > 15 ? false : true,
       cacheExtent: 1500,
       slivers: [
         SliverPadding(
@@ -124,8 +124,8 @@ class _MessageListViewState extends State<MessageListView> {
               findChildIndexCallback: (key) {
                 if (key is ValueKey<String?> && key.value != null) {
                   final ValueKey<String?> valueKey = key;
-                  int index = controller.msgList.indexWhere(
-                    (msg) => msg.id == valueKey.value,
+                  int index = controller.msgModelList.indexWhere(
+                    (model) => model.id == valueKey.value,
                   );
                   return index > -1 ? index : null;
                 } else {
@@ -134,11 +134,11 @@ class _MessageListViewState extends State<MessageListView> {
               },
               (context, index) {
                 return SizedBox(
-                  key: ValueKey(controller.msgList[index].id),
-                  child: _item(controller.msgList[index], index),
+                  key: ValueKey(controller.msgModelList[index].id),
+                  child: _item(controller.msgModelList[index], index),
                 );
               },
-              childCount: controller.msgList.length,
+              childCount: controller.msgModelList.length,
             ),
           ),
         ),
@@ -201,7 +201,7 @@ class _MessageListViewState extends State<MessageListView> {
     if (model.message.isTimeMessageAlert) {
       Widget? content = widget.alertItemBuilder?.call(
         context,
-        model.message,
+        model,
       );
       content ??= ChatUIKitMessageListViewAlertItem(
         infos: [
@@ -226,11 +226,11 @@ class _MessageListViewState extends State<MessageListView> {
         model.message.isKickedGroupAlert ||
         model.message.isLeaveGroupAlert) {
       if (widget.alertItemBuilder != null) {
-        return widget.alertItemBuilder!.call(context, model.message)!;
+        return widget.alertItemBuilder!.call(context, model)!;
       }
     }
 
-    Widget? content = widget.itemBuilder?.call(context, model.message);
+    Widget? content = widget.itemBuilder?.call(context, model);
     content ??= ChatUIKitMessageListViewMessageItem(
       enableSelected: controller.isMultiSelectMode
           ? () {
@@ -250,7 +250,7 @@ class _MessageListViewState extends State<MessageListView> {
       bubbleContentBuilder: widget.bubbleContentBuilder,
       bubbleBuilder: widget.bubbleBuilder,
       onErrorTap: () {
-        widget.onErrorTap?.call(model.message);
+        widget.onErrorTap?.call(model);
       },
       bubbleStyle: widget.bubbleStyle,
       showAvatar: widget.showAvatar,
@@ -262,25 +262,26 @@ class _MessageListViewState extends State<MessageListView> {
       showNickname: widget.showNickname,
       onAvatarTap: () {
         if (widget.onAvatarTap != null) {
-          widget.onAvatarTap?.call(context, model.message);
+          widget.onAvatarTap?.call(context, model);
         }
       },
       onAvatarLongPressed: () {
-        widget.onAvatarLongPressed?.call(context, model.message);
+        widget.onAvatarLongPressed?.call(context, model);
       },
       onBubbleDoubleTap: () {
-        widget.onDoubleTap?.call(context, model.message);
+        widget.onDoubleTap?.call(context, model);
       },
       onBubbleLongPressed: () {
-        widget.onItemLongPress?.call(context, model.message);
+        widget.onItemLongPress?.call(context, model);
       },
       onBubbleTap: () {
-        widget.onItemTap?.call(context, model.message);
+        widget.onItemTap?.call(context, model);
       },
       onNicknameTap: () {
-        widget.onNicknameTap?.call(context, model.message);
+        widget.onNicknameTap?.call(context, model);
       },
-      message: model.message,
+      model: model,
+      reactions: model.reactions,
     );
 
     double zoom = 0.8;
@@ -374,7 +375,7 @@ class _MessageListViewState extends State<MessageListView> {
   }
 
   void jumpToQuoteModel(QuoteModel model) async {
-    int index = controller.msgList
+    int index = controller.msgModelList
         .indexWhere((element) => element.message.msgId == model.msgId);
 
     if (index != -1) {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class ChatUIKitFileMessageWidget extends StatelessWidget {
   const ChatUIKitFileMessageWidget({
-    required this.message,
+    required this.model,
     this.titleStyle,
     this.subTitleStyle,
     this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
@@ -13,7 +13,7 @@ class ChatUIKitFileMessageWidget extends StatelessWidget {
   });
   final TextStyle? titleStyle;
   final TextStyle? subTitleStyle;
-  final Message message;
+  final MessageModel model;
   final Widget? icon;
   final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
   final bool? forceLeft;
@@ -21,10 +21,10 @@ class ChatUIKitFileMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    bool left = forceLeft ?? message.direction == MessageDirection.RECEIVE;
+    bool left = forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     Widget title = Text(
-      message.displayName ?? '',
+      model.message.displayName ?? '',
       textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
@@ -42,7 +42,7 @@ class ChatUIKitFileMessageWidget extends StatelessWidget {
           ),
     );
     Widget subTitle = Text(
-      message.fileSizeStr,
+      model.message.fileSizeStr,
       textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
