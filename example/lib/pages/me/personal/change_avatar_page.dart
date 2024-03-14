@@ -44,14 +44,18 @@ class _ChangeAvatarPageState extends State<ChangeAvatarPage> {
                   _selected = -1;
                 } else {
                   _selected = position;
-                  UserData? data = ChatUIKitProvider.instance.currentUserData;
+                  ChatUIKitProfile? data =
+                      ChatUIKitProvider.instance.currentUserProfile;
                   if (data == null) {
-                    data = UserData(avatarUrl: RemoteAvatars.avatars[position]);
+                    data = ChatUIKitProfile.contact(
+                      id: ChatUIKit.instance.currentUserId!,
+                      avatarUrl: RemoteAvatars.avatars[position],
+                    );
                   } else {
                     data = data.copyWith(
                         avatarUrl: RemoteAvatars.avatars[position]);
                   }
-                  ChatUIKitProvider.instance.currentUserData = data;
+                  ChatUIKitProvider.instance.addProfiles([data]);
                   UserDataStore().saveUserData(data);
                 }
                 setState(() {});

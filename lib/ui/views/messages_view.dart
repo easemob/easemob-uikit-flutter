@@ -2,24 +2,10 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/ui/widgets/list_view_items/chat_uikit_message_reaction_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../universal/defines.dart';
-
-typedef MessagesViewItemLongPressHandler = List<ChatUIKitBottomSheetItem>?
-    Function(
-  BuildContext context,
-  MessageModel model,
-  List<ChatUIKitBottomSheetItem> defaultActions,
-);
-
-typedef MessageItemTapHandler = bool? Function(
-    BuildContext context, MessageModel model);
-
-typedef MessagesViewMorePressHandler = List<ChatUIKitBottomSheetItem>? Function(
-  BuildContext context,
-  List<ChatUIKitBottomSheetItem> defaultActions,
-);
 
 /// 消息页面
 class MessagesView extends StatefulWidget {
@@ -47,7 +33,7 @@ class MessagesView extends StatefulWidget {
         longPressActions = arguments.longPressActions,
         replyBarBuilder = arguments.replyBarBuilder,
         quoteBuilder = arguments.quoteBuilder,
-        onErrorTapHandler = arguments.onErrorTapHandler,
+        onErrorBtnTapHandler = arguments.onErrorBtnTapHandler,
         bubbleBuilder = arguments.bubbleBuilder,
         enableAppBar = arguments.enableAppBar,
         onMoreActionsItemsHandler = arguments.onMoreActionsItemsHandler,
@@ -84,7 +70,7 @@ class MessagesView extends StatefulWidget {
     this.morePressActions,
     this.replyBarBuilder,
     this.quoteBuilder,
-    this.onErrorTapHandler,
+    this.onErrorBtnTapHandler,
     this.bubbleBuilder,
     this.bubbleContentBuilder,
     this.onMoreActionsItemsHandler,
@@ -176,13 +162,13 @@ class MessagesView extends StatefulWidget {
   final Widget Function(BuildContext context, QuoteModel model)? quoteBuilder;
 
   /// 错误消息点击事件，如果设置后将会替换默认的错误消息点击事件。如果不处理可以返回 `false`。默认行为为重新发送消息。
-  final MessageItemTapHandler? onErrorTapHandler;
+  final MessageItemTapHandler? onErrorBtnTapHandler;
 
   /// 气泡构建器，如果设置后将会替换默认的气泡构建器。详细参考 [MessageItemBubbleBuilder]。
   final MessageItemBubbleBuilder? bubbleBuilder;
 
-  /// 气泡内容构建器，如果设置后将会替换默认的气泡内容构建器。详细参考 [MessageBubbleContentBuilder]。
-  final MessageBubbleContentBuilder? bubbleContentBuilder;
+  /// 气泡内容构建器，如果设置后将会替换默认的气泡内容构建器。详细参考 [MessageItemBuilder]。
+  final MessageItemBuilder? bubbleContentBuilder;
 
   /// 输入框控制器，如果设置后将会替换默认的输入框控制器。详细参考 [CustomTextEditingController]。
   final CustomTextEditingController? inputBarTextEditingController;
@@ -292,11 +278,6 @@ class _MessagesViewState extends State<MessagesView>
   }
 
   @override
-  void onCurrentUserDataUpdate(
-    UserData? userData,
-  ) {}
-
-  @override
   void onTyping(List<String> fromUsers) {
     if (fromUsers.contains(controller.profile.id)) {
       updateInputType();
@@ -346,51 +327,64 @@ class _MessagesViewState extends State<MessagesView>
       controller: controller,
       showAvatar: widget.showMessageItemAvatar,
       showNickname: widget.showMessageItemNickname,
-      onItemTap: (ctx, msg) async {
+      onItemTap: (ctx, msg) {
+        stopVoice();
         bool? ret = widget.onItemTap?.call(context, msg);
-        await stopVoice();
         if (ret != true) {
           bubbleTab(msg);
         }
+        return ret;
       },
-      onItemLongPress: (context, model) async {
+      onItemLongPress: (context, model) {
         bool? ret = widget.onItemLongPress?.call(context, model);
         stopVoice();
         if (ret != true) {
           onItemLongPress(model);
         }
+        return ret;
       },
-      onDoubleTap: (context, model) async {
+      onDoubleTap: (context, model) {
         bool? ret = widget.onDoubleTap?.call(context, model);
         stopVoice();
-        if (ret != true) {}
+        return ret;
       },
-      onAvatarTap: (context, model) async {
+      onAvatarTap: (context, model) {
         bool? ret = widget.onAvatarTap?.call(context, model);
         stopVoice();
         if (ret != true) {
           avatarTap(model);
         }
+        return ret;
       },
-      onAvatarLongPressed: (context, model) async {
+      onAvatarLongPressed: (context, model) {
         bool? ret = widget.onAvatarLongPress?.call(context, model);
         stopVoice();
         if (ret != true) {}
+        return ret;
       },
-      onNicknameTap: (context, msg) async {
+      onNicknameTap: (context, msg) {
         bool? ret = widget.onNicknameTap?.call(context, msg);
         stopVoice();
         if (ret != true) {}
+        return ret;
       },
       bubbleStyle: widget.bubbleStyle,
       itemBuilder: widget.itemBuilder ?? voiceItemBuilder,
       alertItemBuilder: widget.alertItemBuilder ?? alertItem,
-      onErrorTap: (model) {
-        bool ret = widget.onErrorTapHandler?.call(context, model) ?? false;
+      onErrorBtnTap: (model) {
+        bool ret = widget.onErrorBtnTapHandler?.call(context, model) ?? false;
         if (ret == false) {
-          onErrorTap(model);
+          onErrorBtnTap(model);
         }
       },
+      onReactionTap: (model, reaction) {
+        controller.updateReaction(
+          model.message.msgId,
+          reaction.reaction,
+          !reaction.isAddedBySelf,
+        );
+      },
+      onReactionInfoTap: showReactionsInfo,
     );
 
     content = GestureDetector(
@@ -519,11 +513,11 @@ class _MessagesViewState extends State<MessagesView>
 
     Widget content = ChatUIKitMessageListViewMessageItem(
       isPlaying: _playingMessage?.msgId == model.message.msgId,
-      onErrorTap: () {
-        if (widget.onErrorTapHandler == null) {
-          onErrorTap(model);
+      onErrorBtnTap: () {
+        if (widget.onErrorBtnTapHandler == null) {
+          onErrorBtnTap(model);
         } else {
-          widget.onErrorTapHandler!.call(context, model);
+          widget.onErrorBtnTapHandler!.call(context, model);
         }
       },
       bubbleStyle: widget.bubbleStyle,
@@ -1235,7 +1229,7 @@ class _MessagesViewState extends State<MessagesView>
         ChatUIKitProfile profile = ChatUIKitProfile(
           id: userId!,
           avatarUrl: avatar,
-          name: name,
+          nickname: name,
           type: ChatUIKitProfileType.contact,
         );
         pushNextPage(profile);
@@ -1243,7 +1237,7 @@ class _MessagesViewState extends State<MessagesView>
     }
   }
 
-  void onErrorTap(MessageModel model) {
+  void onErrorBtnTap(MessageModel model) {
     controller.resendMessage(model.message);
   }
 
@@ -1563,7 +1557,7 @@ class _MessagesViewState extends State<MessagesView>
         },
         profile: profile,
         actions: [
-          ChatUIKitActionModel(
+          ChatUIKitModelAction(
             title: ChatUIKitLocal.contactDetailViewSend.getString(context),
             icon: 'assets/images/chat.png',
             packageName: ChatUIKitImageLoader.packageName,
@@ -1590,7 +1584,7 @@ class _MessagesViewState extends State<MessagesView>
           setState(() {});
         },
         actions: [
-          ChatUIKitActionModel(
+          ChatUIKitModelAction(
             title: ChatUIKitLocal.groupDetailViewSend.getString(context),
             icon: 'assets/images/chat.png',
             packageName: ChatUIKitImageLoader.packageName,
@@ -1612,7 +1606,7 @@ class _MessagesViewState extends State<MessagesView>
         profile: profile,
         attributes: widget.attributes,
         actions: [
-          ChatUIKitActionModel(
+          ChatUIKitModelAction(
             title: ChatUIKitLocal.contactDetailViewSend.getString(context),
             icon: 'assets/images/chat.png',
             packageName: ChatUIKitImageLoader.packageName,
@@ -1954,7 +1948,7 @@ class _MessagesViewState extends State<MessagesView>
                   width: 36,
                   height: 36,
                   child: Image.asset(
-                    ChatUIKitEmojiData.emojiMapReversed[emoji]!,
+                    ChatUIKitEmojiData.getEmojiImagePath(emoji)!,
                     package: ChatUIKitEmojiData.packageName,
                   ),
                 ),
@@ -1964,7 +1958,10 @@ class _MessagesViewState extends State<MessagesView>
 
           items.add(
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+                showAllReactionEmojis(model, theme);
+              },
               child: ChatUIKitImageLoader.moreReactions(width: 36, height: 36),
             ),
           );
@@ -1990,5 +1987,42 @@ class _MessagesViewState extends State<MessagesView>
     await controller.updateReaction(model.message.msgId, emoji, isAdd);
   }
 
-  Future showAllReactionEmojis() async {}
+  void showAllReactionEmojis(MessageModel model, ChatUIKitTheme theme) {
+    showChatUIKitBottomSheet(
+      context: context,
+      showCancel: false,
+      body: ChatUIKitInputEmojiBar(
+        selectedEmojis: model.reactions
+            ?.where((e) => e.isAddedBySelf == true)
+            .map((e) => e.reaction)
+            .toList(),
+        selectedColor: theme.color.isDark
+            ? theme.color.primaryColor6
+            : theme.color.primaryColor5,
+        emojiClicked: (emojiPath) async {
+          var emoji = ChatUIKitEmojiData.getEmoji(emojiPath);
+          bool needAdd = false;
+          if (model.reactions == null) {
+            needAdd = true;
+          } else {
+            needAdd = model.reactions?.indexWhere((element) =>
+                    element.reaction == emoji && element.isAddedBySelf) ==
+                -1;
+          }
+
+          Navigator.of(context).pop();
+          await controller.updateReaction(model.message.msgId,
+              ChatUIKitEmojiData.emojiMap[emojiPath]!, needAdd);
+        },
+      ),
+    );
+  }
+
+  void showReactionsInfo(MessageModel model) {
+    showChatUIKitBottomSheet(
+      context: context,
+      showCancel: false,
+      body: ChatUIKitMessageReactionInfo(model),
+    );
+  }
 }

@@ -3,17 +3,24 @@ import 'package:flutter/material.dart';
 
 Future<T?> showChatUIKitBottomSheet<T>({
   required BuildContext context,
-  required List<ChatUIKitBottomSheetItem<T>> items,
+  List<ChatUIKitBottomSheetItem<T>>? items,
   Color? backgroundColor,
   Color? barrierColor,
   bool enableRadius = true,
   String? title,
   TextStyle? titleStyle,
   Widget? titleWidget,
+  Widget? body,
   String? cancelLabel,
   bool showCancel = true,
   TextStyle? cancelLabelStyle,
+  double? height,
 }) {
+  assert(
+    (items?.isNotEmpty == true || body != null),
+    'items and body cannot be null at the same time',
+  );
+
   return showModalBottomSheet(
     clipBehavior: !enableRadius ? null : Clip.hardEdge,
     shape: !enableRadius
@@ -33,8 +40,10 @@ Future<T?> showChatUIKitBottomSheet<T>({
         title: title,
         titleStyle: titleStyle,
         titleWidget: titleWidget,
+        body: body,
         items: items,
         cancelLabel: cancelLabel,
+        height: height,
         cancelLabelStyle: cancelLabelStyle,
         showCancel: showCancel,
       );
@@ -95,22 +104,26 @@ class ChatUIKitBottomSheetItem<T> {
 
 class ChatUIKitBottomSheet<T> extends StatelessWidget {
   const ChatUIKitBottomSheet({
-    required this.items,
+    this.items,
     this.title,
     this.titleStyle,
     this.titleWidget,
+    this.body,
     this.cancelLabel,
     this.cancelLabelStyle,
     this.showCancel = true,
+    this.height,
     super.key,
   });
-  final List<ChatUIKitBottomSheetItem> items;
+  final List<ChatUIKitBottomSheetItem>? items;
   final String? title;
   final Widget? titleWidget;
   final TextStyle? titleStyle;
   final String? cancelLabel;
   final TextStyle? cancelLabelStyle;
   final bool showCancel;
+  final Widget? body;
+  final double? height;
   @override
   Widget build(BuildContext context) {
     return BottomSheet(
@@ -187,67 +200,69 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
       );
     }
 
-    for (var element in items) {
-      if (element != items[0] || title?.isNotEmpty == true) {
+    if (items?.isNotEmpty == true) {
+      for (var element in items!) {
+        if (element != items![0] || title?.isNotEmpty == true) {
+          list.add(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Divider(
+                height: .5,
+                thickness: .5,
+                color: (theme.color.isDark
+                    ? theme.color.neutralColor2
+                    : theme.color.neutralColor9),
+              ),
+            ),
+          );
+        }
         list.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Divider(
-              height: .5,
-              thickness: .5,
-              color: (theme.color.isDark
-                  ? theme.color.neutralColor2
-                  : theme.color.neutralColor9),
+          InkWell(
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            onTap: element.onTap,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              alignment: Alignment.center,
+              child: element.icon != null
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                          width: 24,
+                          height: 24,
+                          margin: const EdgeInsets.fromLTRB(16, 4, 4, 4),
+                          child: element.icon,
+                        ),
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: Text(
+                            element.label,
+                            textScaler: TextScaler.noScaling,
+                            overflow: TextOverflow.ellipsis,
+                            style: element.style ??
+                                (element.type ==
+                                        ChatUIKitBottomSheetItemType.normal
+                                    ? normalStyle
+                                    : destructive),
+                          ),
+                        )
+                      ],
+                    )
+                  : Text(
+                      element.label,
+                      textScaler: TextScaler.noScaling,
+                      overflow: TextOverflow.ellipsis,
+                      style: element.style ??
+                          (element.type == ChatUIKitBottomSheetItemType.normal
+                              ? normalStyle
+                              : destructive),
+                    ),
             ),
           ),
         );
       }
-      list.add(
-        InkWell(
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          onTap: element.onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            alignment: Alignment.center,
-            child: element.icon != null
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Container(
-                        width: 24,
-                        height: 24,
-                        margin: const EdgeInsets.fromLTRB(16, 4, 4, 4),
-                        child: element.icon,
-                      ),
-                      Flexible(
-                        fit: FlexFit.loose,
-                        child: Text(
-                          element.label,
-                          textScaler: TextScaler.noScaling,
-                          overflow: TextOverflow.ellipsis,
-                          style: element.style ??
-                              (element.type ==
-                                      ChatUIKitBottomSheetItemType.normal
-                                  ? normalStyle
-                                  : destructive),
-                        ),
-                      )
-                    ],
-                  )
-                : Text(
-                    element.label,
-                    textScaler: TextScaler.noScaling,
-                    overflow: TextOverflow.ellipsis,
-                    style: element.style ??
-                        (element.type == ChatUIKitBottomSheetItemType.normal
-                            ? normalStyle
-                            : destructive),
-                  ),
-          ),
-        ),
-      );
     }
 
     if (showCancel) {
@@ -287,33 +302,49 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
       );
     }
 
-    Widget headWidget = ListView(
-      padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      children: titleWidgets,
-    );
+    List<Widget> children = [];
+    if (titleWidgets.isNotEmpty) {
+      children.add(ListView(
+        padding: EdgeInsets.zero,
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        children: titleWidgets,
+      ));
+    }
 
-    Widget content = ListView(
-      physics: const BouncingScrollPhysics(),
-      shrinkWrap: true,
-      children: list,
-    );
+    if (list.isNotEmpty) {
+      children.add(
+        Flexible(
+          fit: FlexFit.loose,
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
+            shrinkWrap: true,
+            children: list,
+          ),
+        ),
+      );
+    }
 
-    content = Column(
+    if (body != null) {
+      children.add(
+        Expanded(child: body!),
+      );
+    }
+
+    Widget content = Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
-      children: [headWidget, Expanded(child: content)],
+      children: children,
     );
 
     content = Container(
-      decoration: BoxDecoration(
-        color: (theme.color.isDark
-            ? theme.color.neutralColor1
-            : theme.color.neutralColor98),
-      ),
-      child: content,
-    );
+        height: height,
+        decoration: BoxDecoration(
+          color: (theme.color.isDark
+              ? theme.color.neutralColor1
+              : theme.color.neutralColor98),
+        ),
+        child: content);
 
     return content;
   }

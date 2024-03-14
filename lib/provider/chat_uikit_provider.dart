@@ -5,10 +5,6 @@ abstract mixin class ChatUIKitProviderObserver {
   void onProfilesUpdate(
     Map<String, ChatUIKitProfile> map,
   ) {}
-
-  void onCurrentUserDataUpdate(
-    UserData? userData,
-  ) {}
 }
 
 /// 用户信息回调，入参为需要提供信息的 profile 列表，返回值为提供信息后的 profile 列表，如果返回值为空，当再次需要展示是仍会回调。
@@ -34,18 +30,8 @@ class ChatUIKitProvider {
 
   final List<ChatUIKitProviderObserver> _observers = [];
 
-  UserData? _currentUserData;
-
-  /// 设置当前用户信息，当用户信息更新时，会通知所有的观察者。
-  set currentUserData(UserData? userData) {
-    _currentUserData = userData;
-    for (var observer in _observers) {
-      observer.onCurrentUserDataUpdate(userData);
-    }
-  }
-
-  UserData? get currentUserData {
-    return _currentUserData;
+  ChatUIKitProfile? get currentUserProfile {
+    return profilesCache[ChatUIKit.instance.currentUserId];
   }
 
   /// 添加观察者，当用户信息更新时，会通知所有的观察者。
@@ -62,11 +48,6 @@ class ChatUIKitProvider {
   void clearAllObservers() {
     _observers.clear();
   }
-
-  // /// 清空所有缓存。
-  // void clearProfilesCache() {
-  //   profilesCache.clear();
-  // }
 
   /// 清空所有缓存。
   void clearAllCache() {

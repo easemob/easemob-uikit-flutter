@@ -16,13 +16,13 @@ class MessageModel {
   }) : id = modelId ?? randomId(message);
 
   MessageModel copyWith({
-    required Message message,
+    Message? message,
     List<MessageReaction>? reactions,
     Message? quoteMessage,
   }) {
     return MessageModel(
       modelId: id,
-      message: message,
+      message: message ?? this.message,
       reactions: reactions ?? this.reactions,
       quoteMessage: quoteMessage ?? this.quoteMessage,
     );

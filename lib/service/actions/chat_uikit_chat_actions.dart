@@ -21,11 +21,11 @@ mixin ChatUIKitChatActions on ChatSDKWrapper {
   @override
   Future<Message> sendMessage({required Message message}) async {
     message.addAvatarURL(
-      ChatUIKitProvider.instance.currentUserData?.avatarUrl,
+      ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
     );
 
     message.addNickname(
-      ChatUIKitProvider.instance.currentUserData?.nickname,
+      ChatUIKitProvider.instance.currentUserProfile?.showName,
     );
     return super.sendMessage(message: message);
   }

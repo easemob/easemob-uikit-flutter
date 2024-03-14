@@ -12,7 +12,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
     this.attributes,
   });
   final ChatUIKitProfile profile;
-  final List<ChatUIKitActionModel> actions;
+  final List<ChatUIKitModelAction> actions;
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
   final VoidCallback? onMessageDidClear;
@@ -24,7 +24,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
 
   GroupDetailsViewArguments copyWith({
     ChatUIKitProfile? profile,
-    List<ChatUIKitActionModel>? actions,
+    List<ChatUIKitModelAction>? actions,
     bool? enableAppBar,
     ChatUIKitAppBar? appBar,
     String? attributes,

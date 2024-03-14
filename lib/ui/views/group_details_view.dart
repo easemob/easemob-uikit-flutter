@@ -25,7 +25,7 @@ class GroupDetailsView extends StatefulWidget {
     this.viewObserver,
     super.key,
   });
-  final List<ChatUIKitActionModel> actions;
+  final List<ChatUIKitModelAction> actions;
   final ChatUIKitProfile profile;
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
@@ -45,7 +45,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   int memberCount = 0;
   Group? group;
   ChatUIKitProfile? profile;
-  late final List<ChatUIKitActionModel>? actions;
+  late final List<ChatUIKitModelAction>? actions;
   @override
   void initState() {
     super.initState();

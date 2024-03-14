@@ -1,8 +1,11 @@
 import 'package:flutter/widgets.dart';
 
 class MessageListShareUserData extends InheritedWidget {
-  const MessageListShareUserData(
-      {super.key, required super.child, required this.data});
+  const MessageListShareUserData({
+    super.key,
+    required super.child,
+    required this.data,
+  });
 
   final Map<String, UserData> data;
 

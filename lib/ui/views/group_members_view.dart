@@ -263,7 +263,7 @@ class _GroupMembersViewState extends State<GroupMembersView>
         profile: profile,
         attributes: widget.attributes,
         actions: [
-          ChatUIKitActionModel(
+          ChatUIKitModelAction(
             title: ChatUIKitLocal.groupDetailViewSend.getString(context),
             icon: 'assets/images/chat.png',
             packageName: ChatUIKitImageLoader.packageName,

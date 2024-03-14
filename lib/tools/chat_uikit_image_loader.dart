@@ -491,4 +491,15 @@ class ChatUIKitImageLoader {
       fit: BoxFit.fill,
     );
   }
+
+  static Widget more({double width = 24, double height = 24, Color? color}) {
+    return Image(
+      color: color,
+      gaplessPlayback: true,
+      width: width,
+      height: height,
+      image: AssetImage('assets/images/more.png', package: packageName),
+      fit: BoxFit.fill,
+    );
+  }
 }

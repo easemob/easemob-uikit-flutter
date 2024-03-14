@@ -13,7 +13,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
   });
 
   final ChatUIKitProfile profile;
-  final List<ChatUIKitActionModel> actions;
+  final List<ChatUIKitModelAction> actions;
   final VoidCallback? onMessageDidClear;
   final bool enableAppBar;
   final ChatUIKitAppBar? appBar;
@@ -24,7 +24,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
 
   ContactDetailsViewArguments copyWith({
     ChatUIKitProfile? profile,
-    List<ChatUIKitActionModel>? actions,
+    List<ChatUIKitModelAction>? actions,
     VoidCallback? onMessageDidClear,
     bool? enableAppBar,
     ChatUIKitAppBar? appBar,

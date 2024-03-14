@@ -33,14 +33,14 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
   @override
   void onGroupCreatedByMyself(Group group) {
     ChatUIKitProvider.instance.addProfiles(
-      [ChatUIKitProfile.group(id: group.groupId, name: group.name)],
+      [ChatUIKitProfile.group(id: group.groupId, groupName: group.name)],
     );
   }
 
   @override
   void onGroupNameChangedByMeSelf(Group group) {
     ChatUIKitProvider.instance.addProfiles(
-      [ChatUIKitProfile.group(id: group.groupId, name: group.name)],
+      [ChatUIKitProfile.group(id: group.groupId, groupName: group.name)],
     );
   }
 
@@ -49,7 +49,7 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
     List<ChatUIKitProfile> profiles = [];
     for (var group in groups) {
       profiles.add(
-        ChatUIKitProfile.group(id: group.groupId, name: group.name),
+        ChatUIKitProfile.group(id: group.groupId, groupName: group.name),
       );
     }
     ChatUIKitProvider.instance.addProfiles(profiles);
@@ -63,8 +63,8 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
     for (var profile in profiles) {
       if (profile.type == ChatUIKitProfileType.contact) {
         list.add(
-          profile.copy(
-            name: profile.showName,
+          profile.copyWith(
+            nickname: profile.showName,
             avatarUrl: RemoteAvatars.getRandomAvatar,
           ),
         );

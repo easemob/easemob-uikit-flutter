@@ -29,23 +29,27 @@ class UserDataStore {
       if (info != null) {
         Map<String, dynamic>? map = json.decode(info);
         if (map?.isEmpty == true) return;
-        ChatUIKitProvider.instance.currentUserData = UserData(
-          nickname: map?[nicknameKey],
-          avatarUrl: map?[avatarUrlKey],
+        ChatUIKitProvider.instance.addProfiles(
+          [
+            ChatUIKitProfile.contact(
+                id: ChatUIKit.instance.currentUserId!,
+                nickname: map?[nicknameKey],
+                avatarUrl: map?[avatarUrlKey])
+          ],
         );
       }
     }
   }
 
-  Future<void> saveUserData(UserData userData) async {
+  Future<void> saveUserData(ChatUIKitProfile profile) async {
     String? currentUser = ChatUIKit.instance.currentUserId;
     if (currentUser?.isNotEmpty == true) {
       _sharedPreferences ??= await SharedPreferences.getInstance();
       _sharedPreferences?.setString(
         currentUser!,
         json.encode({
-          nicknameKey: userData.nickname,
-          avatarUrlKey: userData.avatarUrl,
+          nicknameKey: profile.showName,
+          avatarUrlKey: profile.avatarUrl,
         }),
       );
     }

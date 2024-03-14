@@ -3,22 +3,6 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/universal/defines.dart';
 import 'package:flutter/material.dart';
 
-typedef MessageItemBubbleBuilder = Widget? Function(
-  BuildContext context,
-  Widget child,
-  MessageModel model,
-);
-
-typedef MessageBubbleContentBuilder = Widget? Function(
-  BuildContext context,
-  MessageModel model,
-);
-
-typedef ReactionsBubbleContentBuilder = Widget? Function(
-  BuildContext context,
-  List<MessageReaction> reactions,
-);
-
 class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   const ChatUIKitMessageListViewMessageItem({
     required this.model,
@@ -38,10 +22,12 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     this.forceLeft,
     this.isPlaying = false,
     this.quoteBuilder,
-    this.onErrorTap,
+    this.onErrorBtnTap,
     this.bubbleBuilder,
     this.bubbleContentBuilder,
     this.reactionsBuilder,
+    this.onReactionTap,
+    this.onReactionInfoTap,
     this.enableSelected,
     this.reactions,
     super.key,
@@ -67,10 +53,12 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   final VoidCallback? onBubbleDoubleTap;
   final VoidCallback? enableSelected;
   final Widget Function(BuildContext context, QuoteModel model)? quoteBuilder;
-  final VoidCallback? onErrorTap;
+  final VoidCallback? onErrorBtnTap;
   final MessageItemBubbleBuilder? bubbleBuilder;
-  final MessageBubbleContentBuilder? bubbleContentBuilder;
-  final ReactionsBubbleContentBuilder? reactionsBuilder;
+  final MessageItemBuilder? bubbleContentBuilder;
+  final MessageItemBuilder? reactionsBuilder;
+  final void Function(MessageReaction reaction)? onReactionTap;
+  final VoidCallback? onReactionInfoTap;
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +145,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
             width: 16,
             height: 16,
             child: ChatUIKitMessageStatusWidget(
-              onErrorTap: onErrorTap,
+              onErrorBtnTap: onErrorBtnTap,
               size: 16,
               statusType: () {
                 if (model.message.status == MessageStatus.CREATE ||
@@ -210,6 +198,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
             : const SizedBox(),
         quoteWidget(context, model: model.message.getQuote, isLeft: left),
         avatarAndBubble,
+        if (model.reactions?.isNotEmpty == true) const SizedBox(height: 4),
         reactionsWidget(context, theme, left),
         timeWidget(context, theme, left),
       ],
@@ -313,9 +302,10 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     if (!showAvatar) return const SizedBox();
     content = avatarWidget;
     if (content == null) {
-      String? avatarUrl =
-          MessageListShareUserData.of(context)?.data[model.message.from!]?.avatarUrl ??
-              model.message.avatarUrl;
+      String? avatarUrl = MessageListShareUserData.of(context)
+              ?.data[model.message.from!]
+              ?.avatarUrl ??
+          model.message.avatarUrl;
       content = ChatUIKitAvatar(
         avatarUrl: avatarUrl,
         size: avatarSize,
@@ -375,10 +365,11 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
       {QuoteModel? model, bool isLeft = false}) {
     if (model == null) return const SizedBox();
     Widget? content = quoteBuilder?.call(context, model);
+    double padding = getArrowWidth + avatarSize + arrowPadding;
     content = Padding(
       padding: EdgeInsets.only(
-        left: isLeft ? getArrowWidth : 0,
-        right: !isLeft ? getArrowWidth : 0,
+        left: isLeft ? padding : 0,
+        right: !isLeft ? padding : 0,
       ),
       child: content,
     );
@@ -394,15 +385,26 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     if (reactions == null) {
       return const SizedBox();
     } else {
+      double arrowWidth = 0;
+      if (model.message.bodyType != MessageType.IMAGE &&
+          model.message.bodyType != MessageType.VIDEO) {
+        arrowWidth = getArrowWidth;
+      }
       return Row(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment:
+            left ? MainAxisAlignment.start : MainAxisAlignment.end,
         textDirection: left ? TextDirection.ltr : TextDirection.rtl,
         children: [
-          SizedBox(width: getArrowWidth + avatarSize + arrowPadding),
+          SizedBox(width: arrowWidth + avatarSize + arrowPadding),
           Expanded(
-            child: reactionsBuilder?.call(context, reactions!) ??
-                ChatUIKitMessageReactionsRow(reactions: reactions!),
+            child: reactionsBuilder?.call(context, model) ??
+                ChatUIKitMessageReactionsRow(
+                  reactions: reactions!,
+                  isLeft: left,
+                  onReactionTap: onReactionTap,
+                  onReactionInfoTap: onReactionInfoTap,
+                ),
           ),
         ],
       );

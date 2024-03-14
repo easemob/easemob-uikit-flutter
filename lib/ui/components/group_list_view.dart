@@ -2,9 +2,6 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
 
-typedef ChatUIKitGroupItemBuilder = Widget Function(
-    BuildContext context, GroupItemModel model);
-
 class GroupListView extends StatefulWidget {
   const GroupListView({
     this.controller,

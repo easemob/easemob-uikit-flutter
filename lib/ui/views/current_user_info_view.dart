@@ -68,12 +68,12 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> {
   Widget _buildContent() {
     final theme = ChatUIKitTheme.of(context);
     Widget avatar = ChatUIKitAvatar(
-      avatarUrl: ChatUIKitProvider.instance.currentUserData?.avatarUrl,
+      avatarUrl: ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
       size: 100,
     );
 
     Widget name = Text(
-      ChatUIKitProvider.instance.currentUserData?.nickname ??
+      ChatUIKitProvider.instance.currentUserProfile?.showName ??
           ChatUIKit.instance.currentUserId ??
           '',
       overflow: TextOverflow.ellipsis,

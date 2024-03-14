@@ -1,9 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/foundation.dart';
 
-typedef ConversationListViewShowHandler = List<ConversationModel> Function(
-    List<ConversationModel> conversations);
-
 /// 会话列表控制器
 class ConversationListViewController extends ChatUIKitListViewControllerBase {
   ConversationListViewController({

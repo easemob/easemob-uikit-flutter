@@ -2,14 +2,6 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
 
-typedef MessageItemBuilder = Widget? Function(
-  BuildContext context,
-  MessageModel model,
-);
-
-typedef MessageListItemTapHandler = void Function(
-    BuildContext context, MessageModel model);
-
 class MessageListView extends StatefulWidget {
   const MessageListView({
     required this.profile,
@@ -26,30 +18,35 @@ class MessageListView extends StatefulWidget {
     this.alertItemBuilder,
     this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     this.quoteBuilder,
-    this.onErrorTap,
+    this.onErrorBtnTap,
     this.bubbleBuilder,
     this.bubbleContentBuilder,
     this.forceLeft,
+    this.onReactionTap,
+    this.onReactionInfoTap,
     super.key,
   });
   final ChatUIKitProfile profile;
   final MessageListViewController? controller;
-  final MessageListItemTapHandler? onItemTap;
-  final MessageListItemTapHandler? onItemLongPress;
-  final MessageListItemTapHandler? onDoubleTap;
-  final MessageListItemTapHandler? onAvatarTap;
-  final MessageListItemTapHandler? onAvatarLongPressed;
-  final MessageListItemTapHandler? onNicknameTap;
+  final MessageItemTapHandler? onItemTap;
+  final MessageItemTapHandler? onItemLongPress;
+  final MessageItemTapHandler? onDoubleTap;
+  final MessageItemTapHandler? onAvatarTap;
+  final MessageItemTapHandler? onAvatarLongPressed;
+  final MessageItemTapHandler? onNicknameTap;
   final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
   final MessageItemBuilder? itemBuilder;
   final MessageItemBuilder? alertItemBuilder;
   final bool showAvatar;
   final bool showNickname;
   final Widget Function(BuildContext context, QuoteModel model)? quoteBuilder;
-  final void Function(MessageModel model)? onErrorTap;
+  final void Function(MessageModel model)? onErrorBtnTap;
   final MessageItemBubbleBuilder? bubbleBuilder;
-  final MessageBubbleContentBuilder? bubbleContentBuilder;
+  final MessageItemBuilder? bubbleContentBuilder;
   final bool? forceLeft;
+  final void Function(MessageModel model, MessageReaction reaction)?
+      onReactionTap;
+  final void Function(MessageModel model)? onReactionInfoTap;
 
   @override
   State<MessageListView> createState() => _MessageListViewState();
@@ -249,8 +246,8 @@ class _MessageListViewState extends State<MessageListView> {
       forceLeft: widget.forceLeft,
       bubbleContentBuilder: widget.bubbleContentBuilder,
       bubbleBuilder: widget.bubbleBuilder,
-      onErrorTap: () {
-        widget.onErrorTap?.call(model);
+      onErrorBtnTap: () {
+        widget.onErrorBtnTap?.call(model);
       },
       bubbleStyle: widget.bubbleStyle,
       showAvatar: widget.showAvatar,
@@ -282,6 +279,12 @@ class _MessageListViewState extends State<MessageListView> {
       },
       model: model,
       reactions: model.reactions,
+      onReactionTap: (reaction) {
+        widget.onReactionTap?.call(model, reaction);
+      },
+      onReactionInfoTap: () {
+        widget.onReactionInfoTap?.call(model);
+      },
     );
 
     double zoom = 0.8;

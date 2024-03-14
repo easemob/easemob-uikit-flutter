@@ -49,7 +49,7 @@ class ChatUIKitEmojiRichText extends StatelessWidget {
               right: (i == characters.length) ? 0 : 2.0,
             ),
             child: Image.asset(
-              ChatUIKitEmojiData.emojiMapReversed[characters[i]]!,
+              ChatUIKitEmojiData.getEmojiImagePath(characters[i])!,
               package: ChatUIKitEmojiData.packageName,
               width: emojiSize.width,
               height: emojiSize.height,

@@ -11,13 +11,13 @@ class PersonalInfoPage extends StatefulWidget {
 
 class _PersonalInfoPageState extends State<PersonalInfoPage>
     with ChatUIKitProviderObserver {
-  UserData? _userData;
+  ChatUIKitProfile? _userData;
 
   @override
   void initState() {
     super.initState();
     ChatUIKitProvider.instance.addObserver(this);
-    _userData = ChatUIKitProvider.instance.currentUserData;
+    _userData = ChatUIKitProvider.instance.currentUserProfile;
   }
 
   @override
@@ -27,10 +27,15 @@ class _PersonalInfoPageState extends State<PersonalInfoPage>
   }
 
   @override
-  void onCurrentUserDataUpdate(UserData? userData) {
-    setState(() {
-      _userData = userData;
-    });
+  void onProfilesUpdate(
+    Map<String, ChatUIKitProfile> map,
+  ) {
+    if (map.keys.contains(ChatUIKit.instance.currentUserId)) {
+      ChatUIKitProfile? userData = map[ChatUIKit.instance.currentUserId];
+      setState(() {
+        _userData = userData;
+      });
+    }
   }
 
   @override
@@ -63,7 +68,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage>
             PersonalInfoItem(
               title: '昵称',
               trailing:
-                  _userData?.nickname ?? ChatUIKit.instance.currentUserId ?? '',
+                  _userData?.showName ?? ChatUIKit.instance.currentUserId ?? '',
               onTap: pushChangeNicknamePage,
               enableArrow: true,
             ),
@@ -88,7 +93,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage>
         inputTextCallback: () {
           return Future(
             () {
-              return ChatUIKitProvider.instance.currentUserData?.nickname ??
+              return ChatUIKitProvider.instance.currentUserProfile?.showName ??
                   ChatUIKit.instance.currentUserId ??
                   '';
             },
@@ -98,14 +103,17 @@ class _PersonalInfoPageState extends State<PersonalInfoPage>
     ).then(
       (value) {
         if (value is String) {
-          UserData? data = ChatUIKitProvider.instance.currentUserData;
+          ChatUIKitProfile? data =
+              ChatUIKitProvider.instance.currentUserProfile;
           if (data == null) {
-            data = UserData(nickname: value);
+            data = ChatUIKitProfile.contact(
+                id: ChatUIKit.instance.currentUserId!, nickname: value);
           } else {
             data = data.copyWith(nickname: value);
           }
-          ChatUIKitProvider.instance.currentUserData = data;
+          ChatUIKitProvider.instance.addProfiles([data]);
           UserDataStore().saveUserData(data);
+
           setState(() {});
         }
       },

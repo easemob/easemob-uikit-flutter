@@ -18,6 +18,12 @@ class ChatUIKitInputEmojiBar extends StatelessWidget {
 
   final VoidCallback? deleteOnTap;
 
+  final EdgeInsets? padding;
+
+  final List<String>? selectedEmojis;
+
+  final Color? selectedColor;
+
   const ChatUIKitInputEmojiBar({
     super.key,
     this.maxCrossAxisExtent = 36,
@@ -26,13 +32,18 @@ class ChatUIKitInputEmojiBar extends StatelessWidget {
     this.childAspectRatio = 1.0,
     this.bigSizeRatio = 0.0,
     this.emojiClicked,
+    this.padding,
     this.deleteOnTap,
+    this.selectedColor,
+    this.selectedEmojis,
   });
 
   @override
   Widget build(BuildContext context) {
     Widget content = GridView.custom(
-      padding: const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 60),
+      shrinkWrap: true,
+      padding: padding ??
+          const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 60),
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: maxCrossAxisExtent,
         mainAxisSpacing: mainAxisSpacing,
@@ -41,55 +52,63 @@ class ChatUIKitInputEmojiBar extends StatelessWidget {
         mainAxisExtent: maxCrossAxisExtent,
       ),
       childrenDelegate: SliverChildBuilderDelegate(
-        (context, position) {
-          return _getEmojiItemContainer(position);
-        },
+        (context, position) => _getEmojiItemContainer(position),
         childCount: ChatUIKitEmojiData.listSize,
       ),
     );
-
-    content = Stack(
-      children: [
-        content,
-        Positioned(
-          right: 20,
-          bottom: 20,
-          width: 36,
-          height: 36,
-          child: InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onTap: () {
-              deleteOnTap?.call();
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                boxShadow: ChatUIKitTheme.of(context).color.isDark
-                    ? ChatUIKitShadow.darkSmall
-                    : ChatUIKitShadow.lightSmall,
-                borderRadius: BorderRadius.circular(24),
-                color: (ChatUIKitTheme.of(context).color.isDark
-                    ? ChatUIKitTheme.of(context).color.neutralColor3
-                    : ChatUIKitTheme.of(context).color.neutralColor98),
-              ),
-              child: ChatUIKitImageLoader.emojiDelete(
-                size: 20,
-                color: (ChatUIKitTheme.of(context).color.isDark
-                    ? ChatUIKitTheme.of(context).color.neutralColor98
-                    : ChatUIKitTheme.of(context).color.neutralColor3),
+    if (deleteOnTap != null) {
+      content = Stack(
+        children: [
+          content,
+          Positioned(
+            right: 20,
+            bottom: 20,
+            width: 36,
+            height: 36,
+            child: InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onTap: () {
+                deleteOnTap?.call();
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: ChatUIKitTheme.of(context).color.isDark
+                      ? ChatUIKitShadow.darkSmall
+                      : ChatUIKitShadow.lightSmall,
+                  borderRadius: BorderRadius.circular(24),
+                  color: (ChatUIKitTheme.of(context).color.isDark
+                      ? ChatUIKitTheme.of(context).color.neutralColor3
+                      : ChatUIKitTheme.of(context).color.neutralColor98),
+                ),
+                child: ChatUIKitImageLoader.emojiDelete(
+                  size: 20,
+                  color: (ChatUIKitTheme.of(context).color.isDark
+                      ? ChatUIKitTheme.of(context).color.neutralColor98
+                      : ChatUIKitTheme.of(context).color.neutralColor3),
+                ),
               ),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    }
 
     return content;
   }
 
   _getEmojiItemContainer(int index) {
-    var emoji = ChatUIKitEmojiData.emojiImagePaths[index];
-    return ChatExpression(emoji, bigSizeRatio, emojiClicked);
+    var emojiPath = ChatUIKitEmojiData.emojiImagePaths[index];
+    bool highlight =
+        selectedEmojis?.contains(ChatUIKitEmojiData.getEmoji(emojiPath)) ??
+            false;
+    return ChatExpression(
+      emojiPath,
+      bigSizeRatio,
+      emojiClicked,
+      highlightedColor: selectedColor,
+      highlighted: highlight,
+    );
   }
 }
 
@@ -100,10 +119,16 @@ class ChatExpression extends StatelessWidget {
 
   final EmojiClick? emojiClicked;
 
+  final bool highlighted;
+
+  final Color? highlightedColor;
+
   const ChatExpression(
     this.emojiName,
     this.bigSizeRatio,
     this.emojiClicked, {
+    this.highlighted = false,
+    this.highlightedColor,
     super.key,
   });
 
@@ -115,13 +140,20 @@ class ChatExpression extends StatelessWidget {
       width: 32,
       height: 32,
     );
-    return InkWell(
-      highlightColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      onTap: () {
-        emojiClicked?.call(emojiName);
-      },
-      child: icon,
+    return Container(
+      padding: const EdgeInsets.all(3.2),
+      decoration: BoxDecoration(
+        color: highlighted ? highlightedColor : Colors.transparent,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: InkWell(
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        onTap: () {
+          emojiClicked?.call(emojiName);
+        },
+        child: icon,
+      ),
     );
   }
 }

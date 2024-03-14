@@ -2,9 +2,6 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
 
-typedef ChatUIKitContactItemBuilder = Widget? Function(
-    BuildContext context, ContactItemModel model);
-
 class ContactListView extends StatefulWidget {
   const ContactListView({
     this.controller,

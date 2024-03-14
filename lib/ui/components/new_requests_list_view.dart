@@ -2,9 +2,6 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
 
-typedef ChatUIKitNewRequestItemBuilder = Widget Function(
-    BuildContext context, NewRequestItemModel model);
-
 class NewRequestsListView extends StatefulWidget {
   const NewRequestsListView({
     this.controller,

@@ -81,8 +81,8 @@ class MessageListViewController extends ChangeNotifier
     }();
     if (ChatUIKit.instance.currentUserId != null) {
       userMap[ChatUIKit.instance.currentUserId!] = UserData(
-        nickname: ChatUIKitProvider.instance.currentUserData?.nickname,
-        avatarUrl: ChatUIKitProvider.instance.currentUserData?.avatarUrl,
+        nickname: ChatUIKitProvider.instance.currentUserProfile?.showName,
+        avatarUrl: ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
         time: DateTime.now().millisecondsSinceEpoch,
       );
     }
@@ -236,9 +236,30 @@ class MessageListViewController extends ChangeNotifier
     }
   }
 
-  void updateView() {
-    if (isDisposed) return;
-    notifyListeners();
+  @override
+  void onMessageReactionDidChange(List<MessageReactionEvent> events) async {
+    bool needUpdate = false;
+    for (var reactionEvent in events) {
+      if (reactionEvent.conversationId == profile.id) {
+        final index = msgModelList.indexWhere(
+            (element) => element.message.msgId == reactionEvent.messageId);
+        if (index != -1) {
+          Message? msg = await ChatUIKit.instance
+              .loadMessage(messageId: msgModelList[index].message.msgId);
+          if (msg != null) {
+            needUpdate = true;
+            List<MessageReaction>? reactions = await msg.reactionList();
+            msgModelList[index] = msgModelList[index].copyWith(
+              message: msg,
+              reactions: reactions,
+            );
+          }
+        }
+      }
+    }
+    if (needUpdate) {
+      updateView();
+    }
   }
 
   @override
@@ -304,6 +325,12 @@ class MessageListViewController extends ChangeNotifier
     if (msgs.any((element) => element.message.hasMention)) {
       clearMentionIfNeed();
     }
+  }
+
+  void updateView() {
+    if (isDisposed) return;
+    debugPrint('updateView');
+    notifyListeners();
   }
 
   ChatType get chatType {
@@ -503,8 +530,8 @@ class MessageListViewController extends ChangeNotifier
 
   Future<void> sendCardMessage(ChatUIKitProfile cardProfile) async {
     Map<String, String> param = {cardUserIdKey: cardProfile.id};
-    if (profile.name != null) {
-      param[cardNicknameKey] = cardProfile.name!;
+    if (profile.nickname != null) {
+      param[cardNicknameKey] = cardProfile.nickname!;
     }
     if (profile.avatarUrl != null) {
       param[cardAvatarKey] = cardProfile.avatarUrl!;
@@ -531,8 +558,8 @@ class MessageListViewController extends ChangeNotifier
     final msg = await ChatUIKit.instance.sendMessage(message: willSendMsg);
 
     userMap[ChatUIKit.instance.currentUserId!] = UserData(
-      nickname: ChatUIKitProvider.instance.currentUserData?.nickname,
-      avatarUrl: ChatUIKitProvider.instance.currentUserData?.avatarUrl,
+      nickname: ChatUIKitProvider.instance.currentUserProfile?.showName,
+      avatarUrl: ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
     );
     msgModelList.insert(0, MessageModel(message: msg));
     hasNew = true;
@@ -663,7 +690,10 @@ class MessageListViewController extends ChangeNotifier
   }
 
   Future<void> updateReaction(
-      String messageId, String reaction, bool isAdd) async {
+    String messageId,
+    String reaction,
+    bool isAdd,
+  ) async {
     try {
       if (isAdd) {
         await ChatUIKit.instance.addReaction(
@@ -676,8 +706,8 @@ class MessageListViewController extends ChangeNotifier
           reaction: reaction,
         );
       }
-      updateView();
-      // ignore: empty_catches
-    } catch (e) {}
+    } catch (e) {
+      debugPrint('updateReaction: $e');
+    }
   }
 }

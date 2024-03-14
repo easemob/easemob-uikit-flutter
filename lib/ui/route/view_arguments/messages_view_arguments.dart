@@ -25,7 +25,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     this.replyBarBuilder,
     this.quoteBuilder,
-    this.onErrorTapHandler,
+    this.onErrorBtnTapHandler,
     this.bubbleBuilder,
     this.enableAppBar = true,
     this.bubbleContentBuilder,
@@ -117,13 +117,13 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   final Widget Function(BuildContext context, QuoteModel model)? quoteBuilder;
 
   /// 错误消息点击事件，如果设置后将会替换默认的错误消息点击事件。如果不处理可以返回 `false`。默认行为为重新发送消息。
-  final MessageItemTapHandler? onErrorTapHandler;
+  final MessageItemTapHandler? onErrorBtnTapHandler;
 
   /// 气泡构建器，如果设置后将会替换默认的气泡构建器。详细参考 [MessageItemBubbleBuilder]。
   final MessageItemBubbleBuilder? bubbleBuilder;
 
-  /// 气泡内容构建器，如果设置后将会替换默认的气泡内容构建器。详细参考 [MessageBubbleContentBuilder]。
-  final MessageBubbleContentBuilder? bubbleContentBuilder;
+  /// 气泡内容构建器，如果设置后将会替换默认的气泡内容构建器。详细参考 [MessageItemBuilder]。
+  final MessageItemBuilder? bubbleContentBuilder;
 
   /// 输入框控制器，如果设置后将会替换默认的输入框控制器。详细参考 [CustomTextEditingController]。
   final CustomTextEditingController? inputBarTextEditingController;
@@ -161,9 +161,10 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     Widget? emojiWidget,
     Widget? Function(BuildContext context, MessageModel model)? replyBarBuilder,
     Widget Function(BuildContext context, QuoteModel model)? quoteBuilder,
-    bool Function(BuildContext context, MessageModel message)? onErrorTapHandler,
+    bool Function(BuildContext context, MessageModel message)?
+        onErrorBtnTapHandler,
     MessageItemBubbleBuilder? bubbleBuilder,
-    MessageBubbleContentBuilder? bubbleContentBuilder,
+    MessageItemBuilder? bubbleContentBuilder,
     MessagesViewMorePressHandler? onMoreActionsItemsHandler,
     MessagesViewItemLongPressHandler? onItemLongPressHandler,
     CustomTextEditingController? inputBarTextEditingController,
@@ -198,7 +199,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       emojiWidget: emojiWidget ?? this.emojiWidget,
       replyBarBuilder: replyBarBuilder ?? this.replyBarBuilder,
       quoteBuilder: quoteBuilder ?? this.quoteBuilder,
-      onErrorTapHandler: onErrorTapHandler ?? this.onErrorTapHandler,
+      onErrorBtnTapHandler: onErrorBtnTapHandler ?? this.onErrorBtnTapHandler,
       bubbleBuilder: bubbleBuilder ?? this.bubbleBuilder,
       bubbleContentBuilder: bubbleContentBuilder ?? this.bubbleContentBuilder,
       onMoreActionsItemsHandler:

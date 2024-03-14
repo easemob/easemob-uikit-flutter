@@ -2,8 +2,8 @@ import 'package:flutter/widgets.dart';
 
 typedef ChatUIKitActionItemOnTap = void Function(BuildContext context);
 
-class ChatUIKitActionModel {
-  ChatUIKitActionModel({
+class ChatUIKitModelAction {
+  ChatUIKitModelAction({
     required this.title,
     required this.icon,
     this.packageName,

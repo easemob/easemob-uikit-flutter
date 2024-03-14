@@ -2,16 +2,6 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
 
-typedef AppBarMoreActionsBuilder = List<ChatUIKitBottomSheetItem> Function(
-    BuildContext context, List<ChatUIKitBottomSheetItem> items);
-
-typedef ConversationsViewItemLongPressHandler = List<ChatUIKitBottomSheetItem>?
-    Function(
-  BuildContext context,
-  ConversationModel info,
-  List<ChatUIKitBottomSheetItem> defaultActions,
-);
-
 class ConversationsView extends StatefulWidget {
   /// 会话列表构造方法，如果需要自定义会话列表可以使用这个方法。具体参考 [ConversationsViewArguments]。
   ConversationsView.arguments(ConversationsViewArguments arguments, {super.key})
@@ -147,8 +137,8 @@ class _ConversationsViewState extends State<ConversationsView> {
                   margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
                   child: ChatUIKitAvatar.current(
                     size: 32,
-                    avatarUrl:
-                        ChatUIKitProvider.instance.currentUserData?.avatarUrl,
+                    avatarUrl: ChatUIKitProvider
+                        .instance.currentUserProfile?.avatarUrl,
                   ),
                 ),
                 trailing: IconButton(
@@ -436,7 +426,7 @@ class _ConversationsViewState extends State<ConversationsView> {
     if (group is Group) {
       pushNewConversation(ChatUIKitProfile.group(
         id: group.groupId,
-        name: group.name,
+        groupName: group.name,
       ));
     }
   }

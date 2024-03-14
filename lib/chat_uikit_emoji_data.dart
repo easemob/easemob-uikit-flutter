@@ -58,6 +58,14 @@ class ChatUIKitEmojiData {
     'assets/images/emojis/U+1F381.png',
   ];
 
+  static getEmojiImagePath(String emoji) {
+    return emojiMapReversed[emoji];
+  }
+
+  static getEmoji(String emojiImagePath) {
+    return emojiMap[emojiImagePath];
+  }
+
   static List<String> emojiList = [
     "\u{1F600}",
     "\u{1F604}",

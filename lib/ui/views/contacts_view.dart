@@ -143,7 +143,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
                   child: ChatUIKitAvatar.current(
                     size: 32,
                     avatarUrl:
-                        ChatUIKitProvider.instance.currentUserData?.avatarUrl,
+                        ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
                   ),
                 ),
                 trailing: IconButton(
@@ -229,7 +229,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
           context,
           ChatUIKitRouteNames.contactDetailsView,
           ContactDetailsViewArguments(profile: value, actions: [
-            ChatUIKitActionModel(
+            ChatUIKitModelAction(
               title: ChatUIKitLocal.contactDetailViewSend.getString(context),
               icon: 'assets/images/chat.png',
               packageName: ChatUIKitImageLoader.packageName,
@@ -257,7 +257,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
       context,
       ChatUIKitRouteNames.contactDetailsView,
       ContactDetailsViewArguments(profile: model.profile, actions: [
-        ChatUIKitActionModel(
+        ChatUIKitModelAction(
           title: ChatUIKitLocal.contactDetailViewSend.getString(context),
           icon: 'assets/images/chat.png',
           packageName: ChatUIKitImageLoader.packageName,

@@ -147,7 +147,7 @@ class _GroupsViewState extends State<GroupsView> {
       GroupDetailsViewArguments(
         profile: model.profile,
         actions: [
-          ChatUIKitActionModel(
+          ChatUIKitModelAction(
             title: ChatUIKitLocal.groupDetailViewSend.getString(context),
             icon: 'assets/images/chat.png',
             packageName: ChatUIKitImageLoader.packageName,

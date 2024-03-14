@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 const double defaultLeftRightPadding = 14;
 Future<T?> showChatUIKitDialog<T>({
   required BuildContext context,
-  required List<ChatUIKitDialogItem<T>> items,
+  List<ChatUIKitDialogItem<T>>? items,
   String? content,
   String? title,
   List<String>? hintsText,
@@ -95,7 +95,7 @@ class ChatUIKitDialogItem<T> {
 
 class ChatUIKitDialog<T> extends StatefulWidget {
   const ChatUIKitDialog({
-    required this.items,
+    this.items,
     this.title,
     this.content,
     this.titleStyle,
@@ -111,7 +111,7 @@ class ChatUIKitDialog<T> extends StatefulWidget {
   final TextStyle? titleStyle;
   final String? content;
   final TextStyle? contentStyle;
-  final List<ChatUIKitDialogItem<T>> items;
+  final List<ChatUIKitDialogItem<T>>? items;
   final ChatUIKitDialogRectangleType borderType;
   final List<String>? hintsText;
   final double leftRightPadding;
@@ -131,11 +131,12 @@ class _ChatUIKitDialogState extends State<ChatUIKitDialog> {
     widget.hintsText?.forEach((element) {
       _controllers.add(TextEditingController());
     });
-
-    for (var item in widget.items) {
-      if (item.type == ChatUIKitDialogItemType.inputConfirm ||
-          item.type == ChatUIKitDialogItemType.confirm) {
-        confirmCount++;
+    if (widget.items?.isNotEmpty == true) {
+      for (var item in widget.items!) {
+        if (item.type == ChatUIKitDialogItemType.inputConfirm ||
+            item.type == ChatUIKitDialogItemType.confirm) {
+          confirmCount++;
+        }
       }
     }
 
@@ -321,9 +322,11 @@ class _ChatUIKitDialogState extends State<ChatUIKitDialog> {
               );
             }(),
           () {
-            if (widget.items.isEmpty) return Container();
+            if (widget.items == null) {
+              return Container();
+            }
             List<Widget> widgets = [];
-            for (var item in widget.items) {
+            for (var item in widget.items!) {
               widgets.add(
                 InkWell(
                   highlightColor: Colors.transparent,
@@ -490,7 +493,7 @@ class _ChatUIKitDialogState extends State<ChatUIKitDialog> {
                 ),
               );
             }
-            if (widget.items.length > 2) {
+            if (widget.items!.length > 2) {
               return Padding(
                 padding: EdgeInsets.fromLTRB(
                   widget.leftRightPadding,

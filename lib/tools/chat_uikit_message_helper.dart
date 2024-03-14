@@ -11,7 +11,7 @@ extension MessageHelper on Message {
       ChatUIKitProfile.contact(
         id: from!,
         avatarUrl: avatarUrl,
-        name: nickname,
+        nickname: nickname,
       ),
     );
   }

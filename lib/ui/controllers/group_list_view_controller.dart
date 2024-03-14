@@ -53,7 +53,7 @@ class GroupListViewController with ChatUIKitListViewControllerBase {
     GroupItemModel info = GroupItemModel.fromProfile(
       ChatUIKitProfile.group(
         id: group.groupId,
-        name: group.name,
+        groupName: group.name,
       ),
     );
     list.insert(0, info);
@@ -68,7 +68,7 @@ class GroupListViewController with ChatUIKitListViewControllerBase {
       for (var item in groups) {
         list.add(ChatUIKitProfile.group(
           id: item.groupId,
-          name: item.name,
+          groupName: item.name,
         ));
       }
       return list;

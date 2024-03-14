@@ -11,12 +11,11 @@ enum ChatUIKitProfileType {
 
 /// ChatUIKitProfile 类，用于存储联系人或群组的信息。
 class ChatUIKitProfile {
-
   /// id ,如果是联系人，则为用户 id，如果是群组，则为群组 id。
   final String id;
 
   /// 名称,如果是联系人，则为用户名称，如果是群组，则为群组名称。
-  final String? name;
+  final String? nickname;
 
   /// 头像地址, 如果是联系人，则为用户头像地址，如果是群组，则为群组头像地址。
   final String? avatarUrl;
@@ -31,12 +30,12 @@ class ChatUIKitProfile {
   final int timestamp;
 
   /// 用于展示的名称，如果 name 为空，则展示 id
-  String get showName => name?.isNotEmpty == true ? name! : id;
+  String get showName => nickname?.isNotEmpty == true ? nickname! : id;
 
   ChatUIKitProfile({
     required this.id,
     required this.type,
-    this.name,
+    this.nickname,
     this.avatarUrl,
     this.extension,
     this.timestamp = 0,
@@ -44,14 +43,14 @@ class ChatUIKitProfile {
 
   ChatUIKitProfile.contact({
     required String id,
-    String? name,
+    String? nickname,
     String? avatarUrl,
     ImageProvider? avatarProvider,
     Map<String, String>? extension,
     int timestamp = 0,
   }) : this(
           id: id,
-          name: name,
+          nickname: nickname,
           avatarUrl: avatarUrl,
           type: ChatUIKitProfileType.contact,
           extension: extension,
@@ -60,14 +59,14 @@ class ChatUIKitProfile {
 
   ChatUIKitProfile.group({
     required String id,
-    String? name,
+    String? groupName,
     String? avatarUrl,
     ImageProvider? avatarProvider,
     Map<String, String>? extension,
     int timestamp = 0,
   }) : this(
           id: id,
-          name: name,
+          nickname: groupName,
           avatarUrl: avatarUrl,
           type: ChatUIKitProfileType.group,
           extension: extension,
@@ -75,8 +74,8 @@ class ChatUIKitProfile {
         );
 
   /// 用于复制一个新的 profile 对象，如果传入的参数不为空，则使用传入的参数，否则使用当前 profile 的参数。
-  ChatUIKitProfile copy({
-    String? name,
+  ChatUIKitProfile copyWith({
+    String? nickname,
     String? avatarUrl,
     ImageProvider? avatarProvider,
     Map<String, String>? extension,
@@ -84,7 +83,7 @@ class ChatUIKitProfile {
   }) {
     return ChatUIKitProfile(
       id: id,
-      name: name ?? this.name,
+      nickname: nickname ?? this.nickname,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       type: type,
       extension: extension ?? this.extension,

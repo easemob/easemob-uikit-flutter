@@ -2,11 +2,6 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
 
-typedef WillCreateHandler = Future<CreateGroupInfo?> Function(
-  BuildContext context,
-  CreateGroupInfo? createGroupInfo,
-  List<ChatUIKitProfile> selectedProfiles,
-);
 
 class CreateGroupView extends StatefulWidget {
   CreateGroupView.arguments(

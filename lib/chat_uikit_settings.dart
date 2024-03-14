@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 
 enum CornerRadius { extraSmall, small, medium, large }
 
-typedef ChatUIKitReportReasonHandler = Map<String, String> Function(
-  BuildContext context,
-);
+
 
 class ChatUIKitSettings {
   // 头像圆角
@@ -59,9 +57,9 @@ class ChatUIKitSettings {
     '\u{1F928}',
     '\u{1F62D}',
     '\u{1F389}',
-    '\u{1F44D}',
-    '\u{2764}',
-    '\u{1F609}',
+    // '\u{1F44D}',
+    // '\u{2764}',
+    // '\u{1F609}',
     // '\u{1F928}',
     // '\u{1F62D}',
     // '\u{1F389}',

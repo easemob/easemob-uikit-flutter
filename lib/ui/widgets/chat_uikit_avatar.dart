@@ -60,12 +60,15 @@ class _ChatUIKitAvatarState extends State<ChatUIKitAvatar>
   }
 
   @override
-  void onCurrentUserDataUpdate(UserData? userData) {
-    if (userData?.avatarUrl?.isNotEmpty == true &&
-        avatarUrl != userData?.avatarUrl) {
-      setState(() {
-        avatarUrl = userData?.avatarUrl;
-      });
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+    if (map.keys.contains(ChatUIKit.instance.currentUserId)) {
+      ChatUIKitProfile userData = map[ChatUIKit.instance.currentUserId]!;
+      if (userData.avatarUrl?.isNotEmpty == true &&
+          avatarUrl != userData.avatarUrl) {
+        setState(() {
+          avatarUrl = userData.avatarUrl;
+        });
+      }
     }
   }
 

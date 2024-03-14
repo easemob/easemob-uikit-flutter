@@ -11,13 +11,13 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
-  UserData? _userData;
+  ChatUIKitProfile? _userProfile;
   bool isLight = true;
   @override
   void initState() {
     super.initState();
     ChatUIKitProvider.instance.addObserver(this);
-    _userData = ChatUIKitProvider.instance.currentUserData;
+    _userProfile = ChatUIKitProvider.instance.currentUserProfile;
   }
 
   @override
@@ -27,9 +27,9 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
   }
 
   @override
-  void onCurrentUserDataUpdate(UserData? userData) {
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
     setState(() {
-      _userData = userData;
+      _userProfile = map[ChatUIKit.instance.currentUserId];
     });
   }
 
@@ -60,12 +60,12 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
   Widget _buildContent() {
     final theme = ChatUIKitTheme.of(context);
     Widget avatar = ChatUIKitAvatar.current(
-      avatarUrl: _userData?.avatarUrl,
+      avatarUrl: _userProfile?.avatarUrl,
       size: 100,
     );
 
     Widget name = Text(
-      _userData?.nickname ?? ChatUIKit.instance.currentUserId ?? '',
+      _userProfile?.showName ?? ChatUIKit.instance.currentUserId ?? '',
       textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
