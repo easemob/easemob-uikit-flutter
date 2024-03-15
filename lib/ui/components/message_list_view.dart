@@ -65,13 +65,12 @@ class _MessageListViewState extends State<MessageListView> {
     controller =
         widget.controller ?? MessageListViewController(profile: widget.profile);
     controller.addListener(() {
-      debugPrint('MessageListView: ${controller.lastActionType}');
-      if (controller.lastActionType == MessageLastActionType.load) {
+      if (controller.lastActionType == MessageLastActionType.originalPosition) {
         setState(() {});
       }
-      if ((controller.lastActionType == MessageLastActionType.receive &&
-              _scrollController.offset == 0) ||
-          controller.lastActionType == MessageLastActionType.send) {
+
+      if (_scrollController.offset < 20 ||
+          controller.lastActionType == MessageLastActionType.bottomPosition) {
         setState(() {});
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
           if (_scrollController.positions.isNotEmpty) {
@@ -84,7 +83,7 @@ class _MessageListViewState extends State<MessageListView> {
         });
       }
     });
-    fetchMessages();
+    controller.fetchItemList();
     controller.sendConversationsReadAck();
     controller.clearMentionIfNeed();
   }
@@ -95,10 +94,6 @@ class _MessageListViewState extends State<MessageListView> {
     controller.dispose();
     _scrollController.dispose();
     super.dispose();
-  }
-
-  void fetchMessages() {
-    controller.fetchItemList();
   }
 
   @override
@@ -154,14 +149,20 @@ class _MessageListViewState extends State<MessageListView> {
     content = NotificationListener(
       onNotification: (notification) {
         if (notification is ScrollUpdateNotification) {
-          if (controller.hasNew && _scrollController.offset < 20) {
-            controller.hasNew = false;
-            setState(() {});
+          if (_scrollController.offset < 20) {
+            if (controller.onBottom == false) {
+              controller.onBottom = true;
+              controller.addAllCacheToList();
+            }
+          } else {
+            if (controller.onBottom == true) {
+              controller.onBottom = false;
+            }
           }
           if (_scrollController.position.maxScrollExtent -
                   _scrollController.offset <
               1500) {
-            fetchMessages();
+            controller.fetchItemList();
           }
         }
 

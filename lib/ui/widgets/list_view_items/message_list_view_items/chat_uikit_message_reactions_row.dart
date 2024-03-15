@@ -24,6 +24,11 @@ class ChatUIKitMessageReactionsRow extends StatefulWidget {
 class _ChatUIKitMessageReactionsRowState
     extends State<ChatUIKitMessageReactionsRow> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (widget.reactions.isEmpty) return const SizedBox();
     ChatUIKitTheme theme = ChatUIKitTheme.of(context);

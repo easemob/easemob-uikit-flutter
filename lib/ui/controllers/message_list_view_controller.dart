@@ -8,10 +8,8 @@ import 'package:flutter/material.dart';
 import '../../universal/defines.dart';
 
 enum MessageLastActionType {
-  send,
-  receive,
-  load,
-  none,
+  bottomPosition,
+  originalPosition,
 }
 
 /// 消息列表控制器
@@ -35,7 +33,7 @@ class MessageListViewController extends ChangeNotifier
   late final ConversationType conversationType;
 
   /// 不可修改
-  MessageLastActionType lastActionType = MessageLastActionType.none;
+  MessageLastActionType lastActionType = MessageLastActionType.originalPosition;
 
   /// 不可修改
   bool _isEmpty = false;
@@ -45,6 +43,8 @@ class MessageListViewController extends ChangeNotifier
 
   /// 不可修改
   bool hasNew = false;
+
+  bool onBottom = false;
 
   /// 不可修改
   bool _isFetching = false;
@@ -57,11 +57,13 @@ class MessageListViewController extends ChangeNotifier
 
   List<Message> selectedMessages = [];
 
+  List<MessageModel> cacheMessages = [];
+
   bool isMultiSelectMode = false;
 
   void clearMessages() {
     msgModelList.clear();
-    lastActionType = MessageLastActionType.none;
+    lastActionType = MessageLastActionType.originalPosition;
     hasNew = false;
     _lastMessageId = null;
   }
@@ -128,11 +130,20 @@ class MessageListViewController extends ChangeNotifier
       }
       msgModelList.addAll(modelLists.reversed);
 
-      lastActionType = MessageLastActionType.load;
+      lastActionType = MessageLastActionType.originalPosition;
 
       updateView();
     }
     _isFetching = false;
+  }
+
+  void addAllCacheToList() {
+    if (cacheMessages.isNotEmpty) {
+      msgModelList.insertAll(0, cacheMessages.reversed);
+      lastActionType = MessageLastActionType.bottomPosition;
+      cacheMessages.clear();
+      updateView();
+    }
   }
 
   @override
@@ -165,9 +176,13 @@ class MessageListViewController extends ChangeNotifier
     }
     if (list.isNotEmpty) {
       _clearMention(list);
-      msgModelList.insertAll(0, list.reversed);
-      hasNew = true;
-      lastActionType = MessageLastActionType.receive;
+      if (onBottom) {
+        msgModelList.insertAll(0, list.reversed);
+        lastActionType = MessageLastActionType.bottomPosition;
+      } else {
+        cacheMessages.addAll(list.reversed);
+        lastActionType = MessageLastActionType.originalPosition;
+      }
 
       updateView();
     }
@@ -253,6 +268,7 @@ class MessageListViewController extends ChangeNotifier
       }
     }
     if (needUpdate) {
+      lastActionType = MessageLastActionType.originalPosition;
       updateView();
     }
   }
@@ -558,7 +574,7 @@ class MessageListViewController extends ChangeNotifier
 
     msgModelList.insert(0, MessageModel(message: msg));
     hasNew = true;
-    lastActionType = MessageLastActionType.send;
+    lastActionType = MessageLastActionType.bottomPosition;
     updateView();
   }
 
@@ -568,7 +584,7 @@ class MessageListViewController extends ChangeNotifier
     final msg = await ChatUIKit.instance.sendMessage(message: message);
     msgModelList.insert(0, MessageModel(message: msg));
     hasNew = true;
-    lastActionType = MessageLastActionType.send;
+    lastActionType = MessageLastActionType.bottomPosition;
     updateView();
   }
 

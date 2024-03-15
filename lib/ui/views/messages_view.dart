@@ -388,17 +388,24 @@ class _MessagesViewState extends State<MessagesView>
     );
 
     content = GestureDetector(
-      onTap: () {
-        clearAllType();
-      },
+      onTap: clearAllType,
       child: content,
     );
 
-    List<Widget> list = [Expanded(child: content)];
+    content = Stack(
+      children: [
+        content,
+        Positioned.fill(child: floatingUnreadWidget(theme)),
+      ],
+    );
+
+    List<Widget> list = [
+      Expanded(child: content),
+    ];
     if (controller.isMultiSelectMode) {
       list.add(multiSelectBar(theme));
     } else {
-      if (replyMessage != null) list.add(replyMessageBar(theme));
+      list.add(replyMessageBar(theme));
       widget.inputBar ?? list.add(inputBar(theme));
       list.add(
         AnimatedContainer(
@@ -710,6 +717,7 @@ class _MessagesViewState extends State<MessagesView>
   }
 
   Widget replyMessageBar(ChatUIKitTheme theme) {
+    if (replyMessage == null) return const SizedBox();
     Widget content = widget.replyBarBuilder?.call(context, replyMessage!) ??
         ChatUIKitReplyBar(
           messageModel: replyMessage!,
@@ -2023,6 +2031,60 @@ class _MessagesViewState extends State<MessagesView>
       context: context,
       showCancel: false,
       body: ChatUIKitMessageReactionInfo(model),
+    );
+  }
+
+  Widget floatingUnreadWidget(ChatUIKitTheme theme) {
+    if (controller.cacheMessages.isEmpty) return const SizedBox();
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Padding(
+        padding: const EdgeInsets.all(4),
+        child: ElevatedButton.icon(
+          onPressed: () {
+            controller.addAllCacheToList();
+          },
+          icon: const Icon(Icons.arrow_downward),
+          label: Text(
+            "${controller.cacheMessages.length} 条未读消息",
+            style: TextStyle(
+              color: theme.color.isDark
+                  ? theme.color.primaryColor6
+                  : theme.color.primaryColor5,
+              fontWeight: theme.font.labelMedium.fontWeight,
+              fontSize: theme.font.labelMedium.fontSize,
+            ),
+          ),
+          style: ButtonStyle(
+            splashFactory: NoSplash.splashFactory,
+            backgroundColor: MaterialStateProperty.all(
+              theme.color.isDark
+                  ? theme.color.neutralColor2
+                  : theme.color.neutralColor98,
+            ),
+            overlayColor: MaterialStateProperty.all(Colors.transparent),
+            elevation: MaterialStateProperty.all(0),
+            shadowColor: MaterialStateProperty.all(Colors.transparent),
+            foregroundColor: MaterialStateProperty.all(
+              theme.color.isDark
+                  ? theme.color.primaryColor6
+                  : theme.color.primaryColor5,
+            ),
+            side: MaterialStatePropertyAll<BorderSide>(
+              BorderSide(
+                color: theme.color.isDark
+                    ? theme.color.neutralColor3
+                    : theme.color.neutralColor9,
+              ),
+            ),
+            shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
