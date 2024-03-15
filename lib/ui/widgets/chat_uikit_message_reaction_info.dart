@@ -15,10 +15,14 @@ class _ChatUIKitMessageReactionInfoState
     with SingleTickerProviderStateMixin {
   late final TabController tabController;
   int selectIndex = 0;
+  late List<MessageReaction> reactions;
+  late String messageID;
 
   @override
   void initState() {
     super.initState();
+    messageID = widget.model.message.msgId;
+    reactions = widget.model.reactions!;
     tabController = TabController(
       length: widget.model.reactions!.length,
       vsync: this,
@@ -46,7 +50,7 @@ class _ChatUIKitMessageReactionInfoState
           height: 28,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: widget.model.reactions!.length,
+            itemCount: reactions.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -55,7 +59,7 @@ class _ChatUIKitMessageReactionInfoState
                     tabController.animateTo(index);
                   },
                   child: ChatUIkitReactionWidget(
-                    widget.model.reactions![index],
+                    reactions[index],
                     theme: theme,
                     highlightColor: Colors.transparent,
                     highlightTextColor: theme.color.isDark
@@ -75,11 +79,14 @@ class _ChatUIKitMessageReactionInfoState
         Expanded(
           child: TabBarView(
             controller: tabController,
-            children: widget.model.reactions!
+            children: reactions
                 .map(
                   (e) => ChatReactionInfoWidget(
-                    msgId: widget.model.message.msgId,
+                    msgId: messageID,
                     reaction: e,
+                    onReactionDeleteTap: () {
+                      onReactionDeleteTap(e);
+                    },
                   ),
                 )
                 .toList(),
@@ -88,13 +95,29 @@ class _ChatUIKitMessageReactionInfoState
       ],
     );
   }
+
+  void onReactionDeleteTap(MessageReaction reaction) {
+    MessageReaction newReaction = reaction.copyWith(
+      userCount: reaction.userCount - 1,
+      isAddedBySelf: false,
+    );
+    int index = reactions
+        .indexWhere((element) => reaction.reaction == element.reaction);
+    reactions[index] = newReaction;
+    setState(() {});
+  }
 }
 
 class ChatReactionInfoWidget extends StatefulWidget {
-  const ChatReactionInfoWidget(
-      {required this.msgId, required this.reaction, super.key});
+  const ChatReactionInfoWidget({
+    required this.msgId,
+    required this.reaction,
+    this.onReactionDeleteTap,
+    super.key,
+  });
   final String msgId;
   final MessageReaction reaction;
+  final VoidCallback? onReactionDeleteTap;
 
   @override
   State<ChatReactionInfoWidget> createState() => _ChatReactionInfoWidgetState();
@@ -105,6 +128,8 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
   List<ChatUIKitProfile> profiles = [];
   String? cursor;
   bool fetching = false;
+  bool hasMore = false;
+  int pageSize = 20;
   @override
   void initState() {
     super.initState();
@@ -132,7 +157,12 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
         messageId: widget.msgId,
         cursor: cursor,
         reaction: widget.reaction.reaction,
+        pageSize: pageSize,
       );
+
+      if (pageSize > result.data.length) {
+        hasMore = false;
+      }
       cursor = result.cursor;
       MessageReaction reaction = result.data.first;
       reaction.userList.remove(ChatUIKit.instance.currentUserId);
@@ -146,10 +176,11 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
       }
 
       if (reaction.isAddedBySelf) {
-        profiles.insert(
-          0,
-          ChatUIKitProfile.contact(id: ChatUIKit.instance.currentUserId!),
-        );
+        ChatUIKitProfile profile = ChatUIKitProvider
+                .instance.profilesCache[ChatUIKit.instance.currentUserId!] ??
+            ChatUIKitProfile.contact(id: ChatUIKit.instance.currentUserId!);
+
+        profiles.insert(0, profile);
       }
       setState(() {});
     } catch (e) {
@@ -160,15 +191,68 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
 
   @override
   Widget build(BuildContext context) {
+    ChatUIKitTheme theme = ChatUIKitTheme.of(context);
     super.build(context);
-    return ListView.builder(
-      itemBuilder: (ctx, index) {
-        return ChatUIKitContactListViewItem(
-          ContactItemModel.fromProfile(profiles[index]),
-        );
+    return NotificationListener(
+      onNotification: (notification) {
+        if (notification is ScrollEndNotification) {
+          if (notification.metrics.pixels ==
+              notification.metrics.maxScrollExtent) {
+            if (hasMore) {
+              fetchReactionInfo();
+            }
+          }
+        }
+        return false;
       },
-      itemCount: profiles.length,
+      child: ListView.builder(
+        itemBuilder: (ctx, index) {
+          return item(profiles[index], theme);
+        },
+        itemCount: profiles.length,
+      ),
     );
+  }
+
+  Widget item(ChatUIKitProfile profile, ChatUIKitTheme theme) {
+    Widget content = ChatUIKitContactListViewItem(
+      ContactItemModel.fromProfile(profile),
+    );
+    if (profile.id == ChatUIKit.instance.currentUserId) {
+      content = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(child: content),
+          InkWell(
+            onTap: () async {
+              try {
+                await ChatUIKit.instance.deleteReaction(
+                  messageId: widget.msgId,
+                  reaction: widget.reaction.reaction,
+                );
+                profiles.remove(profile);
+                widget.onReactionDeleteTap?.call();
+                setState(() {});
+              } catch (e) {
+                debugPrint(e.toString());
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: ChatUIKitImageLoader.voiceDelete(
+                width: 28,
+                height: 28,
+                color: (theme.color.isDark
+                    ? theme.color.neutralColor4
+                    : theme.color.neutralColor7),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    return content;
   }
 
   @override

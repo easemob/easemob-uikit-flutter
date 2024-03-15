@@ -1,3 +1,4 @@
+import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/widgets.dart';
 
 class MessageListShareUserData extends InheritedWidget {
@@ -7,7 +8,7 @@ class MessageListShareUserData extends InheritedWidget {
     required this.data,
   });
 
-  final Map<String, UserData> data;
+  final Map<String, ChatUIKitProfile> data;
 
   static MessageListShareUserData? of(BuildContext context) {
     return context

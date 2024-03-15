@@ -28,8 +28,8 @@ class MessageListViewController extends ChangeNotifier
   /// 消息列表
   final List<MessageModel> msgModelList = [];
 
-  /// 用户信息缓存，用于显示头像昵称, 不建议修改， 详细参考 [UserData]
-  final Map<String, UserData> userMap = {};
+  /// 用户信息缓存，用于显示头像昵称, 不建议修改， 详细参考 [ChatUIKitProfile]
+  final Map<String, ChatUIKitProfile> userMap = {};
 
   /// 会话类型, 不可修改，会根据 `profile` 自动设置。 详细参考 [ConversationType]
   late final ConversationType conversationType;
@@ -80,11 +80,10 @@ class MessageListViewController extends ChangeNotifier
       }
     }();
     if (ChatUIKit.instance.currentUserId != null) {
-      userMap[ChatUIKit.instance.currentUserId!] = UserData(
-        nickname: ChatUIKitProvider.instance.currentUserProfile?.showName,
-        avatarUrl: ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
-        time: DateTime.now().millisecondsSinceEpoch,
-      );
+      if (ChatUIKitProvider.instance.currentUserProfile != null) {
+        userMap[ChatUIKit.instance.currentUserId!] =
+            ChatUIKitProvider.instance.currentUserProfile!;
+      }
     }
   }
 
@@ -121,14 +120,10 @@ class MessageListViewController extends ChangeNotifier
             reactions: reactions,
           ),
         );
-        UserData? userData = userMap[msg.from!];
-        if ((userData?.time ?? 0) < msg.serverTime) {
-          userData = UserData(
-            nickname: msg.nickname,
-            avatarUrl: msg.avatarUrl,
-            time: msg.serverTime,
-          );
-          userMap[msg.from!] = userData;
+        ChatUIKitProfile? profile = userMap[msg.from!];
+        if ((profile?.timestamp ?? 0) < msg.serverTime) {
+          profile = msg.fromProfile;
+          userMap[msg.from!] = profile;
         }
       }
       msgModelList.addAll(modelLists.reversed);
@@ -161,10 +156,11 @@ class MessageListViewController extends ChangeNotifier
     for (var element in messages) {
       if (element.conversationId == profile.id) {
         list.add(MessageModel(message: element));
-        userMap[element.from!] = UserData(
-          nickname: element.nickname,
-          avatarUrl: element.avatarUrl,
-        );
+        ChatUIKitProfile? profile = userMap[element.from!];
+        if ((profile?.timestamp ?? 0) < element.fromProfile.timestamp) {
+          profile = element.fromProfile;
+          userMap[element.from!] = element.fromProfile;
+        }
       }
     }
     if (list.isNotEmpty) {
@@ -554,13 +550,13 @@ class MessageListViewController extends ChangeNotifier
         return Future(() => null);
       }
     }
-
+    willSendMsg.addProfile();
     final msg = await ChatUIKit.instance.sendMessage(message: willSendMsg);
+    if (ChatUIKitProvider.instance.currentUserProfile != null) {
+      userMap[ChatUIKit.instance.currentUserId!] =
+          ChatUIKitProvider.instance.currentUserProfile!;
+    }
 
-    userMap[ChatUIKit.instance.currentUserId!] = UserData(
-      nickname: ChatUIKitProvider.instance.currentUserProfile?.showName,
-      avatarUrl: ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
-    );
     msgModelList.insert(0, MessageModel(message: msg));
     hasNew = true;
     lastActionType = MessageLastActionType.send;

@@ -13,6 +13,7 @@ typedef Message = chat.EMMessage;
 typedef MessageStatus = chat.MessageStatus;
 typedef MessageDirection = chat.MessageDirection;
 typedef MessageReactionEvent = chat.EMMessageReactionEvent;
+typedef ReactionOperate = chat.ReactionOperate;
 typedef GroupMessageAck = chat.EMGroupMessageAck;
 typedef GroupSharedFile = chat.EMGroupSharedFile;
 typedef Group = chat.EMGroup;

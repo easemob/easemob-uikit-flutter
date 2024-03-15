@@ -37,6 +37,7 @@ class ChatUIKitEmojiRichText extends StatelessWidget {
     List<String> characters = text.characters.toList();
 
     String string = '';
+
     for (var i = 0; i < characters.length; i++) {
       if (!ChatUIKitEmojiData.emojiList.contains(characters[i])) {
         string += characters[i];

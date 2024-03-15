@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/ui/widgets/list_view_items/chat_uikit_message_reaction_info.dart';
+import 'package:em_chat_uikit/ui/widgets/chat_uikit_message_reaction_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../universal/defines.dart';

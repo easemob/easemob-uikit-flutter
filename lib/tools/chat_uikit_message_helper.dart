@@ -12,8 +12,14 @@ extension MessageHelper on Message {
         id: from!,
         avatarUrl: avatarUrl,
         nickname: nickname,
+        timestamp: serverTime,
       ),
     );
+  }
+
+  void addProfile(){
+    addAvatarURL(ChatUIKitProvider.instance.currentUserProfile?.avatarUrl);
+    addNickname(ChatUIKitProvider.instance.currentUserProfile?.showName);
   }
 
   String? get avatarUrl {

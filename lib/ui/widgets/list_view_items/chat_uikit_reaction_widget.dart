@@ -43,12 +43,21 @@ class ChatUIkitReactionWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(
-            ChatUIKitEmojiData.getEmojiImagePath(reaction.reaction)!,
-            package: ChatUIKitEmojiData.packageName,
-            width: 24,
-            height: 24,
-          ),
+          () {
+            if (ChatUIKitEmojiData.emojiList.contains(reaction.reaction)) {
+              return Image.asset(
+                ChatUIKitEmojiData.getEmojiImagePath(reaction.reaction)!,
+                package: ChatUIKitEmojiData.packageName,
+                width: 24,
+                height: 24,
+              );
+            } else {
+              return Text(
+                reaction.reaction,
+                textAlign: TextAlign.right,
+              );
+            }
+          }(),
           const SizedBox(width: 2),
           Padding(
             padding: const EdgeInsets.symmetric(

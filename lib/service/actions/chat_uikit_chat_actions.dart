@@ -17,16 +17,4 @@ mixin ChatUIKitChatActions on ChatSDKWrapper {
     }
     return unreadCount;
   }
-
-  @override
-  Future<Message> sendMessage({required Message message}) async {
-    message.addAvatarURL(
-      ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
-    );
-
-    message.addNickname(
-      ChatUIKitProvider.instance.currentUserProfile?.showName,
-    );
-    return super.sendMessage(message: message);
-  }
 }

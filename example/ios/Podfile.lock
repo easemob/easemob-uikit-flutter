@@ -142,7 +142,7 @@ SPEC CHECKSUMS:
   flutter_sound_record: fa9800029599bccfaa8be22cc372550a5fa505ac
   HyphenateChat: e43d1ec9ccf404eeb2ee7d3265cd12a4e83f0d3a
   im_flutter_sdk: 0012f5bb4bf59284f6b5e55059f96e60eb527328
-  image_picker_ios: 99dfe1854b4fa34d0364e74a78448a0151025425
+  image_picker_ios: b545a5f16c0fa88e3ecbbce3ed4de45567a8ec18
   integration_test: 13825b8a9334a850581300559b8839134b124670
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
