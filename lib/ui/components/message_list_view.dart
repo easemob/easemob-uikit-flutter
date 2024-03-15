@@ -65,10 +65,10 @@ class _MessageListViewState extends State<MessageListView> {
     controller =
         widget.controller ?? MessageListViewController(profile: widget.profile);
     controller.addListener(() {
+      debugPrint('MessageListView: ${controller.lastActionType}');
       if (controller.lastActionType == MessageLastActionType.load) {
         setState(() {});
       }
-
       if ((controller.lastActionType == MessageLastActionType.receive &&
               _scrollController.offset == 0) ||
           controller.lastActionType == MessageLastActionType.send) {

@@ -195,7 +195,6 @@ class MessageListViewController extends ChangeNotifier
       for (var element in list) {
         element.message.hasDeliverAck = true;
       }
-
       updateView();
     }
   }
