@@ -1,5 +1,4 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-
 import 'package:em_chat_uikit/universal/defines.dart';
 import 'package:flutter/material.dart';
 
@@ -25,9 +24,11 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     this.onErrorBtnTap,
     this.bubbleBuilder,
     this.bubbleContentBuilder,
-    this.reactionsBuilder,
-    this.onReactionTap,
+    this.reactionItemsBuilder,
+    this.onReactionItemTap,
     this.onReactionInfoTap,
+    this.onThreadItemTap,
+    this.threadItemBuilder,
     this.enableSelected,
     this.reactions,
     super.key,
@@ -56,9 +57,11 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   final VoidCallback? onErrorBtnTap;
   final MessageItemBubbleBuilder? bubbleBuilder;
   final MessageItemBuilder? bubbleContentBuilder;
-  final MessageItemBuilder? reactionsBuilder;
-  final void Function(MessageReaction reaction)? onReactionTap;
+  final MessageItemBuilder? reactionItemsBuilder;
+  final void Function(MessageReaction reaction)? onReactionItemTap;
   final VoidCallback? onReactionInfoTap;
+  final VoidCallback? onThreadItemTap;
+  final MessageItemBuilder? threadItemBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -199,6 +202,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
         quoteWidget(context, model: model.message.getQuote, isLeft: left),
         avatarAndBubble,
         if (model.reactions?.isNotEmpty == true) const SizedBox(height: 4),
+        threadWidget(context, theme, left),
         reactionsWidget(context, theme, left),
         timeWidget(context, theme, left),
       ],
@@ -377,6 +381,34 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     return content;
   }
 
+  Widget threadWidget(BuildContext context, ChatUIKitTheme theme, bool left) {
+    if (model.threadOverView == null) {
+      return const SizedBox();
+    } else {
+      double arrowWidth = 0;
+      if (model.message.bodyType != MessageType.IMAGE &&
+          model.message.bodyType != MessageType.VIDEO) {
+        arrowWidth = getArrowWidth;
+      }
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment:
+            left ? MainAxisAlignment.start : MainAxisAlignment.end,
+        textDirection: left ? TextDirection.ltr : TextDirection.rtl,
+        children: [
+          SizedBox(width: arrowWidth + avatarSize + arrowPadding),
+          Expanded(
+            child: threadItemBuilder?.call(context, model) ??
+                ChatUIKitMessageThreadWidget(
+                  threadOverView: model.threadOverView!,
+                  onTap: onThreadItemTap,
+                ),
+          ),
+        ],
+      );
+    }
+  }
+
   Widget reactionsWidget(
     BuildContext context,
     ChatUIKitTheme theme,
@@ -398,11 +430,11 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
         children: [
           SizedBox(width: arrowWidth + avatarSize + arrowPadding),
           Expanded(
-            child: reactionsBuilder?.call(context, model) ??
+            child: reactionItemsBuilder?.call(context, model) ??
                 ChatUIKitMessageReactionsRow(
                   reactions: reactions!,
                   isLeft: left,
-                  onReactionTap: onReactionTap,
+                  onReactionTap: onReactionItemTap,
                   onReactionInfoTap: onReactionInfoTap,
                 ),
           ),

@@ -57,11 +57,6 @@ class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget>
       }
     }
 
-    if (localPath?.isNotEmpty == true) {
-      safeSetState(() {});
-      return;
-    }
-
     if (message!.thumbnailLocalPath?.isNotEmpty == true) {
       File file = File(message!.thumbnailLocalPath!);
       if (file.existsSync()) {

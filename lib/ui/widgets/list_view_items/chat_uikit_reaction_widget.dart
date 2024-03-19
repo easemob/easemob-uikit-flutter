@@ -24,9 +24,13 @@ class ChatUIkitReactionWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
         color: bgColor ??
-            (theme.color.isDark
-                ? theme.color.neutralColor5
-                : theme.color.neutralColor95),
+            (reaction.isAddedBySelf
+                ? (theme.color.isDark
+                    ? Colors.transparent
+                    : theme.color.neutralColor95)
+                : (theme.color.isDark
+                    ? theme.color.neutralColor3
+                    : theme.color.neutralColor95)),
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
           width: 1,
@@ -36,7 +40,7 @@ class ChatUIkitReactionWidget extends StatelessWidget {
                       ? theme.color.primaryColor6
                       : theme.color.primaryColor5)
                   : (theme.color.isDark
-                      ? theme.color.neutralColor5
+                      ? theme.color.neutralColor3
                       : theme.color.neutralColor95)),
         ),
       ),
@@ -73,11 +77,11 @@ class ChatUIkitReactionWidget extends StatelessWidget {
                 color: reaction.isAddedBySelf
                     ? (highlightTextColor ??
                         (theme.color.isDark
-                            ? theme.color.primaryColor6
+                            ? theme.color.neutralColor7
                             : theme.color.primaryColor5))
                     : (textColor ??
                         (theme.color.isDark
-                            ? theme.color.neutralColor95
+                            ? theme.color.neutralColor7
                             : theme.color.neutralColor3)),
               ),
             )),

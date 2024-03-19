@@ -36,6 +36,11 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     this.multiSelectBottomBar,
     this.viewObserver,
     this.attributes,
+    this.onReactionItemTap,
+    this.onReactionInfoTap,
+    this.reactionItemsBuilder,
+    this.onThreadItemTap,
+    this.threadItemBuilder,
   });
 
   /// 用户信息对象，用于设置对方信息。详细参考 [ChatUIKitProfile]。
@@ -131,6 +136,16 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   /// 多选消息时显示的bottom bar.
   final Widget? multiSelectBottomBar;
 
+  final MessageReactionItemTapHandler? onReactionItemTap;
+
+  final MessageItemTapHandler? onReactionInfoTap;
+
+  final MessageItemBuilder? reactionItemsBuilder;
+
+  final MessageItemTapHandler? onThreadItemTap;
+
+  final MessageItemBuilder? threadItemBuilder;
+
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   @override
   String? attributes;
@@ -173,6 +188,11 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     Widget? multiSelectBottomBar,
     ChatUIKitViewObserver? viewObserver,
     String? attributes,
+    MessageReactionItemTapHandler? onReactionItemTap,
+    MessageItemTapHandler? onReactionInfoTap,
+    MessageItemBuilder? reactionItemsBuilder,
+    MessageItemTapHandler? onThreadItemTap,
+    MessageItemBuilder? threadItemBuilder,
   }) {
     return MessagesViewArguments(
       profile: profile ?? this.profile,
@@ -213,6 +233,11 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       multiSelectBottomBar: multiSelectBottomBar ?? this.multiSelectBottomBar,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
+      onReactionItemTap: onReactionItemTap ?? this.onReactionItemTap,
+      onReactionInfoTap: onReactionInfoTap ?? this.onReactionInfoTap,
+      reactionItemsBuilder: reactionItemsBuilder ?? this.reactionItemsBuilder,
+      onThreadItemTap: onThreadItemTap ?? this.onThreadItemTap,
+      threadItemBuilder: threadItemBuilder ?? this.threadItemBuilder,
     );
   }
 }

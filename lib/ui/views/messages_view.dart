@@ -43,7 +43,12 @@ class MessagesView extends StatefulWidget {
         forceLeft = arguments.forceLeft,
         multiSelectBottomBar = arguments.multiSelectBottomBar,
         viewObserver = arguments.viewObserver,
-        attributes = arguments.attributes;
+        attributes = arguments.attributes,
+        onReactionItemTap = arguments.onReactionItemTap,
+        onReactionInfoTap = arguments.onReactionInfoTap,
+        reactionItemsBuilder = arguments.reactionItemsBuilder,
+        onThreadItemTap = arguments.onThreadItemTap,
+        threadItemBuilder = arguments.threadItemBuilder;
 
   /// 构造函数。
   const MessagesView({
@@ -80,6 +85,11 @@ class MessagesView extends StatefulWidget {
     this.multiSelectBottomBar,
     this.viewObserver,
     this.attributes,
+    this.onReactionItemTap,
+    this.onReactionInfoTap,
+    this.reactionItemsBuilder,
+    this.onThreadItemTap,
+    this.threadItemBuilder,
     super.key,
   });
 
@@ -179,6 +189,16 @@ class MessagesView extends StatefulWidget {
   /// 多选时显示的 bottom bar
   final Widget? multiSelectBottomBar;
 
+  final MessageReactionItemTapHandler? onReactionItemTap;
+
+  final MessageItemTapHandler? onReactionInfoTap;
+
+  final MessageItemBuilder? reactionItemsBuilder;
+
+  final MessageItemTapHandler? onThreadItemTap;
+
+  final MessageItemBuilder? threadItemBuilder;
+
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
 
@@ -193,6 +213,7 @@ class _MessagesViewState extends State<MessagesView>
   late final ImagePicker _picker;
   late final AudioPlayer _player;
   late final FocusNode focusNode;
+  String? title;
   bool showEmoji = false;
   bool showMoreBtn = true;
 
@@ -343,7 +364,7 @@ class _MessagesViewState extends State<MessagesView>
         }
         return ret;
       },
-      onDoubleTap: (context, model) {
+      onItemDoubleTap: (context, model) {
         bool? ret = widget.onDoubleTap?.call(context, model);
         stopVoice();
         return ret;
@@ -377,14 +398,34 @@ class _MessagesViewState extends State<MessagesView>
           onErrorBtnTap(model);
         }
       },
-      onReactionTap: (model, reaction) {
-        controller.updateReaction(
-          model.message.msgId,
-          reaction.reaction,
-          !reaction.isAddedBySelf,
-        );
+      onReactionItemTap: (model, reaction) {
+        bool? ret =
+            widget.onReactionItemTap?.call(context, model, reaction) ?? false;
+        if (ret == false) {
+          controller.updateReaction(
+            model.message.msgId,
+            reaction.reaction,
+            !reaction.isAddedBySelf,
+          );
+        }
       },
-      onReactionInfoTap: showReactionsInfo,
+      onReactionInfoTap: (context, model) {
+        bool ret = widget.onReactionInfoTap?.call(context, model) ?? false;
+        if (ret == false) {
+          showReactionsInfo(context, model);
+        }
+
+        return ret;
+      },
+      reactionItemsBuilder: widget.reactionItemsBuilder,
+      onThreadItemTap: (context, model) {
+        bool ret = widget.onThreadItemTap?.call(context, model) ?? false;
+        if (ret == false) {
+          showThread(context, model);
+        }
+        return ret;
+      },
+      threadItemBuilder: widget.threadItemBuilder,
     );
 
     content = GestureDetector(
@@ -430,7 +471,7 @@ class _MessagesViewState extends State<MessagesView>
     }
 
     content = Column(children: list);
-
+    title = widget.title ?? profile!.showName;
     content = Scaffold(
       backgroundColor: theme.color.isDark
           ? theme.color.neutralColor1
@@ -439,7 +480,7 @@ class _MessagesViewState extends State<MessagesView>
           ? null
           : widget.appBar ??
               ChatUIKitAppBar(
-                title: widget.title ?? profile!.showName,
+                title: title,
                 centerTitle: false,
                 leading: InkWell(
                   highlightColor: Colors.transparent,
@@ -1791,7 +1832,16 @@ class _MessagesViewState extends State<MessagesView>
         ),
         onTap: () async {
           Navigator.of(context).pop();
-          replyMessaged(model);
+          ChatUIKitRoute.pushOrPushNamed(
+            context,
+            ChatUIKitRouteNames.threadMessagesViewArguments,
+            ThreadMessagesViewArguments(
+              model: model,
+              title: model.message.showInfo(context),
+              subtitle: widget.title,
+              attributes: widget.attributes,
+            ),
+          );
         },
       ));
     }
@@ -2026,12 +2076,27 @@ class _MessagesViewState extends State<MessagesView>
     );
   }
 
-  void showReactionsInfo(MessageModel model) {
+  void showReactionsInfo(BuildContext context, MessageModel model) {
     showChatUIKitBottomSheet(
       context: context,
       showCancel: false,
       body: ChatUIKitMessageReactionInfo(model),
     );
+  }
+
+  void showThread(BuildContext context, MessageModel model) {
+    controller.onBottom = false;
+    ChatUIKitRoute.pushOrPushNamed(
+      context,
+      ChatUIKitRouteNames.threadMessagesViewArguments,
+      ThreadMessagesViewArguments(
+        model: model,
+        subtitle: title,
+        title:
+            model.threadOverView?.threadName ?? model.message.showInfo(context),
+        attributes: widget.attributes,
+      ),
+    ).then((value) => controller.onBottom = true);
   }
 
   Widget floatingUnreadWidget(ChatUIKitTheme theme) {

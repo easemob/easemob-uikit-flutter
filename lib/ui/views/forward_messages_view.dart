@@ -46,7 +46,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
     ChatUIKit.instance.addObserver(this);
     widget.viewObserver?.addListener(() => setState(() {}));
     message = widget.message;
-    downloadMessage();
+    fetchCombineList();
   }
 
   @override
@@ -56,12 +56,12 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
     super.dispose();
   }
 
-  void downloadMessage() async {
+  void fetchCombineList() async {
     try {
       List<Message> fetchedMsgs =
           await ChatUIKit.instance.fetchCombineMessageDetail(message: message);
 
-      models.addAll(fetchedMsgs.map((e) => MessageModel(message: message)));
+      models.addAll(fetchedMsgs.map((e) => MessageModel(message: e)));
     } catch (e) {
       debugPrint('download error: $e');
     } finally {
@@ -259,7 +259,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
             context,
             ChatUIKitRouteNames.showImageView,
             ShowImageViewArguments(
-              message: message,
+              message: model.message,
             ));
       },
       child: ChatUIKitImageMessageWidget(model: model),

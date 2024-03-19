@@ -56,6 +56,7 @@ export 'ui/widgets/list_view_items/message_list_view_items/message_widget/chat_u
 export 'ui/widgets/list_view_items/message_list_view_items/message_widget/chat_uikit_nonsupport_message_widget.dart';
 export 'ui/widgets/list_view_items/message_list_view_items/message_widget/chat_uikit_combine_message_widget.dart';
 export 'ui/widgets/list_view_items/message_list_view_items/chat_uikit_message_reactions_row.dart';
+export 'ui/widgets/list_view_items/message_list_view_items/chat_uikit_message_thread_widget.dart';
 export 'ui/widgets/list_view_items/chat_uikit_reaction_widget.dart';
 export 'ui/widgets/chat_uikit_app_bar.dart';
 export 'ui/widgets/chat_uikit_avatar.dart';
@@ -85,6 +86,7 @@ export 'ui/controllers/group_list_view_controller.dart';
 export 'ui/controllers/new_request_list_view_controller.dart';
 export 'ui/controllers/group_member_list_view_controller.dart';
 export 'ui/controllers/message_list_view_controller.dart';
+export 'ui/controllers/thread_messages_view_controller.dart';
 
 export 'ui/models/chat_uikit_list_item_model_base.dart';
 export 'ui/models/conversation_model.dart';
@@ -126,6 +128,7 @@ export 'ui/views/group_delete_members_view.dart';
 export 'ui/views/search_group_members_view.dart';
 export 'ui/views/show_image_view.dart';
 export 'ui/views/show_video_view.dart';
+export 'ui/views/thread_messages_view.dart';
 
 export 'ui/route/chat_uikit_route.dart';
 export 'ui/route/chat_uikit_route_names.dart';
@@ -154,6 +157,8 @@ export 'ui/route/view_arguments/search_group_members_view_arguments.dart';
 export 'ui/route/view_arguments/show_image_view_arguments.dart';
 export 'ui/route/view_arguments/show_video_view_arguments.dart';
 export 'ui/route/view_arguments/view_arguments_base.dart';
+export 'ui/route/view_arguments/thread_messages_view_arguments.dart';
+
 export 'ui/route/chat_uikit_view_observer.dart';
 
 export 'universal/chat_uikit_action_model.dart';

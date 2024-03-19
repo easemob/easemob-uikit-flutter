@@ -27,7 +27,7 @@ class ChatUIKitImageMessageWidget extends StatefulWidget {
 
 class _ChatUIKitImageMessageWidgetState
     extends State<ChatUIKitImageMessageWidget> with MessageObserver {
-  late final MessageModel model;
+  late MessageModel model;
   bool downloading = false;
   bool downloadError = false;
 
@@ -39,7 +39,6 @@ class _ChatUIKitImageMessageWidgetState
   @override
   void initState() {
     super.initState();
-
     ChatUIKit.instance.addObserver(this);
     model = widget.model;
   }

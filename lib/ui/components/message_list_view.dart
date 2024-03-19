@@ -7,7 +7,7 @@ class MessageListView extends StatefulWidget {
     required this.profile,
     this.controller,
     this.onItemLongPress,
-    this.onDoubleTap,
+    this.onItemDoubleTap,
     this.onItemTap,
     this.onAvatarTap,
     this.onAvatarLongPressed,
@@ -22,15 +22,18 @@ class MessageListView extends StatefulWidget {
     this.bubbleBuilder,
     this.bubbleContentBuilder,
     this.forceLeft,
-    this.onReactionTap,
+    this.onReactionItemTap,
     this.onReactionInfoTap,
+    this.reactionItemsBuilder,
+    this.onThreadItemTap,
+    this.threadItemBuilder,
     super.key,
   });
   final ChatUIKitProfile profile;
   final MessageListViewController? controller;
   final MessageItemTapHandler? onItemTap;
   final MessageItemTapHandler? onItemLongPress;
-  final MessageItemTapHandler? onDoubleTap;
+  final MessageItemTapHandler? onItemDoubleTap;
   final MessageItemTapHandler? onAvatarTap;
   final MessageItemTapHandler? onAvatarLongPressed;
   final MessageItemTapHandler? onNicknameTap;
@@ -45,8 +48,11 @@ class MessageListView extends StatefulWidget {
   final MessageItemBuilder? bubbleContentBuilder;
   final bool? forceLeft;
   final void Function(MessageModel model, MessageReaction reaction)?
-      onReactionTap;
-  final void Function(MessageModel model)? onReactionInfoTap;
+      onReactionItemTap;
+  final MessageItemTapHandler? onReactionInfoTap;
+  final MessageItemBuilder? reactionItemsBuilder;
+  final MessageItemTapHandler? onThreadItemTap;
+  final MessageItemBuilder? threadItemBuilder;
 
   @override
   State<MessageListView> createState() => _MessageListViewState();
@@ -148,7 +154,8 @@ class _MessageListViewState extends State<MessageListView> {
 
     content = NotificationListener(
       onNotification: (notification) {
-        if (notification is ScrollUpdateNotification) {
+        if (notification is ScrollUpdateNotification ||
+            notification is ScrollEndNotification) {
           if (_scrollController.offset < 20) {
             if (controller.onBottom == false) {
               controller.onBottom = true;
@@ -267,7 +274,7 @@ class _MessageListViewState extends State<MessageListView> {
         widget.onAvatarLongPressed?.call(context, model);
       },
       onBubbleDoubleTap: () {
-        widget.onDoubleTap?.call(context, model);
+        widget.onItemDoubleTap?.call(context, model);
       },
       onBubbleLongPressed: () {
         widget.onItemLongPress?.call(context, model);
@@ -280,11 +287,16 @@ class _MessageListViewState extends State<MessageListView> {
       },
       model: model,
       reactions: model.reactions,
-      onReactionTap: (reaction) {
-        widget.onReactionTap?.call(model, reaction);
+      onReactionItemTap: (reaction) {
+        widget.onReactionItemTap?.call(model, reaction);
       },
       onReactionInfoTap: () {
-        widget.onReactionInfoTap?.call(model);
+        widget.onReactionInfoTap?.call(context, model);
+      },
+      reactionItemsBuilder: widget.reactionItemsBuilder,
+      threadItemBuilder: widget.threadItemBuilder,
+      onThreadItemTap: () {
+        widget.onThreadItemTap?.call(context, model);
       },
     );
 

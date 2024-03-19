@@ -67,7 +67,7 @@ class _ChatUIKitMessageReactionInfoState
                         : theme.color.neutralColor3,
                     bgColor: selectIndex == index
                         ? (theme.color.isDark
-                            ? theme.color.neutralColor2
+                            ? theme.color.neutralColor3
                             : theme.color.neutralColor9)
                         : Colors.transparent,
                   ),

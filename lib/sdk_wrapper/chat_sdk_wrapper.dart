@@ -3,13 +3,15 @@
 library chat_sdk_wrapper;
 
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/sdk_wrapper/actions/presence_actions.dart';
+
 import 'package:flutter/material.dart';
 
 export 'actions/chat_actions.dart';
 export 'actions/group_actions.dart';
 export 'actions/notification_actions.dart';
 export 'actions/contact_actions.dart';
+export 'actions/presence_actions.dart';
+export 'actions/thread_actions.dart';
 
 export 'typedef_define.dart';
 
@@ -21,6 +23,7 @@ export 'wrappers/message_wrapper.dart';
 export 'wrappers/multi_wrapper.dart';
 export 'wrappers/presence_wrapper.dart';
 export 'wrappers/notification_wrapper.dart';
+export 'wrappers/thread_wrapper.dart';
 
 export 'observers/chat_observer.dart';
 export 'observers/connect_observer.dart';
@@ -30,6 +33,7 @@ export 'observers/message_observer.dart';
 export 'observers/multi_observer.dart';
 export 'observers/presence_observer.dart';
 export 'observers/action_event_observer.dart';
+export 'observers/thread_observer.dart';
 
 export 'chat_sdk_wrapper_action_events.dart';
 export 'typedef_define.dart';
@@ -108,11 +112,13 @@ class ChatSDKWrapper extends ChatUIKitWrapperBase
         MultiWrapper,
         MessageWrapper,
         NotificationWrapper,
+        ThreadWrapper,
         PresenceWrapper,
         ChatActions,
         ContactActions,
         GroupActions,
         NotificationActions,
+        ThreadActions,
         PresenceActions,
         ChatSDKEventsObserver {
   static ChatSDKWrapper? _instance;

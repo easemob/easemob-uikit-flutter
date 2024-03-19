@@ -27,6 +27,8 @@ class ChatUIKitRouteNames {
   static const String currentUserInfoView = '/CurrentUserInfoView';
   static const String groupMentionView = '/GroupMentionView';
   static const String reportMessageView = '/ReportMessageView';
+  static const String threadMessagesViewArguments =
+      '/ThreadMessagesViewArguments';
 
   static Widget getWidthFromName(
       String name, ChatUIKitViewArguments arguments) {
@@ -126,6 +128,10 @@ class ChatUIKitRouteNames {
       case ChatUIKitRouteNames.reportMessageView:
         return ReportMessageView.arguments(
           arguments as ReportMessageViewArguments,
+        );
+      case ChatUIKitRouteNames.threadMessagesViewArguments:
+        return ThreadMessagesView.arguments(
+          arguments as ThreadMessagesViewArguments,
         );
     }
     return const SizedBox();

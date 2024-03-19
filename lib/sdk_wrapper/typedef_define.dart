@@ -51,3 +51,7 @@ typedef GroupStyle = chat.EMGroupStyle;
 typedef PresenceEventHandler = chat.EMPresenceEventHandler;
 typedef Presence = chat.EMPresence;
 typedef GroupPermissionType = chat.EMGroupPermissionType;
+typedef ChatThreadEventHandler = chat.EMChatThreadEventHandler;
+typedef ChatThreadEvent = chat.EMChatThreadEvent;
+typedef ChatThreadOperation = chat.EMChatThreadOperation;
+typedef ChatThread = chat.EMChatThread;

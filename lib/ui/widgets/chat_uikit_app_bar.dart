@@ -7,7 +7,7 @@ class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.title,
     this.titleWidget,
     this.titleTextStyle,
-    this.subTitle,
+    this.subtitle,
     this.subTitleTextStyle,
     this.leading,
     this.trailing,
@@ -24,7 +24,7 @@ class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String? title;
   final TextStyle? titleTextStyle;
   final Widget? titleWidget;
-  final String? subTitle;
+  final String? subtitle;
   final TextStyle? subTitleTextStyle;
   final Widget? leading;
   final Widget? trailing;
@@ -90,9 +90,9 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
     }
 
     Widget? subTitle;
-    if (widget.subTitle?.isNotEmpty == true) {
+    if (widget.subtitle?.isNotEmpty == true) {
       subTitle = Text(
-        widget.subTitle!,
+        widget.subtitle!,
         textScaler: TextScaler.noScaling,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,

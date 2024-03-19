@@ -14,7 +14,7 @@ enum MessageLastActionType {
 
 /// 消息列表控制器
 class MessageListViewController extends ChangeNotifier
-    with ChatObserver, MessageObserver {
+    with ChatObserver, MessageObserver, ThreadObserver {
   /// 用户信息对象，用于设置对方信息, 详细参考 [ChatUIKitProfile]。如果你自己设置了 `MessageListViewController` 需要确保 `profile` 与 [MessagesView] 传入的 `profile` 一致。
   ChatUIKitProfile profile;
 
@@ -44,7 +44,7 @@ class MessageListViewController extends ChangeNotifier
   /// 不可修改
   bool hasNew = false;
 
-  bool onBottom = false;
+  bool onBottom = true;
 
   /// 不可修改
   bool _isFetching = false;
@@ -116,10 +116,12 @@ class MessageListViewController extends ChangeNotifier
 
       for (var msg in list) {
         List<MessageReaction> reactions = await msg.reactionList();
+        ChatThread? threadOverView = await msg.chatThread();
         modelLists.add(
           MessageModel(
             message: msg,
             reactions: reactions,
+            threadOverView: threadOverView,
           ),
         );
         ChatUIKitProfile? profile = userMap[msg.from!];
@@ -268,6 +270,18 @@ class MessageListViewController extends ChangeNotifier
       }
     }
     if (needUpdate) {
+      lastActionType = MessageLastActionType.originalPosition;
+      updateView();
+    }
+  }
+
+  @override
+  void onChatThreadUpdate(ChatThreadEvent event) async {
+    int index = msgModelList.indexWhere(
+        (element) => element.message.msgId == event.chatThread?.messageId);
+    if (index != -1) {
+      msgModelList[index] =
+          msgModelList[index].copyWith(threadOverView: event.chatThread);
       lastActionType = MessageLastActionType.originalPosition;
       updateView();
     }

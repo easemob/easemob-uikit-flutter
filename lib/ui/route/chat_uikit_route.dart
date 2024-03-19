@@ -181,6 +181,11 @@ class ChatUIKitRoute {
         arguments as ForwardMessagesViewArguments,
       );
     },
+    ChatUIKitRouteNames.threadMessagesViewArguments: (context, arguments) {
+      return ThreadMessagesView.arguments(
+        arguments as ThreadMessagesViewArguments,
+      );
+    },
   };
 
   static ChatUIKitRouteBackModel? get lastModel {

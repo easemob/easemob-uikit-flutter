@@ -199,6 +199,24 @@ mixin ChatActions on ChatWrapper {
     });
   }
 
+  Future<void> downloadMessageAttachmentInCombine(
+      {required Message message}) async {
+    return checkResult(ChatSDKEvent.downloadMessageAttachmentInCombine,
+        () async {
+      return Client.getInstance.chatManager
+          .downloadMessageAttachmentInCombine(message);
+    });
+  }
+
+  Future<void> downloadMessageThumbnailInCombine(
+      {required Message message}) async {
+    return checkResult(ChatSDKEvent.downloadMessageThumbnailInCombine,
+        () async {
+      return Client.getInstance.chatManager
+          .downloadMessageThumbnailInCombine(message);
+    });
+  }
+
   Future<List<Conversation>> getAllConversations() async {
     return checkResult(ChatSDKEvent.loadAllConversations, () async {
       return Client.getInstance.chatManager.loadAllConversations();
