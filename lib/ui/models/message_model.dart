@@ -7,28 +7,28 @@ class MessageModel {
   final Message message;
   final List<MessageReaction>? reactions;
   final Message? quoteMessage;
-  final ChatThread? threadOverView;
+  final ChatThread? thread;
 
   MessageModel({
     String? modelId,
     required this.message,
     this.reactions,
     this.quoteMessage,
-    this.threadOverView,
+    this.thread,
   }) : id = modelId ?? randomId(message);
 
   MessageModel copyWith({
     Message? message,
     List<MessageReaction>? reactions,
     Message? quoteMessage,
-    ChatThread? threadOverView,
+    ChatThread? thread,
   }) {
     return MessageModel(
       modelId: id,
       message: message ?? this.message,
       reactions: reactions ?? this.reactions,
       quoteMessage: quoteMessage ?? this.quoteMessage,
-      threadOverView: threadOverView ?? this.threadOverView,
+      thread: thread ?? this.thread,
     );
   }
 

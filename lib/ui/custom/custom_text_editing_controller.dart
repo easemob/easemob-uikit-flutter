@@ -16,7 +16,7 @@ class CustomTextEditingController extends TextEditingController {
     this.mentionStyle,
   }) : super(text: text);
 
-  void addUser(ChatUIKitProfile profile) {
+  void at(ChatUIKitProfile profile) {
     String addText = '${profile.showName} '; // 在nickname后面添加空格
     int cursorOffset = value.selection.baseOffset + addText.length;
     final mention = MentionModel(profile);

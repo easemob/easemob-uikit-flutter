@@ -36,55 +36,6 @@ class ChatUIKitDetailsListViewItem extends StatelessWidget {
       ],
     );
 
-    // Widget content = SizedBox(
-    //   height: 54,
-    //   child: Column(
-    //     mainAxisAlignment: MainAxisAlignment.center,
-    //     crossAxisAlignment: CrossAxisAlignment.center,
-    //     children: [
-    //       SizedBox(
-    //         height: 53.5,
-    //         child: Row(
-    //           crossAxisAlignment: CrossAxisAlignment.center,
-    //           children: [
-    //             Text(
-    //               title,
-    //               textScaler: TextScaler.noScaling,
-    //               overflow: TextOverflow.ellipsis,
-    //               style: TextStyle(
-    //                 fontWeight: theme.font.headlineSmall.fontWeight,
-    //                 fontSize: theme.font.headlineSmall.fontSize,
-    //                 color: theme.color.isDark
-    //                     ? theme.color.neutralColor100
-    //                     : theme.color.neutralColor1,
-    //               ),
-    //             ),
-    //             const SizedBox(width: 16),
-    //             Expanded(
-    //               child: Align(
-    //                 alignment: Alignment.centerRight,
-    //                 child: trailing ?? const SizedBox(),
-    //               ),
-    //             )
-    //           ],
-    //         ),
-    //       ),
-    //       Divider(
-    //         height: borderHeight,
-    //         thickness: borderHeight,
-    //         color: theme.color.isDark
-    //             ? theme.color.neutralColor2
-    //             : theme.color.neutralColor9,
-    //       )
-    //     ],
-    //   ),
-    // );
-
-    content = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: content,
-    );
-
     content = Stack(
       children: [
         content,

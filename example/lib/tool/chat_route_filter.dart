@@ -10,8 +10,50 @@ class ChatRouteFilter {
       return messagesView(settings);
     } else if (settings.name == ChatUIKitRouteNames.createGroupView) {
       return createGroupView(settings);
+    } else if (settings.name == ChatUIKitRouteNames.contactDetailsView) {
+      return contactDetail(settings);
     }
     return settings;
+  }
+
+  // 自定义 contact detail view
+  static RouteSettings contactDetail(RouteSettings settings) {
+    ChatUIKitViewObserver? viewObserver = ChatUIKitViewObserver();
+    ContactDetailsViewArguments arguments =
+        settings.arguments as ContactDetailsViewArguments;
+    arguments = arguments.copyWith(
+      viewObserver: viewObserver,
+      contentWidgetBuilder: (context) {
+        return InkWell(
+          onTap: () {
+            showChatUIKitDialog(context: context, title: '备注', hintsText: [
+              '设置备注'
+            ], items: [
+              ChatUIKitDialogItem.inputsConfirm(
+                label: '确定',
+                onInputsTap: (inputs) async {
+                  ChatUIKitProvider.instance.addProfiles([
+                    arguments.profile.copyWith(remark: inputs.first),
+                  ]);
+                  viewObserver.refresh();
+                  Navigator.of(context).pop();
+                },
+              ),
+              ChatUIKitDialogItem.cancel(label: '取消'),
+            ]);
+          },
+          child: ChatUIKitDetailsListViewItem(
+            title: '备注',
+            trailing: Text(ChatUIKitProvider.instance
+                    .getProfile(arguments.profile)
+                    .remark ??
+                ''),
+          ),
+        );
+      },
+    );
+
+    return RouteSettings(name: settings.name, arguments: arguments);
   }
 
   // 为 MessagesView 添加文件点击下载

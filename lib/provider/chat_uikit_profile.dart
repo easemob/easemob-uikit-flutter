@@ -29,15 +29,18 @@ class ChatUIKitProfile {
   /// 时间戳，uikit 内部不使用。开发者可以使用该字段存储一些时间戳信息。
   final int timestamp;
 
-  /// 用于展示的名称，如果 name 为空，则展示 id
-  String get showName => nickname?.isNotEmpty == true ? nickname! : id;
+  final String? remark;
 
-  ChatUIKitProfile({
+  /// 用于展示的名称，如果 name 为空，则展示 id
+  String get showName => remark ?? nickname ?? id;
+
+  ChatUIKitProfile._({
     required this.id,
     required this.type,
     this.nickname,
     this.avatarUrl,
     this.extension,
+    this.remark,
     this.timestamp = 0,
   });
 
@@ -46,14 +49,16 @@ class ChatUIKitProfile {
     String? nickname,
     String? avatarUrl,
     ImageProvider? avatarProvider,
+    String? remark,
     Map<String, String>? extension,
     int timestamp = 0,
-  }) : this(
+  }) : this._(
           id: id,
           nickname: nickname,
           avatarUrl: avatarUrl,
           type: ChatUIKitProfileType.contact,
           extension: extension,
+          remark: remark,
           timestamp: timestamp,
         );
 
@@ -64,7 +69,7 @@ class ChatUIKitProfile {
     ImageProvider? avatarProvider,
     Map<String, String>? extension,
     int timestamp = 0,
-  }) : this(
+  }) : this._(
           id: id,
           nickname: groupName,
           avatarUrl: avatarUrl,
@@ -79,15 +84,17 @@ class ChatUIKitProfile {
     String? avatarUrl,
     ImageProvider? avatarProvider,
     Map<String, String>? extension,
+    String? remark,
     int? timestamp,
   }) {
-    return ChatUIKitProfile(
+    return ChatUIKitProfile._(
       id: id,
       nickname: nickname ?? this.nickname,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       type: type,
       extension: extension ?? this.extension,
       timestamp: timestamp ?? this.timestamp,
+      remark: remark ?? this.remark,
     );
   }
 }

@@ -7,19 +7,17 @@ extension MessageHelper on Message {
   MessageType get bodyType => body.type;
 
   ChatUIKitProfile get fromProfile {
-    return ChatUIKitProvider.instance.getProfile(
-      ChatUIKitProfile.contact(
-        id: from!,
-        avatarUrl: avatarUrl,
-        nickname: nickname,
-        timestamp: serverTime,
-      ),
+    return ChatUIKitProfile.contact(
+      id: from!,
+      avatarUrl: avatarUrl,
+      nickname: nickname,
+      timestamp: serverTime,
     );
   }
 
-  void addProfile(){
-    addAvatarURL(ChatUIKitProvider.instance.currentUserProfile?.avatarUrl);
-    addNickname(ChatUIKitProvider.instance.currentUserProfile?.showName);
+  void addProfile() {
+    _addAvatarURL(ChatUIKitProvider.instance.currentUserProfile?.avatarUrl);
+    _addNickname(ChatUIKitProvider.instance.currentUserProfile?.showName);
   }
 
   String? get avatarUrl {
@@ -42,7 +40,7 @@ extension MessageHelper on Message {
     return userInfo?[userNicknameKey];
   }
 
-  void addNickname(String? nickname) {
+  void _addNickname(String? nickname) {
     if (nickname?.isNotEmpty == true) {
       attributes ??= {};
       attributes![msgUserInfoKey] ??= {};
@@ -50,7 +48,7 @@ extension MessageHelper on Message {
     }
   }
 
-  void addAvatarURL(String? avatarUrl) {
+  void _addAvatarURL(String? avatarUrl) {
     if (avatarUrl?.isNotEmpty == true) {
       attributes ??= {};
       attributes![msgUserInfoKey] ??= {};
@@ -238,10 +236,51 @@ extension MessageHelper on Message {
     return null;
   }
 
-  String showInfo(BuildContext context) {
+  String showInfo({String? customInfo}) {
+    if (customInfo != null) {
+      return customInfo;
+    }
+    String str = '';
+    if (bodyType == MessageType.TXT) {
+      str += textContent;
+    }
+
+    if (bodyType == MessageType.IMAGE) {
+      str += '[Image]';
+    }
+
+    if (bodyType == MessageType.VOICE) {
+      str += "[Voice] $duration'";
+    }
+
+    if (bodyType == MessageType.LOCATION) {
+      str += '[Location]';
+    }
+
+    if (bodyType == MessageType.VIDEO) {
+      str += '[Video]';
+    }
+
+    if (bodyType == MessageType.FILE) {
+      str += '[File]';
+    }
+
+    if (bodyType == MessageType.COMBINE) {
+      str += '[Combine]';
+    }
+
+    if (bodyType == MessageType.CUSTOM && isCardMessage) {
+      str += '[Card] ${cardUserNickname ?? cardUserId}';
+    }
+    return str;
+  }
+
+  String showInfoTranslate(BuildContext context, {bool needNickname = false}) {
     String? title;
-    if (chatType == ChatType.GroupChat) {
-      title = "${nickname ?? from ?? ""}: ";
+    if (needNickname) {
+      if (chatType == ChatType.GroupChat) {
+        title = "${nickname ?? from ?? ""}: ";
+      }
     }
 
     String? str;
@@ -282,23 +321,21 @@ extension MessageHelper on Message {
             String? from = map?[alertRecallMessageFromKey];
             String? showName;
             if (ChatUIKit.instance.currentUserId == from) {
-              showName =
-                  ChatUIKitLocal.messagesViewRecallInfoYou.getString(context);
+              showName = ChatUIKitLocal.alertYou.getString(context);
             } else {
               ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
                 ChatUIKitProfile.contact(id: from!),
               );
               showName = profile.showName;
             }
-            return '$showName${ChatUIKitLocal.messagesViewRecallInfo.getString(context)}';
+            return '$showName${ChatUIKitLocal.alertRecallInfo.getString(context)}';
           }
           if (isCreateGroupAlert) {
             Map<String, String>? map = (body as CustomMessageBody).params;
-            String? operator = map![alertCreateGroupMessageOwnerKey]!;
+            String? operator = map![alertOperatorKey]!;
             String? showName;
             if (ChatUIKit.instance.currentUserId == operator) {
-              showName =
-                  ChatUIKitLocal.messagesViewRecallInfoYou.getString(context);
+              showName = ChatUIKitLocal.alertYou.getString(context);
             } else {
               ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
                 ChatUIKitProfile.contact(id: from!),
@@ -307,18 +344,30 @@ extension MessageHelper on Message {
             }
             return '$showName ${ChatUIKitLocal.messagesViewAlertGroupInfoTitle.getString(context)}';
           }
+          if (isCreateThreadAlert) {
+            Map<String, String>? map = (body as CustomMessageBody).params;
+            String? operator = map![alertOperatorKey]!;
+            String? showName;
+            if (ChatUIKit.instance.currentUserId == operator) {
+              showName = ChatUIKitLocal.alertYou.getString(context);
+            } else {
+              ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
+                ChatUIKitProfile.contact(id: from!),
+              );
+              showName = profile.showName;
+            }
+            return '$showName ${ChatUIKitLocal.messagesViewAlertThreadInfoTitle.getString(context)}';
+          }
           if (isDestroyGroupAlert) {
-            return ChatUIKitLocal.messagesViewGroupDestroyInfo
-                .getString(context);
+            return ChatUIKitLocal.alertDestroy.getString(context);
           }
 
           if (isLeaveGroupAlert) {
-            return ChatUIKitLocal.messagesViewGroupLeaveInfo.getString(context);
+            return ChatUIKitLocal.alertLeave.getString(context);
           }
 
           if (isKickedGroupAlert) {
-            return ChatUIKitLocal.messagesViewGroupKickedInfo
-                .getString(context);
+            return ChatUIKitLocal.alertKickedInfo.getString(context);
           }
 
           str = '[Custom]';
@@ -359,7 +408,7 @@ extension MessageHelper on Message {
 
   bool get isTimeMessageAlert {
     if (bodyType == MessageType.CUSTOM) {
-      if ((body as CustomMessageBody).event == alertTimeMessageEventKey) {
+      if ((body as CustomMessageBody).event == alertTimeKey) {
         return true;
       }
     }
@@ -368,8 +417,34 @@ extension MessageHelper on Message {
 
   bool get isCreateGroupAlert {
     if (bodyType == MessageType.CUSTOM) {
-      if ((body as CustomMessageBody).event ==
-          alertCreateGroupMessageEventKey) {
+      if ((body as CustomMessageBody).event == alertCreateGroupKey) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool get isCreateThreadAlert {
+    if (bodyType == MessageType.CUSTOM) {
+      if ((body as CustomMessageBody).event == alertCreateThreadKey) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool get isUpdateThreadAlert {
+    if (bodyType == MessageType.CUSTOM) {
+      if ((body as CustomMessageBody).event == alertUpdateThreadKey) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool get isDeleteThreadAlert {
+    if (bodyType == MessageType.CUSTOM) {
+      if ((body as CustomMessageBody).event == alertDeleteThreadKey) {
         return true;
       }
     }

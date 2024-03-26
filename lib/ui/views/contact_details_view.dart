@@ -12,6 +12,8 @@ class ContactDetailsView extends StatefulWidget {
         onMessageDidClear = arguments.onMessageDidClear,
         enableAppBar = arguments.enableAppBar,
         appBar = arguments.appBar,
+        contentWidgetBuilder = arguments.contentWidgetBuilder,
+        viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const ContactDetailsView({
@@ -21,6 +23,8 @@ class ContactDetailsView extends StatefulWidget {
     this.appBar,
     this.enableAppBar = true,
     this.attributes,
+    this.contentWidgetBuilder,
+    this.viewObserver,
     super.key,
   });
 
@@ -30,6 +34,8 @@ class ContactDetailsView extends StatefulWidget {
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
   final String? attributes;
+  final WidgetBuilder? contentWidgetBuilder;
+  final ChatUIKitViewObserver? viewObserver;
   @override
   State<ContactDetailsView> createState() => _ContactDetailsViewState();
 }
@@ -44,6 +50,9 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
     super.initState();
     assert(widget.actions.length <= 5,
         'The number of actions in the list cannot exceed 5');
+    widget.viewObserver?.addListener(() {
+      setState(() {});
+    });
     profile = widget.profile;
     actions = widget.actions;
     ChatUIKitProvider.instance.addObserver(this);
@@ -62,6 +71,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
 
   @override
   void dispose() {
+    widget.viewObserver?.dispose();
     ChatUIKitProvider.instance.removeObserver(this);
     isNotDisturb.dispose();
     super.dispose();
@@ -259,6 +269,8 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
     content = ListView(
       children: [
         content,
+        if (widget.contentWidgetBuilder != null)
+          widget.contentWidgetBuilder!.call(context),
         ChatUIKitDetailsListViewItem(
           title:
               ChatUIKitLocal.contactDetailViewDoNotDisturb.getString(context),
@@ -304,6 +316,10 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
       ],
     );
 
+    content = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: content,
+    );
     return content;
   }
 

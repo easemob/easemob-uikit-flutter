@@ -181,9 +181,19 @@ class ChatUIKitRoute {
         arguments as ForwardMessagesViewArguments,
       );
     },
-    ChatUIKitRouteNames.threadMessagesViewArguments: (context, arguments) {
+    ChatUIKitRouteNames.threadMessagesView: (context, arguments) {
       return ThreadMessagesView.arguments(
         arguments as ThreadMessagesViewArguments,
+      );
+    },
+    ChatUIKitRouteNames.threadMembersView: (context, arguments) {
+      return ThreadMembersView.arguments(
+        arguments as ThreadMembersViewArguments,
+      );
+    },
+    ChatUIKitRouteNames.threadsView: (context, arguments) {
+      return ThreadsView.arguments(
+        arguments as ThreadsViewArguments,
       );
     },
   };
@@ -274,7 +284,7 @@ class ChatUIKitRoute {
       return Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) {
-            return ChatUIKitRouteNames.getWidthFromName(
+            return ChatUIKitRouteNames.getWidgetFromName(
               pushNamed,
               arguments,
             );

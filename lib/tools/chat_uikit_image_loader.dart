@@ -502,4 +502,28 @@ class ChatUIKitImageLoader {
       fit: BoxFit.fill,
     );
   }
+
+  static Widget contacts(
+      {double width = 24, double height = 24, Color? color}) {
+    return Image(
+      color: color,
+      gaplessPlayback: true,
+      width: width,
+      height: height,
+      image: AssetImage('assets/images/contacts.png', package: packageName),
+      fit: BoxFit.fill,
+    );
+  }
+
+  static Widget leaveThread(
+      {double width = 24, double height = 24, Color? color}) {
+    return Image(
+      color: color,
+      gaplessPlayback: true,
+      width: width,
+      height: height,
+      image: AssetImage('assets/images/leave_thread.png', package: packageName),
+      fit: BoxFit.fill,
+    );
+  }
 }

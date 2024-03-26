@@ -1,11 +1,88 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
+class ChatUIKitInputBarController extends ChangeNotifier {
+  late CustomTextEditingController _textEditingController;
+  late FocusNode _focusNode;
+
+  CustomTextEditingController get textEditingController =>
+      _textEditingController;
+  FocusNode get focusNode => _focusNode;
+
+  bool get needMention => _textEditingController.needMention;
+
+  bool get isAtAll => _textEditingController.isAtAll;
+
+  bool get hasFocus => _focusNode.hasFocus;
+
+  List<ChatUIKitProfile> get mentionList {
+    return _textEditingController.getMentionList();
+  }
+
+  ChatUIKitInputBarController({String? text}) {
+    _textEditingController = CustomTextEditingController(text: text);
+    _focusNode = FocusNode();
+  }
+
+  String get text => _textEditingController.text;
+
+  void setText(String text) {
+    _textEditingController.text = text;
+  }
+
+  void clear() {
+    _textEditingController.clear();
+  }
+
+  void deleteTextOnCursor() {
+    _textEditingController.deleteTextOnCursor();
+  }
+
+  void atAll() {
+    _textEditingController.atAll();
+  }
+
+  void at(ChatUIKitProfile profile) {
+    _textEditingController.at(profile);
+  }
+
+  void addText(String newStr) {
+    _textEditingController.addText(newStr);
+  }
+
+  void clearMentions() {
+    _textEditingController.clearMentions();
+  }
+
+  void requestFocus() {
+    _focusNode.requestFocus();
+    update();
+  }
+
+  void unfocus() {
+    _focusNode.unfocus();
+    update();
+  }
+
+  void update() {
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+}
+
 class ChatUIKitInputBar extends StatefulWidget {
   const ChatUIKitInputBar({
+    required this.inputBarController,
     this.leading,
     this.trailing,
-    required this.textEditingController,
+    this.editingLeading,
+    this.editingTrailing,
     this.hintText,
     this.hintTextStyle,
     this.inputTextStyle,
@@ -13,21 +90,22 @@ class ChatUIKitInputBar extends StatefulWidget {
     this.mixHeight = 36,
     this.borderRadius,
     this.onChanged,
-    this.focusNode,
     this.autofocus = false,
     super.key,
   });
 
   final Widget? leading;
   final Widget? trailing;
+  final Widget? editingLeading;
+  final Widget? editingTrailing;
   final String? hintText;
   final TextStyle? hintTextStyle;
   final TextStyle? inputTextStyle;
-  final TextEditingController textEditingController;
+  final ChatUIKitInputBarController inputBarController;
   final BorderRadiusGeometry? borderRadius;
   final TextCapitalization textCapitalization;
   final void Function(String input)? onChanged;
-  final FocusNode? focusNode;
+
   final double mixHeight;
   final bool autofocus;
 
@@ -36,38 +114,39 @@ class ChatUIKitInputBar extends StatefulWidget {
 }
 
 class _ChatUIKitInputBarState extends State<ChatUIKitInputBar> {
-  TextEditingController? _textEditingController;
-  ScrollController? _scrollController;
+  late ScrollController? scrollController;
+  bool isEditing = false;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-    _textEditingController = widget.textEditingController;
-    _textEditingController!.addListener(textFieldOnChange);
+    scrollController = ScrollController();
+    widget.inputBarController.textEditingController.addListener(() {
+      widget.inputBarController.update();
+      textFieldOnChange();
+    });
+    widget.inputBarController.focusNode.addListener(() {
+      widget.inputBarController.update();
+    });
   }
 
   void textFieldOnChange() {
-    if (_scrollController?.positions.isNotEmpty == true) {
-      _scrollController!.jumpTo(_scrollController!.position.maxScrollExtent);
+    if (scrollController?.positions.isNotEmpty == true) {
+      scrollController!.jumpTo(scrollController!.position.maxScrollExtent);
     }
   }
 
   @override
   void didUpdateWidget(covariant ChatUIKitInputBar oldWidget) {
-    if (oldWidget.textEditingController != widget.textEditingController) {
-      _scrollController?.dispose();
-      _scrollController = ScrollController();
-      _textEditingController?.dispose();
-      _textEditingController = widget.textEditingController;
-      _textEditingController!.addListener(textFieldOnChange);
+    if (oldWidget.inputBarController != widget.inputBarController) {
+      oldWidget.inputBarController.dispose();
     }
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void dispose() {
-    _scrollController?.dispose();
+    scrollController?.dispose();
     super.dispose();
   }
 
@@ -114,13 +193,13 @@ class _ChatUIKitInputBarState extends State<ChatUIKitInputBar> {
         borderRadius: widget.borderRadius ?? BorderRadius.circular(4),
       ),
       child: TextField(
-        scrollController: _scrollController,
+        scrollController: scrollController,
         keyboardAppearance: ChatUIKitTheme.of(context).color.isDark
             ? Brightness.dark
             : Brightness.light,
         autofocus: widget.autofocus,
         onChanged: widget.onChanged,
-        focusNode: widget.focusNode,
+        focusNode: widget.inputBarController.focusNode,
         textCapitalization: widget.textCapitalization,
         maxLines: 4,
         minLines: 1,
@@ -133,8 +212,7 @@ class _ChatUIKitInputBarState extends State<ChatUIKitInputBar> {
               fontWeight: theme.font.bodyLarge.fontWeight,
             ),
         scrollPadding: EdgeInsets.zero,
-        controller: _textEditingController,
-        // cursorHeight: 11,
+        controller: widget.inputBarController.textEditingController,
         cursorWidth: 1,
         cursorColor: theme.color.isDark
             ? theme.color.primaryColor6

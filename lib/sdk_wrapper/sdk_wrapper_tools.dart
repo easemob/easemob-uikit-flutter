@@ -94,7 +94,7 @@ class SDKWrapperTools {
     int time = timestamp ?? DateTime.now().millisecondsSinceEpoch - 1;
     Message timeMsg = Message.createCustomSendMessage(
       targetId: group.groupId,
-      event: alertTimeMessageEventKey,
+      event: alertTimeKey,
       chatType: ChatType.GroupChat,
     );
     timeMsg.serverTime = time;
@@ -106,18 +106,82 @@ class SDKWrapperTools {
     );
     Message alertMsg = Message.createCustomSendMessage(
       targetId: group.groupId,
-      event: alertCreateGroupMessageEventKey,
+      event: alertCreateGroupKey,
       chatType: ChatType.GroupChat,
       params: {
-        alertCreateGroupMessageOwnerKey: creator?.showName ?? group.owner ?? '',
-        alertCreateGroupMessageGroupNameKey: group.groupId,
+        alertOperatorKey: creator?.showName ?? group.owner ?? '',
+        alertOperatorInfoKey: group.name ?? group.groupId,
       },
     );
+
     alertMsg.conversationId = group.groupId;
     alertMsg.serverTime = time + 1;
     alertMsg.localTime = time + 1;
     alertMsg.status = MessageStatus.SUCCESS;
 
-    await ChatUIKit.instance.insertMessage(message: alertMsg);
+    ChatUIKit.instance.insertMessage(message: alertMsg);
+    // ignore: invalid_use_of_protected_member
+    ChatUIKit.instance.onMessagesReceived([alertMsg]);
+  }
+
+  static insertThreadEventMessage({
+    required ChatThreadEvent event,
+    ChatUIKitProfile? creator,
+    int? timestamp,
+  }) {
+    ChatThread thread = event.chatThread!;
+
+    String eventKey = '';
+    String operator = '';
+    String operatorInfo = '';
+    if (event.type == ChatThreadOperation.Create) {
+      eventKey = alertCreateThreadKey;
+      operator = creator?.showName ?? event.from;
+      operatorInfo = thread.threadName ?? thread.threadId;
+    } else if (event.type == ChatThreadOperation.Update) {
+      eventKey = alertUpdateThreadKey;
+      operator = creator?.showName ?? event.from;
+      operatorInfo = thread.threadName ?? thread.threadId;
+    } else if (event.type == ChatThreadOperation.Delete) {
+      eventKey = alertDeleteThreadKey;
+      operator = creator?.showName ?? event.from;
+      operatorInfo = thread.threadName ?? thread.threadId;
+    } else {
+      return;
+    }
+    int time = timestamp ?? DateTime.now().millisecondsSinceEpoch - 1;
+    Message timeMsg = Message.createCustomSendMessage(
+      targetId: thread.parentId,
+      event: alertTimeKey,
+      chatType: ChatType.GroupChat,
+    );
+    timeMsg.serverTime = time;
+    timeMsg.localTime = time;
+    timeMsg.status = MessageStatus.SUCCESS;
+
+    ChatUIKit.instance.insertMessage(message: timeMsg);
+    // ignore: invalid_use_of_protected_member
+    ChatUIKit.instance.onMessagesReceived([timeMsg]);
+
+    Message alertMsg = Message.createCustomSendMessage(
+      targetId: thread.parentId,
+      event: eventKey,
+      chatType: ChatType.GroupChat,
+      params: {
+        alertOperatorKey: operator,
+        alertOperatorInfoKey: operatorInfo,
+        alertThreadId: thread.threadId,
+        alertThreadInMsgId: thread.messageId,
+      },
+    );
+
+    alertMsg.conversationId = thread.parentId;
+    alertMsg.serverTime = time + 1;
+    alertMsg.localTime = time + 1;
+    alertMsg.status = MessageStatus.SUCCESS;
+
+    ChatUIKit.instance.insertMessage(message: alertMsg);
+    // ignore: invalid_use_of_protected_member
+    ChatUIKit.instance.onMessagesReceived([alertMsg]);
   }
 }

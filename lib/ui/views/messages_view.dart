@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/ui/widgets/chat_uikit_message_reaction_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../universal/defines.dart';
@@ -23,7 +22,6 @@ class MessagesView extends StatefulWidget {
         onDoubleTap = arguments.onDoubleTap,
         onAvatarTap = arguments.onAvatarTap,
         onNicknameTap = arguments.onNicknameTap,
-        focusNode = arguments.focusNode,
         bubbleStyle = arguments.bubbleStyle,
         emojiWidget = arguments.emojiWidget,
         itemBuilder = arguments.itemBuilder,
@@ -66,7 +64,6 @@ class MessagesView extends StatefulWidget {
     this.onAvatarTap,
     this.onAvatarLongPress,
     this.onNicknameTap,
-    this.focusNode,
     this.emojiWidget,
     this.itemBuilder,
     this.alertItemBuilder,
@@ -144,9 +141,6 @@ class MessagesView extends StatefulWidget {
   /// 提示消息构建器， 如果设置后需要显示提示消息时会直接回调，如果不处理可以返回 `null`。
   final MessageItemBuilder? alertItemBuilder;
 
-  /// 键盘焦点 focusNode，如果设置后将会替换默认的 focusNode。详细参考 [FocusNode]。
-  final FocusNode? focusNode;
-
   /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitBottomSheetItem]。
   final List<ChatUIKitBottomSheetItem>? morePressActions;
 
@@ -181,7 +175,7 @@ class MessagesView extends StatefulWidget {
   final MessageItemBuilder? bubbleContentBuilder;
 
   /// 输入框控制器，如果设置后将会替换默认的输入框控制器。详细参考 [CustomTextEditingController]。
-  final CustomTextEditingController? inputBarTextEditingController;
+  final ChatUIKitInputBarController? inputBarTextEditingController;
 
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   final String? attributes;
@@ -206,19 +200,18 @@ class MessagesView extends StatefulWidget {
   State<MessagesView> createState() => _MessagesViewState();
 }
 
-class _MessagesViewState extends State<MessagesView>
-    with ChatUIKitProviderObserver, ChatObserver {
+class _MessagesViewState extends State<MessagesView> with ChatObserver {
   late final MessageListViewController controller;
-  late final CustomTextEditingController inputBarTextEditingController;
+  late final ChatUIKitInputBarController inputBarController;
   late final ImagePicker _picker;
   late final AudioPlayer _player;
-  late final FocusNode focusNode;
+  late final AutoScrollController _scrollController;
   String? title;
   bool showEmoji = false;
   bool showMoreBtn = true;
 
   bool messageEditCanSend = false;
-  TextEditingController? editBarTextEditingController;
+  ChatUIKitInputBarController? editBarTextEditingController;
   Message? editMessage;
   MessageModel? replyMessage;
   ChatUIKitProfile? profile;
@@ -229,25 +222,33 @@ class _MessagesViewState extends State<MessagesView>
   @override
   void initState() {
     super.initState();
+
     profile = widget.profile;
-    ChatUIKitProvider.instance.addObserver(this);
+
     ChatUIKit.instance.addObserver(this);
+    _scrollController = AutoScrollController();
     widget.viewObserver?.addListener(() {
       setState(() {});
     });
-    inputBarTextEditingController =
-        widget.inputBarTextEditingController ?? CustomTextEditingController();
-    inputBarTextEditingController.addListener(() {
+    inputBarController =
+        widget.inputBarTextEditingController ?? ChatUIKitInputBarController();
+    inputBarController.addListener(() {
       attemptSendInputType();
-      if (showMoreBtn !=
-          !inputBarTextEditingController.text.trim().isNotEmpty) {
-        showMoreBtn = !inputBarTextEditingController.text.trim().isNotEmpty;
+      if (showMoreBtn != !inputBarController.text.trim().isNotEmpty) {
+        showMoreBtn = !inputBarController.text.trim().isNotEmpty;
         setState(() {});
       }
-      if (inputBarTextEditingController.needMention) {
+      if (inputBarController.needMention) {
         if (profile?.type == ChatUIKitProfileType.group) {
           needMention();
         }
+      }
+    });
+    inputBarController.focusNode.addListener(() {
+      if (editMessage != null) return;
+      if (inputBarController.hasFocus) {
+        showEmoji = false;
+        setState(() {});
       }
     });
 
@@ -256,16 +257,13 @@ class _MessagesViewState extends State<MessagesView>
     controller.addListener(() {
       setState(() {});
     });
-    focusNode = widget.focusNode ?? FocusNode();
+
     _picker = ImagePicker();
     _player = AudioPlayer();
-    focusNode.addListener(() {
-      if (editMessage != null) return;
-      if (focusNode.hasFocus) {
-        showEmoji = false;
-        setState(() {});
-      }
-    });
+
+    controller.fetchItemList();
+    controller.sendConversationsReadAck();
+    controller.clearMentionIfNeed();
   }
 
   void needMention() {
@@ -280,21 +278,12 @@ class _MessagesViewState extends State<MessagesView>
       ).then((value) {
         if (value != null) {
           if (value == true) {
-            inputBarTextEditingController.atAll();
+            inputBarController.atAll();
           } else if (value is ChatUIKitProfile) {
-            inputBarTextEditingController.addUser(value);
+            inputBarController.at(value);
           }
         }
       });
-    }
-  }
-
-  @override
-  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
-    if (map.keys.contains(controller.profile.id)) {
-      controller.profile = map[controller.profile.id]!;
-      profile = map[controller.profile.id]!;
-      setState(() {});
     }
   }
 
@@ -321,15 +310,15 @@ class _MessagesViewState extends State<MessagesView>
 
   @override
   void dispose() {
+    controller.dispose();
     _typingTimer?.cancel();
     _typingTimer = null;
     widget.viewObserver?.dispose();
-    ChatUIKitProvider.instance.removeObserver(this);
     ChatUIKit.instance.removeObserver(this);
     editBarTextEditingController?.dispose();
-    inputBarTextEditingController.dispose();
+    inputBarController.dispose();
     _player.dispose();
-    focusNode.dispose();
+
     super.dispose();
   }
 
@@ -340,11 +329,11 @@ class _MessagesViewState extends State<MessagesView>
     final theme = ChatUIKitTheme.of(context);
 
     Widget content = MessageListView(
+      scrollController: _scrollController,
       forceLeft: widget.forceLeft,
       bubbleContentBuilder: widget.bubbleContentBuilder,
       bubbleBuilder: widget.bubbleBuilder,
       quoteBuilder: widget.quoteBuilder,
-      profile: profile!,
       controller: controller,
       showAvatar: widget.showMessageItemAvatar,
       showNickname: widget.showMessageItemNickname,
@@ -390,7 +379,7 @@ class _MessagesViewState extends State<MessagesView>
         return ret;
       },
       bubbleStyle: widget.bubbleStyle,
-      itemBuilder: widget.itemBuilder ?? voiceItemBuilder,
+      itemBuilder: widget.itemBuilder ?? itemBuilder,
       alertItemBuilder: widget.alertItemBuilder ?? alertItem,
       onErrorBtnTap: (model) {
         bool ret = widget.onErrorBtnTapHandler?.call(context, model) ?? false;
@@ -457,10 +446,10 @@ class _MessagesViewState extends State<MessagesView>
               ? widget.emojiWidget ??
                   ChatUIKitInputEmojiBar(
                     deleteOnTap: () {
-                      inputBarTextEditingController.deleteTextOnCursor();
+                      inputBarController.deleteTextOnCursor();
                     },
                     emojiClicked: (emoji) {
-                      inputBarTextEditingController.addText(
+                      inputBarController.addText(
                         ChatUIKitEmojiData.emojiMap[emoji] ?? emoji,
                       );
                     },
@@ -471,7 +460,11 @@ class _MessagesViewState extends State<MessagesView>
     }
 
     content = Column(children: list);
-    title = widget.title ?? profile!.showName;
+    title = widget.title ??
+        (controller.conversationType == ConversationType.GroupChat
+            ? controller.profile.showName
+            : controller.userMap[controller.profile.id]?.showName);
+
     content = Scaffold(
       backgroundColor: theme.color.isDark
           ? theme.color.neutralColor1
@@ -513,9 +506,17 @@ class _MessagesViewState extends State<MessagesView>
                           ),
                         ),
                       )
-                    : null,
+                    : ChatUIKitSettings.enableThread
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: InkWell(
+                              onTap: onThreadsViewTap,
+                              child:
+                                  ChatUIKitImageLoader.messageLongPressThread(),
+                            ),
+                          )
+                        : null,
               ),
-      // body: content,
       body: SafeArea(child: content),
     );
 
@@ -553,10 +554,53 @@ class _MessagesViewState extends State<MessagesView>
       ],
     );
 
+    content = ShareUserData(
+      data: controller.userMap,
+      child: content,
+    );
+
+    content = NotificationListener(
+      onNotification: (notification) {
+        if (notification is ScrollUpdateNotification ||
+            notification is ScrollEndNotification) {
+          if (_scrollController.offset < 20) {
+            if (controller.onBottom == false) {
+              controller.onBottom = true;
+              controller.addAllCacheToList();
+            }
+          } else {
+            if (controller.onBottom == true) {
+              controller.onBottom = false;
+            }
+          }
+          if (_scrollController.position.maxScrollExtent -
+                  _scrollController.offset <
+              1500) {
+            controller.fetchItemList();
+          }
+        }
+
+        return false;
+      },
+      child: content,
+    );
+
+    content = ScrollConfiguration(
+      behavior: const ScrollBehavior(),
+      child: content,
+    );
+
+    content = PopScope(
+      child: content,
+      onPopInvoked: (canPop) async {
+        await controller.markAllMessageAsRead();
+      },
+    );
     return content;
   }
 
-  Widget? voiceItemBuilder(BuildContext context, MessageModel model) {
+  Widget? itemBuilder(BuildContext context, MessageModel model) {
+    controller.sendMessageReadAck(model.message);
     if (model.message.bodyType != MessageType.VOICE) return null;
 
     Widget content = ChatUIKitMessageListViewMessageItem(
@@ -659,7 +703,7 @@ class _MessagesViewState extends State<MessagesView>
       String? from = map?[alertRecallMessageFromKey];
       String? showName;
       if (ChatUIKit.instance.currentUserId == from) {
-        showName = ChatUIKitLocal.messagesViewRecallInfoYou.getString(context);
+        showName = ChatUIKitLocal.alertYou.getString(context);
       } else {
         if (from?.isNotEmpty == true) {
           ChatUIKitProfile profile = ChatUIKitProvider.instance
@@ -672,7 +716,7 @@ class _MessagesViewState extends State<MessagesView>
         infos: [
           MessageAlertAction(
             text:
-                '$showName${ChatUIKitLocal.messagesViewRecallInfo.getString(context)}',
+                '$showName${ChatUIKitLocal.alertRecallInfo.getString(context)}',
           ),
         ],
       );
@@ -689,11 +733,15 @@ class _MessagesViewState extends State<MessagesView>
       content ??= ChatUIKitMessageListViewAlertItem(
         infos: [
           MessageAlertAction(
-            text: map?[alertCreateGroupMessageOwnerKey] ?? '',
+            text: () {
+              return ChatUIKitProfile.contact(
+                id: map![alertOperatorKey]!,
+              ).showName;
+            }(),
             onTap: () {
               ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
                 ChatUIKitProfile.contact(
-                  id: map![alertCreateGroupMessageOwnerKey]!,
+                  id: map![alertOperatorKey]!,
                 ),
               );
               pushNextPage(profile);
@@ -704,7 +752,7 @@ class _MessagesViewState extends State<MessagesView>
                   ' ${ChatUIKitLocal.messagesViewAlertGroupInfoTitle.getString(context)} '),
           MessageAlertAction(
             text: () {
-              String? groupId = map?[alertCreateGroupMessageGroupNameKey];
+              String? groupId = map?[alertOperatorInfoKey];
               if (groupId?.isNotEmpty == true) {
                 ChatUIKitProfile profile =
                     ChatUIKitProvider.instance.getProfile(
@@ -723,12 +771,75 @@ class _MessagesViewState extends State<MessagesView>
       return content;
     }
 
+    if (model.message.isCreateThreadAlert) {
+      Map<String, String>? map =
+          (model.message.body as CustomMessageBody).params;
+      Widget? content = widget.alertItemBuilder?.call(
+        context,
+        model,
+      );
+
+      String? operator = map![alertOperatorKey]!;
+      String showName;
+      if (ChatUIKit.instance.currentUserId == operator) {
+        showName = ChatUIKitLocal.alertYou.getString(context);
+      } else {
+        ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
+          ChatUIKitProfile.contact(id: operator),
+        );
+        showName = profile.showName;
+      }
+      content ??= ChatUIKitMessageListViewAlertItem(
+        infos: [
+          MessageAlertAction(
+            text: showName,
+            onTap: () {
+              ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
+                ChatUIKitProfile.contact(
+                  id: map[alertOperatorInfoKey]!,
+                ),
+              );
+              pushNextPage(profile);
+            },
+          ),
+          MessageAlertAction(
+              text:
+                  ' ${ChatUIKitLocal.messagesViewAlertThreadInfoTitle.getString(context)} '),
+          MessageAlertAction(
+            text: map[alertOperatorInfoKey] ?? '',
+            onTap: () async {
+              String msgId = map[alertThreadInMsgId]!;
+
+              ChatUIKit.instance.loadMessage(messageId: msgId).then((value) {
+                if (value != null) {
+                  value.chatThread().then((thread) {
+                    MessageModel model =
+                        MessageModel(message: value, thread: thread);
+                    ChatUIKitRoute.pushOrPushNamed(
+                      context,
+                      ChatUIKitRouteNames.threadMessagesView,
+                      ThreadMessagesViewArguments(
+                        subtitle: controller.profile.showName,
+                        controller: ThreadMessagesViewController(
+                          model: model,
+                        ),
+                      ),
+                    );
+                  });
+                }
+              });
+            },
+          ),
+        ],
+      );
+      return content;
+    }
+
     if (model.message.isDestroyGroupAlert) {
       return ChatUIKitMessageListViewAlertItem(
         infos: [
           MessageAlertAction(
-            text:
-                ChatUIKitLocal.messagesViewGroupDestroyInfo.getString(context),
+            text: ChatUIKitLocal.alertDestroy.getString(context),
           ),
         ],
       );
@@ -738,7 +849,7 @@ class _MessagesViewState extends State<MessagesView>
       return ChatUIKitMessageListViewAlertItem(
         infos: [
           MessageAlertAction(
-            text: ChatUIKitLocal.messagesViewGroupLeaveInfo.getString(context),
+            text: ChatUIKitLocal.alertLeave.getString(context),
           ),
         ],
       );
@@ -748,7 +859,7 @@ class _MessagesViewState extends State<MessagesView>
       return ChatUIKitMessageListViewAlertItem(
         infos: [
           MessageAlertAction(
-            text: ChatUIKitLocal.messagesViewGroupKickedInfo.getString(context),
+            text: ChatUIKitLocal.alertKickedInfo.getString(context),
           ),
         ],
       );
@@ -793,7 +904,7 @@ class _MessagesViewState extends State<MessagesView>
           setState(() {});
         }
       },
-      textEditingController: editBarTextEditingController!,
+      inputBarController: editBarTextEditingController!,
       trailing: InkWell(
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
@@ -859,21 +970,19 @@ class _MessagesViewState extends State<MessagesView>
       ],
     );
 
-    // content = SafeArea(child: content);
-
     return content;
   }
 
   Widget inputBar(ChatUIKitTheme theme) {
     Widget content = ChatUIKitInputBar(
       key: const ValueKey('inputKey'),
-      focusNode: focusNode,
-      textEditingController: inputBarTextEditingController,
+      inputBarController: inputBarController,
       leading: InkWell(
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         onTap: () async {
           showEmoji = false;
+          inputBarController.unfocus();
           setState(() {});
           ChatUIKitRecordModel? model = await showChatUIKitRecordBar(
             context: context,
@@ -903,7 +1012,7 @@ class _MessagesViewState extends State<MessagesView>
                 highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
                 onTap: () {
-                  focusNode.unfocus();
+                  inputBarController.unfocus();
                   showEmoji = !showEmoji;
                   setState(() {});
                 },
@@ -915,7 +1024,7 @@ class _MessagesViewState extends State<MessagesView>
                 splashColor: Colors.transparent,
                 onTap: () {
                   showEmoji = !showEmoji;
-                  focusNode.requestFocus();
+                  inputBarController.requestFocus();
                   setState(() {});
                 },
                 child: ChatUIKitImageLoader.textKeyboard(),
@@ -1015,18 +1124,17 @@ class _MessagesViewState extends State<MessagesView>
                 highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
                 onTap: () {
-                  String text = inputBarTextEditingController.text.trim();
+                  String text = inputBarController.text.trim();
                   if (text.isNotEmpty) {
                     dynamic mention;
-                    if (inputBarTextEditingController.isAtAll &&
-                        text.contains("@All")) {
+                    if (inputBarController.isAtAll && text.contains("@All")) {
                       mention = true;
                     }
 
-                    if (inputBarTextEditingController.mentionList.isNotEmpty) {
+                    if (inputBarController.mentionList.isNotEmpty) {
                       List<String> mentionList = [];
                       List<ChatUIKitProfile> list =
-                          inputBarTextEditingController.getMentionList();
+                          inputBarController.mentionList;
                       for (var element in list) {
                         if (text.contains('@${element.showName}')) {
                           mentionList.add(element.id);
@@ -1040,8 +1148,8 @@ class _MessagesViewState extends State<MessagesView>
                       replay: replyMessage?.message,
                       mention: mention,
                     );
-                    inputBarTextEditingController.clearMentions();
-                    inputBarTextEditingController.clear();
+                    inputBarController.clearMentions();
+                    inputBarController.clear();
                     if (replyMessage != null) {
                       replyMessage = null;
                     }
@@ -1172,8 +1280,8 @@ class _MessagesViewState extends State<MessagesView>
       needUpdate = true;
     }
 
-    if (focusNode.hasFocus) {
-      focusNode.unfocus();
+    if (inputBarController.hasFocus) {
+      inputBarController.unfocus();
       needUpdate = true;
     }
 
@@ -1275,12 +1383,8 @@ class _MessagesViewState extends State<MessagesView>
           (model.message.body as CustomMessageBody).params?[cardNicknameKey] ??
               '';
       if (userId?.isNotEmpty == true) {
-        ChatUIKitProfile profile = ChatUIKitProfile(
-          id: userId!,
-          avatarUrl: avatar,
-          nickname: name,
-          type: ChatUIKitProfileType.contact,
-        );
+        ChatUIKitProfile profile = ChatUIKitProfile.contact(
+            id: userId!, avatarUrl: avatar, nickname: name);
         pushNextPage(profile);
       }
     }
@@ -1295,13 +1399,13 @@ class _MessagesViewState extends State<MessagesView>
     if (message.bodyType != MessageType.TXT) return;
     editMessage = message;
     editBarTextEditingController =
-        TextEditingController(text: editMessage?.textContent ?? "");
+        ChatUIKitInputBarController(text: editMessage?.textContent ?? "");
     setState(() {});
   }
 
   void replyMessaged(MessageModel model) {
-    clearAllType();
-    focusNode.requestFocus();
+    // clearAllType();
+    // inputBarController.requestFocus();
     replyMessage = model;
     setState(() {});
   }
@@ -1671,7 +1775,9 @@ class _MessagesViewState extends State<MessagesView>
           ),
         ],
       ),
-    );
+    ).then((value) {
+      controller.updateView();
+    });
   }
 
   // 处理名片信息非好友
@@ -1834,10 +1940,13 @@ class _MessagesViewState extends State<MessagesView>
           Navigator.of(context).pop();
           ChatUIKitRoute.pushOrPushNamed(
             context,
-            ChatUIKitRouteNames.threadMessagesViewArguments,
+            ChatUIKitRouteNames.threadMessagesView,
             ThreadMessagesViewArguments(
-              model: model,
-              title: model.message.showInfo(context),
+              controller: ThreadMessagesViewController(model: model),
+              title: model.message.showInfoTranslate(
+                context,
+                needNickname: true,
+              ),
               subtitle: widget.title,
               attributes: widget.attributes,
             ),
@@ -2045,6 +2154,14 @@ class _MessagesViewState extends State<MessagesView>
     await controller.updateReaction(model.message.msgId, emoji, isAdd);
   }
 
+  void onThreadsViewTap() {
+    ChatUIKitRoute.pushOrPushNamed(
+      context,
+      ChatUIKitRouteNames.threadsView,
+      ThreadsViewArguments(profile: controller.profile),
+    );
+  }
+
   void showAllReactionEmojis(MessageModel model, ChatUIKitTheme theme) {
     showChatUIKitBottomSheet(
       context: context,
@@ -2088,12 +2205,15 @@ class _MessagesViewState extends State<MessagesView>
     controller.onBottom = false;
     ChatUIKitRoute.pushOrPushNamed(
       context,
-      ChatUIKitRouteNames.threadMessagesViewArguments,
+      ChatUIKitRouteNames.threadMessagesView,
       ThreadMessagesViewArguments(
-        model: model,
+        controller: ThreadMessagesViewController(model: model),
         subtitle: title,
-        title:
-            model.threadOverView?.threadName ?? model.message.showInfo(context),
+        title: model.thread?.threadName ??
+            model.message.showInfoTranslate(
+              context,
+              needNickname: true,
+            ),
         attributes: widget.attributes,
       ),
     ).then((value) => controller.onBottom = true);

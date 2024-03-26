@@ -27,10 +27,11 @@ class ChatUIKitRouteNames {
   static const String currentUserInfoView = '/CurrentUserInfoView';
   static const String groupMentionView = '/GroupMentionView';
   static const String reportMessageView = '/ReportMessageView';
-  static const String threadMessagesViewArguments =
-      '/ThreadMessagesViewArguments';
+  static const String threadMessagesView = '/ThreadMessagesView';
+  static const String threadMembersView = '/threadMembersView';
+  static const String threadsView = '/threadsView';
 
-  static Widget getWidthFromName(
+  static Widget getWidgetFromName(
       String name, ChatUIKitViewArguments arguments) {
     switch (name) {
       case ChatUIKitRouteNames.changeInfoView:
@@ -129,9 +130,17 @@ class ChatUIKitRouteNames {
         return ReportMessageView.arguments(
           arguments as ReportMessageViewArguments,
         );
-      case ChatUIKitRouteNames.threadMessagesViewArguments:
+      case ChatUIKitRouteNames.threadMessagesView:
         return ThreadMessagesView.arguments(
           arguments as ThreadMessagesViewArguments,
+        );
+      case ChatUIKitRouteNames.threadMembersView:
+        return ThreadMembersView.arguments(
+          arguments as ThreadMembersViewArguments,
+        );
+      case ChatUIKitRouteNames.threadsView:
+        return ThreadsView.arguments(
+          arguments as ThreadsViewArguments,
         );
     }
     return const SizedBox();

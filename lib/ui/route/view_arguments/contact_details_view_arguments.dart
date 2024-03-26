@@ -1,5 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:flutter/services.dart';
+
+import 'package:flutter/widgets.dart';
 
 class ContactDetailsViewArguments implements ChatUIKitViewArguments {
   ContactDetailsViewArguments({
@@ -9,6 +10,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
     this.enableAppBar = true,
     this.appBar,
     this.viewObserver,
+    this.contentWidgetBuilder,
     this.attributes,
   });
 
@@ -17,6 +19,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
   final VoidCallback? onMessageDidClear;
   final bool enableAppBar;
   final ChatUIKitAppBar? appBar;
+  final WidgetBuilder? contentWidgetBuilder;
   @override
   String? attributes;
   @override
@@ -30,6 +33,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
     ChatUIKitAppBar? appBar,
     ChatUIKitViewObserver? viewObserver,
     String? attributes,
+    WidgetBuilder? contentWidgetBuilder,
   }) {
     return ContactDetailsViewArguments(
       profile: profile ?? this.profile,
@@ -39,6 +43,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
       appBar: appBar ?? this.appBar,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
+      contentWidgetBuilder: contentWidgetBuilder ?? this.contentWidgetBuilder,
     );
   }
 }

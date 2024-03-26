@@ -516,7 +516,7 @@ mixin GroupActions on GroupWrapper {
     required String groupId,
     required Map<String, String> attributes,
     String? userId,
-  }) async {
+  }) {
     return checkResult(ChatSDKEvent.setGroupMemberAttributes, () {
       return Client.getInstance.groupManager.setMemberAttributes(
         groupId: groupId,
@@ -530,7 +530,7 @@ mixin GroupActions on GroupWrapper {
     required String groupId,
     required List<String> keys,
     String? userId,
-  }) async {
+  }) {
     return checkResult(ChatSDKEvent.deleteGroupMemberAttributes, () {
       return Client.getInstance.groupManager.removeMemberAttributes(
         groupId: groupId,
@@ -543,7 +543,7 @@ mixin GroupActions on GroupWrapper {
   Future<Map<String, String>> fetchGroupMemberAttributes({
     required String groupId,
     String? userId,
-  }) async {
+  }) {
     return checkResult(ChatSDKEvent.fetchGroupMemberAttributes, () {
       return Client.getInstance.groupManager.fetchMemberAttributes(
         groupId: groupId,
@@ -556,7 +556,7 @@ mixin GroupActions on GroupWrapper {
     required String groupId,
     required List<String> userIds,
     List<String>? keys,
-  }) async {
+  }) {
     return checkResult(ChatSDKEvent.fetchGroupMembersAttributes, () {
       return Client.getInstance.groupManager.fetchMembersAttributes(
         groupId: groupId,

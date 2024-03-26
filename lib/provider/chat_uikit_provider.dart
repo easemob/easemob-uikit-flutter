@@ -95,7 +95,9 @@ class ChatUIKitProvider {
     profilesCache.addAll(result);
 
     for (var observer in _observers) {
-      observer.onProfilesUpdate(result);
+      Future(() {
+        observer.onProfilesUpdate(result);
+      });
     }
   }
 }

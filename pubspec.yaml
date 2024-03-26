@@ -20,7 +20,9 @@ dependencies:
 
   shared_preferences: ^2.2.2
 
-  chat_uikit_theme: ^0.0.3
+  chat_uikit_theme: ^0.0.4
+  # chat_uikit_theme:
+  #   path: ../chat_uikit_theme
 
   path_provider: ^2.1.1
 

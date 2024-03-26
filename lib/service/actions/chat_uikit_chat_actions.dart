@@ -7,12 +7,15 @@ mixin ChatUIKitChatActions on ChatSDKWrapper {
     List<Conversation> list = await ChatUIKit.instance.getAllConversations();
     if (list.isEmpty) return unreadCount;
     for (var conversation in list) {
+      if (conversation.isChatThread) continue;
       if (withoutIds?.isNotEmpty == true) {
         if (withoutIds!.contains(conversation.id)) continue;
       }
 
       if (!ChatUIKitContext.instance.conversationIsMute(conversation.id)) {
-        unreadCount += await conversation.unreadCount();
+        int count = await conversation.unreadCount();
+        // debugPrint('conversation.id: ${conversation.id}, count: $count');
+        unreadCount += count;
       }
     }
     return unreadCount;

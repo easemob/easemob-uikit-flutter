@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 
 enum CornerRadius { extraSmall, small, medium, large }
 
-
-
 class ChatUIKitSettings {
   // 头像圆角
   static CornerRadius avatarRadius = CornerRadius.medium;
@@ -44,6 +42,8 @@ class ChatUIKitSettings {
   };
 
   // v2
+  static bool enableTranslate = true;
+
   static String translateLanguage = 'zh-Hans';
 
   static bool enableInputStatus = false;
@@ -57,11 +57,7 @@ class ChatUIKitSettings {
     '\u{1F928}',
     '\u{1F62D}',
     '\u{1F389}',
-    // '\u{1F44D}',
-    // '\u{2764}',
-    // '\u{1F609}',
-    // '\u{1F928}',
-    // '\u{1F62D}',
-    // '\u{1F389}',
   ];
+
+  static bool enableThread = true;
 }

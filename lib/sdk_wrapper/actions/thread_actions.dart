@@ -13,7 +13,7 @@ mixin ThreadActions on ThreadWrapper {
   Future<CursorResult<ChatThread>> fetchJoinedChatThreads({
     String? cursor,
     int limit = 20,
-  }) async {
+  }) {
     return checkResult(ChatSDKEvent.fetchJoinedChatThreads, () {
       return Client.getInstance.chatThreadManager
           .fetchJoinedChatThreads(cursor: cursor, limit: limit);
@@ -84,13 +84,13 @@ mixin ThreadActions on ThreadWrapper {
   }
 
   Future<ChatThread> createChatThread({
-    required String name,
+    required String threadName,
     required String messageId,
     required String parentId,
   }) {
     return checkResult(ChatSDKEvent.createChatThread, () {
       return Client.getInstance.chatThreadManager.createChatThread(
-          name: name, messageId: messageId, parentId: parentId);
+          name: threadName, messageId: messageId, parentId: parentId);
     });
   }
 
@@ -114,7 +114,7 @@ mixin ThreadActions on ThreadWrapper {
 
   Future<void> destroyChatThread({
     required String chatThreadId,
-  }) async {
+  }) {
     return checkResult(ChatSDKEvent.destroyChatThread, () {
       return Client.getInstance.chatThreadManager
           .destroyChatThread(chatThreadId: chatThreadId);

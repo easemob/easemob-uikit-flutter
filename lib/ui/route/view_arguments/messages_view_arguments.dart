@@ -16,7 +16,6 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     this.onAvatarTap,
     this.onAvatarLongPress,
     this.onNicknameTap,
-    this.focusNode,
     this.emojiWidget,
     this.itemBuilder,
     this.alertItemBuilder,
@@ -94,9 +93,6 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   /// 提示消息构建器， 如果设置后需要显示提示消息时会直接回调，如果不处理可以返回 `null`。
   final MessageItemBuilder? alertItemBuilder;
 
-  /// 键盘焦点 focusNode，如果设置后将会替换默认的 focusNode。详细参考 [FocusNode]。
-  final FocusNode? focusNode;
-
   /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitBottomSheetItem]。
   final List<ChatUIKitBottomSheetItem>? morePressActions;
 
@@ -131,7 +127,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   final MessageItemBuilder? bubbleContentBuilder;
 
   /// 输入框控制器，如果设置后将会替换默认的输入框控制器。详细参考 [CustomTextEditingController]。
-  final CustomTextEditingController? inputBarTextEditingController;
+  final ChatUIKitInputBarController? inputBarTextEditingController;
 
   /// 多选消息时显示的bottom bar.
   final Widget? multiSelectBottomBar;
@@ -182,7 +178,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     MessageItemBuilder? bubbleContentBuilder,
     MessagesViewMorePressHandler? onMoreActionsItemsHandler,
     MessagesViewItemLongPressHandler? onItemLongPressHandler,
-    CustomTextEditingController? inputBarTextEditingController,
+    ChatUIKitInputBarController? inputBarTextEditingController,
     bool? enableAppBar,
     bool? forceLeft,
     Widget? multiSelectBottomBar,
@@ -215,7 +211,6 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       longPressActions: longPressActions ?? this.longPressActions,
       itemBuilder: itemBuilder ?? this.itemBuilder,
       alertItemBuilder: alertItemBuilder ?? this.alertItemBuilder,
-      focusNode: focusNode ?? this.focusNode,
       emojiWidget: emojiWidget ?? this.emojiWidget,
       replyBarBuilder: replyBarBuilder ?? this.replyBarBuilder,
       quoteBuilder: quoteBuilder ?? this.quoteBuilder,

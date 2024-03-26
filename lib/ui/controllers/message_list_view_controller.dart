@@ -14,7 +14,11 @@ enum MessageLastActionType {
 
 /// 消息列表控制器
 class MessageListViewController extends ChangeNotifier
-    with ChatObserver, MessageObserver, ThreadObserver {
+    with
+        ChatObserver,
+        MessageObserver,
+        ThreadObserver,
+        ChatUIKitProviderObserver {
   /// 用户信息对象，用于设置对方信息, 详细参考 [ChatUIKitProfile]。如果你自己设置了 `MessageListViewController` 需要确保 `profile` 与 [MessagesView] 传入的 `profile` 一致。
   ChatUIKitProfile profile;
 
@@ -74,6 +78,7 @@ class MessageListViewController extends ChangeNotifier
     this.willSendHandler,
   }) {
     ChatUIKit.instance.addObserver(this);
+    ChatUIKitProvider.instance.addObserver(this);
     conversationType = () {
       if (profile.type == ChatUIKitProfileType.group) {
         return ConversationType.GroupChat;
@@ -81,8 +86,10 @@ class MessageListViewController extends ChangeNotifier
         return ConversationType.Chat;
       }
     }();
+    userMap[profile.id] = profile;
     if (ChatUIKit.instance.currentUserId != null) {
       if (ChatUIKitProvider.instance.currentUserProfile != null) {
+        // 这能保证每次修改自己的信息后看到的历史信息数据是正确的
         userMap[ChatUIKit.instance.currentUserId!] =
             ChatUIKitProvider.instance.currentUserProfile!;
       }
@@ -90,7 +97,15 @@ class MessageListViewController extends ChangeNotifier
   }
 
   @override
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+    userMap.addAll(map);
+    updateView();
+  }
+
+  @override
   void dispose() {
+    isDisposed = true;
+    ChatUIKitProvider.instance.removeObserver(this);
     ChatUIKit.instance.removeObserver(this);
     super.dispose();
   }
@@ -121,7 +136,7 @@ class MessageListViewController extends ChangeNotifier
           MessageModel(
             message: msg,
             reactions: reactions,
-            threadOverView: threadOverView,
+            thread: threadOverView,
           ),
         );
         ChatUIKitProfile? profile = userMap[msg.from!];
@@ -281,7 +296,7 @@ class MessageListViewController extends ChangeNotifier
         (element) => element.message.msgId == event.chatThread?.messageId);
     if (index != -1) {
       msgModelList[index] =
-          msgModelList[index].copyWith(threadOverView: event.chatThread);
+          msgModelList[index].copyWith(thread: event.chatThread);
       lastActionType = MessageLastActionType.originalPosition;
       updateView();
     }
@@ -307,7 +322,7 @@ class MessageListViewController extends ChangeNotifier
     }
   }
 
-  void replaceMessage(Message message) {
+  void _replaceMessage(Message message) {
     final index = msgModelList
         .indexWhere((element) => element.message.msgId == message.msgId);
     if (index != -1) {
@@ -320,7 +335,7 @@ class MessageListViewController extends ChangeNotifier
     if (message.bodyType == MessageType.VOICE) {
       if (!message.voiceHasPlay) {
         message.setVoiceHasPlay(true);
-        replaceMessage(message);
+        _replaceMessage(message);
       }
     }
   }
@@ -340,7 +355,7 @@ class MessageListViewController extends ChangeNotifier
     }
     msg.attributes = map;
     await ChatUIKit.instance.updateMessage(message: msg);
-    replaceMessage(msg);
+    _replaceMessage(msg);
   }
 
   Future<void> _clearMention(List<MessageModel> msgs) async {
@@ -354,7 +369,6 @@ class MessageListViewController extends ChangeNotifier
 
   void updateView() {
     if (isDisposed) return;
-    debugPrint('updateView');
     notifyListeners();
   }
 
@@ -555,10 +569,10 @@ class MessageListViewController extends ChangeNotifier
 
   Future<void> sendCardMessage(ChatUIKitProfile cardProfile) async {
     Map<String, String> param = {cardUserIdKey: cardProfile.id};
-    if (profile.nickname != null) {
+    if (cardProfile.nickname != null) {
       param[cardNicknameKey] = cardProfile.nickname!;
     }
-    if (profile.avatarUrl != null) {
+    if (cardProfile.avatarUrl != null) {
       param[cardAvatarKey] = cardProfile.avatarUrl!;
     }
 

@@ -156,7 +156,11 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
                 ),
                 Expanded(
                   child: ChatUIKitEmojiRichText(
-                    text: info.lastMessage?.showInfo(context) ?? '',
+                    text: info.lastMessage?.showInfoTranslate(
+                          context,
+                          needNickname: true,
+                        ) ??
+                        '',
                     emojiSize: const Size(16, 16),
                     style: style,
                     overflow: TextOverflow.ellipsis,

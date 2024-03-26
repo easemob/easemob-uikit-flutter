@@ -177,17 +177,17 @@ mixin ChatUIKitLocal {
 
   static const changInfoViewSave = 'change_info_view_save';
   static const changInfoViewInputHint = 'change_info_view_input_hint';
-
-  static const messagesViewGroupDestroyInfo =
-      'messages_view_group_destroy_info';
-  static const messagesViewGroupLeaveInfo = 'messages_view_group_leave_info';
-  static const messagesViewGroupKickedInfo = 'messages_view_group_kicked_info';
-  static const messagesViewRecallInfo = 'messages_view_recall_info';
-  static const messagesViewRecallInfoYou = 'messages_view_recall_info_you';
+  static const alertDestroy = 'messages_view_group_destroy_info';
+  static const alertLeave = 'messages_view_group_leave_info';
+  static const alertKickedInfo = 'messages_view_group_kicked_info';
+  static const alertRecallInfo = 'messages_view_recall_info';
+  static const alertYou = 'messages_view_recall_info_you';
   static const messagesViewAlertGroupInfoTitle =
       'messages_view_alert_group_info_title';
   static const messagesViewAlertGroupInfoTitleYou =
       'messages_view_alert_group_info_title_you';
+  static const messagesViewAlertThreadInfoTitle =
+      'messages_view_alert_thread_info_title';
   static const messagesViewEditMessageTitle =
       'messages_view_edit_message_title';
   static const messagesViewMoreActionsTitleAlbum =
@@ -398,12 +398,13 @@ mixin ChatUIKitLocal {
     groupsViewTitle: '群组',
     changInfoViewSave: '保存',
     changInfoViewInputHint: '请输入',
-    messagesViewGroupDestroyInfo: '本群组已被解散',
-    messagesViewGroupLeaveInfo: '你已退出本群组',
-    messagesViewGroupKickedInfo: '你已被移出本群组',
-    messagesViewRecallInfo: '撤回了一条消息',
-    messagesViewRecallInfoYou: '你',
+    alertDestroy: '本群组已被解散',
+    alertLeave: '你已退出本群组',
+    alertKickedInfo: '你已被移出本群组',
+    alertRecallInfo: '撤回了一条消息',
+    alertYou: '你',
     messagesViewAlertGroupInfoTitle: '创建群组',
+    messagesViewAlertThreadInfoTitle: '创建了话题',
     messagesViewAlertGroupInfoTitleYou: '你',
     messagesViewEditMessageTitle: '正在编辑',
     messagesViewMoreActionsTitleAlbum: '相册',
@@ -582,12 +583,13 @@ mixin ChatUIKitLocal {
     groupsViewTitle: 'Groups',
     changInfoViewSave: 'Save',
     changInfoViewInputHint: 'input',
-    messagesViewGroupDestroyInfo: 'The group has been disbanded.',
-    messagesViewGroupLeaveInfo: 'You have left the group.',
-    messagesViewGroupKickedInfo: 'You have been removed from the group.',
-    messagesViewRecallInfo: ' recalled a message',
-    messagesViewRecallInfoYou: 'You',
+    alertDestroy: 'The group has been disbanded.',
+    alertLeave: 'You have left the group.',
+    alertKickedInfo: 'You have been removed from the group.',
+    alertRecallInfo: ' recalled a message',
+    alertYou: 'You',
     messagesViewAlertGroupInfoTitle: 'created a group',
+    messagesViewAlertThreadInfoTitle: 'created a thread',
     messagesViewAlertGroupInfoTitleYou: 'You',
     messagesViewEditMessageTitle: 'Editing',
     messagesViewMoreActionsTitleAlbum: 'Album',

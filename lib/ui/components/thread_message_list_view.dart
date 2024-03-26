@@ -2,8 +2,8 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
 
-class MessageListView extends StatefulWidget {
-  const MessageListView({
+class ThreadMessageListView extends StatefulWidget {
+  const ThreadMessageListView({
     required this.controller,
     this.onItemLongPress,
     this.onItemDoubleTap,
@@ -27,10 +27,11 @@ class MessageListView extends StatefulWidget {
     this.onThreadItemTap,
     this.threadItemBuilder,
     this.scrollController,
+    this.header,
     super.key,
   });
 
-  final MessageListViewController controller;
+  final ThreadMessagesViewController controller;
   final MessageItemTapHandler? onItemTap;
   final MessageItemTapHandler? onItemLongPress;
   final MessageItemTapHandler? onItemDoubleTap;
@@ -54,13 +55,14 @@ class MessageListView extends StatefulWidget {
   final MessageItemTapHandler? onThreadItemTap;
   final MessageItemBuilder? threadItemBuilder;
   final AutoScrollController? scrollController;
+  final Widget? header;
 
   @override
-  State<MessageListView> createState() => _MessageListViewState();
+  State<ThreadMessageListView> createState() => _ThreadMessageListViewState();
 }
 
-class _MessageListViewState extends State<MessageListView> {
-  late final MessageListViewController controller;
+class _ThreadMessageListViewState extends State<ThreadMessageListView> {
+  late final ThreadMessagesViewController controller;
   late final AutoScrollController _scrollController;
   ChatUIKitTheme? theme;
   Size? size;
@@ -71,23 +73,7 @@ class _MessageListViewState extends State<MessageListView> {
     _scrollController = widget.scrollController ?? AutoScrollController();
     controller = widget.controller;
     controller.addListener(() {
-      if (controller.lastActionType == MessageLastActionType.originalPosition) {
-        setState(() {});
-      }
-
-      if (_scrollController.offset < 20 ||
-          controller.lastActionType == MessageLastActionType.bottomPosition) {
-        setState(() {});
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          if (_scrollController.positions.isNotEmpty) {
-            _scrollController.animateTo(
-              0,
-              duration: const Duration(milliseconds: 100),
-              curve: Curves.linear,
-            );
-          }
-        });
-      }
+      setState(() {});
     });
   }
 
@@ -102,14 +88,14 @@ class _MessageListViewState extends State<MessageListView> {
     theme ??= ChatUIKitTheme.of(context);
     size ??= MediaQuery.of(context).size;
     Widget content = CustomScrollView(
-      physics: controller.msgModelList.length > 15
-          ? const AlwaysScrollableScrollPhysics()
-          : const BouncingScrollPhysics(),
+      physics: const AlwaysScrollableScrollPhysics(),
       controller: _scrollController,
-      reverse: true,
-      shrinkWrap: controller.msgModelList.length > 15 ? false : true,
       cacheExtent: 1500,
       slivers: [
+        if (widget.header != null)
+          SliverToBoxAdapter(
+            child: widget.header!,
+          ),
         SliverPadding(
           padding: EdgeInsets.zero,
           sliver: SliverList(
@@ -137,17 +123,26 @@ class _MessageListViewState extends State<MessageListView> {
         ),
       ],
     );
-    content = Padding(
-      padding: const EdgeInsets.only(left: 12, right: 12),
-      child: content,
-    );
 
-    content = Scaffold(
-      key: ValueKey(controller.profile.id),
-      body: content,
-      backgroundColor: theme!.color.isDark
-          ? theme!.color.neutralColor1
-          : theme!.color.neutralColor98,
+    content = NotificationListener(
+        child: content,
+        onNotification: (notification) {
+          if (notification is ScrollUpdateNotification) {
+            if (_scrollController.position.pixels -
+                    _scrollController.position.maxScrollExtent >
+                -1500) {
+              controller.fetchItemList();
+            }
+          }
+          return false;
+        });
+
+    content = Padding(
+      padding: const EdgeInsets.only(
+        left: 12,
+        right: 12,
+      ),
+      child: content,
     );
 
     return content;
@@ -191,6 +186,7 @@ class _MessageListViewState extends State<MessageListView> {
 
     Widget? content = widget.itemBuilder?.call(context, model);
     content ??= ChatUIKitMessageListViewMessageItem(
+      enableThread: false,
       enableSelected: controller.isMultiSelectMode
           ? () {
               if (controller.selectedMessages

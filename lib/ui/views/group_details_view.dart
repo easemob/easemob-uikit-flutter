@@ -144,16 +144,22 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       group = await ChatUIKit.instance.fetchGroupInfo(groupId: profile!.id);
       memberCount = group?.memberCount ?? 0;
       safeSetState(() {});
-      // ignore: empty_catches
-    } catch (e) {}
+    } on ChatError catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   void fetchSilentInfo() async {
-    Conversation conversation = await ChatUIKit.instance.createConversation(
-        conversationId: profile!.id, type: ConversationType.GroupChat);
-    Map<String, ChatSilentModeResult> map = await ChatUIKit.instance
-        .fetchSilentModel(conversations: [conversation]);
-    isNotDisturb.value = map.values.first.remindType != ChatPushRemindType.ALL;
+    try {
+      Conversation conversation = await ChatUIKit.instance.createConversation(
+          conversationId: profile!.id, type: ConversationType.GroupChat);
+      Map<String, ChatSilentModeResult> map = await ChatUIKit.instance
+          .fetchSilentModel(conversations: [conversation]);
+      isNotDisturb.value =
+          map.values.first.remindType != ChatPushRemindType.ALL;
+    } on ChatError catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   void safeSetState(VoidCallback fn) {
@@ -547,7 +553,10 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
         ]
       ],
     );
-
+    content = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: content,
+    );
     return content;
   }
 

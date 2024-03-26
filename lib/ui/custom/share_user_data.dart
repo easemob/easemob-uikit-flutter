@@ -1,8 +1,8 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/widgets.dart';
 
-class MessageListShareUserData extends InheritedWidget {
-  const MessageListShareUserData({
+class ShareUserData extends InheritedWidget {
+  const ShareUserData({
     super.key,
     required super.child,
     required this.data,
@@ -10,13 +10,20 @@ class MessageListShareUserData extends InheritedWidget {
 
   final Map<String, ChatUIKitProfile> data;
 
-  static MessageListShareUserData? of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<MessageListShareUserData>();
+  static ShareUserData? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<ShareUserData>();
+  }
+
+  String? showName(String userId) {
+    return data[userId]?.showName;
+  }
+
+  String? showAvatar(String userId) {
+    return data[userId]?.avatarUrl;
   }
 
   @override
-  bool updateShouldNotify(covariant MessageListShareUserData oldWidget) {
+  bool updateShouldNotify(covariant ShareUserData oldWidget) {
     return oldWidget.data != data;
   }
 }

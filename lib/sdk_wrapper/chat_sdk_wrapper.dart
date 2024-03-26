@@ -156,7 +156,7 @@ class ChatSDKWrapper extends ChatUIKitWrapperBase
   Future<void> loginWithToken({
     required String userId,
     required String token,
-  }) async {
+  }) {
     return checkResult(ChatSDKEvent.loginWithToken, () async {
       await Client.getInstance.loginWithToken(userId, token);
       await Client.getInstance.startCallback();
@@ -164,7 +164,7 @@ class ChatSDKWrapper extends ChatUIKitWrapperBase
   }
 
   /// Logout
-  Future<void> logout() async {
+  Future<void> logout() {
     return checkResult(ChatSDKEvent.logout, () async {
       await Client.getInstance.logout();
     });

@@ -2,6 +2,32 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/universal/defines.dart';
 import 'package:flutter/material.dart';
 
+class LongPressOptions {
+  final bool reaction;
+  final bool copy;
+  final bool reply;
+  final bool forward;
+  final bool multiSelect;
+  final bool translate;
+  final bool thread;
+  final bool edit;
+  final bool report;
+  final bool delete;
+
+  LongPressOptions({
+    this.reaction = true,
+    this.copy = true,
+    this.reply = true,
+    this.forward = true,
+    this.multiSelect = true,
+    this.translate = true,
+    this.thread = true,
+    this.edit = true,
+    this.report = true,
+    this.delete = true,
+  });
+}
+
 class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   const ChatUIKitMessageListViewMessageItem({
     required this.model,
@@ -31,11 +57,15 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     this.threadItemBuilder,
     this.enableSelected,
     this.reactions,
+    this.longPressOptions,
+    this.enableThread = true,
+    this.enableReaction = true,
     super.key,
   });
 
   final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
   final MessageModel model;
+  final LongPressOptions? longPressOptions;
   final List<MessageReaction>? reactions;
   final bool showAvatar;
   final bool showNickname;
@@ -45,6 +75,8 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   final double avatarSize;
   final Widget? nicknameWidget;
   final bool isPlaying;
+  final bool enableThread;
+  final bool enableReaction;
 
   final VoidCallback? onAvatarTap;
   final VoidCallback? onAvatarLongPressed;
@@ -202,8 +234,8 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
         quoteWidget(context, model: model.message.getQuote, isLeft: left),
         avatarAndBubble,
         if (model.reactions?.isNotEmpty == true) const SizedBox(height: 4),
-        threadWidget(context, theme, left),
-        reactionsWidget(context, theme, left),
+        if (enableThread) threadWidget(context, theme, left),
+        if (enableReaction) reactionsWidget(context, theme, left),
         timeWidget(context, theme, left),
       ],
     );
@@ -306,10 +338,9 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     if (!showAvatar) return const SizedBox();
     content = avatarWidget;
     if (content == null) {
-      String? avatarUrl = MessageListShareUserData.of(context)
-              ?.data[model.message.from!]
-              ?.avatarUrl ??
-          model.message.avatarUrl;
+      String? avatarUrl =
+          ShareUserData.of(context)?.showAvatar(model.message.from!) ??
+              model.message.avatarUrl;
       content = ChatUIKitAvatar(
         avatarUrl: avatarUrl,
         size: avatarSize,
@@ -330,11 +361,9 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   Widget _nickname(ChatUIKitTheme theme, BuildContext context,
       {bool isLeft = false}) {
     if (!showNickname) return const SizedBox();
-    String nickname = MessageListShareUserData.of(context)
-            ?.data[model.message.from!]
-            ?.nickname ??
-        model.message.nickname ??
-        model.message.from!;
+    String nickname =
+        ShareUserData.of(context)?.showName(model.message.from!) ??
+            model.message.from!;
     Widget content = nicknameWidget ??
         Text(
           nickname,
@@ -382,7 +411,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   }
 
   Widget threadWidget(BuildContext context, ChatUIKitTheme theme, bool left) {
-    if (model.threadOverView == null) {
+    if (model.thread == null) {
       return const SizedBox();
     } else {
       double arrowWidth = 0;
@@ -400,8 +429,8 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
           Expanded(
             child: threadItemBuilder?.call(context, model) ??
                 ChatUIKitMessageThreadWidget(
-                  threadOverView: model.threadOverView!,
-                  onTap: onThreadItemTap,
+                  chatThread: model.thread!,
+                  onTap: enableSelected != null ? null : onThreadItemTap,
                 ),
           ),
         ],
@@ -434,8 +463,10 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
                 ChatUIKitMessageReactionsRow(
                   reactions: reactions!,
                   isLeft: left,
-                  onReactionTap: onReactionItemTap,
-                  onReactionInfoTap: onReactionInfoTap,
+                  onReactionTap:
+                      enableSelected != null ? null : onReactionItemTap,
+                  onReactionInfoTap:
+                      enableSelected != null ? null : onReactionInfoTap,
                 ),
           ),
         ],

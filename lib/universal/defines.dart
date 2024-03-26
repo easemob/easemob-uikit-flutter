@@ -13,12 +13,18 @@ const String quoteMsgTypeKey = 'msgType';
 const String quoteMsgPreviewKey = 'msgPreview';
 const String quoteMsgSenderKey = 'msgSender';
 
-const String alertTimeMessageEventKey = 'timeMessage';
-const String alertCreateGroupMessageEventKey =
-    'alertCreateGroupMessageEventKey';
-const String alertCreateGroupMessageOwnerKey = 'owner';
-const String alertCreateGroupMessageGroupNameKey = 'groupName';
+const String alertTimeKey = 'timeMessageKey';
+const String alertCreateGroupKey = 'createGroupKey';
 const String alertRecalledKey = 'alertRecalledKey';
+const String alertCreateThreadKey = 'createThreadKey';
+const String alertUpdateThreadKey = 'updateThreadKey';
+const String alertDeleteThreadKey = 'deleteThreadKey';
+
+const String alertOperatorKey = 'alertOperatorKey';
+const String alertOperatorInfoKey = 'alertOperatorInfoKey';
+const String alertThreadId = 'alertThreadId';
+const String alertThreadInMsgId = 'alertThreadInMsgId';
+
 const String alertRecallInfoKey = 'alertRecallInfoKey';
 const String alertRecallMessageTypeKey = 'alertRecallMessageTypeKey';
 const String alertRecallMessageFromKey = 'alertRecallMessageFromKey';
