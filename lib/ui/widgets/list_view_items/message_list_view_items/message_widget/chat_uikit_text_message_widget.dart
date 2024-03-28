@@ -65,7 +65,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
                         : theme.color.neutralSpecialColor98,
               )),
               TextSpan(
-                text: '已编辑',
+                text: ChatUIKitLocal.messageEdited.getString(context),
                 style: TextStyle(
                   fontWeight: theme.font.labelSmall.fontWeight,
                   fontSize: theme.font.labelSmall.fontSize,
@@ -88,7 +88,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
     if (model.message.hasTranslate) {
       widgets.add(
         SizedBox(
-            width: getSize(theme),
+            width: getSize(context, theme),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: Divider(
@@ -133,7 +133,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
                         : theme.color.neutralSpecialColor98,
               )),
               TextSpan(
-                text: '已翻译',
+                text: ChatUIKitLocal.messageTranslated.getString(context),
                 style: TextStyle(
                   fontWeight: theme.font.labelSmall.fontWeight,
                   fontSize: theme.font.labelSmall.fontSize,
@@ -163,7 +163,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
     return content;
   }
 
-  double getSize(ChatUIKitTheme theme) {
+  double getSize(BuildContext context, ChatUIKitTheme theme) {
     TextStyle tmpStyle = TextStyle(
       fontWeight: theme.font.bodyLarge.fontWeight,
       fontSize: theme.font.bodyLarge.fontSize,
@@ -187,7 +187,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
 
     TextPainter painter3 = TextPainter(
       text: TextSpan(
-        text: '已翻译',
+        text: ChatUIKitLocal.messageTranslated.getString(context),
         style: tmpStyle,
       ),
       textDirection: TextDirection.ltr,
@@ -195,7 +195,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
 
     TextPainter painter4 = TextPainter(
       text: TextSpan(
-        text: '已编辑',
+        text: ChatUIKitLocal.messageEdited.getString(context),
         style: tmpStyle,
       ),
       textDirection: TextDirection.ltr,
@@ -204,24 +204,5 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
     return max(max(painter1.size.width, painter2.size.width),
             max(painter3.size.width, painter4.size.width)) +
         5;
-  }
-
-  TextSpan textSpan(Widget widget, String text, ChatUIKitTheme theme) {
-    return TextSpan(
-      children: [
-        WidgetSpan(
-            child: ChatUIKitImageLoader.messageLongPressTranslate(
-          width: 16,
-          height: 16,
-        )),
-        TextSpan(
-          text: '已翻译',
-          style: TextStyle(
-            fontWeight: theme.font.labelSmall.fontWeight,
-            fontSize: theme.font.labelSmall.fontSize,
-          ),
-        ),
-      ],
-    );
   }
 }

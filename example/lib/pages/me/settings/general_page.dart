@@ -1,5 +1,7 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit_example/demo_localizations.dart';
 import 'package:em_chat_uikit_example/notifications/app_settings_notification.dart';
+import 'package:em_chat_uikit_example/tool/settings_data_store.dart';
 
 import 'package:em_chat_uikit_example/widgets/list_item.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,39 +21,39 @@ class _GeneralPageState extends State<GeneralPage> {
 
     Widget content = ListView(
       children: [
+        // ListItem(
+        //   title: '显示输入状态',
+        //   trailingWidget: CupertinoSwitch(
+        //       value: ChatUIKitSettings.enableInputStatus,
+        //       onChanged: (value) {
+        //         ChatUIKitSettings.enableInputStatus =
+        //             !ChatUIKitSettings.enableInputStatus;
+        //         setState(() {});
+        //       }),
+        // ),
+        // Container(
+        //   padding:
+        //       const EdgeInsets.only(top: 4, bottom: 4, left: 16, right: 16),
+        //   color: theme.color.isDark
+        //       ? theme.color.neutralColor3
+        //       : theme.color.neutralColor95,
+        //   child: Text(
+        //     '开启后，对方将看见你的输入状态',
+        //     textAlign: TextAlign.right,
+        //     // ignore: deprecated_member_use
+        //     textScaler: TextScaler.noScaling,
+        //     style: TextStyle(
+        //       height: 0.9,
+        //       fontSize: theme.font.bodyMedium.fontSize,
+        //       fontWeight: theme.font.bodyMedium.fontWeight,
+        //       color: theme.color.isDark
+        //           ? theme.color.neutralColor7
+        //           : theme.color.neutralColor5,
+        //     ),
+        //   ),
+        // ),
         ListItem(
-          title: '显示输入状态',
-          trailingWidget: CupertinoSwitch(
-              value: ChatUIKitSettings.enableInputStatus,
-              onChanged: (value) {
-                ChatUIKitSettings.enableInputStatus =
-                    !ChatUIKitSettings.enableInputStatus;
-                setState(() {});
-              }),
-        ),
-        Container(
-          padding:
-              const EdgeInsets.only(top: 4, bottom: 4, left: 16, right: 16),
-          color: theme.color.isDark
-              ? theme.color.neutralColor3
-              : theme.color.neutralColor95,
-          child: Text(
-            '开启后，对方将看见你的输入状态',
-            textAlign: TextAlign.right,
-            // ignore: deprecated_member_use
-            textScaler: TextScaler.noScaling,
-            style: TextStyle(
-              height: 0.9,
-              fontSize: theme.font.bodyMedium.fontSize,
-              fontWeight: theme.font.bodyMedium.fontWeight,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor7
-                  : theme.color.neutralColor5,
-            ),
-          ),
-        ),
-        ListItem(
-          title: '暗黑模式',
+          title: DemoLocalizations.darkMode.getString(context),
           trailingWidget: CupertinoSwitch(
               value: !AppSettingsNotification.isLight,
               onChanged: (value) {
@@ -63,16 +65,32 @@ class _GeneralPageState extends State<GeneralPage> {
         ),
         InkWell(
           onTap: () {
+            Navigator.of(context).pushNamed('/theme_page').then((value) {
+              setState(() {});
+            });
+          },
+          child: ListItem(
+            title: DemoLocalizations.switchTheme.getString(context),
+            trailingStyle: TextStyle(
+              fontSize: theme.font.labelMedium.fontSize,
+              fontWeight: theme.font.labelMedium.fontWeight,
+              color: theme.color.isDark
+                  ? theme.color.neutralColor7
+                  : theme.color.neutralColor5,
+            ),
+            enableArrow: true,
+          ),
+        ),
+        InkWell(
+          onTap: () {
             Navigator.of(context).pushNamed('/language_page').then((value) {
               setState(() {});
             });
           },
           child: ListItem(
-            title: '语言设置',
+            title: DemoLocalizations.languageSettings.getString(context),
             trailingString:
-                ChatUIKitLocalizations().currentLocale?.languageCode == 'zh'
-                    ? '中文'
-                    : 'English',
+                SettingsDataStore().currentLanguage == 'zh' ? '中文' : 'English',
             trailingStyle: TextStyle(
               fontSize: theme.font.labelMedium.fontSize,
               fontWeight: theme.font.labelMedium.fontWeight,
@@ -90,10 +108,13 @@ class _GeneralPageState extends State<GeneralPage> {
             });
           },
           child: ListItem(
-            title: '翻译目标语言',
-            trailingString: ChatUIKitSettings.translateLanguage == 'zh-Hans'
-                ? '简体中文'
-                : 'English',
+            title: DemoLocalizations.translateTargetLanguage.getString(context),
+            trailingString:
+                ChatUIKitSettings.translateTargetLanguage == 'zh-Hans'
+                    ? DemoLocalizations.translateTargetLanguageChinese
+                        .getString(context)
+                    : DemoLocalizations.translateTargetLanguageEnglish
+                        .getString(context),
             trailingStyle: TextStyle(
               fontSize: theme.font.labelMedium.fontSize,
               fontWeight: theme.font.labelMedium.fontWeight,
@@ -115,7 +136,7 @@ class _GeneralPageState extends State<GeneralPage> {
         backgroundColor: theme.color.isDark
             ? theme.color.neutralColor1
             : theme.color.neutralColor98,
-        title: '通用',
+        title: DemoLocalizations.general.getString(context),
         centerTitle: false,
       ),
       body: SafeArea(child: content),

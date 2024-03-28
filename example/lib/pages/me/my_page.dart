@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit_example/demo_localizations.dart';
 import 'package:em_chat_uikit_example/widgets/list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -131,22 +132,16 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
       children: [
         content,
         const SizedBox(height: 20),
-        const Padding(
-          padding: EdgeInsets.only(left: 16, right: 16),
-          child: Text('设置', textScaler: TextScaler.noScaling),
-        ),
-        InkWell(
-          onTap: nonsupport,
-          child: ListItem(
-            imageWidget: Image.asset('assets/images/online.png'),
-            title: '在线状态',
-          ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          child: Text(DemoLocalizations.settings.getString(context),
+              textScaler: TextScaler.noScaling),
         ),
         InkWell(
           onTap: pushToPersonalInfoPage,
           child: ListItem(
             imageWidget: Image.asset('assets/images/personal.png'),
-            title: '个人信息',
+            title: DemoLocalizations.personalInfo.getString(context),
             enableArrow: true,
           ),
         ),
@@ -154,7 +149,7 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
           onTap: generalSettings,
           child: ListItem(
             imageWidget: Image.asset('assets/images/settings.png'),
-            title: '通用',
+            title: DemoLocalizations.general.getString(context),
             enableArrow: true,
           ),
         ),
@@ -162,21 +157,14 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
           onTap: nonsupport,
           child: ListItem(
             imageWidget: Image.asset('assets/images/notifications.png'),
-            title: '消息通知',
-          ),
-        ),
-        InkWell(
-          onTap: nonsupport,
-          child: ListItem(
-            imageWidget: Image.asset('assets/images/secret.png'),
-            title: '隐私',
+            title: DemoLocalizations.notification.getString(context),
           ),
         ),
         InkWell(
           onTap: nonsupport,
           child: ListItem(
             imageWidget: Image.asset('assets/images/info.png'),
-            title: '关于',
+            title: DemoLocalizations.about.getString(context),
             trailingString: 'Easemob UIKit v2.0.0',
           ),
         ),
@@ -188,7 +176,7 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
               logout();
             },
             child: Text(
-              '退出登录',
+              DemoLocalizations.logout.getString(context),
               textScaler: TextScaler.noScaling,
               style: TextStyle(
                 fontWeight: theme.font.titleMedium.fontWeight,
@@ -239,17 +227,17 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
 
   void logout() {
     showChatUIKitDialog(
-      title: '退出登录',
+      title: DemoLocalizations.logoutTitle.getString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
-          label: '取消',
+          label: DemoLocalizations.logoutCancel.getString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
-          label: '退出',
+          label: DemoLocalizations.logoutConfirm.getString(context),
           onTap: () async {
             Navigator.of(context).pop();
             ChatUIKit.instance.logout().then((value) {

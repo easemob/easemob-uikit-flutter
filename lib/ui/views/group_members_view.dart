@@ -278,6 +278,37 @@ class _GroupMembersViewState extends State<GroupMembersView>
               );
             },
           ),
+          ChatUIKitModelAction(
+            title: ChatUIKitLocal.contactDetailViewSearch.getString(context),
+            icon: 'assets/images/search_history.png',
+            packageName: ChatUIKitImageLoader.packageName,
+            iconSize: const Size(32, 32),
+            onTap: (context) {
+              ChatUIKitRoute.pushOrPushNamed(
+                context,
+                ChatUIKitRouteNames.searchHistoryView,
+                SearchHistoryViewArguments(
+                  profile: profile,
+                  attributes: widget.attributes,
+                ),
+              ).then((value) {
+                if (value != null && value is Message) {
+                  ChatUIKitRoute.pushOrPushNamed(
+                    context,
+                    ChatUIKitRouteNames.messagesView,
+                    MessagesViewArguments(
+                      profile: profile,
+                      attributes: widget.attributes,
+                      controller: MessageListViewController(
+                        profile: profile,
+                        searchedMsg: value,
+                      ),
+                    ),
+                  );
+                }
+              });
+            },
+          ),
         ],
       ),
     );
@@ -370,6 +401,7 @@ class _GroupMembersViewState extends State<GroupMembersView>
       context,
       ChatUIKitRouteNames.searchGroupMembersView,
       SearchGroupMembersViewArguments(
+        attributes: widget.attributes,
         itemBuilder: (context, profile, searchKeyword) {
           return InkWell(
             highlightColor: Colors.transparent,

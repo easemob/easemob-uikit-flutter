@@ -127,6 +127,8 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
           ? Text(
               subTitleLabel!,
               style: style,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             )
           : Row(
               children: [
@@ -164,6 +166,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
                     emojiSize: const Size(16, 16),
                     style: style,
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                 ),
               ],

@@ -6,6 +6,7 @@ class ChatUIKitModelAction {
   ChatUIKitModelAction({
     required this.title,
     required this.icon,
+    this.iconSize,
     this.packageName,
     this.onTap,
   });
@@ -13,5 +14,6 @@ class ChatUIKitModelAction {
   final String title;
   final ChatUIKitActionItemOnTap? onTap;
   final String icon;
+  final Size? iconSize;
   final String? packageName;
 }

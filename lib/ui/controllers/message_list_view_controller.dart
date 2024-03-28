@@ -2,12 +2,10 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:em_chat_uikit/chat_uikit.dart';
-
 import 'package:flutter/material.dart';
 
-import '../../universal/defines.dart';
-
 enum MessageLastActionType {
+  topPosition, // 主要用于搜索时直接跳转到顶部
   bottomPosition,
   originalPosition,
 }
@@ -65,16 +63,24 @@ class MessageListViewController extends ChangeNotifier
 
   bool isMultiSelectMode = false;
 
+  Message? searchedMsg;
+
+  bool hasSearched = false;
+
   void clearMessages() {
     msgModelList.clear();
-    lastActionType = MessageLastActionType.originalPosition;
+    cacheMessages.clear();
+    lastActionType = MessageLastActionType.bottomPosition;
+    onBottom = true;
     hasNew = false;
     _lastMessageId = null;
+    updateView();
   }
 
   MessageListViewController({
     required this.profile,
     this.pageSize = 30,
+    this.searchedMsg,
     this.willSendHandler,
   }) {
     ChatUIKit.instance.addObserver(this);
@@ -94,6 +100,18 @@ class MessageListViewController extends ChangeNotifier
             ChatUIKitProvider.instance.currentUserProfile!;
       }
     }
+  }
+
+  void jumpToSearchedMessage(Message searchedMessage) {
+    searchedMsg = searchedMessage;
+    hasSearched = false;
+    msgModelList.clear();
+    lastActionType = MessageLastActionType.bottomPosition;
+    onBottom = true;
+    hasNew = false;
+    _lastMessageId = null;
+    _isEmpty = false;
+    fetchItemList();
   }
 
   @override
@@ -116,12 +134,37 @@ class MessageListViewController extends ChangeNotifier
     }
     if (_isFetching) return;
     _isFetching = true;
-    List<Message> list = await ChatUIKit.instance.getMessages(
-      conversationId: profile.id,
-      type: conversationType,
-      count: pageSize,
-      startId: _lastMessageId,
-    );
+    List<Message> list;
+    if (searchedMsg != null && hasSearched == false) {
+      List<Message> searchList =
+          await ChatUIKit.instance.loadLocalMessagesByTimestamp(
+        conversationId: profile.id,
+        type: conversationType,
+        count: 100,
+        startTime: searchedMsg!.serverTime - 100000,
+        endTime: DateTime.now().millisecondsSinceEpoch,
+      );
+
+      List<Message> beforeSearchList =
+          await ChatUIKit.instance.loadLocalMessages(
+        conversationId: profile.id,
+        type: conversationType,
+        count: pageSize,
+        startId: searchList.first.msgId,
+      );
+      list = beforeSearchList + searchList;
+      _lastMessageId = list.first.msgId;
+      hasSearched = true;
+      lastActionType = MessageLastActionType.topPosition;
+    } else {
+      list = await ChatUIKit.instance.loadLocalMessages(
+        conversationId: profile.id,
+        type: conversationType,
+        count: pageSize,
+        startId: _lastMessageId,
+      );
+      lastActionType = MessageLastActionType.originalPosition;
+    }
     if (list.length < pageSize) {
       _isEmpty = true;
     }
@@ -147,10 +190,9 @@ class MessageListViewController extends ChangeNotifier
       }
       msgModelList.addAll(modelLists.reversed);
 
-      lastActionType = MessageLastActionType.originalPosition;
-
       updateView();
     }
+
     _isFetching = false;
   }
 
@@ -344,7 +386,7 @@ class MessageListViewController extends ChangeNotifier
       {bool showTranslate = true}) async {
     Message msg = await ChatUIKit.instance.translateMessage(
       msg: message,
-      languages: [ChatUIKitSettings.translateLanguage],
+      languages: [ChatUIKitSettings.translateTargetLanguage],
     );
     Map<String, dynamic>? map = msg.attributes;
     map ??= {};
@@ -369,6 +411,10 @@ class MessageListViewController extends ChangeNotifier
 
   void updateView() {
     if (isDisposed) return;
+    if (msgModelList.isEmpty) {
+      lastActionType = MessageLastActionType.bottomPosition;
+      onBottom = true;
+    }
     notifyListeners();
   }
 
@@ -443,6 +489,10 @@ class MessageListViewController extends ChangeNotifier
         messageId: messageId,
       );
       msgModelList.removeWhere((element) => messageId == element.message.msgId);
+      if (cacheMessages.isNotEmpty) {
+        msgModelList.insert(0, cacheMessages.first);
+        cacheMessages.removeAt(0);
+      }
       updateView();
       // ignore: empty_catches
     } catch (e) {}
@@ -600,6 +650,8 @@ class MessageListViewController extends ChangeNotifier
           ChatUIKitProvider.instance.currentUserProfile!;
     }
 
+    // 插入缓存中的消息
+    addAllCacheToList();
     msgModelList.insert(0, MessageModel(message: msg));
     hasNew = true;
     lastActionType = MessageLastActionType.bottomPosition;
@@ -697,6 +749,7 @@ class MessageListViewController extends ChangeNotifier
   void enableMultiSelectMode() {
     isMultiSelectMode = true;
     selectedMessages.clear();
+    lastActionType = MessageLastActionType.originalPosition;
     notifyListeners();
   }
 

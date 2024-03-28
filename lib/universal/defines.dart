@@ -14,7 +14,7 @@ const String quoteMsgPreviewKey = 'msgPreview';
 const String quoteMsgSenderKey = 'msgSender';
 
 const String alertTimeKey = 'timeMessageKey';
-const String alertCreateGroupKey = 'createGroupKey';
+
 const String alertRecalledKey = 'alertRecalledKey';
 const String alertCreateThreadKey = 'createThreadKey';
 const String alertUpdateThreadKey = 'updateThreadKey';
@@ -30,6 +30,7 @@ const String alertRecallMessageTypeKey = 'alertRecallMessageTypeKey';
 const String alertRecallMessageFromKey = 'alertRecallMessageFromKey';
 const String alertRecallMessageDirectionKey = 'alertRecallMessageDirectionKey';
 
+const String alertGroupCreateKey = 'createGroupKey';
 const String alertGroupDestroyKey = 'alertGroupDestroyKey';
 const String alertGroupLeaveKey = 'alertGroupLeaveKey';
 const String alertGroupKickedKey = 'alertGroupKickedKey';
@@ -41,3 +42,17 @@ const String hasMentionValue = 'mention';
 
 const String voiceHasReadKey = 'voiceHasRead';
 const String hasTranslatedKey = 'hasTranslatedKey';
+
+enum MessageLongPressActionType {
+  reaction,
+  copy, // only text message
+  reply,
+  forward,
+  multiSelect,
+  translate, // only text message
+  thread,
+  edit, // only text message
+  report,
+  delete,
+  recall,
+}

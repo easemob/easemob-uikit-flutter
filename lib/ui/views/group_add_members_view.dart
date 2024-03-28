@@ -233,6 +233,7 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
               ChatUIKitLocal.createGroupViewSearchContact.getString(context),
           searchData: list,
           enableMulti: true,
+          attributes:widget.attributes,
         )).then(
       (value) {
         if (value is List<ChatUIKitProfile>) {

@@ -196,6 +196,11 @@ class ChatUIKitRoute {
         arguments as ThreadsViewArguments,
       );
     },
+    ChatUIKitRouteNames.searchHistoryView: (context, arguments) {
+      return SearchHistoryView.arguments(
+        arguments as SearchHistoryViewArguments,
+      );
+    }
   };
 
   static ChatUIKitRouteBackModel? get lastModel {
@@ -235,6 +240,16 @@ class ChatUIKitRoute {
       return route.settings.name == ChatUIKitRouteNames.contactsView ||
           route.isFirst;
     });
+  }
+
+  /// 返回到联系人列表页面，如果没找到，则返回根页面
+  static void popToMessagesView(
+    BuildContext context, {
+    ChatUIKitRouteBackModel? model,
+  }) {
+    _lastBackModel = model;
+    Navigator.of(context)
+        .popUntil(ModalRoute.withName(ChatUIKitRouteNames.messagesView));
   }
 
   /// ChatUIKit 路由拦截器, 可以在 `onGenerateRoute` 中进行拦截，如果拦截失败，再进行你自己的路由跳转。

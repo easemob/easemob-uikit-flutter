@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 enum CornerRadius { extraSmall, small, medium, large }
@@ -42,13 +43,9 @@ class ChatUIKitSettings {
   };
 
   // v2
-  static bool enableTranslate = true;
-
-  static String translateLanguage = 'zh-Hans';
+  static String translateTargetLanguage = 'zh-Hans';
 
   static bool enableInputStatus = false;
-
-  static bool enableReaction = true;
 
   static List<String> favoriteReaction = [
     '\u{1F44D}',
@@ -59,5 +56,17 @@ class ChatUIKitSettings {
     '\u{1F389}',
   ];
 
-  static bool enableThread = true;
+  static List<MessageLongPressActionType> msgItemLongPressActions = [
+    MessageLongPressActionType.reaction,
+    MessageLongPressActionType.copy, // only text message
+    MessageLongPressActionType.reply,
+    MessageLongPressActionType.forward,
+    MessageLongPressActionType.multiSelect,
+    MessageLongPressActionType.translate, // only text message
+    MessageLongPressActionType.thread, // only group message
+    MessageLongPressActionType.edit, // only text message
+    MessageLongPressActionType.report,
+    MessageLongPressActionType.recall,
+    MessageLongPressActionType.delete,
+  ];
 }

@@ -208,6 +208,7 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
               ChatUIKitLocal.createGroupViewSearchContact.getString(context),
           searchData: list,
           enableMulti: true,
+          attributes: widget.attributes,
         )).then(
       (value) {
         if (value is List<ChatUIKitProfile>) {

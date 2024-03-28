@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ class ChatUIKitAvatar extends StatefulWidget {
     this.size = 32,
     this.cornerRadius,
     this.avatarUrl,
+    this.onTap,
     super.key,
   }) {
     isCurrent = true;
@@ -16,6 +18,7 @@ class ChatUIKitAvatar extends StatefulWidget {
     this.avatarUrl,
     this.size = 32,
     this.cornerRadius,
+    this.onTap,
     ValueKey? key,
   }) : super(key: key ?? ValueKey(avatarUrl)) {
     isCurrent = false;
@@ -24,6 +27,7 @@ class ChatUIKitAvatar extends StatefulWidget {
   final CornerRadius? cornerRadius;
   final String? avatarUrl;
   late final bool isCurrent;
+  final VoidCallback? onTap;
 
   @override
   State<ChatUIKitAvatar> createState() => _ChatUIKitAvatarState();
@@ -74,7 +78,6 @@ class _ChatUIKitAvatarState extends State<ChatUIKitAvatar>
 
   @override
   Widget build(BuildContext context) {
-    ImageProvider? placeholder = ChatUIKitSettings.avatarPlaceholder;
     Widget content = Container(
         width: widget.size,
         height: widget.size,
@@ -88,21 +91,28 @@ class _ChatUIKitAvatarState extends State<ChatUIKitAvatar>
           ),
         ),
         child: avatarUrl?.isNotEmpty == true
-            ? ChatUIKitImageLoader.networkImage(
-                size: widget.size,
-                image: avatarUrl!,
-                placeholder: placeholder ??
-                    AssetImage('assets/images/avatar.png',
-                        package: ChatUIKitImageLoader.packageName),
-                placeholderWidget: ChatUIKitImageLoader.defaultAvatar(
-                  height: widget.size,
-                  width: widget.size,
-                ),
+            ? CachedNetworkImage(
+                imageUrl: avatarUrl!,
+                width: widget.size,
+                height: widget.size,
+                placeholder: (context, url) {
+                  return ChatUIKitImageLoader.defaultAvatar(
+                    height: widget.size,
+                    width: widget.size,
+                  );
+                },
               )
             : ChatUIKitImageLoader.defaultAvatar(
                 height: widget.size,
                 width: widget.size,
               ));
+
+    content = InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      onTap: widget.onTap,
+      child: content,
+    );
     return content;
   }
 }

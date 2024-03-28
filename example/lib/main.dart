@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit_example/demo_localizations.dart';
 import 'package:em_chat_uikit_example/home_page.dart';
 import 'package:em_chat_uikit_example/login_page.dart';
 import 'package:em_chat_uikit_example/notifications/app_settings_notification.dart';
@@ -6,8 +7,10 @@ import 'package:em_chat_uikit_example/pages/me/personal/change_avatar_page.dart'
 import 'package:em_chat_uikit_example/pages/me/personal/personal_info_page.dart';
 import 'package:em_chat_uikit_example/pages/me/settings/general_page.dart';
 import 'package:em_chat_uikit_example/pages/me/settings/language_page.dart';
+import 'package:em_chat_uikit_example/pages/me/settings/theme_page.dart';
 import 'package:em_chat_uikit_example/pages/me/settings/translate_page.dart';
 import 'package:em_chat_uikit_example/tool/chat_route_filter.dart';
+import 'package:em_chat_uikit_example/tool/settings_data_store.dart';
 import 'package:em_chat_uikit_example/tool/user_data_store.dart';
 import 'package:em_chat_uikit_example/welcome_page.dart';
 
@@ -25,6 +28,7 @@ void main() async {
       deleteMessagesAsExitGroup: false,
     ),
   );
+  SettingsDataStore().init();
   return runApp(const MyApp());
   // return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
   //     .then((value) => runApp(const MyApp()));
@@ -43,6 +47,18 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    _localization.defaultLocale = [
+      MapLocale(
+        'zh',
+        Map.from(ChatUIKitLocal.zh)..addAll(DemoLocalizations.zh),
+      ),
+      MapLocale(
+        'en',
+        Map.from(ChatUIKitLocal.en)..addAll(DemoLocalizations.en),
+      )
+    ];
+    // 添加语言后需要进行resetLocales操作
+    _localization.resetLocales();
     _localization.translate(UserDataStore().getLanguage());
   }
 
@@ -59,7 +75,7 @@ class _MyAppState extends State<MyApp> {
         supportedLocales: _localization.supportedLocales,
         localizationsDelegates: _localization.localizationsDelegates,
         localeResolutionCallback: _localization.localeResolutionCallback,
-        locale: ChatUIKitLocalizations().currentLocale,
+        locale: _localization.currentLocale,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
@@ -97,6 +113,8 @@ class _MyAppState extends State<MyApp> {
                     return const LanguagePage();
                   } else if (settings.name == '/translate_page') {
                     return const TranslatePage();
+                  } else if (settings.name == '/theme_page') {
+                    return const ThemePage();
                   } else {
                     return const WelcomePage();
                   }

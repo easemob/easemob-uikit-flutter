@@ -1,7 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 
-import '../../universal/defines.dart';
-
 class ConversationModel with ChatUIKitListItemModelBase, NeedSearch {
   final Message? lastMessage;
   final int unreadCount;

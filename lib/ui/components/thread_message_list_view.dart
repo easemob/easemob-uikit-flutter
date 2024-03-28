@@ -74,6 +74,16 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView> {
     controller = widget.controller;
     controller.addListener(() {
       setState(() {});
+      // 滚动到最底部，暂时注释掉，因为如果首次load也会导致滚动到最底部，实际上首次获取时不应该滚动到最底部
+      // if (controller.loadFinished) {
+      //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      //     _scrollController.animateTo(
+      //       _scrollController.position.maxScrollExtent,
+      //       duration: const Duration(milliseconds: 100),
+      //       curve: Curves.linear,
+      //     );
+      //   });
+      // }
     });
   }
 

@@ -14,7 +14,8 @@ class ChatUIKitCardMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    bool left = forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
+    bool left =
+        forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     Widget content = Row(
       mainAxisAlignment: MainAxisAlignment.start,

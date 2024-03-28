@@ -70,25 +70,6 @@ class _MessageListViewState extends State<MessageListView> {
     super.initState();
     _scrollController = widget.scrollController ?? AutoScrollController();
     controller = widget.controller;
-    controller.addListener(() {
-      if (controller.lastActionType == MessageLastActionType.originalPosition) {
-        setState(() {});
-      }
-
-      if (_scrollController.offset < 20 ||
-          controller.lastActionType == MessageLastActionType.bottomPosition) {
-        setState(() {});
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          if (_scrollController.positions.isNotEmpty) {
-            _scrollController.animateTo(
-              0,
-              duration: const Duration(milliseconds: 100),
-              curve: Curves.linear,
-            );
-          }
-        });
-      }
-    });
   }
 
   @override

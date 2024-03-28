@@ -1,5 +1,4 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import '../universal/defines.dart';
 
 class SDKWrapperTools {
   static Message insertRecallMessage({
@@ -106,7 +105,7 @@ class SDKWrapperTools {
     );
     Message alertMsg = Message.createCustomSendMessage(
       targetId: group.groupId,
-      event: alertCreateGroupKey,
+      event: alertGroupCreateKey,
       chatType: ChatType.GroupChat,
       params: {
         alertOperatorKey: creator?.showName ?? group.owner ?? '',
@@ -134,21 +133,18 @@ class SDKWrapperTools {
     String eventKey = '';
     String operator = '';
     String operatorInfo = '';
-    if (event.type == ChatThreadOperation.Create) {
-      eventKey = alertCreateThreadKey;
-      operator = creator?.showName ?? event.from;
-      operatorInfo = thread.threadName ?? thread.threadId;
-    } else if (event.type == ChatThreadOperation.Update) {
-      eventKey = alertUpdateThreadKey;
-      operator = creator?.showName ?? event.from;
-      operatorInfo = thread.threadName ?? thread.threadId;
-    } else if (event.type == ChatThreadOperation.Delete) {
-      eventKey = alertDeleteThreadKey;
-      operator = creator?.showName ?? event.from;
-      operatorInfo = thread.threadName ?? thread.threadId;
-    } else {
-      return;
+    switch (event.type) {
+      case ChatThreadOperation.Create:
+        eventKey = alertCreateThreadKey;
+        operator = creator?.showName ?? event.from;
+        operatorInfo = thread.threadName ?? thread.threadId;
+        break;
+      case ChatThreadOperation.Delete:
+      case ChatThreadOperation.Update:
+      default:
+        return;
     }
+
     int time = timestamp ?? DateTime.now().millisecondsSinceEpoch - 1;
     Message timeMsg = Message.createCustomSendMessage(
       targetId: thread.parentId,

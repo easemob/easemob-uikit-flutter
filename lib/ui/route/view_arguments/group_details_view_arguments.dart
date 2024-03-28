@@ -9,6 +9,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
     this.enableAppBar = true,
     this.onMessageDidClear,
     this.viewObserver,
+    this.contentWidgetBuilder,
     this.attributes,
   });
   final ChatUIKitProfile profile;
@@ -16,6 +17,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
   final VoidCallback? onMessageDidClear;
+  final WidgetBuilder? contentWidgetBuilder;
 
   @override
   String? attributes;
@@ -27,6 +29,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
     List<ChatUIKitModelAction>? actions,
     bool? enableAppBar,
     ChatUIKitAppBar? appBar,
+    WidgetBuilder? contentWidgetBuilder,
     String? attributes,
   }) {
     return GroupDetailsViewArguments(
@@ -34,6 +37,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
       actions: actions ?? this.actions,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       appBar: appBar ?? this.appBar,
+      contentWidgetBuilder: contentWidgetBuilder ?? this.contentWidgetBuilder,
       attributes: attributes ?? this.attributes,
     );
   }

@@ -306,6 +306,28 @@ mixin ChatActions on ChatWrapper {
     });
   }
 
+  Future<List<Message>> searchConversationLocalMessage({
+    required String keywords,
+    required String conversationId,
+    ConversationType type = ConversationType.Chat,
+    int timestamp = -1,
+    int maxCount = 20,
+    String? sender,
+    SearchDirection direction = SearchDirection.Up,
+  }) {
+    return checkResult(ChatSDKEvent.searchConversationLocalMessage, () async {
+      final conversation = await createConversation(
+        conversationId: conversationId,
+        type: type,
+      );
+      return await conversation.loadMessagesWithKeyword(keywords,
+          count: maxCount,
+          timestamp: timestamp,
+          sender: sender,
+          direction: direction);
+    });
+  }
+
   Future<List<Message>> searchLocalMessage({
     required String keywords,
     int timestamp = -1,
@@ -495,7 +517,7 @@ mixin ChatActions on ChatWrapper {
     });
   }
 
-  Future<List<Message>> getMessages({
+  Future<List<Message>> loadLocalMessages({
     required String conversationId,
     required ConversationType type,
     SearchDirection direction = SearchDirection.Up,
@@ -511,6 +533,26 @@ mixin ChatActions on ChatWrapper {
         startMsgId: startId ?? '',
         loadCount: count,
         direction: direction,
+      );
+    });
+  }
+
+  Future<List<Message>> loadLocalMessagesByTimestamp({
+    required String conversationId,
+    required ConversationType type,
+    required int startTime,
+    required int endTime,
+    int count = 30,
+  }) {
+    return checkResult(ChatSDKEvent.getMessages, () async {
+      final conversation = await createConversation(
+        conversationId: conversationId,
+        type: type,
+      );
+      return conversation.loadMessagesFromTime(
+        startTime: startTime,
+        endTime: endTime,
+        count: count,
       );
     });
   }

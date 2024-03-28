@@ -1,6 +1,7 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit_example/demo_localizations.dart';
 import 'package:em_chat_uikit_example/notifications/app_settings_notification.dart';
-import 'package:em_chat_uikit_example/tool/user_data_store.dart';
+import 'package:em_chat_uikit_example/tool/settings_data_store.dart';
 import 'package:em_chat_uikit_example/widgets/list_item.dart';
 import 'package:flutter/material.dart';
 
@@ -12,11 +13,18 @@ class LanguagePage extends StatefulWidget {
 }
 
 class _LanguagePageState extends State<LanguagePage> {
-  String? currentLanguage;
+  ValueNotifier<String> language =
+      ValueNotifier<String>(SettingsDataStore().currentLanguage);
+
   @override
   void initState() {
     super.initState();
-    currentLanguage = ChatUIKitLocalizations().currentLocale?.languageCode;
+
+    language.addListener(() {
+      SettingsDataStore().saveLanguage(language.value);
+      ChatUIKitLocalizations().translate(language.value);
+      AppSettingsNotification().dispatch(context);
+    });
   }
 
   @override
@@ -26,15 +34,11 @@ class _LanguagePageState extends State<LanguagePage> {
       children: [
         InkWell(
           onTap: () {
-            currentLanguage = 'zh';
-            UserDataStore().languageChange(language: currentLanguage!);
-            ChatUIKitLocalizations().translate(currentLanguage!);
-            AppSettingsNotification().dispatch(context);
-            setState(() {});
+            language.value = 'zh';
           },
           child: ListItem(
             title: '中文',
-            trailingWidget: currentLanguage == 'zh'
+            trailingWidget: language.value == 'zh'
                 ? Icon(
                     Icons.check_box,
                     size: 28,
@@ -53,15 +57,11 @@ class _LanguagePageState extends State<LanguagePage> {
         ),
         InkWell(
           onTap: () {
-            currentLanguage = 'en';
-            UserDataStore().languageChange(language: currentLanguage!);
-            ChatUIKitLocalizations().translate(currentLanguage!);
-            AppSettingsNotification().dispatch(context);
-            setState(() {});
+            language.value = 'en';
           },
           child: ListItem(
             title: 'English',
-            trailingWidget: currentLanguage == 'en'
+            trailingWidget: language.value == 'en'
                 ? Icon(
                     Icons.check_box,
                     size: 28,
@@ -89,7 +89,7 @@ class _LanguagePageState extends State<LanguagePage> {
         backgroundColor: theme.color.isDark
             ? theme.color.neutralColor1
             : theme.color.neutralColor98,
-        title: '将文字翻译为',
+        title: DemoLocalizations.languageSettings.getString(context),
         centerTitle: false,
       ),
       body: SafeArea(child: content),

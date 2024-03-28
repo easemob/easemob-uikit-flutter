@@ -20,6 +20,7 @@ class ConversationsView extends StatefulWidget {
         title = arguments.title,
         enableSearchBar = arguments.enableSearchBar,
         viewObserver = arguments.viewObserver,
+        avatarItemBuilder = arguments.avatarItemBuilder,
         attributes = arguments.attributes;
 
   /// 会话列表构造方法，如果需要自定义会话列表可以使用这个方法。
@@ -39,6 +40,7 @@ class ConversationsView extends StatefulWidget {
     this.appBarMoreActionsBuilder,
     this.title,
     this.attributes,
+    this.avatarItemBuilder,
     this.viewObserver,
     super.key,
   });
@@ -60,6 +62,9 @@ class ConversationsView extends StatefulWidget {
 
   /// 会话列表的 `item` 构建器，如果设置后需要显示会话时会直接回调，如果不处理可以返回 `null`。
   final ConversationItemBuilder? listViewItemBuilder;
+
+  /// 会话列表的 `头像` 构建器，如果设置后需要显示会话头像，如果不处理可以返回 `null`。
+  final ConversationItemBuilder? avatarItemBuilder;
 
   /// 点击会话列表的回调，点击后会把当前的会话数据传递过来。具体参考 [ConversationModel]。 如果不是设置默认会跳转到消息页面。具体参考 [MessagesView]。
   final void Function(BuildContext context, ConversationModel info)? onTap;
@@ -186,19 +191,20 @@ class _ConversationsViewState extends State<ConversationsView> {
       context,
       ChatUIKitRouteNames.searchUsersView,
       SearchViewArguments(
-        onTap: (ctx, profile) {
-          Navigator.of(ctx).pop(profile);
-        },
-        searchHideText:
-            ChatUIKitLocal.conversationsViewSearchHint.getString(context),
-        searchData: list,
-      ),
+          onTap: (ctx, profile) {
+            Navigator.of(ctx).pop(profile);
+          },
+          searchHideText:
+              ChatUIKitLocal.conversationsViewSearchHint.getString(context),
+          searchData: list,
+          attributes: widget.attributes),
     ).then((value) {
       if (value != null && value is ChatUIKitProfile) {
         ChatUIKitRoute.pushOrPushNamed(
                 context,
                 ChatUIKitRouteNames.messagesView,
-                MessagesViewArguments(profile: value))
+                MessagesViewArguments(
+                    profile: value, attributes: widget.attributes))
             .then((value) {
           if (mounted && value != null) {
             controller.reload();
@@ -212,7 +218,8 @@ class _ConversationsViewState extends State<ConversationsView> {
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.messagesView,
-      MessagesViewArguments(profile: info.profile),
+      MessagesViewArguments(
+          profile: info.profile, attributes: widget.attributes),
     ).then((value) {
       if (mounted && value != null) {
         controller.reload();
@@ -374,9 +381,9 @@ class _ConversationsViewState extends State<ConversationsView> {
       context,
       ChatUIKitRouteNames.selectContactsView,
       SelectContactViewArguments(
-        backText: ChatUIKitLocal.conversationsViewMenuCreateNewChat
-            .getString(context),
-      ),
+          backText: ChatUIKitLocal.conversationsViewMenuCreateNewChat
+              .getString(context),
+          attributes: widget.attributes),
     ).then((profile) {
       if (profile != null && profile is ChatUIKitProfile) {
         pushNewConversation(profile);
@@ -435,7 +442,7 @@ class _ConversationsViewState extends State<ConversationsView> {
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.messagesView,
-      MessagesViewArguments(profile: profile),
+      MessagesViewArguments(profile: profile, attributes: widget.attributes),
     ).then((value) {
       if (mounted && value != null) {
         controller.reload();

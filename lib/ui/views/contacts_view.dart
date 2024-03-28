@@ -142,8 +142,8 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
                   margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
                   child: ChatUIKitAvatar.current(
                     size: 32,
-                    avatarUrl:
-                        ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
+                    avatarUrl: ChatUIKitProvider
+                        .instance.currentUserProfile?.avatarUrl,
                   ),
                 ),
                 trailing: IconButton(
@@ -165,7 +165,10 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
           afterWidgets: widget.afterItems,
           searchHideText: widget.searchHideText,
           background: widget.listViewBackground,
-          onTap: widget.onTap ?? tapContactInfo,
+          onTap: widget.onTap ??
+              (ctx, model) {
+                tapContactInfo(ctx, model.profile);
+              },
           onLongPress: widget.onLongPress,
           onSearchTap: widget.onSearchTap ?? onSearchTap,
           enableSearchBar: widget.enableSearchBar,
@@ -216,60 +219,70 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
       context,
       ChatUIKitRouteNames.searchUsersView,
       SearchViewArguments(
-        onTap: (ctx, profile) {
-          Navigator.of(ctx).pop(profile);
-        },
-        searchHideText:
-            ChatUIKitLocal.conversationsViewSearchHint.getString(context),
-        searchData: list,
-      ),
+          onTap: (ctx, profile) {
+            Navigator.of(ctx).pop(profile);
+          },
+          searchHideText:
+              ChatUIKitLocal.conversationsViewSearchHint.getString(context),
+          searchData: list,
+          attributes: widget.attributes),
     ).then((value) {
       if (value != null && value is ChatUIKitProfile) {
-        ChatUIKitRoute.pushOrPushNamed(
-          context,
-          ChatUIKitRouteNames.contactDetailsView,
-          ContactDetailsViewArguments(profile: value, actions: [
-            ChatUIKitModelAction(
-              title: ChatUIKitLocal.contactDetailViewSend.getString(context),
-              icon: 'assets/images/chat.png',
-              packageName: ChatUIKitImageLoader.packageName,
-              onTap: (context) {
-                ChatUIKitRoute.pushOrPushNamed(
-                  context,
-                  ChatUIKitRouteNames.messagesView,
-                  MessagesViewArguments(
-                    profile: value,
-                    attributes: widget.attributes,
-                  ),
-                );
-              },
-            ),
-          ]),
-        ).then((value) {
-          ChatUIKit.instance.onConversationsUpdate();
-        });
+        tapContactInfo(context, value);
       }
     });
   }
 
-  void tapContactInfo(BuildContext context, ContactItemModel model) {
+  void tapContactInfo(BuildContext context, ChatUIKitProfile profile) {
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.contactDetailsView,
-      ContactDetailsViewArguments(profile: model.profile, actions: [
+      ContactDetailsViewArguments(profile: profile, actions: [
         ChatUIKitModelAction(
           title: ChatUIKitLocal.contactDetailViewSend.getString(context),
           icon: 'assets/images/chat.png',
+          iconSize: const Size(32, 32),
           packageName: ChatUIKitImageLoader.packageName,
           onTap: (context) {
             ChatUIKitRoute.pushOrPushNamed(
               context,
               ChatUIKitRouteNames.messagesView,
               MessagesViewArguments(
-                profile: model.profile,
+                profile: profile,
                 attributes: widget.attributes,
               ),
             );
+          },
+        ),
+        ChatUIKitModelAction(
+          title: ChatUIKitLocal.contactDetailViewSearch.getString(context),
+          icon: 'assets/images/search_history.png',
+          packageName: ChatUIKitImageLoader.packageName,
+          iconSize: const Size(32, 32),
+          onTap: (context) {
+            ChatUIKitRoute.pushOrPushNamed(
+              context,
+              ChatUIKitRouteNames.searchHistoryView,
+              SearchHistoryViewArguments(
+                profile: profile,
+                attributes: widget.attributes,
+              ),
+            ).then((value) {
+              if (value != null && value is Message) {
+                ChatUIKitRoute.pushOrPushNamed(
+                  context,
+                  ChatUIKitRouteNames.messagesView,
+                  MessagesViewArguments(
+                    profile: profile,
+                    attributes: widget.attributes,
+                    controller: MessageListViewController(
+                      profile: profile,
+                      searchedMsg: value,
+                    ),
+                  ),
+                );
+              }
+            });
           },
         ),
       ]),

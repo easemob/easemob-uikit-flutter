@@ -1,5 +1,4 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import '../universal/defines.dart';
 
 extension ConversationHelp on Conversation {
   Future<void> addMention() async {

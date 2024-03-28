@@ -10,7 +10,6 @@ class HighlightTool {
     TextStyle? highlightStyle,
   }) {
     final theme = ChatUIKitTheme.of(context);
-
     TextStyle normalStyle = textStyle ??
         TextStyle(
           color: theme.color.isDark
@@ -29,35 +28,48 @@ class HighlightTool {
           fontSize: theme.font.titleMedium.fontSize,
         );
 
-    String showName = text.toLowerCase();
+    String searchText = text.toLowerCase();
     String keyword = searchKey?.toLowerCase() ?? '';
 
     Widget? name;
-    int index = showName.indexOf(keyword);
-    if (index != -1 && keyword.isNotEmpty) {
-      List<InlineSpan> tmp = [];
-      tmp.add(TextSpan(text: text.substring(0, index)));
-      tmp.add(TextSpan(
-          text: text.substring(index, index + keyword.length),
-          style: highStyle));
-      tmp.add(TextSpan(text: text.substring(index + keyword.length)));
+    List<Match> matchList = keyword.allMatches(searchText).toList();
+    int lastIndex = 0;
 
-      name = RichText(
-        overflow: TextOverflow.ellipsis,
-        text: TextSpan(
-          children: tmp,
+    List<InlineSpan> tmp = [];
+    for (var i = 0; i < matchList.length; i++) {
+      Match match = matchList[i];
+      String str = text.substring(lastIndex, match.start);
+      if (str.isNotEmpty) {
+        tmp.add(TextSpan(
+          text: str,
           style: normalStyle,
-        ),
-        textScaler: TextScaler.noScaling,
+        ));
+      }
+
+      tmp.add(
+        TextSpan(
+            text: text.substring(match.start, match.end), style: highStyle),
       );
+      lastIndex = match.end;
     }
 
-    name ??= Text(
-      text,
+    if (lastIndex != text.length) {
+      tmp.add(TextSpan(
+        text: text.substring(lastIndex),
+        style: normalStyle,
+      ));
+    }
+
+    name = RichText(
       overflow: TextOverflow.ellipsis,
-      style: normalStyle,
+      text: TextSpan(
+        children: tmp,
+        // style: normalStyle,
+      ),
       textScaler: TextScaler.noScaling,
+      maxLines: 1,
     );
+
     return name;
   }
 }

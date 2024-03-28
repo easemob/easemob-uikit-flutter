@@ -18,7 +18,6 @@ class ThreadMessagesView extends StatefulWidget {
         title = argument.title,
         subtitle = argument.subtitle,
         inputBarController = argument.inputBarController,
-        inputBarFocusNode = argument.inputBarFocusNode,
         morePressActions = argument.morePressActions,
         onMoreActionsItemsHandler = argument.onMoreActionsItemsHandler,
         longPressActions = argument.longPressActions,
@@ -26,7 +25,27 @@ class ThreadMessagesView extends StatefulWidget {
         forceLeft = argument.forceLeft,
         emojiWidget = argument.emojiWidget,
         replyBarBuilder = argument.replyBarBuilder,
-        quoteBuilder = argument.quoteBuilder;
+        quoteBuilder = argument.quoteBuilder,
+        alertItemBuilder = argument.alertItemBuilder,
+        onErrorBtnTapHandler = argument.onErrorBtnTapHandler,
+        bubbleBuilder = argument.bubbleBuilder,
+        bubbleContentBuilder = argument.bubbleContentBuilder,
+        inputBarTextEditingController = argument.inputBarTextEditingController,
+        multiSelectBottomBar = argument.multiSelectBottomBar,
+        onReactionItemTap = argument.onReactionItemTap,
+        onReactionInfoTap = argument.onReactionInfoTap,
+        reactionItemsBuilder = argument.reactionItemsBuilder,
+        showMessageItemAvatar = argument.showMessageItemAvatar,
+        showMessageItemNickname = argument.showMessageItemNickname,
+        onItemTap = argument.onItemTap,
+        onItemLongPress = argument.onItemLongPress,
+        onDoubleTap = argument.onDoubleTap,
+        onAvatarTap = argument.onAvatarTap,
+        onAvatarLongPress = argument.onAvatarLongPress,
+        onNicknameTap = argument.onNicknameTap,
+        bubbleStyle = argument.bubbleStyle,
+        inputBar = argument.inputBar,
+        itemBuilder = argument.itemBuilder;
 
   const ThreadMessagesView({
     this.attributes,
@@ -37,7 +56,6 @@ class ThreadMessagesView extends StatefulWidget {
     this.title,
     this.subtitle,
     this.inputBarController,
-    this.inputBarFocusNode,
     this.morePressActions,
     this.onMoreActionsItemsHandler,
     this.longPressActions,
@@ -47,25 +65,78 @@ class ThreadMessagesView extends StatefulWidget {
     this.replyBarBuilder,
     this.quoteBuilder,
     super.key,
+    this.inputBar,
+    this.showMessageItemAvatar = true,
+    this.showMessageItemNickname = true,
+    this.onItemTap,
+    this.onItemLongPress,
+    this.onDoubleTap,
+    this.onAvatarTap,
+    this.onAvatarLongPress,
+    this.onNicknameTap,
+    this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
+    this.itemBuilder,
+    this.alertItemBuilder,
+    this.onErrorBtnTapHandler,
+    this.bubbleBuilder,
+    this.bubbleContentBuilder,
+    this.inputBarTextEditingController,
+    this.multiSelectBottomBar,
+    this.onReactionItemTap,
+    this.onReactionInfoTap,
+    this.reactionItemsBuilder,
   });
 
-  final String? attributes;
+  final ChatUIKitInputBarController? inputBarController;
 
-  final ChatUIKitViewObserver? viewObserver;
+  final ThreadMessagesViewController controller;
 
+  /// 自定义AppBar, 如果设置后将会替换默认的AppBar。详细参考 [ChatUIKitAppBar]。
+  final ChatUIKitAppBar? appBar;
+
+  /// 是否显示AppBar, 默认为 `true`。 当为 `false` 时将不会显示AppBar。同时也会影响到是否显示标题。
+  final bool enableAppBar;
+
+  /// 自定义标题，如果不设置将会显示 [profile] 的 [ChatUIKitProfile.showName], 详细参考 [ChatUIKitProfile.showName]。
   final String? title;
 
   final String? subtitle;
 
-  final ChatUIKitAppBar? appBar;
+  /// 自定义输入框, 如果设置后将会替换默认的输入框。详细参考 [ChatUIKitInputBar]。
+  final Widget? inputBar;
 
-  final bool enableAppBar;
+  /// 是否显示头像, 默认为 `true`。 如果设置为 `false` 将不会显示头像。
+  final bool showMessageItemAvatar;
 
-  final ThreadMessagesViewController controller;
+  /// 是否显示昵称, 默认为 `true`。如果设置为 `false` 将不会显示昵称。
+  final bool showMessageItemNickname;
 
-  final ChatUIKitInputBarController? inputBarController;
+  /// 消息点击事件, 如果设置后消息点击事件将直接回调，如果不处理可以返回 `false`。
+  final MessageItemTapHandler? onItemTap;
 
-  final FocusNode? inputBarFocusNode;
+  /// 消息长按事件, 如果设置后消息长按事件将直接回调，返回 `true` 表示处理你需要处理，返回 `false` 则会执行默认的长按事件。
+  final MessageItemTapHandler? onItemLongPress;
+
+  /// 消息双击事件,如果设置后消息双击事件将直接回调，如果不处理可以返回 `false`。
+  final MessageItemTapHandler? onDoubleTap;
+
+  /// 头像点击事件，如果设置后头像点击事件将直接回调，如果不处理可以返回 `false`。
+  final MessageItemTapHandler? onAvatarTap;
+
+  /// 头像长按事件，如果设置后头像长按事件将直接回调，如果不处理可以返回 `false`。
+  final MessageItemTapHandler? onAvatarLongPress;
+
+  /// 昵称点击事件， 如果设置后昵称点击事件将直接回调，如果不处理可以返回 `false`。
+  final MessageItemTapHandler? onNicknameTap;
+
+  /// 气泡样式，默认为 [ChatUIKitMessageListViewBubbleStyle.arrow]。
+  final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
+
+  /// 消息 `item` 构建器, 如果设置后需要显示消息时会直接回调，如果不处理可以返回 `null`。
+  final MessageItemBuilder? itemBuilder;
+
+  /// 提示消息构建器， 如果设置后需要显示提示消息时会直接回调，如果不处理可以返回 `null`。
+  final MessageItemBuilder? alertItemBuilder;
 
   /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitBottomSheetItem]。
   final List<ChatUIKitBottomSheetItem>? morePressActions;
@@ -90,6 +161,33 @@ class ThreadMessagesView extends StatefulWidget {
 
   /// 引用消息构建器，如果设置后将会替换默认的引用消息样式。
   final Widget Function(BuildContext context, QuoteModel model)? quoteBuilder;
+
+  /// 错误消息点击事件，如果设置后将会替换默认的错误消息点击事件。如果不处理可以返回 `false`。默认行为为重新发送消息。
+  final MessageItemTapHandler? onErrorBtnTapHandler;
+
+  /// 气泡构建器，如果设置后将会替换默认的气泡构建器。详细参考 [MessageItemBubbleBuilder]。
+  final MessageItemBubbleBuilder? bubbleBuilder;
+
+  /// 气泡内容构建器，如果设置后将会替换默认的气泡内容构建器。详细参考 [MessageItemBuilder]。
+  final MessageItemBuilder? bubbleContentBuilder;
+
+  /// 输入框控制器，如果设置后将会替换默认的输入框控制器。详细参考 [CustomTextEditingController]。
+  final ChatUIKitInputBarController? inputBarTextEditingController;
+
+  /// View 附加属性，设置后的内容将会带入到下一个页面。
+  final String? attributes;
+
+  /// 多选时显示的 bottom bar
+  final Widget? multiSelectBottomBar;
+
+  final MessageReactionItemTapHandler? onReactionItemTap;
+
+  final MessageItemTapHandler? onReactionInfoTap;
+
+  final MessageItemBuilder? reactionItemsBuilder;
+
+  /// 用于刷新页面的Observer
+  final ChatUIKitViewObserver? viewObserver;
 
   @override
   State<ThreadMessagesView> createState() => _ThreadMessagesViewState();
@@ -154,6 +252,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
   @override
   void dispose() {
     ChatUIKit.instance.removeObserver(this);
+    editBarTextEditingController?.dispose();
     controller.dispose();
     widget.viewObserver?.dispose();
     super.dispose();
@@ -170,65 +269,208 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
         title: controller.title(widget.title),
         subtitle: widget.subtitle,
         centerTitle: false,
-        trailing: InkWell(
-          onTap: showMenuBottomSheet,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Icon(
-              Icons.more_vert,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor9
-                  : theme.color.neutralColor3,
-            ),
-          ),
-        ),
+        trailing: controller.isMultiSelectMode
+            ? InkWell(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                onTap: () {
+                  controller.disableMultiSelectMode();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 5, 24, 5),
+                  child: Text(
+                    '取消',
+                    style: TextStyle(
+                      color: theme.color.isDark
+                          ? theme.color.primaryColor6
+                          : theme.color.primaryColor5,
+                      fontWeight: theme.font.labelMedium.fontWeight,
+                      fontSize: theme.font.labelMedium.fontSize,
+                    ),
+                  ),
+                ),
+              )
+            : InkWell(
+                onTap: showMenuBottomSheet,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Icon(
+                    Icons.more_vert,
+                    color: theme.color.isDark
+                        ? theme.color.neutralColor9
+                        : theme.color.neutralColor3,
+                  ),
+                ),
+              ),
       ),
       body: SafeArea(
         child: Column(
           children: [
             Expanded(
-                child: GestureDetector(
-              onTap: clearAllType,
-              child: ThreadMessageListView(
-                scrollController: _scrollController,
-                header: originMsgWidget(theme),
-                controller: controller,
-                onItemLongPress: (context, model) {
-                  onItemLongPress(model);
-                  return true;
-                },
-                itemBuilder: itemBuilder,
-                onReactionItemTap: (model, reaction) {
-                  controller.updateReaction(
-                    model.message.msgId,
-                    reaction.reaction,
-                    !reaction.isAddedBySelf,
-                  );
-                },
+              child: GestureDetector(
+                onTap: clearAllType,
+                child: ThreadMessageListView(
+                  scrollController: _scrollController,
+                  header: originMsgWidget(theme),
+                  controller: controller,
+                  forceLeft: widget.forceLeft,
+                  bubbleContentBuilder: widget.bubbleContentBuilder,
+                  bubbleBuilder: widget.bubbleBuilder,
+                  quoteBuilder: widget.quoteBuilder,
+                  showAvatar: widget.showMessageItemAvatar,
+                  showNickname: widget.showMessageItemNickname,
+                  onItemTap: (ctx, msg) {
+                    stopVoice();
+                    bool? ret = widget.onItemTap?.call(context, msg);
+                    if (ret != true) {
+                      bubbleTab(msg);
+                    }
+                    return ret;
+                  },
+                  onItemLongPress: (context, model) {
+                    bool? ret = widget.onItemLongPress?.call(context, model);
+                    stopVoice();
+                    if (ret != true) {
+                      onItemLongPress(model);
+                    }
+                    return ret;
+                  },
+                  onItemDoubleTap: (context, model) {
+                    bool? ret = widget.onDoubleTap?.call(context, model);
+                    stopVoice();
+                    return ret;
+                  },
+                  onAvatarTap: (context, model) {
+                    bool? ret = widget.onAvatarTap?.call(context, model);
+                    stopVoice();
+                    if (ret != true) {
+                      avatarTap(model);
+                    }
+                    return ret;
+                  },
+                  onAvatarLongPressed: (context, model) {
+                    bool? ret = widget.onAvatarLongPress?.call(context, model);
+                    stopVoice();
+                    if (ret != true) {}
+                    return ret;
+                  },
+                  onNicknameTap: (context, msg) {
+                    bool? ret = widget.onNicknameTap?.call(context, msg);
+                    stopVoice();
+                    if (ret != true) {}
+                    return ret;
+                  },
+                  bubbleStyle: widget.bubbleStyle,
+                  itemBuilder: widget.itemBuilder ?? itemBuilder,
+                  alertItemBuilder: widget.alertItemBuilder ?? alertItem,
+                  onErrorBtnTap: (model) {
+                    bool ret =
+                        widget.onErrorBtnTapHandler?.call(context, model) ??
+                            false;
+                    if (ret == false) {
+                      controller.resendMessage(model.message);
+                    }
+                  },
+                  onReactionItemTap: (model, reaction) {
+                    bool? ret = widget.onReactionItemTap
+                            ?.call(context, model, reaction) ??
+                        false;
+                    if (ret == false) {
+                      controller.updateReaction(
+                        model.message.msgId,
+                        reaction.reaction,
+                        !reaction.isAddedBySelf,
+                      );
+                    }
+                  },
+                  onReactionInfoTap: (context, model) {
+                    bool ret =
+                        widget.onReactionInfoTap?.call(context, model) ?? false;
+                    if (ret == false) {
+                      showReactionsInfo(context, model);
+                    }
+
+                    return ret;
+                  },
+                  reactionItemsBuilder: widget.reactionItemsBuilder,
+                ),
               ),
-            )),
-            inputBar(theme),
-            AnimatedContainer(
-              curve: Curves.linearToEaseOut,
-              duration: const Duration(milliseconds: 250),
-              height: showEmoji ? 230 : 0,
-              child: showEmoji
-                  ? widget.emojiWidget ??
-                      ChatUIKitInputEmojiBar(
-                        deleteOnTap: () {
-                          inputBarController.deleteTextOnCursor();
-                        },
-                        emojiClicked: (emoji) {
-                          inputBarController.addText(
-                            ChatUIKitEmojiData.emojiMap[emoji] ?? emoji,
-                          );
-                        },
-                      )
-                  : const SizedBox(),
-            )
+            ),
+            ...() {
+              if (controller.isMultiSelectMode) {
+                return [multiSelectBar(theme)];
+              } else {
+                return [
+                  replyMessageBar(theme),
+                  widget.inputBar ?? inputBar(theme),
+                  AnimatedContainer(
+                    curve: Curves.linearToEaseOut,
+                    duration: const Duration(milliseconds: 250),
+                    height: showEmoji ? 230 : 0,
+                    child: showEmoji
+                        ? widget.emojiWidget ??
+                            ChatUIKitInputEmojiBar(
+                              deleteOnTap: () {
+                                inputBarController.deleteTextOnCursor();
+                              },
+                              emojiClicked: (emoji) {
+                                inputBarController.addText(
+                                  ChatUIKitEmojiData.emojiMap[emoji] ?? emoji,
+                                );
+                              },
+                            )
+                        : const SizedBox(),
+                  )
+                ];
+              }
+            }(),
           ],
         ),
       ),
+    );
+
+    content = Stack(
+      children: [
+        content,
+        if (editMessage != null)
+          // 背景色
+          Positioned.fill(
+            child: InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onTap: () {
+                editMessage = null;
+                messageEditCanSend = false;
+                setState(() {});
+              },
+              child: Opacity(
+                opacity: 0.5,
+                child: Container(color: Colors.black),
+              ),
+            ),
+          ),
+        if (editMessage != null)
+          Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                editMessageBar(theme),
+              ],
+            ),
+          )
+      ],
+    );
+
+    content = ShareUserData(
+      data: controller.userMap,
+      child: content,
+    );
+
+    content = ScrollConfiguration(
+      behavior: const ScrollBehavior(),
+      child: content,
     );
 
     return content;
@@ -238,15 +480,62 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     if (model.message.bodyType != MessageType.VOICE) return null;
 
     Widget content = ChatUIKitMessageListViewMessageItem(
+      enableVoiceUnreadIcon: false,
       isPlaying: _playingMessage?.msgId == model.message.msgId,
+      onErrorBtnTap: () {
+        if (widget.onErrorBtnTapHandler == null) {
+          controller.resendMessage(model.message);
+        } else {
+          widget.onErrorBtnTapHandler!.call(context, model);
+        }
+      },
+      bubbleStyle: widget.bubbleStyle,
       key: ValueKey(model.message.localTime),
+      showAvatar: widget.showMessageItemAvatar,
       quoteBuilder: widget.quoteBuilder,
-      onAvatarTap: () {},
-      onAvatarLongPressed: () {},
-      onBubbleDoubleTap: () {},
-      onBubbleLongPressed: () {},
-      onBubbleTap: () {},
-      onNicknameTap: () {},
+      showNickname: widget.showMessageItemNickname,
+      enableSelected: controller.isMultiSelectMode
+          ? () {
+              if (controller.selectedMessages
+                  .map((e) => e.msgId)
+                  .toList()
+                  .contains(model.message.msgId)) {
+                controller.selectedMessages
+                    .removeWhere((e) => model.message.msgId == e.msgId);
+              } else {
+                controller.selectedMessages.add(model.message);
+              }
+              setState(() {});
+            }
+          : null,
+      onAvatarTap: () {
+        if (widget.onAvatarTap == null) {
+          avatarTap(model);
+        } else {
+          widget.onAvatarTap!.call(context, model);
+        }
+      },
+      onAvatarLongPressed: () {
+        widget.onAvatarLongPress?.call(context, model);
+      },
+      onBubbleDoubleTap: () {
+        widget.onDoubleTap?.call(context, model);
+      },
+      onBubbleLongPressed: () {
+        bool? ret = widget.onItemLongPress?.call(context, model);
+        if (ret != true) {
+          onItemLongPress(model);
+        }
+      },
+      onBubbleTap: () {
+        bool? ret = widget.onItemTap?.call(context, model);
+        if (ret != true) {
+          bubbleTab(model);
+        }
+      },
+      onNicknameTap: () {
+        widget.onNicknameTap?.call(context, model);
+      },
       model: model,
     );
 
@@ -285,6 +574,9 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           ChatUIKitAvatar(
             avatarUrl: model.message.fromProfile.avatarUrl,
             size: 28,
+            onTap: () {
+              pushNextPage(model.message.fromProfile);
+            },
           ),
           Expanded(
             child: Padding(
@@ -384,16 +676,21 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     if (controller.hasPermission) {
       items.add(
         ChatUIKitBottomSheetItem.normal(
-          label: '编辑话题',
+          label: ChatUIKitLocal.threadsMessageEdit.getString(context),
           onTap: () async {
+            if (controller.thread == null) return;
             Navigator.of(context).pop();
             ChatUIKitRoute.pushOrPushNamed(
               context,
               ChatUIKitRouteNames.changeInfoView,
               ChangeInfoViewArguments(
-                title: "话题名称",
-                hint: '新名称',
+                title: ChatUIKitLocal.threadEditName.getString(context),
+                hint: ChatUIKitLocal.threadNewName.getString(context),
                 maxLength: 128,
+                attributes: widget.attributes,
+                inputTextCallback: () async {
+                  return controller.thread!.threadName!;
+                },
               ),
             ).then((value) {
               if (value is String) {
@@ -417,9 +714,10 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     }
     items.add(
       ChatUIKitBottomSheetItem.normal(
-        label: '话题成员',
+        label: ChatUIKitLocal.threadsMessageMembers.getString(context),
         onTap: () async {
           Navigator.of(context).pop();
+          if (controller.thread == null) return;
           ChatUIKitRoute.pushOrPushNamed(
             context,
             ChatUIKitRouteNames.threadMembersView,
@@ -442,13 +740,44 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                 : theme.color.neutralColor1),
       ),
     );
+    items.add(
+      ChatUIKitBottomSheetItem.destructive(
+        label: ChatUIKitLocal.threadsMessageLeave.getString(context),
+        onTap: () async {
+          Navigator.of(context).pop();
+          if (controller.thread == null) return;
+          controller.leaveChatThread().then((value) {
+            Navigator.of(context).pop();
+          }).catchError((e) {
+            debugPrint('leaveChatThread: $e');
+          });
+        },
+        style: TextStyle(
+          color: theme.color.isDark
+              ? theme.color.neutralColor98
+              : theme.color.neutralColor1,
+          fontSize: theme.font.labelLarge.fontSize,
+          fontWeight: theme.font.labelLarge.fontWeight,
+        ),
+        icon: ChatUIKitImageLoader.leaveThread(
+          color: theme.color.isDark
+              ? theme.color.errorColor6
+              : theme.color.errorColor5,
+        ),
+      ),
+    );
     if (controller.hasPermission) {
       items.add(
         ChatUIKitBottomSheetItem.destructive(
-          label: '删除话题',
+          label: ChatUIKitLocal.threadsMessageDestroy.getString(context),
           onTap: () async {
             Navigator.of(context).pop();
-            controller.destroyChatThread();
+            if (controller.thread == null) return;
+            controller.destroyChatThread().then((value) {
+              Navigator.of(context).pop();
+            }).catchError((e) {
+              debugPrint('destroyChatThread: $e');
+            });
           },
           style: TextStyle(
             color: theme.color.isDark
@@ -464,40 +793,102 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           ),
         ),
       );
-    } else {
-      if (!controller.hasPermission) {
-        items.add(
-          ChatUIKitBottomSheetItem.destructive(
-            label: '离开话题',
-            onTap: () async {
-              Navigator.of(context).pop();
-              controller.leaveChatThread().then((value) {
-                Navigator.of(context).pop();
-              }).catchError((e) {
-                debugPrint('leaveChatThread: $e');
-              });
-            },
-            style: TextStyle(
-              color: theme.color.isDark
-                  ? theme.color.neutralColor98
-                  : theme.color.neutralColor1,
-              fontSize: theme.font.labelLarge.fontSize,
-              fontWeight: theme.font.labelLarge.fontWeight,
-            ),
-            icon: ChatUIKitImageLoader.leaveThread(
-              color: theme.color.isDark
-                  ? theme.color.errorColor6
-                  : theme.color.errorColor5,
-            ),
-          ),
-        );
-      }
     }
 
     showChatUIKitBottomSheet(
       context: context,
       items: items,
     );
+  }
+
+  Widget editMessageBar(ChatUIKitTheme theme) {
+    Widget content = ChatUIKitInputBar(
+      key: const ValueKey('editKey'),
+      autofocus: true,
+      onChanged: (input) {
+        final canSend =
+            input.trim() != editMessage?.textContent && input.isNotEmpty;
+        if (messageEditCanSend != canSend) {
+          messageEditCanSend = canSend;
+          setState(() {});
+        }
+      },
+      inputBarController: editBarTextEditingController!,
+      trailing: InkWell(
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        onTap: () {
+          if (!messageEditCanSend) return;
+          String text = editBarTextEditingController?.text.trim() ?? '';
+          if (text.isNotEmpty) {
+            controller.editMessage(editMessage!, text);
+            editBarTextEditingController?.clear();
+            editMessage = null;
+            messageEditCanSend = false;
+            setState(() {});
+          }
+        },
+        child: Icon(
+          Icons.check_circle,
+          size: 30,
+          color: theme.color.isDark
+              ? messageEditCanSend
+                  ? theme.color.primaryColor6
+                  : theme.color.neutralColor5
+              : messageEditCanSend
+                  ? theme.color.primaryColor5
+                  : theme.color.neutralColor7,
+        ),
+      ),
+    );
+
+    Widget header = Row(
+      children: [
+        SizedBox(
+          width: 16,
+          height: 16,
+          child: ChatUIKitImageLoader.messageEdit(),
+        ),
+        const SizedBox(width: 2),
+        Text(
+          ChatUIKitLocal.messagesViewEditMessageTitle.getString(context),
+          textScaler: TextScaler.noScaling,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+              fontWeight: theme.font.labelSmall.fontWeight,
+              fontSize: theme.font.labelSmall.fontSize,
+              color: theme.color.isDark
+                  ? theme.color.neutralSpecialColor6
+                  : theme.color.neutralSpecialColor5),
+        ),
+      ],
+    );
+    header = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+      decoration: BoxDecoration(
+          color: theme.color.isDark
+              ? theme.color.neutralColor2
+              : theme.color.neutralColor9),
+      child: header,
+    );
+
+    content = SafeArea(child: content);
+
+    return content;
+  }
+
+  Widget replyMessageBar(ChatUIKitTheme theme) {
+    if (replyMessage == null) return const SizedBox();
+    Widget content = widget.replyBarBuilder?.call(context, replyMessage!) ??
+        ChatUIKitReplyBar(
+          messageModel: replyMessage!,
+          onCancelTap: () {
+            replyMessage = null;
+            setState(() {});
+          },
+        );
+
+    return content;
   }
 
   Widget inputBar(ChatUIKitTheme theme) {
@@ -653,27 +1044,9 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                 onTap: () {
                   String text = inputBarController.text.trim();
                   if (text.isNotEmpty) {
-                    dynamic mention;
-                    if (inputBarController.isAtAll && text.contains("@All")) {
-                      mention = true;
-                    }
-
-                    if (inputBarController.mentionList.isNotEmpty) {
-                      List<String> mentionList = [];
-                      List<ChatUIKitProfile> list =
-                          inputBarController.mentionList;
-                      for (var element in list) {
-                        if (text.contains('@${element.showName}')) {
-                          mentionList.add(element.id);
-                        }
-                      }
-                      mention = mentionList;
-                    }
-
                     controller.sendTextMessage(
                       text,
                       replay: replyMessage?.message,
-                      mention: mention,
                     );
                     inputBarController.clearMentions();
                     inputBarController.clear();
@@ -841,6 +1214,33 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     );
   }
 
+  Widget multiSelectBar(ChatUIKitTheme theme) {
+    Widget content = widget.multiSelectBottomBar ??
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            InkWell(
+              onTap: () {
+                forwardMessage(
+                  controller.selectedMessages,
+                  isMultiSelect: true,
+                );
+              },
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+                child: ChatUIKitImageLoader.messageLongPressForward(
+                  color: theme.color.isDark
+                      ? theme.color.primaryColor6
+                      : theme.color.primaryColor5,
+                ),
+              ),
+            ),
+          ],
+        );
+    return content;
+  }
+
   Future<void> playVoiceMessage(Message message) async {
     if (_playingMessage?.msgId == message.msgId) {
       _playingMessage = null;
@@ -882,7 +1282,9 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     _player.onPlayerComplete.first.whenComplete(() async {
       _playingMessage = null;
       setState(() {});
-    }).onError((error, stackTrace) {});
+    }).onError((error, stackTrace) {
+      debugPrint('playVoice: $error');
+    });
   }
 
   Future<void> stopVoice() async {
@@ -957,6 +1359,37 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                   attributes: widget.attributes,
                 ),
               );
+            },
+          ),
+          ChatUIKitModelAction(
+            title: ChatUIKitLocal.contactDetailViewSearch.getString(context),
+            icon: 'assets/images/search_history.png',
+            packageName: ChatUIKitImageLoader.packageName,
+            iconSize: const Size(32, 32),
+            onTap: (context) {
+              ChatUIKitRoute.pushOrPushNamed(
+                context,
+                ChatUIKitRouteNames.searchHistoryView,
+                SearchHistoryViewArguments(
+                  profile: profile,
+                  attributes: widget.attributes,
+                ),
+              ).then((value) {
+                if (value != null && value is Message) {
+                  ChatUIKitRoute.pushOrPushNamed(
+                    context,
+                    ChatUIKitRouteNames.messagesView,
+                    MessagesViewArguments(
+                      profile: profile,
+                      attributes: widget.attributes,
+                      controller: MessageListViewController(
+                        profile: profile,
+                        searchedMsg: value,
+                      ),
+                    ),
+                  );
+                }
+              });
             },
           ),
         ],
@@ -1065,7 +1498,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           fontWeight: theme.font.bodyLarge.fontWeight,
           fontSize: theme.font.bodyLarge.fontSize,
         ),
-        label: '转发',
+        label: ChatUIKitLocal.forwardedMessage.getString(context),
         onTap: () async {
           Navigator.of(context).pop();
           forwardMessage(
@@ -1091,7 +1524,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           fontWeight: theme.font.bodyLarge.fontWeight,
           fontSize: theme.font.bodyLarge.fontSize,
         ),
-        label: '多选',
+        label: ChatUIKitLocal.messageListLongPressMenuMulti.getString(context),
         onTap: () async {
           Navigator.of(context).pop();
           controller.enableMultiSelectMode();
@@ -1115,7 +1548,11 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           fontWeight: theme.font.bodyLarge.fontWeight,
           fontSize: theme.font.bodyLarge.fontSize,
         ),
-        label: model.message.hasTranslate ? '显示原文' : '翻译',
+        label: model.message.hasTranslate
+            ? ChatUIKitLocal.messageListLongPressMenuTranslateOrigin
+                .getString(context)
+            : ChatUIKitLocal.messageListLongPressMenuTranslate
+                .getString(context),
         onTap: () async {
           Navigator.of(context).pop();
           controller.translateMessage(
@@ -1193,10 +1630,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     });
   }
 
-  void showBottomSheet() {}
-
   Widget? bottomSheetTitle(MessageModel model, ChatUIKitTheme theme) {
-    if (ChatUIKitSettings.enableReaction == false) return null;
     List<MessageReaction>? reactions = model.reactions;
 
     return Padding(
@@ -1310,6 +1744,156 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       showCancel: false,
       body: ChatUIKitMessageReactionInfo(model),
     );
+  }
+
+  void bubbleTab(MessageModel model) async {
+    if (model.message.bodyType == MessageType.IMAGE) {
+      ChatUIKitRoute.pushOrPushNamed(
+        context,
+        ChatUIKitRouteNames.showImageView,
+        ShowImageViewArguments(
+          message: model.message,
+          attributes: widget.attributes,
+        ),
+      );
+    } else if (model.message.bodyType == MessageType.VIDEO) {
+      ChatUIKitRoute.pushOrPushNamed(
+        context,
+        ChatUIKitRouteNames.showVideoView,
+        ShowVideoViewArguments(
+          message: model.message,
+          attributes: widget.attributes,
+        ),
+      );
+    }
+
+    if (model.message.bodyType == MessageType.VOICE) {
+      playVoiceMessage(model.message);
+    }
+
+    if (model.message.bodyType == MessageType.COMBINE) {
+      ChatUIKitRoute.pushOrPushNamed(
+        context,
+        ChatUIKitRouteNames.forwardMessagesView,
+        ForwardMessagesViewArguments(
+          message: model.message,
+          attributes: widget.attributes,
+        ),
+      );
+    }
+
+    if (model.message.bodyType == MessageType.CUSTOM &&
+        model.message.isCardMessage) {
+      String? userId =
+          (model.message.body as CustomMessageBody).params?[cardUserIdKey];
+      String avatar =
+          (model.message.body as CustomMessageBody).params?[cardAvatarKey] ??
+              '';
+      String name =
+          (model.message.body as CustomMessageBody).params?[cardNicknameKey] ??
+              '';
+      if (userId?.isNotEmpty == true) {
+        ChatUIKitProfile profile = ChatUIKitProfile.contact(
+            id: userId!, avatarUrl: avatar, nickname: name);
+        pushNextPage(profile);
+      }
+    }
+  }
+
+  void avatarTap(MessageModel model) async {
+    ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
+      ChatUIKitProfile.contact(id: model.message.from!),
+    );
+
+    pushNextPage(profile);
+  }
+
+  Widget alertItem(
+    BuildContext context,
+    MessageModel model,
+  ) {
+    if (model.message.isTimeMessageAlert) {
+      Widget? content = widget.alertItemBuilder?.call(
+        context,
+        model,
+      );
+      content ??= ChatUIKitMessageListViewAlertItem(
+        infos: [
+          MessageAlertAction(
+            text: ChatUIKitTimeFormatter.instance.formatterHandler?.call(
+                    context,
+                    ChatUIKitTimeType.message,
+                    model.message.serverTime) ??
+                ChatUIKitTimeTool.getChatTimeStr(model.message.serverTime,
+                    needTime: true),
+          )
+        ],
+      );
+      return content;
+    }
+
+    if (model.message.isCreateThreadAlert) {
+      Map<String, String>? map =
+          (model.message.body as CustomMessageBody).params;
+      Widget? content = widget.alertItemBuilder?.call(
+        context,
+        model,
+      );
+
+      String? operator = map![alertOperatorKey]!;
+      String showName;
+      if (ChatUIKit.instance.currentUserId == operator) {
+        showName = ChatUIKitLocal.alertYou.getString(context);
+      } else {
+        ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
+          ChatUIKitProfile.contact(id: operator),
+        );
+        showName = profile.showName;
+      }
+      content ??= ChatUIKitMessageListViewAlertItem(
+        infos: [
+          MessageAlertAction(
+            text: showName,
+            onTap: () {
+              ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
+                ChatUIKitProfile.contact(
+                  id: map[alertOperatorKey]!,
+                ),
+              );
+              pushNextPage(profile);
+            },
+          ),
+          MessageAlertAction(
+              text: ChatUIKitLocal.messagesViewAlertThreadInfoTitle
+                  .getString(context)),
+        ],
+      );
+      return content;
+    }
+
+    return const SizedBox();
+  }
+
+  void pushNextPage(ChatUIKitProfile profile) async {
+    clearAllType();
+
+    // 如果是自己
+    if (profile.id == ChatUIKit.instance.currentUserId) {
+      pushToCurrentUser(profile);
+    }
+
+    // 以上都不是时，检查通讯录
+    else {
+      List<String> contacts = await ChatUIKit.instance.getAllContacts();
+      // 是好友，不是当前聊天对象，跳转到好友页面，并可以发消息
+      if (contacts.contains(profile.id)) {
+        pushNewContactDetail(profile);
+      }
+      // 不是好友，跳转到添加好友页面
+      else {
+        pushRequestDetail(profile);
+      }
+    }
   }
 
   @override

@@ -1,31 +1,73 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/universal/defines.dart';
 import 'package:flutter/material.dart';
 
 class LongPressOptions {
-  final bool reaction;
-  final bool copy;
-  final bool reply;
-  final bool forward;
-  final bool multiSelect;
-  final bool translate;
-  final bool thread;
-  final bool edit;
-  final bool report;
-  final bool delete;
+  late final bool reaction;
+  late final bool copy;
+  late final bool reply;
+  late final bool forward;
+  late final bool multiSelect;
+  late final bool translate;
+  late final bool thread;
+  late final bool edit;
+  late final bool report;
+  late final bool delete;
+  late final List<String>? customOptions;
 
   LongPressOptions({
-    this.reaction = true,
+    bool reaction = true,
+    bool translate = true,
+    bool thread = true,
     this.copy = true,
     this.reply = true,
     this.forward = true,
     this.multiSelect = true,
-    this.translate = true,
-    this.thread = true,
     this.edit = true,
     this.report = true,
     this.delete = true,
-  });
+    this.customOptions,
+  }) {
+    this.reaction = ChatUIKitSettings.msgItemLongPressActions
+            .contains(MessageLongPressActionType.reaction)
+        ? reaction
+        : false;
+    this.translate = ChatUIKitSettings.msgItemLongPressActions
+            .contains(MessageLongPressActionType.translate)
+        ? translate
+        : false;
+    this.thread = ChatUIKitSettings.msgItemLongPressActions
+            .contains(MessageLongPressActionType.thread)
+        ? thread
+        : false;
+  }
+
+  LongPressOptions copyWith({
+    bool? reaction,
+    bool? copy,
+    bool? reply,
+    bool? forward,
+    bool? multiSelect,
+    bool? translate,
+    bool? thread,
+    bool? edit,
+    bool? report,
+    bool? delete,
+    List<String>? customOptions,
+  }) {
+    return LongPressOptions(
+      reaction: reaction ?? this.reaction,
+      copy: copy ?? this.copy,
+      reply: reply ?? this.reply,
+      forward: forward ?? this.forward,
+      multiSelect: multiSelect ?? this.multiSelect,
+      translate: translate ?? this.translate,
+      thread: thread ?? this.thread,
+      edit: edit ?? this.edit,
+      report: report ?? this.report,
+      delete: delete ?? this.delete,
+      customOptions: customOptions ?? this.customOptions,
+    );
+  }
 }
 
 class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
@@ -60,6 +102,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     this.longPressOptions,
     this.enableThread = true,
     this.enableReaction = true,
+    this.enableVoiceUnreadIcon = true,
     super.key,
   });
 
@@ -77,6 +120,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   final bool isPlaying;
   final bool enableThread;
   final bool enableReaction;
+  final bool enableVoiceUnreadIcon;
 
   final VoidCallback? onAvatarTap;
   final VoidCallback? onAvatarLongPressed;
@@ -146,7 +190,8 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
         children: [
           bubbleWidget,
           if (model.message.direction == MessageDirection.RECEIVE &&
-              !(model.message.attributes?[voiceHasReadKey] == true))
+              !(model.message.attributes?[voiceHasReadKey] == true) &&
+              enableVoiceUnreadIcon)
             Container(
               margin: const EdgeInsets.only(left: 8),
               width: 8,

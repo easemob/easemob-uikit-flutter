@@ -133,6 +133,7 @@ export 'ui/views/show_video_view.dart';
 export 'ui/views/thread_messages_view.dart';
 export 'ui/views/thread_members_view.dart';
 export 'ui/views/threads_view.dart';
+export 'ui/views/search_history_view.dart';
 
 export 'ui/route/chat_uikit_route.dart';
 export 'ui/route/chat_uikit_route_names.dart';
@@ -164,6 +165,7 @@ export 'ui/route/view_arguments/view_arguments_base.dart';
 export 'ui/route/view_arguments/thread_messages_view_arguments.dart';
 export 'ui/route/view_arguments/thread_members_view_arguments.dart';
 export 'ui/route/view_arguments/threads_view_arguments.dart';
+export 'ui/route/view_arguments/search_history_view_arguments.dart';
 
 export 'ui/route/chat_uikit_view_observer.dart';
 
@@ -171,3 +173,4 @@ export 'universal/chat_uikit_action_model.dart';
 
 export 'chat_uikit_emoji_data.dart';
 export 'chat_uikit_defines.dart';
+export 'universal/defines.dart';

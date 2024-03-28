@@ -34,24 +34,43 @@ class _ChatUIKitMessageReactionsRowState
     ChatUIKitTheme theme = ChatUIKitTheme.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
+        List<Widget> reactionWidgets = [];
         List<Widget> children = [];
         for (final reaction in widget.reactions) {
-          if (children.length > 6) break;
-          children.add(
+          reactionWidgets.add(
             InkWell(
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
                 widget.onReactionTap?.call(reaction);
               },
-              child: ChatUIkitReactionWidget(
-                reaction,
-                theme: theme,
+              child: Container(
+                margin: const EdgeInsets.only(right: 4),
+                child: ChatUIkitReactionWidget(
+                  reaction,
+                  theme: theme,
+                ),
               ),
             ),
           );
-          children.add(const SizedBox(width: 4));
         }
+
+        // 得到最大宽度限制
+        double maxWidth = constraints.maxWidth - 32;
+        double maxHeight = 28;
+
+        Widget reactionsWidget = SizedBox(
+          height: maxHeight,
+          width: maxWidth,
+          child: Wrap(
+            alignment: widget.isLeft ? WrapAlignment.start : WrapAlignment.end,
+            clipBehavior: Clip.hardEdge,
+            children: reactionWidgets,
+          ),
+        );
+
+        children.add(reactionsWidget);
+        // 添加"更多"按钮
         children.add(
           InkWell(
             onTap: widget.onReactionInfoTap,

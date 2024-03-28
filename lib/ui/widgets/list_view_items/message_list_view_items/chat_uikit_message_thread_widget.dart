@@ -39,7 +39,7 @@ class _ChatUIKitMessageThreadWidgetState
           context,
           needNickname: true,
         ) ??
-        '暂无消息';
+        ChatUIKitLocal.threadNoLastMessage.getString(context);
     Widget content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -61,6 +61,8 @@ class _ChatUIKitMessageThreadWidgetState
             Expanded(
               child: ChatUIKitEmojiRichText(
                 text: threadName,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
                 style: widget.titleStyle ??
                     TextStyle(
                       fontWeight: theme.font.labelSmall.fontWeight,

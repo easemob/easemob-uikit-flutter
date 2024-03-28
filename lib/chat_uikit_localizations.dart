@@ -40,7 +40,14 @@ mixin ChatUIKitLocal {
       'message_list_long_pressed_menu_delete';
   static const String messageListLongPressMenuRecall =
       'message_list_long_pressed_menu_recall';
-
+  static const String messageListLongPressMenuMulti =
+      'message_list_long_pressed_menu_multi';
+  static const String messageListLongPressMenuTranslate =
+      'message_list_long_pressed_menu_translate';
+  static const String messageListLongPressMenuTranslateOrigin =
+      'message_list_long_pressed_menu_translate_origin';
+  static const String messageListLongPressMenuCreateThread =
+      'message_list_long_pressed_menu_create_thread';
   static const recordBarRecord = 'record_bar_record';
   static const recordBarRecording = 'record_bar_recording';
   static const recordBarPlay = 'record_bar_play';
@@ -52,7 +59,7 @@ mixin ChatUIKitLocal {
   static const addContactInputHints = 'add_contact_input_hints';
   static const addContactConfirm = 'add_contact_add';
   static const addContactCancel = 'add_contact_cancel';
-
+  static const historyMessages = 'history_messages';
   static const createGroupViewTitle = 'create_group_view_title';
   static const createGroupViewCreate = 'create_group_view_create';
   static const createGroupViewSearchContact =
@@ -74,6 +81,7 @@ mixin ChatUIKitLocal {
       'contacts_add_contact_alert_button_cancel';
 
   static const contactDetailViewSend = 'contact_detail_view_send';
+  static const contactDetailViewSearch = 'contact_detail_view_search';
   static const contactDetailViewRemark = 'contact_detail_view_remark';
   static const contactDetailViewPhone = 'contact_detail_view_phone';
   static const contactDetailViewDoNotDisturb =
@@ -101,7 +109,8 @@ mixin ChatUIKitLocal {
       'contact_detail_view_delete_alert_button_cancel';
 
   static const forwardMessageViewTitle = 'forward_message_view_title';
-
+  static const forwardMessage = 'forward_message';
+  static const forwardedMessage = 'forwarded_message';
   static const groupDetailViewSend = 'group_detail_view_send';
   static const groupDetailViewDoNotDisturb = 'group_detail_view_do_not_disturb';
   static const groupDetailViewClearChatHistory =
@@ -184,8 +193,6 @@ mixin ChatUIKitLocal {
   static const alertYou = 'messages_view_recall_info_you';
   static const messagesViewAlertGroupInfoTitle =
       'messages_view_alert_group_info_title';
-  static const messagesViewAlertGroupInfoTitleYou =
-      'messages_view_alert_group_info_title_you';
   static const messagesViewAlertThreadInfoTitle =
       'messages_view_alert_thread_info_title';
   static const messagesViewEditMessageTitle =
@@ -279,6 +286,9 @@ mixin ChatUIKitLocal {
   static const quoteWidgetTitleContact = 'quote_widget_title_contact';
   static const quoteWidgetTitleUnFind = 'quote_widget_title_un_find';
 
+  static const messageTranslated = 'message_translated';
+  static const messageEdited = 'message_edited';
+
   static const messageListItemEdited = 'message_list_item_edit';
   static const messageListItemContactCard = 'message_list_item_contact_card';
   static const newRequestItemAdd = 'new_request_item_title';
@@ -293,6 +303,17 @@ mixin ChatUIKitLocal {
   static const replayBarTitle = 'replay_bar_title';
 
   static const bottomSheetCancel = 'bottom_sheet_cancel';
+
+  static const threadsViewTitle = 'threads_view_title';
+  static const threadNoLastMessage = 'thread_no_last_message';
+  static const threadsMessageLeave = 'threads_message_leave';
+  static const threadsMessageMembers = 'threads_message_members';
+  static const threadsMessageEdit = 'threads_message_edit';
+  static const threadsMessageDestroy = 'threads_message_destroy';
+  static const threadEditName = 'thread_edit_name';
+  static const threadNewName = 'thread_new_name';
+
+  static const searchHistory = 'search_history';
 
   static const Map<String, dynamic> zh = {
     conversationsViewMenuAddContact: '添加联系人',
@@ -313,6 +334,10 @@ mixin ChatUIKitLocal {
     messageListLongPressMenuEdit: '编辑',
     messageListLongPressMenuDelete: '删除',
     messageListLongPressMenuRecall: '撤回',
+    messageListLongPressMenuMulti: '多选',
+    messageListLongPressMenuTranslate: '翻译',
+    messageListLongPressMenuTranslateOrigin: '显示原文',
+    messageListLongPressMenuCreateThread: '创建话题',
     recordBarRecord: '点击录音',
     recordBarRecording: '正在录音',
     recordBarPlay: '点击播放',
@@ -323,6 +348,7 @@ mixin ChatUIKitLocal {
     addContactInputHints: '输入用户ID',
     addContactConfirm: '添加',
     addContactCancel: '取消',
+    historyMessages: '聊天消息',
     createGroupViewTitle: '新群组',
     createGroupViewCreate: '创建',
     createGroupViewSearchContact: '搜索联系人',
@@ -336,6 +362,7 @@ mixin ChatUIKitLocal {
     contactsAddContactAlertButtonConfirm: '添加',
     contactsAddContactAlertButtonCancel: '取消',
     contactDetailViewSend: '发消息',
+    contactDetailViewSearch: '搜索消息',
     contactDetailViewRemark: '备注',
     contactDetailViewPhone: '电话',
     contactDetailViewDoNotDisturb: '消息免打扰',
@@ -352,6 +379,8 @@ mixin ChatUIKitLocal {
     contactDetailViewDeleteAlertButtonConfirm: '确认',
     contactDetailViewDeleteAlertButtonCancel: '取消',
     forwardMessageViewTitle: '转发给',
+    forwardMessage: '转发',
+    forwardedMessage: '已转发',
     groupDetailViewSend: '发消息',
     groupDetailViewDoNotDisturb: '消息免打扰',
     groupDetailViewClearChatHistory: '清空聊天记录',
@@ -405,7 +434,6 @@ mixin ChatUIKitLocal {
     alertYou: '你',
     messagesViewAlertGroupInfoTitle: '创建群组',
     messagesViewAlertThreadInfoTitle: '创建了话题',
-    messagesViewAlertGroupInfoTitleYou: '你',
     messagesViewEditMessageTitle: '正在编辑',
     messagesViewMoreActionsTitleAlbum: '相册',
     messagesViewMoreActionsTitleCamera: '拍照',
@@ -459,6 +487,8 @@ mixin ChatUIKitLocal {
     quoteWidgetTitleFile: '文件 ',
     quoteWidgetTitleContact: '联系人 ',
     quoteWidgetTitleUnFind: '未找到原消息',
+    messageTranslated: '已翻译',
+    messageEdited: '已编辑',
     messageListItemEdited: '已编辑',
     messageListItemContactCard: '联系人',
     newRequestItemAdd: '添加',
@@ -471,6 +501,15 @@ mixin ChatUIKitLocal {
     replayBarTitleImage: '图片',
     replayBarTitle: '正在回复 ',
     bottomSheetCancel: '取消',
+    threadsViewTitle: '所有话题',
+    threadNoLastMessage: '暂无消息',
+    threadsMessageLeave: '离开话题',
+    threadsMessageMembers: '话题成员',
+    threadsMessageEdit: '编辑话题',
+    threadsMessageDestroy: '删除话题',
+    threadEditName: '修改话题名称',
+    threadNewName: '新话题名称',
+    searchHistory: '搜索历史',
   };
 
   static const Map<String, dynamic> en = {
@@ -492,6 +531,10 @@ mixin ChatUIKitLocal {
     messageListLongPressMenuEdit: 'Edit',
     messageListLongPressMenuDelete: 'Delete',
     messageListLongPressMenuRecall: 'Recall',
+    messageListLongPressMenuMulti: 'Multiple',
+    messageListLongPressMenuTranslate: 'Translation',
+    messageListLongPressMenuTranslateOrigin: 'Hide Translation',
+    messageListLongPressMenuCreateThread: 'Create Thread',
     recordBarRecord: 'Record',
     recordBarRecording: 'Recording',
     recordBarPlay: 'Play',
@@ -502,6 +545,7 @@ mixin ChatUIKitLocal {
     addContactInputHints: 'Input ID',
     addContactConfirm: 'Add',
     addContactCancel: 'Cancel',
+    historyMessages: 'Chat History',
     createGroupViewTitle: 'Create Group',
     createGroupViewCreate: 'Create',
     createGroupViewSearchContact: 'Search Contacts',
@@ -515,6 +559,7 @@ mixin ChatUIKitLocal {
     contactsAddContactAlertButtonConfirm: 'Add',
     contactsAddContactAlertButtonCancel: 'Cancel',
     contactDetailViewSend: 'Send message',
+    contactDetailViewSearch: 'Search message',
     contactDetailViewRemark: 'Remark',
     contactDetailViewPhone: 'Phone',
     contactDetailViewDoNotDisturb: 'Do not disturb',
@@ -533,6 +578,8 @@ mixin ChatUIKitLocal {
     contactDetailViewDeleteAlertButtonConfirm: 'Confirm',
     contactDetailViewDeleteAlertButtonCancel: 'Cancel',
     forwardMessageViewTitle: 'Forward to',
+    forwardMessage: 'Forward',
+    forwardedMessage: 'Forwarded',
     groupDetailViewSend: 'Send message',
     groupDetailViewDoNotDisturb: 'Do not disturb',
     groupDetailViewClearChatHistory: 'Clear chat history',
@@ -588,9 +635,8 @@ mixin ChatUIKitLocal {
     alertKickedInfo: 'You have been removed from the group.',
     alertRecallInfo: ' recalled a message',
     alertYou: 'You',
-    messagesViewAlertGroupInfoTitle: 'created a group',
-    messagesViewAlertThreadInfoTitle: 'created a thread',
-    messagesViewAlertGroupInfoTitleYou: 'You',
+    messagesViewAlertGroupInfoTitle: 'created a group ',
+    messagesViewAlertThreadInfoTitle: 'created a thread  ',
     messagesViewEditMessageTitle: 'Editing',
     messagesViewMoreActionsTitleAlbum: 'Album',
     messagesViewMoreActionsTitleCamera: 'Camera',
@@ -629,7 +675,7 @@ mixin ChatUIKitLocal {
     messageCellCombineFile: 'File',
     messageCellCombineContact: 'Card',
     messageCellCombineLocation: 'Location',
-    messageCellCombineCombine: 'History',
+    messageCellCombineCombine: 'Chat History',
     newRequestDetailsViewAddContact: 'Add contact',
     newRequestsViewTitle: 'New Requests',
     reportMessageViewTitle: 'Report message',
@@ -647,6 +693,8 @@ mixin ChatUIKitLocal {
     quoteWidgetTitleFile: 'File ',
     quoteWidgetTitleContact: 'Contact ',
     quoteWidgetTitleUnFind: 'Not found original message',
+    messageTranslated: 'Translated',
+    messageEdited: 'Edited',
     messageListItemEdited: 'Have been edited',
     messageListItemContactCard: 'Contact card',
     newRequestItemAdd: 'Add',
@@ -659,11 +707,20 @@ mixin ChatUIKitLocal {
     replayBarTitleImage: 'Image',
     replayBarTitle: 'Replying ',
     bottomSheetCancel: 'Cancel',
+    threadsViewTitle: 'All topics',
+    threadNoLastMessage: 'No message',
+    threadsMessageLeave: 'Leave topic',
+    threadsMessageMembers: 'Topic members',
+    threadsMessageEdit: 'Edit topic',
+    threadsMessageDestroy: 'Delete topic',
+    threadEditName: 'Topic name',
+    threadNewName: 'New topic name',
+    searchHistory: 'Search history',
   };
 }
 
 class ChatUIKitLocalizations {
-  final defaultLocale = [
+  List<MapLocale> defaultLocale = [
     const MapLocale('zh', ChatUIKitLocal.zh),
     const MapLocale('en', ChatUIKitLocal.en),
   ];
@@ -691,8 +748,12 @@ class ChatUIKitLocalizations {
       _localization.localizationsDelegates;
 
   void addLocales({required List<MapLocale> locales}) {
+    defaultLocale = defaultLocale + locales;
+  }
+
+  void resetLocales() {
     _localization.init(
-      mapLocales: defaultLocale + locales,
+      mapLocales: defaultLocale,
       initLanguageCode: 'en',
     );
   }

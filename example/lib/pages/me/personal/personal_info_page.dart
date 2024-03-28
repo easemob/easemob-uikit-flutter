@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit_example/demo_localizations.dart';
 import 'package:em_chat_uikit_example/tool/user_data_store.dart';
 import 'package:flutter/material.dart';
 
@@ -47,7 +48,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage>
           ? theme.color.neutralColor1
           : theme.color.neutralColor98,
       appBar: ChatUIKitAppBar(
-        title: '个人信息',
+        title: DemoLocalizations.personalInfo.getString(context),
         titleTextStyle: TextStyle(
           fontSize: theme.font.titleMedium.fontSize,
           fontWeight: theme.font.titleMedium.fontWeight,
@@ -58,7 +59,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage>
         child: ListView(
           children: [
             PersonalInfoItem(
-              title: '头像',
+              title: DemoLocalizations.avatar.getString(context),
               imageWidget: ChatUIKitAvatar.current(
                 avatarUrl: _userData?.avatarUrl,
                 size: 40,
@@ -66,7 +67,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage>
               onTap: pushChangeAvatarPage,
             ),
             PersonalInfoItem(
-              title: '昵称',
+              title: DemoLocalizations.nickname.getString(context),
               trailing:
                   _userData?.showName ?? ChatUIKit.instance.currentUserId ?? '',
               onTap: pushChangeNicknamePage,

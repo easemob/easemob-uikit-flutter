@@ -13,6 +13,7 @@ class GroupDetailsView extends StatefulWidget {
         actions = arguments.actions,
         onMessageDidClear = arguments.onMessageDidClear,
         viewObserver = arguments.viewObserver,
+        contentWidgetBuilder = arguments.contentWidgetBuilder,
         attributes = arguments.attributes;
 
   const GroupDetailsView({
@@ -22,6 +23,7 @@ class GroupDetailsView extends StatefulWidget {
     this.enableAppBar = true,
     this.attributes,
     this.onMessageDidClear,
+    this.contentWidgetBuilder,
     this.viewObserver,
     super.key,
   });
@@ -31,6 +33,7 @@ class GroupDetailsView extends StatefulWidget {
   final bool enableAppBar;
   final String? attributes;
   final VoidCallback? onMessageDidClear;
+  final WidgetBuilder? contentWidgetBuilder;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
@@ -304,8 +307,8 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 24,
-                  height: 24,
+                  width: action.iconSize?.width ?? 24,
+                  height: action.iconSize?.height ?? 24,
                   child: Image.asset(
                     action.icon,
                     color: theme.color.isDark
@@ -315,22 +318,18 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                   ),
                 ),
                 const SizedBox(height: 4),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Text(
-                    action.title,
-                    maxLines: 1,
-                    textScaler: TextScaler.noScaling,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: theme.font.bodySmall.fontSize,
-                      fontWeight: theme.font.bodySmall.fontWeight,
-                      color: theme.color.isDark
-                          ? theme.color.primaryColor6
-                          : theme.color.primaryColor5,
-                    ),
+                Text(
+                  action.title,
+                  textScaler: TextScaler.noScaling,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: theme.font.bodySmall.fontSize,
+                    fontWeight: theme.font.bodySmall.fontWeight,
+                    color: theme.color.isDark
+                        ? theme.color.primaryColor6
+                        : theme.color.primaryColor5,
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -345,6 +344,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     );
 
     Widget content = Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(height: 20),
         avatar,
@@ -363,14 +363,11 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       ],
     );
 
-    content = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
-      child: content,
-    );
-
     content = ListView(
       children: [
         content,
+        if (widget.contentWidgetBuilder != null)
+          widget.contentWidgetBuilder!.call(context),
         InkWell(
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
@@ -382,6 +379,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                 profile: widget.profile,
                 enableMemberOperation:
                     group?.permissionType == GroupPermissionType.Owner,
+                attributes: widget.attributes,
               ),
             );
           },

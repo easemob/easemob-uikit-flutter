@@ -123,6 +123,20 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
       child: middle,
     );
 
+    // 当centerTitle为false时，leading为null时，点击title返回
+    // if (widget.centerTitle == false && widget.leading == null) {
+    //   middle = InkWell(
+    //     onTap: () {
+    //       if (widget.onBackButtonPressed != null) {
+    //         widget.onBackButtonPressed?.call();
+    //       } else {
+    //         Navigator.maybePop(context);
+    //       }
+    //     },
+    //     child: middle,
+    //   );
+    // }
+
     Widget? leading;
     List<Widget> leadingWidgets = [];
     if (widget.showBackButton) {

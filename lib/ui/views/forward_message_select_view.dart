@@ -199,7 +199,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
                   children: [
                     ChatUIKitContactListViewItem(model),
                     SizedBox(
-                      width: 60,
+                      width: 80,
                       height: 28,
                       child: forwardButton(theme, model.profile.id, false),
                     ),
@@ -256,6 +256,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
       context,
       ChatUIKitRouteNames.searchUsersView,
       SearchViewArguments(
+        attributes: widget.attributes,
         viewObserver: viewObserver,
         itemBuilder: (context, profile, searchKeyword) {
           Widget item = Row(
@@ -315,7 +316,9 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
         viewObserver?.refresh();
       },
       child: Text(
-        hasForwarded ? '已转发' : '转发',
+        hasForwarded
+            ? ChatUIKitLocal.forwardedMessage.getString(context)
+            : ChatUIKitLocal.forwardMessage.getString(context),
         textAlign: TextAlign.right,
         textScaler: TextScaler.noScaling,
         style: TextStyle(

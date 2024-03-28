@@ -1,7 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
-import '../universal/defines.dart';
 
 extension MessageHelper on Message {
   MessageType get bodyType => body.type;
@@ -417,7 +416,7 @@ extension MessageHelper on Message {
 
   bool get isCreateGroupAlert {
     if (bodyType == MessageType.CUSTOM) {
-      if ((body as CustomMessageBody).event == alertCreateGroupKey) {
+      if ((body as CustomMessageBody).event == alertGroupCreateKey) {
         return true;
       }
     }
@@ -486,7 +485,7 @@ extension MessageHelper on Message {
     if (hasTranslate) {
       Map<String, String>? map = (body as TextMessageBody).translations;
       if (map != null) {
-        return map[ChatUIKitSettings.translateLanguage] ??
+        return map[ChatUIKitSettings.translateTargetLanguage] ??
             map[(body as TextMessageBody).targetLanguages?.first] ??
             '';
       }
@@ -556,10 +555,6 @@ extension MessageHelper on Message {
     } else {
       return QuoteModel.fromMessage(this, '');
     }
-  }
-
-  bool get hasQuote {
-    return attributes?[quoteKey] != null;
   }
 
   QuoteModel? get getQuote {

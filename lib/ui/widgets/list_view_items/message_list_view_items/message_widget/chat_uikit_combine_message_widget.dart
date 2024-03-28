@@ -18,7 +18,8 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    bool left = forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
+    bool left =
+        forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     List<Widget> widgets = [];
     Widget content = ChatUIKitEmojiRichText(
@@ -74,7 +75,7 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
                         : theme.color.neutralSpecialColor98,
               )),
               TextSpan(
-                text: '聊天记录',
+                text: ChatUIKitLocal.historyMessages.getString(context),
                 style: TextStyle(
                   fontWeight: theme.font.labelSmall.fontWeight,
                   fontSize: theme.font.labelSmall.fontSize,

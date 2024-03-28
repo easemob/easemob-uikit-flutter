@@ -1,3 +1,4 @@
+import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
 class ChatUIKitImageLoader {
@@ -89,7 +90,8 @@ class ChatUIKitImageLoader {
       color: color,
       width: width,
       height: height,
-      image: AssetImage('assets/images/avatar.png', package: packageName),
+      image: ChatUIKitSettings.avatarPlaceholder ??
+          AssetImage('assets/images/avatar.png', package: packageName),
       fit: BoxFit.fill,
     );
   }

@@ -2,7 +2,6 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
 
-
 class CreateGroupView extends StatefulWidget {
   CreateGroupView.arguments(
     CreateGroupViewArguments arguments, {
@@ -194,18 +193,19 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     }
 
     ChatUIKitRoute.pushOrPushNamed(
-        context,
-        ChatUIKitRouteNames.searchUsersView,
-        SearchViewArguments(
-          onTap: (ctx, profile) {
-            Navigator.of(ctx).pop(profile);
-          },
-          canChangeSelected: selectedProfiles,
-          searchHideText:
-              ChatUIKitLocal.createGroupViewSearchContact.getString(context),
-          searchData: list,
-          enableMulti: true,
-        )).then(
+            context,
+            ChatUIKitRouteNames.searchUsersView,
+            SearchViewArguments(
+                onTap: (ctx, profile) {
+                  Navigator.of(ctx).pop(profile);
+                },
+                canChangeSelected: selectedProfiles,
+                searchHideText: ChatUIKitLocal.createGroupViewSearchContact
+                    .getString(context),
+                searchData: list,
+                enableMulti: true,
+                attributes: widget.attributes))
+        .then(
       (value) {
         if (value is List<ChatUIKitProfile>) {
           selectedProfiles = [...value];

@@ -15,6 +15,7 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
     this.searchBarHideText,
     this.listViewBackground,
     this.enableAppBar = true,
+    this.avatarItemBuilder,
     this.appBarMoreActionsBuilder,
     this.enableSearchBar = true,
     this.title,
@@ -39,6 +40,9 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
 
   /// 会话列表的 `item` 构建器，如果设置后需要显示会话时会直接回调，如果不处理可以返回 `null`。
   final ConversationItemBuilder? listViewItemBuilder;
+
+  /// 会话列表的 `头像` 构建器，如果设置后需要显示会话头像，如果不处理可以返回 `null`。
+  final ConversationItemBuilder? avatarItemBuilder;
 
   /// 点击会话列表的回调，点击后会把当前的会话数据传递过来。具体参考 [ConversationModel]。 如果不是设置默认会跳转到消息页面。具体参考 [MessagesView]。
   final void Function(BuildContext context, ConversationModel info)? onTap;
@@ -77,6 +81,7 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
     List<NeedAlphabeticalWidget>? beforeWidgets,
     List<NeedAlphabeticalWidget>? afterWidgets,
     ChatUIKitListItemBuilder? listViewItemBuilder,
+    ChatUIKitListItemBuilder? avatarItemBuilder,
     void Function(BuildContext context, ConversationModel model)? onTap,
     ConversationsViewItemLongPressHandler? onLongPressHandler,
     String? searchBarHideText,
@@ -105,6 +110,7 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
           appBarMoreActionsBuilder ?? this.appBarMoreActionsBuilder,
       title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,
+      avatarItemBuilder: avatarItemBuilder ?? this.avatarItemBuilder,
       attributes: attributes ?? this.attributes,
     );
   }

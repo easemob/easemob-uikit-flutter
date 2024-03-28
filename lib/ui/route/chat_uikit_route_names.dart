@@ -30,6 +30,7 @@ class ChatUIKitRouteNames {
   static const String threadMessagesView = '/ThreadMessagesView';
   static const String threadMembersView = '/threadMembersView';
   static const String threadsView = '/threadsView';
+  static const String searchHistoryView = '/searchHistoryView';
 
   static Widget getWidgetFromName(
       String name, ChatUIKitViewArguments arguments) {
@@ -141,6 +142,10 @@ class ChatUIKitRouteNames {
       case ChatUIKitRouteNames.threadsView:
         return ThreadsView.arguments(
           arguments as ThreadsViewArguments,
+        );
+      case ChatUIKitRouteNames.searchHistoryView:
+        return SearchHistoryView.arguments(
+          arguments as SearchHistoryViewArguments,
         );
     }
     return const SizedBox();

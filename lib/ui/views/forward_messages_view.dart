@@ -111,7 +111,8 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
           ? widget.appBar ??
               ChatUIKitAppBar(
                 centerTitle: false,
-                title: widget.title ?? '聊天记录',
+                title: widget.title ??
+                    ChatUIKitLocal.historyMessages.getString(context),
               )
           : null,
       body: SafeArea(child: content),
@@ -259,8 +260,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
             context,
             ChatUIKitRouteNames.showImageView,
             ShowImageViewArguments(
-              message: model.message,
-            ));
+                message: model.message, attributes: widget.attributes));
       },
       child: ChatUIKitImageMessageWidget(model: model),
     );
@@ -300,8 +300,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
             context,
             ChatUIKitRouteNames.showVideoView,
             ShowVideoViewArguments(
-              message: message,
-            ));
+                message: message, attributes: widget.attributes));
       },
       child: ChatUIKitVideoMessageWidget(model: model),
     );

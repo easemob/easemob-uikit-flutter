@@ -86,7 +86,7 @@ class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
           : theme.color.neutralColor98,
       appBar: ChatUIKitAppBar(
         centerTitle: false,
-        title: '所有话题',
+        title: ChatUIKitLocal.threadsViewTitle.getString(context),
         titleTextStyle: TextStyle(
           color: theme.color.isDark
               ? theme.color.neutralColor100
@@ -121,34 +121,39 @@ class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
               );
             },
             itemBuilder: (ctx, index) {
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                child: ChatUIKitMessageThreadWidget(
-                  enableMessageCount: false,
-                  onTap: () {
-                    pushToThread(list[index]);
-                  },
-                  titleStyle: TextStyle(
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor100
-                        : theme.color.neutralColor1,
-                    fontWeight: theme.font.titleSmall.fontWeight,
-                    fontSize: theme.font.titleSmall.fontSize,
-                  ),
-                  subtitleStyle: TextStyle(
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor6
-                        : theme.color.neutralColor5,
-                    fontWeight: theme.font.labelMedium.fontWeight,
-                    fontSize: theme.font.labelMedium.fontSize,
-                  ),
-                  threadIcon: const SizedBox(),
-                  chatThread: list[index],
-                  backgroundColor: theme.color.isDark
-                      ? theme.color.neutralColor1
-                      : theme.color.neutralColor98,
-                ),
-              );
+              return Container(
+                  padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ChatUIKitMessageThreadWidget(
+                          enableMessageCount: false,
+                          onTap: () {
+                            pushToThread(list[index]);
+                          },
+                          titleStyle: TextStyle(
+                            color: theme.color.isDark
+                                ? theme.color.neutralColor100
+                                : theme.color.neutralColor1,
+                            fontWeight: theme.font.titleSmall.fontWeight,
+                            fontSize: theme.font.titleSmall.fontSize,
+                          ),
+                          subtitleStyle: TextStyle(
+                            color: theme.color.isDark
+                                ? theme.color.neutralColor6
+                                : theme.color.neutralColor5,
+                            fontWeight: theme.font.labelMedium.fontWeight,
+                            fontSize: theme.font.labelMedium.fontSize,
+                          ),
+                          threadIcon: const SizedBox(),
+                          chatThread: list[index],
+                          backgroundColor: theme.color.isDark
+                              ? theme.color.neutralColor1
+                              : theme.color.neutralColor98,
+                        ),
+                      ),
+                    ],
+                  ));
             },
             itemCount: list.length,
           ),
@@ -209,6 +214,7 @@ class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
             thread: thread,
             model: value,
           ),
+          attributes: widget.attributes,
         ),
       );
     });

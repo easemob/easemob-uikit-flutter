@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/universal/defines.dart';
+import 'package:em_chat_uikit/universal/chat_uikit_tools.dart';
 import 'package:flutter/material.dart';
 
 class ThreadMessagesViewController
@@ -55,10 +55,26 @@ class ThreadMessagesViewController
   void joinThreadIfCan() async {
     if (thread != null) {
       try {
+        thread = await ChatUIKit.instance
+            .fetchChatThread(chatThreadId: thread!.threadId);
         await ChatUIKit.instance.joinChatThread(chatThreadId: thread!.threadId);
+        await fetchItemList();
       } catch (e) {
         debugPrint('join thread error: $e');
       }
+      await insertCreateMessage();
+    }
+  }
+
+  Future<void> insertCreateMessage() async {
+    if (thread != null) {
+      List<Message> messages = ChatUIKitTools.tmpCreateThreadMessages(
+        thread: thread!,
+      );
+      msgModelList.insertAll(
+          0, messages.map((e) => MessageModel(message: e)).toList());
+
+      updateView();
     }
   }
 
@@ -68,7 +84,7 @@ class ThreadMessagesViewController
     super.dispose();
   }
 
-  void fetchItemList() async {
+  Future<void> fetchItemList() async {
     if (thread == null || fetching || loadFinished) return;
     try {
       fetching = true;
@@ -169,33 +185,12 @@ class ThreadMessagesViewController
   Future<void> sendTextMessage(
     String text, {
     Message? replay,
-    dynamic mention,
   }) async {
     if (await createThreadIfNotExits() == false) return;
     Message message = Message.createTxtSendMessage(
       targetId: thread!.threadId,
       content: text,
     );
-
-    if (mention != null) {
-      Map<String, dynamic> mentionExt = {};
-      if (mention is bool && mention == true) {
-        mentionExt[mentionKey] = mentionAllValue;
-      } else if (mention is List<String>) {
-        List<String> mentionList = [];
-        for (var userId in mention) {
-          {
-            mentionList.add(userId);
-          }
-        }
-        if (mentionList.isNotEmpty) {
-          mentionExt[mentionKey] = mentionList;
-        }
-      }
-      if (mentionExt.isNotEmpty) {
-        message.attributes = mentionExt;
-      }
-    }
 
     if (replay != null) {
       message.addQuote(replay);
@@ -215,6 +210,7 @@ class ThreadMessagesViewController
           .indexWhere((element) => msg.msgId == element.message.msgId);
       if (index != -1) {
         msgModelList[index] = msgModelList[index].copyWith(message: msg);
+        updateView();
       }
       // ignore: empty_catches
     } catch (e) {}
@@ -364,7 +360,6 @@ class ThreadMessagesViewController
 
     if (loadFinished) {
       msgModelList.add(MessageModel(message: msg));
-
       updateView();
     }
   }
@@ -386,7 +381,7 @@ class ThreadMessagesViewController
       {bool showTranslate = true}) async {
     Message msg = await ChatUIKit.instance.translateMessage(
       msg: message,
-      languages: [ChatUIKitSettings.translateLanguage],
+      languages: [ChatUIKitSettings.translateTargetLanguage],
     );
     Map<String, dynamic>? map = msg.attributes;
     map ??= {};
@@ -445,7 +440,9 @@ class ThreadMessagesViewController
     Message message,
     String operatorId,
     int operationTime,
-  ) {}
+  ) {
+    _replaceMessage(message);
+  }
 
   @override
   void onMessagesReceived(List<Message> messages) async {
@@ -469,7 +466,9 @@ class ThreadMessagesViewController
     final index = msgModelList.indexWhere((element) =>
         element.message.msgId == msgId && msg.status != element.message.status);
     if (index != -1) {
-      msgModelList[index] = msgModelList[index].copyWith(message: msg);
+      msgModelList[index] = msgModelList[index].copyWith(
+        message: msg,
+      );
       updateView();
       try {
         ChatUIKit.instance.deleteLocalThreadMessageById(

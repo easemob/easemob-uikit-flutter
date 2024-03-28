@@ -129,6 +129,7 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
   String? cursor;
   bool fetching = false;
   bool hasMore = false;
+  bool firstLoadSucceed = false;
   int pageSize = 20;
   @override
   void initState() {
@@ -182,6 +183,7 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
 
         profiles.insert(0, profile);
       }
+      firstLoadSucceed = true;
       setState(() {});
     } catch (e) {
       debugPrint(e.toString());
@@ -193,25 +195,41 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
   Widget build(BuildContext context) {
     ChatUIKitTheme theme = ChatUIKitTheme.of(context);
     super.build(context);
-    return NotificationListener(
-      onNotification: (notification) {
-        if (notification is ScrollEndNotification) {
-          if (notification.metrics.pixels ==
-              notification.metrics.maxScrollExtent) {
-            if (hasMore) {
-              fetchReactionInfo();
+
+    if (firstLoadSucceed == false) {
+      return Center(
+        child: SizedBox(
+          width: 30,
+          height: 30,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: theme.color.isDark
+                ? theme.color.neutralColor3
+                : theme.color.neutralColor7,
+          ),
+        ),
+      );
+    } else {
+      return NotificationListener(
+        onNotification: (notification) {
+          if (notification is ScrollEndNotification) {
+            if (notification.metrics.pixels ==
+                notification.metrics.maxScrollExtent) {
+              if (hasMore) {
+                fetchReactionInfo();
+              }
             }
           }
-        }
-        return false;
-      },
-      child: ListView.builder(
-        itemBuilder: (ctx, index) {
-          return item(profiles[index], theme);
+          return false;
         },
-        itemCount: profiles.length,
-      ),
-    );
+        child: ListView.builder(
+          itemBuilder: (ctx, index) {
+            return item(profiles[index], theme);
+          },
+          itemCount: profiles.length,
+        ),
+      );
+    }
   }
 
   Widget item(ChatUIKitProfile profile, ChatUIKitTheme theme) {

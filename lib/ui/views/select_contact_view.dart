@@ -139,6 +139,7 @@ class _SelectContactViewState extends State<SelectContactView> {
         searchHideText:
             ChatUIKitLocal.selectContactViewSearchHint.getString(context),
         searchData: list,
+        attributes: widget.attributes,
       ),
     ).then((value) {
       if (value != null) {
