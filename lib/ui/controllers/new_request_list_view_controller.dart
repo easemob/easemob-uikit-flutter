@@ -1,10 +1,31 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 // import 'package:username/username.dart';
 
-class NewRequestListViewController with ChatUIKitListViewControllerBase {
-  NewRequestListViewController();
+class NewRequestListViewController with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver {
+  NewRequestListViewController() {
+    ChatUIKitProvider.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    ChatUIKitProvider.instance.removeObserver(this);
+    super.dispose();
+  }
 
   String? cursor;
+
+  @override
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+    if (list.any((element) => map.keys.contains((element as NewRequestItemModel).profile.id))) {
+      for (var element in map.keys) {
+        int index = list.indexWhere((e) => (e as NewRequestItemModel).profile.id == element);
+        if (index != -1) {
+          list[index] = (list[index] as NewRequestItemModel).copyWith(profile: map[element]!);
+        }
+      }
+      refresh();
+    }
+  }
 
   @override
   Future<void> fetchItemList({bool force = false}) async {
@@ -22,9 +43,16 @@ class NewRequestListViewController with ChatUIKitListViewControllerBase {
 
   List<NewRequestItemModel> mappers(List requests) {
     List<NewRequestItemModel> list = [];
-    for (var item in requests) {
-      NewRequestItemModel info =
-          NewRequestItemModel.fromUserId(item['id'], item['reason']);
+    Map<String, ChatUIKitProfile> map = ChatUIKitProvider.instance.getProfiles(() {
+      List<ChatUIKitProfile> list = [];
+      for (var item in requests) {
+        list.add(ChatUIKitProfile.contact(id: item.groupId));
+      }
+      return list;
+    }());
+
+    for (var item in map.entries) {
+      NewRequestItemModel info = NewRequestItemModel.fromProfile(item.value);
       list.add(info);
     }
     return list;

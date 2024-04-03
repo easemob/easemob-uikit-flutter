@@ -101,7 +101,7 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
                   child: Text(
                     widget.title ??
                         ChatUIKitLocal.groupAddMembersViewTitle
-                            .getString(context),
+                            .localString(context),
                     textScaler: TextScaler.noScaling,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -127,8 +127,8 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
                     child: Text(
                       selectedProfiles.isEmpty
                           ? ChatUIKitLocal.groupAddMembersViewAdd
-                              .getString(context)
-                          : '${ChatUIKitLocal.groupAddMembersViewAdd.getString(context)}(${selectedProfiles.length})',
+                              .localString(context)
+                          : '${ChatUIKitLocal.groupAddMembersViewAdd.localString(context)}(${selectedProfiles.length})',
                       textScaler: TextScaler.noScaling,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -230,10 +230,10 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
           cantChangeSelected: widget.inGroupMembers,
           canChangeSelected: selectedProfiles,
           searchHideText:
-              ChatUIKitLocal.createGroupViewSearchContact.getString(context),
+              ChatUIKitLocal.createGroupViewSearchContact.localString(context),
           searchData: list,
           enableMulti: true,
-          attributes:widget.attributes,
+          attributes: widget.attributes,
         )).then(
       (value) {
         if (value is List<ChatUIKitProfile>) {

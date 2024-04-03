@@ -122,9 +122,7 @@ class _ConversationsViewState extends State<ConversationsView> {
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       appBar: !widget.enableAppBar
           ? null
           : widget.appBar ??
@@ -132,9 +130,7 @@ class _ConversationsViewState extends State<ConversationsView> {
                 title: widget.title ?? 'Chats',
                 showBackButton: false,
                 titleTextStyle: TextStyle(
-                  color: theme.color.isDark
-                      ? theme.color.primaryColor6
-                      : theme.color.primaryColor5,
+                  color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                   fontSize: theme.font.titleLarge.fontSize,
                   fontWeight: FontWeight.w900,
                 ),
@@ -142,15 +138,12 @@ class _ConversationsViewState extends State<ConversationsView> {
                   margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
                   child: ChatUIKitAvatar.current(
                     size: 32,
-                    avatarUrl: ChatUIKitProvider
-                        .instance.currentUserProfile?.avatarUrl,
+                    avatarUrl: ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
                   ),
                 ),
                 trailing: IconButton(
                   iconSize: 24,
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor95
-                      : theme.color.neutralColor3,
+                  color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
                   icon: const Icon(Icons.add_circle_outline),
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
@@ -194,17 +187,13 @@ class _ConversationsViewState extends State<ConversationsView> {
           onTap: (ctx, profile) {
             Navigator.of(ctx).pop(profile);
           },
-          searchHideText:
-              ChatUIKitLocal.conversationsViewSearchHint.getString(context),
+          searchHideText: ChatUIKitLocal.conversationsViewSearchHint.localString(context),
           searchData: list,
           attributes: widget.attributes),
     ).then((value) {
       if (value != null && value is ChatUIKitProfile) {
-        ChatUIKitRoute.pushOrPushNamed(
-                context,
-                ChatUIKitRouteNames.messagesView,
-                MessagesViewArguments(
-                    profile: value, attributes: widget.attributes))
+        ChatUIKitRoute.pushOrPushNamed(context, ChatUIKitRouteNames.messagesView,
+                MessagesViewArguments(profile: value, attributes: widget.attributes))
             .then((value) {
           if (mounted && value != null) {
             controller.reload();
@@ -218,8 +207,7 @@ class _ConversationsViewState extends State<ConversationsView> {
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.messagesView,
-      MessagesViewArguments(
-          profile: info.profile, attributes: widget.attributes),
+      MessagesViewArguments(profile: info.profile, attributes: widget.attributes),
     ).then((value) {
       if (mounted && value != null) {
         controller.reload();
@@ -230,35 +218,29 @@ class _ConversationsViewState extends State<ConversationsView> {
   void longPressed(ConversationModel info) async {
     List<ChatUIKitBottomSheetItem>? list;
     if (widget.onLongPressHandler != null) {
-      list = widget.onLongPressHandler
-          ?.call(context, info, defaultLongPressActions(info));
+      list = widget.onLongPressHandler?.call(context, info, defaultLongPressActions(info));
     } else {
       list = defaultLongPressActions(info);
     }
 
     if (list?.isNotEmpty == true) {
       showChatUIKitBottomSheet(
-        cancelLabel: ChatUIKitLocal.conversationListLongPressMenuCancel
-            .getString(context),
+        cancelLabel: ChatUIKitLocal.conversationListLongPressMenuCancel.localString(context),
         context: context,
         items: list!,
       );
     }
   }
 
-  List<ChatUIKitBottomSheetItem> defaultLongPressActions(
-      ConversationModel info) {
+  List<ChatUIKitBottomSheetItem> defaultLongPressActions(ConversationModel info) {
     return [
       ChatUIKitBottomSheetItem.normal(
         label: info.noDisturb
-            ? ChatUIKitLocal.conversationListLongPressMenuUnmute
-                .getString(context)
-            : ChatUIKitLocal.conversationListLongPressMenuMute
-                .getString(context),
+            ? ChatUIKitLocal.conversationListLongPressMenuUnmute.localString(context)
+            : ChatUIKitLocal.conversationListLongPressMenuMute.localString(context),
         onTap: () async {
-          final type = info.profile.type == ChatUIKitProfileType.group
-              ? ConversationType.GroupChat
-              : ConversationType.Chat;
+          final type =
+              info.profile.type == ChatUIKitProfileType.group ? ConversationType.GroupChat : ConversationType.Chat;
 
           if (info.noDisturb) {
             ChatUIKit.instance.clearSilentMode(
@@ -281,10 +263,8 @@ class _ConversationsViewState extends State<ConversationsView> {
       ),
       ChatUIKitBottomSheetItem.normal(
         label: info.pinned
-            ? ChatUIKitLocal.conversationListLongPressMenuUnPin
-                .getString(context)
-            : ChatUIKitLocal.conversationListLongPressMenuPin
-                .getString(context),
+            ? ChatUIKitLocal.conversationListLongPressMenuUnPin.localString(context)
+            : ChatUIKitLocal.conversationListLongPressMenuPin.localString(context),
         onTap: () async {
           ChatUIKit.instance.pinConversation(
             conversationId: info.profile.id,
@@ -295,8 +275,7 @@ class _ConversationsViewState extends State<ConversationsView> {
       ),
       if (info.unreadCount > 0)
         ChatUIKitBottomSheetItem.normal(
-          label: ChatUIKitLocal.conversationListLongPressMenuRead
-              .getString(context),
+          label: ChatUIKitLocal.conversationListLongPressMenuRead.localString(context),
           onTap: () async {
             ChatUIKit.instance.markConversationAsRead(
               conversationId: info.profile.id,
@@ -305,8 +284,7 @@ class _ConversationsViewState extends State<ConversationsView> {
           },
         ),
       ChatUIKitBottomSheetItem.destructive(
-        label: ChatUIKitLocal.conversationListLongPressMenuDelete
-            .getString(context),
+        label: ChatUIKitLocal.conversationListLongPressMenuDelete.localString(context),
         onTap: () async {
           ChatUIKit.instance.deleteLocalConversation(
             conversationId: info.profile.id,
@@ -321,8 +299,7 @@ class _ConversationsViewState extends State<ConversationsView> {
     List<ChatUIKitBottomSheetItem> list = defaultItems();
     list = widget.appBarMoreActionsBuilder?.call(context, list) ?? list;
     showChatUIKitBottomSheet(
-      cancelLabel:
-          ChatUIKitLocal.conversationsViewMenuCancel.getString(context),
+      cancelLabel: ChatUIKitLocal.conversationsViewMenuCancel.localString(context),
       context: context,
       items: list,
     );
@@ -332,13 +309,10 @@ class _ConversationsViewState extends State<ConversationsView> {
     final theme = ChatUIKitTheme.of(context);
     return [
       ChatUIKitBottomSheetItem.normal(
-        label: ChatUIKitLocal.conversationsViewMenuCreateNewChat
-            .getString(context),
+        label: ChatUIKitLocal.conversationsViewMenuCreateNewChat.localString(context),
         icon: Icon(
           Icons.message,
-          color: theme.color.isDark
-              ? theme.color.primaryColor5
-              : theme.color.primaryColor5,
+          color: theme.color.isDark ? theme.color.primaryColor5 : theme.color.primaryColor5,
         ),
         onTap: () async {
           Navigator.of(context).pop();
@@ -346,13 +320,10 @@ class _ConversationsViewState extends State<ConversationsView> {
         },
       ),
       ChatUIKitBottomSheetItem.normal(
-        label:
-            ChatUIKitLocal.conversationsViewMenuAddContact.getString(context),
+        label: ChatUIKitLocal.conversationsViewMenuAddContact.localString(context),
         icon: Icon(
           Icons.person_add_alt_1,
-          color: theme.color.isDark
-              ? theme.color.primaryColor5
-              : theme.color.primaryColor5,
+          color: theme.color.isDark ? theme.color.primaryColor5 : theme.color.primaryColor5,
         ),
         onTap: () async {
           Navigator.of(context).pop();
@@ -360,13 +331,10 @@ class _ConversationsViewState extends State<ConversationsView> {
         },
       ),
       ChatUIKitBottomSheetItem.normal(
-        label:
-            ChatUIKitLocal.conversationsViewMenuCreateGroup.getString(context),
+        label: ChatUIKitLocal.conversationsViewMenuCreateGroup.localString(context),
         icon: Icon(
           Icons.group,
-          color: theme.color.isDark
-              ? theme.color.primaryColor5
-              : theme.color.primaryColor5,
+          color: theme.color.isDark ? theme.color.primaryColor5 : theme.color.primaryColor5,
         ),
         onTap: () async {
           Navigator.of(context).pop();
@@ -381,8 +349,7 @@ class _ConversationsViewState extends State<ConversationsView> {
       context,
       ChatUIKitRouteNames.selectContactsView,
       SelectContactViewArguments(
-          backText: ChatUIKitLocal.conversationsViewMenuCreateNewChat
-              .getString(context),
+          backText: ChatUIKitLocal.conversationsViewMenuCreateNewChat.localString(context),
           attributes: widget.attributes),
     ).then((profile) {
       if (profile != null && profile is ChatUIKitProfile) {
@@ -393,19 +360,19 @@ class _ConversationsViewState extends State<ConversationsView> {
 
   void addContact() async {
     String? userId = await showChatUIKitDialog(
-      title: ChatUIKitLocal.addContactTitle.getString(context),
-      content: ChatUIKitLocal.addContactSubTitle.getString(context),
+      title: ChatUIKitLocal.addContactTitle.localString(context),
+      content: ChatUIKitLocal.addContactSubTitle.localString(context),
       context: context,
-      hintsText: [ChatUIKitLocal.addContactInputHints.getString(context)],
+      hintsText: [ChatUIKitLocal.addContactInputHints.localString(context)],
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal.addContactCancel.getString(context),
+          label: ChatUIKitLocal.addContactCancel.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.inputsConfirm(
-          label: ChatUIKitLocal.addContactConfirm.getString(context),
+          label: ChatUIKitLocal.addContactConfirm.localString(context),
           onInputsTap: (inputs) async {
             Navigator.of(context).pop(inputs.first);
           },

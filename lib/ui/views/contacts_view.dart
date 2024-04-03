@@ -183,7 +183,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
   List<ChatUIKitListViewMoreItem> get beforeWidgets {
     return [
       ChatUIKitListViewMoreItem(
-        title: ChatUIKitLocal.contactsViewNewRequests.getString(context),
+        title: ChatUIKitLocal.contactsViewNewRequests.localString(context),
         onTap: () {
           ChatUIKitRoute.pushOrPushNamed(
                   context,
@@ -199,7 +199,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
         ),
       ),
       ChatUIKitListViewMoreItem(
-          title: ChatUIKitLocal.contactsViewGroups.getString(context),
+          title: ChatUIKitLocal.contactsViewGroups.localString(context),
           onTap: () {
             ChatUIKitRoute.pushOrPushNamed(
                 context,
@@ -223,7 +223,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
             Navigator.of(ctx).pop(profile);
           },
           searchHideText:
-              ChatUIKitLocal.conversationsViewSearchHint.getString(context),
+              ChatUIKitLocal.conversationsViewSearchHint.localString(context),
           searchData: list,
           attributes: widget.attributes),
     ).then((value) {
@@ -239,7 +239,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
       ChatUIKitRouteNames.contactDetailsView,
       ContactDetailsViewArguments(profile: profile, actions: [
         ChatUIKitModelAction(
-          title: ChatUIKitLocal.contactDetailViewSend.getString(context),
+          title: ChatUIKitLocal.contactDetailViewSend.localString(context),
           icon: 'assets/images/chat.png',
           iconSize: const Size(32, 32),
           packageName: ChatUIKitImageLoader.packageName,
@@ -255,7 +255,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
           },
         ),
         ChatUIKitModelAction(
-          title: ChatUIKitLocal.contactDetailViewSearch.getString(context),
+          title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
           icon: 'assets/images/search_history.png',
           packageName: ChatUIKitImageLoader.packageName,
           iconSize: const Size(32, 32),
@@ -293,24 +293,24 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
 
   void addContact() async {
     String? userId = await showChatUIKitDialog(
-      title: ChatUIKitLocal.contactsAddContactAlertTitle.getString(context),
+      title: ChatUIKitLocal.contactsAddContactAlertTitle.localString(context),
       content:
-          ChatUIKitLocal.contactsAddContactAlertSubTitle.getString(context),
+          ChatUIKitLocal.contactsAddContactAlertSubTitle.localString(context),
       context: context,
       hintsText: [
-        ChatUIKitLocal.contactsAddContactAlertHintText.getString(context)
+        ChatUIKitLocal.contactsAddContactAlertHintText.localString(context)
       ],
       items: [
         ChatUIKitDialogItem.cancel(
           label: ChatUIKitLocal.contactsAddContactAlertButtonCancel
-              .getString(context),
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.inputsConfirm(
           label: ChatUIKitLocal.contactsAddContactAlertButtonConfirm
-              .getString(context),
+              .localString(context),
           onInputsTap: (inputs) async {
             Navigator.of(context).pop(inputs.first);
           },

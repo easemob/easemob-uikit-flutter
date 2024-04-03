@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -75,7 +76,7 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
                         : theme.color.neutralSpecialColor98,
               )),
               TextSpan(
-                text: ChatUIKitLocal.historyMessages.getString(context),
+                text: ChatUIKitLocal.historyMessages.localString(context),
                 style: TextStyle(
                   fontWeight: theme.font.labelSmall.fontWeight,
                   fontSize: theme.font.labelSmall.fontSize,
@@ -128,27 +129,28 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
 
       bool hasCatch = false;
       if (typeStr == '[Image]') {
-        typeStr = ChatUIKitLocal.messageCellCombineImage.getString(context);
+        typeStr = ChatUIKitLocal.messageCellCombineImage.localString(context);
         hasCatch = true;
       }
       if (typeStr == '[Voice]') {
-        typeStr = ChatUIKitLocal.messageCellCombineVoice.getString(context);
+        typeStr = ChatUIKitLocal.messageCellCombineVoice.localString(context);
         hasCatch = true;
       }
       if (typeStr == '[Location]') {
-        typeStr = ChatUIKitLocal.messageCellCombineLocation.getString(context);
+        typeStr =
+            ChatUIKitLocal.messageCellCombineLocation.localString(context);
         hasCatch = true;
       }
       if (typeStr == '[Video]') {
-        typeStr = ChatUIKitLocal.messageCellCombineVideo.getString(context);
+        typeStr = ChatUIKitLocal.messageCellCombineVideo.localString(context);
         hasCatch = true;
       }
       if (typeStr == '[File]') {
-        typeStr = ChatUIKitLocal.messageCellCombineFile.getString(context);
+        typeStr = ChatUIKitLocal.messageCellCombineFile.localString(context);
         hasCatch = true;
       }
       if (typeStr == '[Combine]') {
-        typeStr = ChatUIKitLocal.messageCellCombineCombine.getString(context);
+        typeStr = ChatUIKitLocal.messageCellCombineCombine.localString(context);
         hasCatch = true;
       }
       if (hasCatch == true) {

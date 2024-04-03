@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 class ForwardMessagesView extends StatefulWidget {
@@ -112,7 +113,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
               ChatUIKitAppBar(
                 centerTitle: false,
                 title: widget.title ??
-                    ChatUIKitLocal.historyMessages.getString(context),
+                    ChatUIKitLocal.historyMessages.localString(context),
               )
           : null,
       body: SafeArea(child: content),
@@ -249,6 +250,9 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
       style: TextStyle(
         fontWeight: theme.font.bodyMedium.fontWeight,
         fontSize: theme.font.bodyMedium.fontSize,
+        color: theme.color.isDark
+            ? theme.color.neutralColor98
+            : theme.color.neutralColor1,
       ),
     );
   }
@@ -272,7 +276,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          "${[ChatUIKitLocal.messageCellCombineVoice.getString(context)]}",
+          "${[ChatUIKitLocal.messageCellCombineVoice.localString(context)]}",
           textScaler: TextScaler.noScaling,
           style: TextStyle(
             textBaseline: TextBaseline.alphabetic,
@@ -312,7 +316,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          "${[ChatUIKitLocal.messageCellCombineLocation.getString(context)]}",
+          "${[ChatUIKitLocal.messageCellCombineLocation.localString(context)]}",
           textScaler: TextScaler.noScaling,
           style: TextStyle(
             textBaseline: TextBaseline.alphabetic,
@@ -338,7 +342,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          "${[ChatUIKitLocal.messageCellCombineContact.getString(context)]}",
+          "${[ChatUIKitLocal.messageCellCombineContact.localString(context)]}",
           textScaler: TextScaler.noScaling,
           style: TextStyle(
             textBaseline: TextBaseline.alphabetic,
@@ -361,7 +365,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
 
   Widget combineWidget(MessageModel model, ChatUIKitTheme theme) {
     return Text(
-      "${[ChatUIKitLocal.messageCellCombineCombine.getString(context)]}",
+      "${[ChatUIKitLocal.messageCellCombineCombine.localString(context)]}",
       textScaler: TextScaler.noScaling,
       style: TextStyle(
         textBaseline: TextBaseline.alphabetic,
@@ -376,7 +380,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          "${[ChatUIKitLocal.messageCellCombineFile.getString(context)]}",
+          "${[ChatUIKitLocal.messageCellCombineFile.localString(context)]}",
           textScaler: TextScaler.noScaling,
           style: TextStyle(
             textBaseline: TextBaseline.alphabetic,

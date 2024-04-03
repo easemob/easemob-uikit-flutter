@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 class GroupMentionView extends StatefulWidget {
@@ -96,7 +97,7 @@ class _GroupMentionViewState extends State<GroupMentionView> {
                     Navigator.of(context).pop();
                   },
                   child: Text(
-                    '@${ChatUIKitLocal.groupMembersViewTitle.getString(context)}',
+                    '@${ChatUIKitLocal.groupMembersViewTitle.localString(context)}',
                     textScaler: TextScaler.noScaling,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -160,8 +161,8 @@ class _GroupMentionViewState extends State<GroupMentionView> {
           valueListenable: selectedProfiles,
           builder: (context, value, child) {
             return SearchView(
-              searchHideText:
-                  ChatUIKitLocal.groupMentionViewSearchHint.getString(context),
+              searchHideText: ChatUIKitLocal.groupMentionViewSearchHint
+                  .localString(context),
               searchData: list,
               itemBuilder: (context, profile, searchKeyword) {
                 return InkWell(
@@ -204,7 +205,7 @@ class MentionAllItem extends StatelessWidget {
     );
 
     Widget name = Text(
-      ChatUIKitLocal.groupMentionViewMentionAll.getString(context),
+      ChatUIKitLocal.groupMentionViewMentionAll.localString(context),
       overflow: TextOverflow.ellipsis,
       style: normalStyle,
       textScaler: TextScaler.noScaling,

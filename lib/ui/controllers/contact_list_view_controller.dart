@@ -2,21 +2,40 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 // import 'package:username/username.dart';
 
 /// 联系人列表控制器
-class ContactListViewController with ChatUIKitListViewControllerBase {
-  ContactListViewController();
+class ContactListViewController with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver {
+  ContactListViewController() {
+    ChatUIKitProvider.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    ChatUIKitProvider.instance.removeObserver(this);
+    super.dispose();
+  }
 
   String? cursor;
+
+  @override
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+    if (list.any((element) => map.keys.contains((element as ContactItemModel).profile.id))) {
+      for (var element in map.keys) {
+        int index = list.indexWhere((e) => (e as ContactItemModel).profile.id == element);
+        if (index != -1) {
+          list[index] = (list[index] as ContactItemModel).copyWith(profile: map[element]!);
+        }
+      }
+      refresh();
+    }
+  }
 
   /// 获取联系人列表，会优先从本地获取，如果本地没有，并且没有从服务器获取过，则从服务器获取。
   /// `force` (bool) 是否强制从服务器获取，默认为 `false`。
   @override
   Future<void> fetchItemList({bool force = false}) async {
     loadingType.value = ChatUIKitListViewType.loading;
-    List<String> items = await ChatUIKit.instance.getAllContacts();
+    List<String> items = await ChatUIKit.instance.getAllContactIds();
     try {
-      if ((items.isEmpty &&
-              !ChatUIKitContext.instance.isContactLoadFinished()) ||
-          force == true) {
+      if ((items.isEmpty && !ChatUIKitContext.instance.isContactLoadFinished()) || force == true) {
         items = await _fetchContacts();
       }
       ChatUIKitContext.instance.removeRequests(items);
@@ -45,8 +64,7 @@ class ContactListViewController with ChatUIKitListViewControllerBase {
 
   List<ContactItemModel> _mappers(List<String> contacts) {
     List<ContactItemModel> list = [];
-    Map<String, ChatUIKitProfile> map =
-        ChatUIKitProvider.instance.getProfiles(() {
+    Map<String, ChatUIKitProfile> map = ChatUIKitProvider.instance.getProfiles(() {
       List<ChatUIKitProfile> profile = [];
       for (var item in contacts) {
         profile.add(ChatUIKitProfile.contact(id: item));
@@ -61,9 +79,7 @@ class ContactListViewController with ChatUIKitListViewControllerBase {
   }
 
   void addUser(String userId) {
-    if (list
-        .cast<ContactItemModel>()
-        .any((element) => element.profile.id == userId)) {
+    if (list.cast<ContactItemModel>().any((element) => element.profile.id == userId)) {
       return;
     }
     List<ContactItemModel> tmp = _mappers([userId]);
@@ -74,7 +90,7 @@ class ContactListViewController with ChatUIKitListViewControllerBase {
   @override
   Future<void> reload() async {
     loadingType.value = ChatUIKitListViewType.refresh;
-    List<String> items = await ChatUIKit.instance.getAllContacts();
+    List<String> items = await ChatUIKit.instance.getAllContactIds();
     ChatUIKitContext.instance.removeRequests(items);
     List<ContactItemModel> tmp = _mappers(items);
     list.clear();

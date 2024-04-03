@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 class NewRequestsView extends StatefulWidget {
@@ -96,7 +97,7 @@ class _NewRequestsViewState extends State<NewRequestsView>
                     child: Text(
                       widget.title ??
                           ChatUIKitLocal.newRequestsViewTitle
-                              .getString(context),
+                              .localString(context),
                       textScaler: TextScaler.noScaling,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

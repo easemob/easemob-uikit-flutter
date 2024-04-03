@@ -14,7 +14,7 @@ class CreateGroupView extends StatefulWidget {
         onItemLongPress = arguments.onItemLongPress,
         appBar = arguments.appBar,
         enableAppBar = arguments.enableAppBar,
-        willCreateHandler = arguments.willCreateHandler,
+        createHandler = arguments.createGroupHandler,
         createGroupInfo = arguments.createGroupInfo,
         controller = arguments.controller,
         title = arguments.title,
@@ -32,7 +32,7 @@ class CreateGroupView extends StatefulWidget {
     this.appBar,
     this.controller,
     this.enableAppBar = true,
-    this.willCreateHandler,
+    this.createHandler,
     this.title,
     this.attributes,
     this.viewObserver,
@@ -51,7 +51,7 @@ class CreateGroupView extends StatefulWidget {
   final Widget? listViewBackground;
   final bool enableAppBar;
   final String? title;
-  final WillCreateHandler? willCreateHandler;
+  final CreateGroupHandler? createHandler;
   final String? attributes;
 
   /// 用于刷新页面的Observer
@@ -85,9 +85,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       appBar: !widget.enableAppBar
           ? null
           : widget.appBar ??
@@ -100,14 +98,11 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                     Navigator.maybePop(context);
                   },
                   child: Text(
-                    widget.title ??
-                        ChatUIKitLocal.createGroupViewTitle.getString(context),
+                    widget.title ?? ChatUIKitLocal.createGroupViewTitle.localString(context),
                     textScaler: TextScaler.noScaling,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: theme.color.isDark
-                          ? theme.color.neutralColor98
-                          : theme.color.neutralColor1,
+                      color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
                       fontWeight: theme.font.titleMedium.fontWeight,
                       fontSize: theme.font.titleMedium.fontSize,
                     ),
@@ -126,15 +121,12 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                     padding: const EdgeInsets.fromLTRB(24, 5, 24, 5),
                     child: Text(
                       selectedProfiles.isEmpty
-                          ? ChatUIKitLocal.createGroupViewCreate
-                              .getString(context)
-                          : '${ChatUIKitLocal.createGroupViewCreate.getString(context)}(${selectedProfiles.length})',
+                          ? ChatUIKitLocal.createGroupViewCreate.localString(context)
+                          : '${ChatUIKitLocal.createGroupViewCreate.localString(context)}(${selectedProfiles.length})',
                       textScaler: TextScaler.noScaling,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: theme.color.isDark
-                            ? theme.color.primaryColor6
-                            : theme.color.primaryColor5,
+                        color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                         fontWeight: theme.font.labelMedium.fontWeight,
                         fontSize: theme.font.labelMedium.fontSize,
                       ),
@@ -160,16 +152,12 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                           ? Icon(
                               Icons.check_box,
                               size: 28,
-                              color: theme.color.isDark
-                                  ? theme.color.primaryColor6
-                                  : theme.color.primaryColor5,
+                              color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                             )
                           : Icon(
                               Icons.check_box_outline_blank,
                               size: 28,
-                              color: theme.color.isDark
-                                  ? theme.color.neutralColor4
-                                  : theme.color.neutralColor7,
+                              color: theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor7,
                             ),
                       Expanded(child: ChatUIKitContactListViewItem(model))
                     ],
@@ -200,8 +188,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                   Navigator.of(ctx).pop(profile);
                 },
                 canChangeSelected: selectedProfiles,
-                searchHideText: ChatUIKitLocal.createGroupViewSearchContact
-                    .getString(context),
+                searchHideText: ChatUIKitLocal.createGroupViewSearchContact.localString(context),
                 searchData: list,
                 enableMulti: true,
                 attributes: widget.attributes))
@@ -222,16 +209,16 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     } else {
       list.add(profile);
     }
+
     selectedProfiles = [...list];
     setState(() {});
   }
 
   void createGroup() async {
     CreateGroupInfo? info;
-    if (widget.willCreateHandler != null) {
-      info = await widget.willCreateHandler!(
+    if (widget.createHandler != null) {
+      info = await widget.createHandler!(
         context,
-        widget.createGroupInfo,
         selectedProfiles,
       );
       if (info == null) {
@@ -243,7 +230,9 @@ class _CreateGroupViewState extends State<CreateGroupView> {
         .createGroup(
       groupName: info?.groupName ??
           widget.createGroupInfo?.groupName ??
-          selectedProfiles.map((e) => e.showName).join(','),
+          [
+            ...selectedProfiles + [ChatUIKitProvider.instance.currentUserProfile!]
+          ].map((e) => e.showName).join(','),
       desc: info?.groupDesc ?? widget.createGroupInfo?.groupDesc,
       options: GroupOptions(
         maxCount: 1000,
@@ -252,8 +241,14 @@ class _CreateGroupViewState extends State<CreateGroupView> {
       inviteMembers: userIds,
     )
         .then((value) {
-      Navigator.of(context).pop(value);
-    }).catchError((e) {});
+      if (info?.onGroupCreateCallback != null) {
+        info?.onGroupCreateCallback?.call(value, null);
+      } else {
+        Navigator.of(context).pop(value);
+      }
+    }).catchError((e) {
+      info?.onGroupCreateCallback?.call(null, e);
+    });
   }
 }
 
@@ -262,9 +257,11 @@ class CreateGroupInfo {
     required this.groupName,
     this.groupDesc,
     this.groupAvatar,
+    this.onGroupCreateCallback,
   });
 
   final String groupName;
   final String? groupDesc;
   final String? groupAvatar;
+  final GroupCreateCallback? onGroupCreateCallback;
 }

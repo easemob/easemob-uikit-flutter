@@ -13,8 +13,7 @@ class LanguagePage extends StatefulWidget {
 }
 
 class _LanguagePageState extends State<LanguagePage> {
-  ValueNotifier<String> language =
-      ValueNotifier<String>(SettingsDataStore().currentLanguage);
+  ValueNotifier<String> language = ValueNotifier<String>(SettingsDataStore().currentLanguage);
 
   @override
   void initState() {
@@ -32,64 +31,48 @@ class _LanguagePageState extends State<LanguagePage> {
     final theme = ChatUIKitTheme.of(context);
     Widget content = ListView(
       children: [
-        InkWell(
+        ListItem(
+          title: '中文',
+          trailingWidget: language.value == 'zh'
+              ? Icon(
+                  Icons.check_box,
+                  size: 28,
+                  color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                )
+              : Icon(
+                  Icons.check_box_outline_blank,
+                  size: 28,
+                  color: theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor7,
+                ),
           onTap: () {
             language.value = 'zh';
           },
-          child: ListItem(
-            title: '中文',
-            trailingWidget: language.value == 'zh'
-                ? Icon(
-                    Icons.check_box,
-                    size: 28,
-                    color: theme.color.isDark
-                        ? theme.color.primaryColor6
-                        : theme.color.primaryColor5,
-                  )
-                : Icon(
-                    Icons.check_box_outline_blank,
-                    size: 28,
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor4
-                        : theme.color.neutralColor7,
-                  ),
-          ),
         ),
-        InkWell(
+        ListItem(
+          title: 'English',
+          trailingWidget: language.value == 'en'
+              ? Icon(
+                  Icons.check_box,
+                  size: 28,
+                  color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                )
+              : Icon(
+                  Icons.check_box_outline_blank,
+                  size: 28,
+                  color: theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor7,
+                ),
           onTap: () {
             language.value = 'en';
           },
-          child: ListItem(
-            title: 'English',
-            trailingWidget: language.value == 'en'
-                ? Icon(
-                    Icons.check_box,
-                    size: 28,
-                    color: theme.color.isDark
-                        ? theme.color.primaryColor6
-                        : theme.color.primaryColor5,
-                  )
-                : Icon(
-                    Icons.check_box_outline_blank,
-                    size: 28,
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor4
-                        : theme.color.neutralColor7,
-                  ),
-          ),
         ),
       ],
     );
 
     content = Scaffold(
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       appBar: ChatUIKitAppBar(
-        backgroundColor: theme.color.isDark
-            ? theme.color.neutralColor1
-            : theme.color.neutralColor98,
-        title: DemoLocalizations.languageSettings.getString(context),
+        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+        title: DemoLocalizations.languageSettings.localString(context),
         centerTitle: false,
       ),
       body: SafeArea(child: content),

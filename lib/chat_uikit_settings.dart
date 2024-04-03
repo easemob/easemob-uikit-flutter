@@ -69,4 +69,8 @@ class ChatUIKitSettings {
     MessageLongPressActionType.recall,
     MessageLongPressActionType.delete,
   ];
+
+  static bool enableThread = true;
+  static bool enableTranslation = true;
+  static bool enableReaction = true;
 }

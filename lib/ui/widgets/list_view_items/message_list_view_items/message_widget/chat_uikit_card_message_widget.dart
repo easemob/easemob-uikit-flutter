@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 class ChatUIKitCardMessageWidget extends StatelessWidget {
@@ -68,7 +69,7 @@ class ChatUIKitCardMessageWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 4),
           child: Text(
-            ChatUIKitLocal.messageListItemContactCard.getString(context),
+            ChatUIKitLocal.messageListItemContactCard.localString(context),
             textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(

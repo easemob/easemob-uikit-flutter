@@ -1,14 +1,4 @@
-export 'package:audioplayers/audioplayers.dart';
 export 'package:chat_uikit_theme/chat_uikit_theme.dart';
-export 'package:flutter_localization/flutter_localization.dart';
-export 'package:file_picker/file_picker.dart';
-export 'package:image_picker/image_picker.dart';
-export 'package:path_provider/path_provider.dart';
-export 'package:scroll_to_index/scroll_to_index.dart';
-
-export 'package:shared_preferences/shared_preferences.dart';
-export 'package:video_player/video_player.dart';
-export 'package:video_thumbnail/video_thumbnail.dart';
 
 export 'chat_uikit_context.dart';
 export 'chat_uikit_settings.dart';
@@ -23,6 +13,7 @@ export 'service/chat_uikit_service.dart';
 export 'provider/chat_uikit_profile.dart';
 export 'service/chat_uikit_action_events.dart';
 export 'service/observers/chat_uikit_events_observers.dart';
+export 'package:em_chat_uikit/universal/chat_string_extension.dart';
 
 export 'tools/chat_uikit_helper.dart';
 export 'tools/chat_uikit_image_loader.dart';

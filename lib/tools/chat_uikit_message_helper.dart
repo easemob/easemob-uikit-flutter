@@ -274,11 +274,13 @@ extension MessageHelper on Message {
     return str;
   }
 
-  String showInfoTranslate(BuildContext context, {bool needNickname = false}) {
+  String showInfoTranslate(BuildContext context, {bool needShowName = false}) {
     String? title;
-    if (needNickname) {
+    if (needShowName) {
       if (chatType == ChatType.GroupChat) {
-        title = "${nickname ?? from ?? ""}: ";
+        String? showName = ChatUIKitProvider.instance.profilesCache[from!]?.showName;
+        showName ??= nickname;
+        title = "${showName ?? from ?? ""}: ";
       }
     }
 
@@ -289,30 +291,26 @@ extension MessageHelper on Message {
         str = (body as TextMessageBody).content;
         break;
       case MessageType.IMAGE:
-        str = '${[ChatUIKitLocal.messageCellCombineImage.getString(context)]}';
+        str = '${[ChatUIKitLocal.messageCellCombineImage.localString(context)]}';
         break;
       case MessageType.VIDEO:
-        str = '${[ChatUIKitLocal.messageCellCombineVideo.getString(context)]}';
+        str = '${[ChatUIKitLocal.messageCellCombineVideo.localString(context)]}';
         break;
       case MessageType.VOICE:
-        str = '${[ChatUIKitLocal.messageCellCombineVoice.getString(context)]}';
+        str = '${[ChatUIKitLocal.messageCellCombineVoice.localString(context)]}';
         break;
       case MessageType.LOCATION:
-        str =
-            '${[ChatUIKitLocal.messageCellCombineLocation.getString(context)]}';
+        str = '${[ChatUIKitLocal.messageCellCombineLocation.localString(context)]}';
         break;
       case MessageType.COMBINE:
-        str =
-            '${[ChatUIKitLocal.messageCellCombineCombine.getString(context)]}';
+        str = '${[ChatUIKitLocal.messageCellCombineCombine.localString(context)]}';
         break;
       case MessageType.FILE:
-        str = '${[ChatUIKitLocal.messageCellCombineFile.getString(context)]}';
+        str = '${[ChatUIKitLocal.messageCellCombineFile.localString(context)]}';
         break;
       case MessageType.CUSTOM:
         if (isCardMessage) {
-          str = '${[
-            ChatUIKitLocal.messageCellCombineContact.getString(context)
-          ]}';
+          str = '${[ChatUIKitLocal.messageCellCombineContact.localString(context)]}';
         } else {
           if (isRecallAlert) {
             Map<String, String>? map = (body as CustomMessageBody).params;
@@ -320,53 +318,53 @@ extension MessageHelper on Message {
             String? from = map?[alertRecallMessageFromKey];
             String? showName;
             if (ChatUIKit.instance.currentUserId == from) {
-              showName = ChatUIKitLocal.alertYou.getString(context);
+              showName = ChatUIKitLocal.alertYou.localString(context);
             } else {
               ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
                 ChatUIKitProfile.contact(id: from!),
               );
               showName = profile.showName;
             }
-            return '$showName${ChatUIKitLocal.alertRecallInfo.getString(context)}';
+            return '$showName${ChatUIKitLocal.alertRecallInfo.localString(context)}';
           }
           if (isCreateGroupAlert) {
             Map<String, String>? map = (body as CustomMessageBody).params;
             String? operator = map![alertOperatorKey]!;
             String? showName;
             if (ChatUIKit.instance.currentUserId == operator) {
-              showName = ChatUIKitLocal.alertYou.getString(context);
+              showName = ChatUIKitLocal.alertYou.localString(context);
             } else {
               ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
                 ChatUIKitProfile.contact(id: from!),
               );
               showName = profile.showName;
             }
-            return '$showName ${ChatUIKitLocal.messagesViewAlertGroupInfoTitle.getString(context)}';
+            return '$showName ${ChatUIKitLocal.messagesViewAlertGroupInfoTitle.localString(context)}';
           }
           if (isCreateThreadAlert) {
             Map<String, String>? map = (body as CustomMessageBody).params;
             String? operator = map![alertOperatorKey]!;
             String? showName;
             if (ChatUIKit.instance.currentUserId == operator) {
-              showName = ChatUIKitLocal.alertYou.getString(context);
+              showName = ChatUIKitLocal.alertYou.localString(context);
             } else {
               ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
-                ChatUIKitProfile.contact(id: from!),
+                ChatUIKitProfile.contact(id: operator),
               );
               showName = profile.showName;
             }
-            return '$showName ${ChatUIKitLocal.messagesViewAlertThreadInfoTitle.getString(context)}';
+            return '$showName ${ChatUIKitLocal.messagesViewAlertThreadInfoTitle.localString(context)}';
           }
           if (isDestroyGroupAlert) {
-            return ChatUIKitLocal.alertDestroy.getString(context);
+            return ChatUIKitLocal.alertDestroy.localString(context);
           }
 
           if (isLeaveGroupAlert) {
-            return ChatUIKitLocal.alertLeave.getString(context);
+            return ChatUIKitLocal.alertLeave.localString(context);
           }
 
           if (isKickedGroupAlert) {
-            return ChatUIKitLocal.alertKickedInfo.getString(context);
+            return ChatUIKitLocal.alertKickedInfo.localString(context);
           }
 
           str = '[Custom]';
@@ -505,8 +503,7 @@ extension MessageHelper on Message {
   MessageType? get recalledMessageType {
     if (bodyType == MessageType.CUSTOM) {
       if ((body as CustomMessageBody).event == alertRecalledKey) {
-        String? type =
-            (body as CustomMessageBody).params?[alertRecallMessageTypeKey];
+        String? type = (body as CustomMessageBody).params?[alertRecallMessageTypeKey];
         if (type == null) return null;
         return MessageType.values[int.parse(type)];
       }
@@ -535,8 +532,7 @@ extension MessageHelper on Message {
   MessageDirection? get recallMessageDirection {
     if (bodyType == MessageType.CUSTOM) {
       if ((body as CustomMessageBody).event == alertRecalledKey) {
-        String? directionStr =
-            (body as CustomMessageBody).params?[alertRecallMessageDirectionKey];
+        String? directionStr = (body as CustomMessageBody).params?[alertRecallMessageDirectionKey];
         if (directionStr == null) return null;
         return MessageDirection.values[int.parse(directionStr)];
       }

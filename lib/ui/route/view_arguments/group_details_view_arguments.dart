@@ -30,6 +30,8 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
     bool? enableAppBar,
     ChatUIKitAppBar? appBar,
     WidgetBuilder? contentWidgetBuilder,
+    ChatUIKitViewObserver? viewObserver,
+    VoidCallback? onMessageDidClear,
     String? attributes,
   }) {
     return GroupDetailsViewArguments(
@@ -37,6 +39,8 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
       actions: actions ?? this.actions,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       appBar: appBar ?? this.appBar,
+      onMessageDidClear: onMessageDidClear ?? this.onMessageDidClear,
+      viewObserver: viewObserver ?? this.viewObserver,
       contentWidgetBuilder: contentWidgetBuilder ?? this.contentWidgetBuilder,
       attributes: attributes ?? this.attributes,
     );

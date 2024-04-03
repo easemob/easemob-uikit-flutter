@@ -1,15 +1,36 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 
-class GroupMemberListViewController with ChatUIKitListViewControllerBase {
+class GroupMemberListViewController with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver {
   GroupMemberListViewController({
     required this.groupId,
     this.includeOwner = true,
     this.pageSize = 200,
-  });
+  }) {
+    ChatUIKitProvider.instance.addObserver(this);
+  }
   final String groupId;
   final int pageSize;
   final bool includeOwner;
   String? cursor;
+
+  @override
+  void dispose() {
+    ChatUIKitProvider.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+    if (list.any((element) => map.keys.contains((element as ContactItemModel).profile.id))) {
+      for (var element in map.keys) {
+        int index = list.indexWhere((e) => (e as ContactItemModel).profile.id == element);
+        if (index != -1) {
+          list[index] = (list[index] as ContactItemModel).copyWith(profile: map[element]!);
+        }
+      }
+      refresh();
+    }
+  }
 
   @override
   Future<void> fetchItemList({bool force = false}) async {
@@ -42,8 +63,7 @@ class GroupMemberListViewController with ChatUIKitListViewControllerBase {
   Future<List<String>> fetchAllMembers() async {
     List<String> ret = [];
     do {
-      CursorResult<String> items =
-          await ChatUIKit.instance.fetchGroupMemberList(
+      CursorResult<String> items = await ChatUIKit.instance.fetchGroupMemberList(
         groupId: groupId,
         pageSize: pageSize,
         cursor: cursor,
@@ -64,8 +84,7 @@ class GroupMemberListViewController with ChatUIKitListViewControllerBase {
     if (hasMore) {
       try {
         loadingType.value = ChatUIKitListViewType.refresh;
-        CursorResult<String> items =
-            await ChatUIKit.instance.fetchGroupMemberList(
+        CursorResult<String> items = await ChatUIKit.instance.fetchGroupMemberList(
           groupId: groupId,
           pageSize: pageSize,
           cursor: cursor,
@@ -85,8 +104,7 @@ class GroupMemberListViewController with ChatUIKitListViewControllerBase {
 
   List<ContactItemModel> mappers(List<String> contacts) {
     List<ContactItemModel> mapperList = [];
-    Map<String, ChatUIKitProfile> map =
-        ChatUIKitProvider.instance.getProfiles(() {
+    Map<String, ChatUIKitProfile> map = ChatUIKitProvider.instance.getProfiles(() {
       List<ChatUIKitProfile> profile = [];
       for (var item in contacts) {
         profile.add(ChatUIKitProfile.contact(id: item));

@@ -1,7 +1,10 @@
 {
     "editor.fontSize": 10,
     "cSpell.words": [
-        "autofocus"
+        "autofocus",
+        "avatarurl",
+        "Datas",
+        "sqflite"
     ],
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.dependency.syncWithFolderExplorer": false,

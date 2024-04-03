@@ -37,6 +37,9 @@ class _ChatUIKitMessageReactionsRowState
         List<Widget> reactionWidgets = [];
         List<Widget> children = [];
         for (final reaction in widget.reactions) {
+          if (reactionWidgets.length >= 3) {
+            break;
+          }
           reactionWidgets.add(
             InkWell(
               highlightColor: Colors.transparent,
@@ -55,18 +58,8 @@ class _ChatUIKitMessageReactionsRowState
           );
         }
 
-        // 得到最大宽度限制
-        double maxWidth = constraints.maxWidth - 32;
-        double maxHeight = 28;
-
-        Widget reactionsWidget = SizedBox(
-          height: maxHeight,
-          width: maxWidth,
-          child: Wrap(
-            alignment: widget.isLeft ? WrapAlignment.start : WrapAlignment.end,
-            clipBehavior: Clip.hardEdge,
-            children: reactionWidgets,
-          ),
+        Widget reactionsWidget = Row(
+          children: reactionWidgets,
         );
 
         children.add(reactionsWidget);

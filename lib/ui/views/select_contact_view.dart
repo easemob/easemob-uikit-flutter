@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 class SelectContactView extends StatefulWidget {
@@ -137,7 +138,7 @@ class _SelectContactViewState extends State<SelectContactView> {
           Navigator.of(ctx).pop(profile);
         },
         searchHideText:
-            ChatUIKitLocal.selectContactViewSearchHint.getString(context),
+            ChatUIKitLocal.selectContactViewSearchHint.localString(context),
         searchData: list,
         attributes: widget.attributes,
       ),

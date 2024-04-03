@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 class GroupMembersView extends StatefulWidget {
@@ -139,7 +140,7 @@ class _GroupMembersViewState extends State<GroupMembersView>
                         return Text(
                           widget.title ??
                               ChatUIKitLocal.groupMembersViewTitle
-                                  .getString(context),
+                                  .localString(context),
                           textScaler: TextScaler.noScaling,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -152,7 +153,7 @@ class _GroupMembersViewState extends State<GroupMembersView>
                         );
                       } else {
                         return Text(
-                          '${ChatUIKitLocal.groupMembersViewTitle.getString(context)}(${memberCount.value})',
+                          '${ChatUIKitLocal.groupMembersViewTitle.localString(context)}(${memberCount.value})',
                           textScaler: TextScaler.noScaling,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -235,7 +236,7 @@ class _GroupMembersViewState extends State<GroupMembersView>
       return;
     }
 
-    List<String> contacts = await ChatUIKit.instance.getAllContacts();
+    List<String> contacts = await ChatUIKit.instance.getAllContactIds();
     if (contacts.contains(profile.id)) {
       pushContactDetails(profile);
     } else {
@@ -264,7 +265,7 @@ class _GroupMembersViewState extends State<GroupMembersView>
         attributes: widget.attributes,
         actions: [
           ChatUIKitModelAction(
-            title: ChatUIKitLocal.groupDetailViewSend.getString(context),
+            title: ChatUIKitLocal.groupDetailViewSend.localString(context),
             icon: 'assets/images/chat.png',
             packageName: ChatUIKitImageLoader.packageName,
             onTap: (context) {
@@ -279,7 +280,7 @@ class _GroupMembersViewState extends State<GroupMembersView>
             },
           ),
           ChatUIKitModelAction(
-            title: ChatUIKitLocal.contactDetailViewSearch.getString(context),
+            title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
             icon: 'assets/images/search_history.png',
             packageName: ChatUIKitImageLoader.packageName,
             iconSize: const Size(32, 32),
@@ -418,7 +419,7 @@ class _GroupMembersViewState extends State<GroupMembersView>
             ),
           );
         },
-        searchHideText: ChatUIKitLocal.groupMembersSearch.getString(context),
+        searchHideText: ChatUIKitLocal.groupMembersSearch.localString(context),
         searchData: list,
       ),
     );

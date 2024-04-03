@@ -22,10 +22,24 @@ class NewRequestItemModel with ChatUIKitListItemModelBase, NeedSearch {
     return profile.avatarUrl;
   }
 
+  NewRequestItemModel copyWith({
+    ChatUIKitProfile? profile,
+    String? reason,
+  }) {
+    return NewRequestItemModel(
+      profile: profile ?? this.profile,
+      reason: reason ?? this.reason,
+    );
+  }
+
   static NewRequestItemModel fromUserId(String userId, [String? reason]) {
     ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
       ChatUIKitProfile.contact(id: userId),
     );
     return NewRequestItemModel(profile: profile, reason: reason);
+  }
+
+  static NewRequestItemModel fromProfile(ChatUIKitProfile profile) {
+    return NewRequestItemModel(profile: profile);
   }
 }

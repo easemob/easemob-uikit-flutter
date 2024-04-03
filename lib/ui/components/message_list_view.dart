@@ -1,6 +1,7 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 class MessageListView extends StatefulWidget {
   const MessageListView({

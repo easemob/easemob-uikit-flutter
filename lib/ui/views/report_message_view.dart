@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 class ReportMessageView extends StatefulWidget {
@@ -68,7 +69,7 @@ class _ReportMessageViewState extends State<ReportMessageView> {
             (BuildContext context, int index) {
               return Text(
                 ChatUIKitLocal.reportMessageViewReportReasons
-                    .getString(context),
+                    .localString(context),
                 overflow: TextOverflow.ellipsis,
                 textScaler: TextScaler.noScaling,
                 maxLines: 1,
@@ -116,7 +117,7 @@ class _ReportMessageViewState extends State<ReportMessageView> {
             children: [
               Expanded(
                 child: ChatUIKitButton.neutral(
-                  ChatUIKitLocal.reportMessageViewCancel.getString(context),
+                  ChatUIKitLocal.reportMessageViewCancel.localString(context),
                   radius: 4,
                   fontWeight: theme.font.headlineSmall.fontWeight,
                   fontSize: theme.font.headlineSmall.fontSize,
@@ -128,7 +129,7 @@ class _ReportMessageViewState extends State<ReportMessageView> {
               const SizedBox(width: 12),
               Expanded(
                 child: ChatUIKitButton.primary(
-                  ChatUIKitLocal.reportMessageViewConfirm.getString(context),
+                  ChatUIKitLocal.reportMessageViewConfirm.localString(context),
                   radius: 4,
                   fontWeight: theme.font.headlineSmall.fontWeight,
                   fontSize: theme.font.headlineSmall.fontSize,
@@ -161,7 +162,7 @@ class _ReportMessageViewState extends State<ReportMessageView> {
       appBar: widget.appBar ??
           ChatUIKitAppBar(
             title: widget.title ??
-                ChatUIKitLocal.reportMessageViewTitle.getString(context),
+                ChatUIKitLocal.reportMessageViewTitle.localString(context),
           ),
       body: SafeArea(child: content),
     );

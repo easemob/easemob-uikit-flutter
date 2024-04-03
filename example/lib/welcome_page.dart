@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit_example/main.dart';
 import 'package:flutter/material.dart';
 
 const String appKey = 'easemob#easeim';
@@ -22,16 +23,56 @@ class _WelcomePageState extends State<WelcomePage> {
       if (ChatUIKit.instance.isLogged()) {
         Navigator.of(context).pushReplacementNamed('/home');
       } else {
-        Navigator.of(context).pushReplacementNamed('/login');
+        if (appDebug) {
+          Navigator.of(context).pushReplacementNamed('/debug_login');
+        } else {
+          Navigator.of(context).pushReplacementNamed('/login');
+        }
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Welcome!'),
+    final theme = ChatUIKitTheme.of(context);
+    return Scaffold(
+      backgroundColor: theme.color.primaryColor95,
+      body: Stack(
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                width: 100,
+                height: 100,
+                child: Image.asset('assets/images/icon.png'),
+              ),
+              const SizedBox(height: 38),
+              Text(
+                '环信即时通讯云',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w500,
+                  color: theme.color.primaryColor5,
+                ),
+              ),
+              const SizedBox(height: 180),
+            ],
+          ),
+          Positioned(
+            bottom: 60,
+            left: 0,
+            right: 0,
+            child: Text(
+              'Powered by Easemob',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: theme.color.neutralColor5),
+            ),
+          )
+        ],
       ),
     );
   }

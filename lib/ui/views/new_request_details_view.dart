@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -151,7 +152,8 @@ class _NewRequestDetailsViewState extends State<NewRequestDetailsView> {
       child: Center(
         child: Text(
           widget.btnText ??
-              ChatUIKitLocal.newRequestDetailsViewAddContact.getString(context),
+              ChatUIKitLocal.newRequestDetailsViewAddContact
+                  .localString(context),
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(

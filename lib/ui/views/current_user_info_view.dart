@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CurrentUserInfoView extends StatefulWidget {
-  CurrentUserInfoView.arguments(CurrentUserInfoViewArguments arguments,
-      {super.key})
+  CurrentUserInfoView.arguments(CurrentUserInfoViewArguments arguments, {super.key})
       : profile = arguments.profile,
         appBar = arguments.appBar,
         enableAppBar = arguments.enableAppBar,
@@ -31,10 +30,14 @@ class CurrentUserInfoView extends StatefulWidget {
   State<CurrentUserInfoView> createState() => _CurrentUserInfoViewState();
 }
 
-class _CurrentUserInfoViewState extends State<CurrentUserInfoView> {
+class _CurrentUserInfoViewState extends State<CurrentUserInfoView> with ChatUIKitProviderObserver {
+  ChatUIKitProfile? profile;
   @override
   void initState() {
     super.initState();
+    profile = widget.profile;
+    ChatUIKitProvider.instance.addObserver(this);
+    ChatUIKitProvider.instance.getProfile(profile!, force: true);
     widget.viewObserver?.addListener(() {
       setState(() {});
     });
@@ -42,8 +45,20 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> {
 
   @override
   void dispose() {
+    ChatUIKitProvider.instance.removeObserver(this);
     widget.viewObserver?.dispose();
     super.dispose();
+  }
+
+  @override
+  void onProfilesUpdate(
+    Map<String, ChatUIKitProfile> map,
+  ) {
+    if (map.keys.contains(profile?.id)) {
+      setState(() {
+        profile = map[profile?.id];
+      });
+    }
   }
 
   @override
@@ -51,9 +66,7 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> {
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: theme.color.isDark
-            ? theme.color.neutralColor1
-            : theme.color.neutralColor98,
+        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
         appBar: !widget.enableAppBar
             ? null
             : widget.appBar ??
@@ -73,18 +86,14 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> {
     );
 
     Widget name = Text(
-      ChatUIKitProvider.instance.currentUserProfile?.showName ??
-          ChatUIKit.instance.currentUserId ??
-          '',
+      ChatUIKitProvider.instance.currentUserProfile?.showName ?? ChatUIKit.instance.currentUserId ?? '',
       overflow: TextOverflow.ellipsis,
       textScaler: TextScaler.noScaling,
       maxLines: 1,
       style: TextStyle(
         fontSize: theme.font.headlineLarge.fontSize,
         fontWeight: theme.font.headlineLarge.fontWeight,
-        color: theme.color.isDark
-            ? theme.color.neutralColor100
-            : theme.color.neutralColor1,
+        color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
       ),
     );
 
@@ -96,9 +105,7 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> {
       style: TextStyle(
         fontSize: theme.font.bodySmall.fontSize,
         fontWeight: theme.font.bodySmall.fontWeight,
-        color: theme.color.isDark
-            ? theme.color.neutralColor5
-            : theme.color.neutralColor7,
+        color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
       ),
     );
 
@@ -117,9 +124,7 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> {
           child: Icon(
             Icons.file_copy_sharp,
             size: 16,
-            color: theme.color.isDark
-                ? theme.color.neutralColor5
-                : theme.color.neutralColor7,
+            color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
           ),
         ),
       ],

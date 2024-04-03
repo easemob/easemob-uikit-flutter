@@ -1,7 +1,11 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit_example/demo_localizations.dart';
 
 import 'package:em_chat_uikit_example/pages/help/download_page.dart';
+import 'package:em_chat_uikit_example/tool/app_server_helper.dart';
+import 'package:em_chat_uikit_example/tool/user_data_store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ChatRouteFilter {
   static RouteSettings chatRouteSettings(RouteSettings settings) {
@@ -12,55 +16,117 @@ class ChatRouteFilter {
       return createGroupView(settings);
     } else if (settings.name == ChatUIKitRouteNames.contactDetailsView) {
       return contactDetail(settings);
+    } else if (settings.name == ChatUIKitRouteNames.groupDetailsView) {
+      return groupDetail(settings);
     }
     return settings;
+  }
+
+  // 为 MessagesView 添加文件点击下载
+  static RouteSettings groupDetail(RouteSettings settings) {
+    ChatUIKitViewObserver? viewObserver = ChatUIKitViewObserver();
+    GroupDetailsViewArguments arguments = settings.arguments as GroupDetailsViewArguments;
+
+    arguments = arguments.copyWith(viewObserver: viewObserver);
+    Future(() async {
+      try {
+        // 更新群组详情
+        Group group = await ChatUIKit.instance.fetchGroupInfo(groupId: arguments.profile.id);
+        ChatUIKitProfile profile = arguments.profile.copyWith(name: group.name, avatarUrl: group.extension);
+        ChatUIKitProvider.instance.addProfiles([profile]);
+        UserDataStore().saveUserData(profile);
+      } catch (e) {
+        debugPrint('fetch group info error');
+      }
+    }).then((value) {
+      // 刷新ui
+      viewObserver.refresh();
+    }).catchError((e) {
+      debugPrint('fetch group info error');
+    });
+    return RouteSettings(name: settings.name, arguments: arguments);
   }
 
   // 自定义 contact detail view
   static RouteSettings contactDetail(RouteSettings settings) {
     ChatUIKitViewObserver? viewObserver = ChatUIKitViewObserver();
-    ContactDetailsViewArguments arguments =
-        settings.arguments as ContactDetailsViewArguments;
+    ContactDetailsViewArguments arguments = settings.arguments as ContactDetailsViewArguments;
+
     arguments = arguments.copyWith(
       viewObserver: viewObserver,
+      // 添加 remark 实现
       contentWidgetBuilder: (context) {
         return InkWell(
-          onTap: () {
-            showChatUIKitDialog(context: context, title: '备注', hintsText: [
-              '设置备注'
-            ], items: [
-              ChatUIKitDialogItem.inputsConfirm(
-                label: '确定',
-                onInputsTap: (inputs) async {
-                  ChatUIKitProvider.instance.addProfiles([
-                    arguments.profile.copyWith(remark: inputs.first),
-                  ]);
-                  viewObserver.refresh();
-                  Navigator.of(context).pop();
-                },
-              ),
-              ChatUIKitDialogItem.cancel(label: '取消'),
-            ]);
+          onTap: () async {
+            String? remark = await showChatUIKitDialog(
+              context: context,
+              title: DemoLocalizations.contactRemark.localString(context),
+              hintsText: [DemoLocalizations.contactRemarkDesc.localString(context)],
+              items: [
+                ChatUIKitDialogItem.inputsConfirm(
+                  label: DemoLocalizations.contactRemarkConfirm.localString(context),
+                  onInputsTap: (inputs) async {
+                    Navigator.of(context).pop(inputs.first);
+                  },
+                ),
+                ChatUIKitDialogItem.cancel(label: DemoLocalizations.contactRemarkCancel.localString(context)),
+              ],
+            );
+
+            if (remark?.isNotEmpty == true) {
+              ChatUIKit.instance.updateContactRemark(arguments.profile.id, remark!).then((value) {
+                ChatUIKitProfile profile = arguments.profile.copyWith(remark: remark);
+                // 更新数据，并设置到provider中
+                UserDataStore().saveUserData(profile);
+                ChatUIKitProvider.instance.addProfiles([profile]);
+                // 刷新当前页面
+                viewObserver.refresh();
+              }).catchError((e) {
+                EasyLoading.showError(DemoLocalizations.contactRemarkFailed.localString(context));
+              });
+            }
           },
           child: ChatUIKitDetailsListViewItem(
-            title: '备注',
-            trailing: Text(ChatUIKitProvider.instance
-                    .getProfile(arguments.profile)
-                    .remark ??
-                ''),
+            title: DemoLocalizations.contactRemark.localString(context),
+            trailing: Text(ChatUIKitProvider.instance.getProfile(arguments.profile).remark ?? ''),
           ),
         );
       },
     );
+
+    // 异步更新用户信息
+    Future(() async {
+      String userId = arguments.profile.id;
+      try {
+        Map<String, UserInfo> map = await ChatUIKit.instance.fetchUserInfoByIds([userId]);
+        UserInfo? userInfo = map[userId];
+        Contact? contact = await ChatUIKit.instance.getContact(userId);
+        if (contact != null) {
+          ChatUIKitProfile profile = ChatUIKitProfile.contact(
+            id: contact.userId,
+            nickname: userInfo?.nickName,
+            avatarUrl: userInfo?.avatarUrl,
+            remark: contact.remark,
+          );
+          // 更新数据，并设置到provider中
+          UserDataStore().saveUserData(profile);
+          ChatUIKitProvider.instance.addProfiles([profile]);
+        }
+      } catch (e) {
+        debugPrint('fetch user info error');
+      }
+    }).then((value) {
+      viewObserver.refresh();
+    }).catchError((e) {});
 
     return RouteSettings(name: settings.name, arguments: arguments);
   }
 
   // 为 MessagesView 添加文件点击下载
   static RouteSettings messagesView(RouteSettings settings) {
-    MessagesViewArguments arguments =
-        settings.arguments as MessagesViewArguments;
+    MessagesViewArguments arguments = settings.arguments as MessagesViewArguments;
     arguments = arguments.copyWith(
+      showMessageItemNickname: arguments.profile.type == ChatUIKitProfileType.group,
       onItemTap: (ctx, messageModel) {
         if (messageModel.message.bodyType == MessageType.FILE) {
           Navigator.of(ctx).push(
@@ -82,32 +148,60 @@ class ChatRouteFilter {
 
   // 添加创建群组拦截，并添加设置群名称功能
   static RouteSettings createGroupView(RouteSettings settings) {
-    CreateGroupViewArguments arguments =
-        settings.arguments as CreateGroupViewArguments;
+    CreateGroupViewArguments arguments = settings.arguments as CreateGroupViewArguments;
     arguments = arguments.copyWith(
-      willCreateHandler: (context, createGroupInfo, selectedProfiles) async {
+      createGroupHandler: (context, selectedProfiles) async {
         String? groupName = await showChatUIKitDialog(
           context: context,
-          title: '请输入群名称',
-          hintsText: ['输入群名称'],
+          title: DemoLocalizations.createGroupName.localString(context),
+          hintsText: [DemoLocalizations.createGroupDesc.localString(context)],
           items: [
-            ChatUIKitDialogItem.cancel(
-              label: '取消',
-            ),
             ChatUIKitDialogItem.inputsConfirm(
-              label: '确定',
+              label: DemoLocalizations.createGroupConfirm.localString(context),
               onInputsTap: (inputs) async {
                 Navigator.of(context).pop(inputs.first);
               },
-            )
+            ),
+            ChatUIKitDialogItem.cancel(
+              label: DemoLocalizations.createGroupCancel.localString(context),
+            ),
           ],
         );
-        if (groupName == null) {
-          return null;
-        } else {
+
+        if (groupName != null) {
           return CreateGroupInfo(
             groupName: groupName,
+            onGroupCreateCallback: (group, error) {
+              if (error != null) {
+                showChatUIKitDialog(
+                  context: context,
+                  title: DemoLocalizations.createGroupFailed.localString(context),
+                  content: error.description,
+                  items: [
+                    ChatUIKitDialogItem.confirm(label: DemoLocalizations.createGroupConfirm.localString(context)),
+                  ],
+                );
+              } else {
+                Navigator.of(context).pop();
+
+                if (group != null) {
+                  AppServerHelper.autoDestroyGroup(group.groupId);
+                  ChatUIKitRoute.pushOrPushNamed(
+                    context,
+                    ChatUIKitRouteNames.messagesView,
+                    MessagesViewArguments(
+                      profile: ChatUIKitProfile.group(
+                        id: group.groupId,
+                        groupName: group.name,
+                      ),
+                    ),
+                  );
+                }
+              }
+            },
           );
+        } else {
+          return null;
         }
       },
     );

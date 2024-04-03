@@ -1,16 +1,33 @@
 import 'package:em_chat_uikit/sdk_wrapper/chat_sdk_wrapper.dart';
 
 mixin ContactActions on ContactWrapper {
-  Future<List<String>> getAllContacts() {
+  Future<void> updateContactRemark(String userId, String remark) async {
+    return checkResult(ChatSDKEvent.updateContactRemark, () {
+      return Client.getInstance.contactManager.setContactRemark(userId: userId, remark: remark);
+    });
+  }
+
+  Future<Contact?> getContact(String userId) {
     return checkResult(ChatSDKEvent.getAllContacts, () {
+      return Client.getInstance.contactManager.getContact(userId: userId);
+    });
+  }
+
+  Future<List<Contact>> getAllContacts() {
+    return checkResult(ChatSDKEvent.getAllContacts, () {
+      return Client.getInstance.contactManager.getAllContacts();
+    });
+  }
+
+  Future<List<String>> getAllContactIds() {
+    return checkResult(ChatSDKEvent.getAllContactIds, () {
       return Client.getInstance.contactManager.getAllContactIds();
     });
   }
 
   Future<void> sendContactRequest({required String userId, String? reason}) {
     return checkResult(ChatSDKEvent.sendContactRequest, () {
-      return Client.getInstance.contactManager
-          .addContact(userId, reason: reason);
+      return Client.getInstance.contactManager.addContact(userId, reason: reason);
     });
   }
 
@@ -33,8 +50,14 @@ mixin ContactActions on ContactWrapper {
   }
 
   Future<List<String>> fetchAllContactIds() {
-    return checkResult(ChatSDKEvent.fetchAllContacts, () {
+    return checkResult(ChatSDKEvent.fetchAllContactIds, () {
       return Client.getInstance.contactManager.fetchAllContactIds();
+    });
+  }
+
+  Future<List<Contact>> fetchAllContacts() {
+    return checkResult(ChatSDKEvent.fetchAllContacts, () {
+      return Client.getInstance.contactManager.fetchAllContacts();
     });
   }
 

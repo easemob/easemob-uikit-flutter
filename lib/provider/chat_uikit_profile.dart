@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 /// Profile 类型，用于区分是联系人还是群组。
 enum ChatUIKitProfileType {
   /// 联系人类型。
@@ -15,13 +13,13 @@ class ChatUIKitProfile {
   final String id;
 
   /// 名称,如果是联系人，则为用户名称，如果是群组，则为群组名称。
-  final String? nickname;
+  final String? name;
 
   /// 头像地址, 如果是联系人，则为用户头像地址，如果是群组，则为群组头像地址。
   final String? avatarUrl;
 
   /// profile 类型，用于区分是联系人还是群组，详见 [ChatUIKitProfileType]。
-  final ChatUIKitProfileType? type;
+  final ChatUIKitProfileType type;
 
   /// 扩展字段，用于存储一些额外的信息。
   final Map<String, String>? extension;
@@ -32,12 +30,21 @@ class ChatUIKitProfile {
   final String? remark;
 
   /// 用于展示的名称，如果 name 为空，则展示 id
-  String get showName => remark ?? nickname ?? id;
+  String get showName {
+    if (remark != null && remark!.isNotEmpty) {
+      return remark!;
+    }
 
-  ChatUIKitProfile._({
+    if (name != null && name!.isNotEmpty) {
+      return name!;
+    }
+    return id;
+  }
+
+  ChatUIKitProfile({
     required this.id,
     required this.type,
-    this.nickname,
+    this.name,
     this.avatarUrl,
     this.extension,
     this.remark,
@@ -48,13 +55,12 @@ class ChatUIKitProfile {
     required String id,
     String? nickname,
     String? avatarUrl,
-    ImageProvider? avatarProvider,
     String? remark,
     Map<String, String>? extension,
     int timestamp = 0,
-  }) : this._(
+  }) : this(
           id: id,
-          nickname: nickname,
+          name: nickname,
           avatarUrl: avatarUrl,
           type: ChatUIKitProfileType.contact,
           extension: extension,
@@ -66,12 +72,11 @@ class ChatUIKitProfile {
     required String id,
     String? groupName,
     String? avatarUrl,
-    ImageProvider? avatarProvider,
     Map<String, String>? extension,
     int timestamp = 0,
-  }) : this._(
+  }) : this(
           id: id,
-          nickname: groupName,
+          name: groupName,
           avatarUrl: avatarUrl,
           type: ChatUIKitProfileType.group,
           extension: extension,
@@ -80,21 +85,25 @@ class ChatUIKitProfile {
 
   /// 用于复制一个新的 profile 对象，如果传入的参数不为空，则使用传入的参数，否则使用当前 profile 的参数。
   ChatUIKitProfile copyWith({
-    String? nickname,
+    String? name,
     String? avatarUrl,
-    ImageProvider? avatarProvider,
     Map<String, String>? extension,
     String? remark,
     int? timestamp,
   }) {
-    return ChatUIKitProfile._(
+    return ChatUIKitProfile(
       id: id,
-      nickname: nickname ?? this.nickname,
+      name: name ?? this.name,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       type: type,
       extension: extension ?? this.extension,
       timestamp: timestamp ?? this.timestamp,
       remark: remark ?? this.remark,
     );
+  }
+
+  @override
+  String toString() {
+    return "id: $id, nickname: $name, type: $type, avatar: $avatarUrl, remark: $remark \n";
   }
 }

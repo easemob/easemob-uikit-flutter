@@ -12,6 +12,7 @@ export 'actions/notification_actions.dart';
 export 'actions/contact_actions.dart';
 export 'actions/presence_actions.dart';
 export 'actions/thread_actions.dart';
+export 'actions/user_info_actions.dart';
 
 export 'typedef_define.dart';
 
@@ -24,6 +25,7 @@ export 'wrappers/multi_wrapper.dart';
 export 'wrappers/presence_wrapper.dart';
 export 'wrappers/notification_wrapper.dart';
 export 'wrappers/thread_wrapper.dart';
+export 'wrappers/user_info_wrapper.dart';
 
 export 'observers/chat_observer.dart';
 export 'observers/connect_observer.dart';
@@ -114,12 +116,14 @@ class ChatSDKWrapper extends ChatUIKitWrapperBase
         NotificationWrapper,
         ThreadWrapper,
         PresenceWrapper,
+        UserInfoWrapper,
         ChatActions,
         ContactActions,
         GroupActions,
         NotificationActions,
         ThreadActions,
         PresenceActions,
+        UserInfoActions,
         ChatSDKEventsObserver {
   static ChatSDKWrapper? _instance;
   static ChatSDKWrapper get instance {

@@ -65,7 +65,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
                         : theme.color.neutralSpecialColor98,
               )),
               TextSpan(
-                text: ChatUIKitLocal.messageEdited.getString(context),
+                text: ChatUIKitLocal.messageEdited.localString(context),
                 style: TextStyle(
                   fontWeight: theme.font.labelSmall.fontWeight,
                   fontSize: theme.font.labelSmall.fontSize,
@@ -133,7 +133,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
                         : theme.color.neutralSpecialColor98,
               )),
               TextSpan(
-                text: ChatUIKitLocal.messageTranslated.getString(context),
+                text: ChatUIKitLocal.messageTranslated.localString(context),
                 style: TextStyle(
                   fontWeight: theme.font.labelSmall.fontWeight,
                   fontSize: theme.font.labelSmall.fontSize,
@@ -187,7 +187,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
 
     TextPainter painter3 = TextPainter(
       text: TextSpan(
-        text: ChatUIKitLocal.messageTranslated.getString(context),
+        text: ChatUIKitLocal.messageTranslated.localString(context),
         style: tmpStyle,
       ),
       textDirection: TextDirection.ltr,
@@ -195,7 +195,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
 
     TextPainter painter4 = TextPainter(
       text: TextSpan(
-        text: ChatUIKitLocal.messageEdited.getString(context),
+        text: ChatUIKitLocal.messageEdited.localString(context),
         style: tmpStyle,
       ),
       textDirection: TextDirection.ltr,

@@ -53,90 +53,64 @@ class _GeneralPageState extends State<GeneralPage> {
         //   ),
         // ),
         ListItem(
-          title: DemoLocalizations.darkMode.getString(context),
+          title: DemoLocalizations.darkMode.localString(context),
           trailingWidget: CupertinoSwitch(
               value: !AppSettingsNotification.isLight,
               onChanged: (value) {
-                AppSettingsNotification.isLight =
-                    !AppSettingsNotification.isLight;
+                AppSettingsNotification.isLight = !AppSettingsNotification.isLight;
                 AppSettingsNotification().dispatch(context);
                 setState(() {});
               }),
         ),
-        InkWell(
+        ListItem(
+          title: DemoLocalizations.advancedSettings.localString(context),
+          enableArrow: true,
           onTap: () {
-            Navigator.of(context).pushNamed('/theme_page').then((value) {
+            Navigator.of(context).pushNamed('/advanced_page').then((value) {
               setState(() {});
             });
           },
-          child: ListItem(
-            title: DemoLocalizations.switchTheme.getString(context),
-            trailingStyle: TextStyle(
-              fontSize: theme.font.labelMedium.fontSize,
-              fontWeight: theme.font.labelMedium.fontWeight,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor7
-                  : theme.color.neutralColor5,
-            ),
-            enableArrow: true,
-          ),
         ),
-        InkWell(
+        ListItem(
+          title: DemoLocalizations.languageSettings.localString(context),
+          trailingString: SettingsDataStore().currentLanguage == 'zh' ? '中文' : 'English',
+          trailingStyle: TextStyle(
+            fontSize: theme.font.labelMedium.fontSize,
+            fontWeight: theme.font.labelMedium.fontWeight,
+            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor5,
+          ),
+          enableArrow: true,
           onTap: () {
             Navigator.of(context).pushNamed('/language_page').then((value) {
               setState(() {});
             });
           },
-          child: ListItem(
-            title: DemoLocalizations.languageSettings.getString(context),
-            trailingString:
-                SettingsDataStore().currentLanguage == 'zh' ? '中文' : 'English',
-            trailingStyle: TextStyle(
-              fontSize: theme.font.labelMedium.fontSize,
-              fontWeight: theme.font.labelMedium.fontWeight,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor7
-                  : theme.color.neutralColor5,
-            ),
-            enableArrow: true,
-          ),
         ),
-        InkWell(
+        ListItem(
+          title: DemoLocalizations.translateTargetLanguage.localString(context),
+          trailingString: SettingsDataStore().translateTargetLanguage == 'zh-Hans'
+              ? DemoLocalizations.translateTargetLanguageChinese.localString(context)
+              : DemoLocalizations.translateTargetLanguageEnglish.localString(context),
+          trailingStyle: TextStyle(
+            fontSize: theme.font.labelMedium.fontSize,
+            fontWeight: theme.font.labelMedium.fontWeight,
+            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor5,
+          ),
+          enableArrow: true,
           onTap: () {
             Navigator.of(context).pushNamed('/translate_page').then((value) {
               setState(() {});
             });
           },
-          child: ListItem(
-            title: DemoLocalizations.translateTargetLanguage.getString(context),
-            trailingString:
-                ChatUIKitSettings.translateTargetLanguage == 'zh-Hans'
-                    ? DemoLocalizations.translateTargetLanguageChinese
-                        .getString(context)
-                    : DemoLocalizations.translateTargetLanguageEnglish
-                        .getString(context),
-            trailingStyle: TextStyle(
-              fontSize: theme.font.labelMedium.fontSize,
-              fontWeight: theme.font.labelMedium.fontWeight,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor7
-                  : theme.color.neutralColor5,
-            ),
-            enableArrow: true,
-          ),
         ),
       ],
     );
 
     content = Scaffold(
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       appBar: ChatUIKitAppBar(
-        backgroundColor: theme.color.isDark
-            ? theme.color.neutralColor1
-            : theme.color.neutralColor98,
-        title: DemoLocalizations.general.getString(context),
+        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+        title: DemoLocalizations.general.localString(context),
         centerTitle: false,
       ),
       body: SafeArea(child: content),

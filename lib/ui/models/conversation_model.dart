@@ -27,8 +27,7 @@ class ConversationModel with ChatUIKitListItemModelBase, NeedSearch {
     int unreadCount = await conversation.unreadCount();
     Message? lastMessage = await conversation.latestMessage();
 
-    bool noDisturb =
-        ChatUIKitContext.instance.conversationIsMute(conversation.id);
+    bool noDisturb = ChatUIKitContext.instance.conversationIsMute(conversation.id);
 
     ConversationModel info = ConversationModel(
       profile: profile,
@@ -42,6 +41,7 @@ class ConversationModel with ChatUIKitListItemModelBase, NeedSearch {
   }
 
   ConversationModel copyWith({
+    ChatUIKitProfile? profile,
     Message? lastMessage,
     int? unreadCount,
     bool? pinned,
@@ -50,7 +50,7 @@ class ConversationModel with ChatUIKitListItemModelBase, NeedSearch {
     String? attribute,
   }) {
     return ConversationModel(
-      profile: profile,
+      profile: profile ?? this.profile,
       lastMessage: lastMessage ?? this.lastMessage,
       unreadCount: unreadCount ?? this.unreadCount,
       pinned: pinned ?? this.pinned,

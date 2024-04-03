@@ -1,16 +1,12 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit_example/demo_localizations.dart';
 import 'package:em_chat_uikit_example/pages/contact/contact_page.dart';
 import 'package:em_chat_uikit_example/pages/conversation/conversation_page.dart';
 import 'package:em_chat_uikit_example/pages/me/my_page.dart';
 import 'package:em_chat_uikit_example/tool/toast_page.dart';
-import 'package:em_chat_uikit_example/tool/user_data_store.dart';
-import 'package:em_chat_uikit_example/tool/user_provider_widget.dart';
+import 'package:em_chat_uikit_example/widgets/user_provider_widget.dart';
 
 import 'package:flutter/material.dart';
-
-const String userIdKey = 'Demo_userId';
-const String nicknameKey = 'Demo_nickname';
-const String avatarUrlKey = 'Demo_avatarUrl';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,12 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage>
-    with
-        AutomaticKeepAliveClientMixin,
-        ChatObserver,
-        ContactObserver,
-        ChatUIKitEventsObservers,
-        ChatSDKEventsObserver {
+    with AutomaticKeepAliveClientMixin, ChatObserver, ContactObserver, ChatUIKitEventsObservers, ChatSDKEventsObserver {
   int _currentIndex = 0;
 
   ValueNotifier<int> unreadMessageCount = ValueNotifier(0);
@@ -34,8 +25,10 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
-    UserDataStore().init();
+
     ChatUIKit.instance.addObserver(this);
+    // 更新未读消息
+    onConversationsUpdate();
   }
 
   @override
@@ -68,15 +61,9 @@ class _HomePageState extends State<HomePage>
           fontSize: theme.font.labelExtraSmall.fontSize,
           fontWeight: theme.font.labelExtraSmall.fontWeight,
         ),
-        backgroundColor: theme.color.isDark
-            ? theme.color.neutralColor1
-            : theme.color.neutralColor98,
-        selectedItemColor: theme.color.isDark
-            ? theme.color.primaryColor6
-            : theme.color.primaryColor5,
-        unselectedItemColor: theme.color.isDark
-            ? theme.color.neutralColor3
-            : theme.color.neutralColor5,
+        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+        selectedItemColor: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+        unselectedItemColor: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor5,
         onTap: (value) {
           setState(() {
             _currentIndex = value;
@@ -85,7 +72,7 @@ class _HomePageState extends State<HomePage>
         currentIndex: _currentIndex,
         items: [
           CustomBottomNavigationBarItem(
-            label: '会话',
+            label: DemoLocalizations.chat.localString(context),
             image: 'assets/images/chat.png',
             unreadCountWidget: ValueListenableBuilder(
               valueListenable: unreadMessageCount,
@@ -93,21 +80,17 @@ class _HomePageState extends State<HomePage>
                 return ChatUIKitBadge(
                   value,
                   textColor: theme.color.neutralColor98,
-                  backgroundColor: theme.color.isDark
-                      ? theme.color.errorColor6
-                      : theme.color.errorColor5,
+                  backgroundColor: theme.color.isDark ? theme.color.errorColor6 : theme.color.errorColor5,
                 );
               },
             ),
-            borderColor: theme.color.isDark
-                ? theme.color.neutralColor1
-                : theme.color.neutralColor98,
+            borderColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
             isSelect: _currentIndex == 0,
             imageSelectColor: theme.color.primaryColor5,
             imageUnSelectColor: theme.color.neutralColor5,
           ),
           CustomBottomNavigationBarItem(
-            label: '联系人',
+            label: DemoLocalizations.contacts.localString(context),
             image: 'assets/images/contact.png',
             unreadCountWidget: ValueListenableBuilder(
               valueListenable: contactRequestCount,
@@ -115,21 +98,17 @@ class _HomePageState extends State<HomePage>
                 return ChatUIKitBadge(
                   value,
                   textColor: theme.color.neutralColor98,
-                  backgroundColor: theme.color.isDark
-                      ? theme.color.errorColor6
-                      : theme.color.errorColor5,
+                  backgroundColor: theme.color.isDark ? theme.color.errorColor6 : theme.color.errorColor5,
                 );
               },
             ),
             isSelect: _currentIndex == 1,
-            borderColor: theme.color.isDark
-                ? theme.color.neutralColor1
-                : theme.color.neutralColor98,
+            borderColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
             imageSelectColor: theme.color.primaryColor5,
             imageUnSelectColor: theme.color.neutralColor5,
           ),
           CustomBottomNavigationBarItem(
-            label: '我',
+            label: DemoLocalizations.me.localString(context),
             image: 'assets/images/me.png',
             isSelect: _currentIndex == 2,
             imageSelectColor: theme.color.primaryColor5,
@@ -152,18 +131,14 @@ class _HomePageState extends State<HomePage>
   @override
   // 用于刷新消息未读数
   void onMessagesReceived(List<Message> messages) {
-    ChatUIKit.instance
-        .getUnreadMessageCount(withoutIds: UserDataStore().unNotifyGroupIds)
-        .then((value) {
+    ChatUIKit.instance.getUnreadMessageCount().then((value) {
       unreadMessageCount.value = value;
     });
   }
 
   @override
   void onConversationsUpdate() {
-    ChatUIKit.instance
-        .getUnreadMessageCount(withoutIds: UserDataStore().unNotifyGroupIds)
-        .then((value) {
+    ChatUIKit.instance.getUnreadMessageCount().then((value) {
       unreadMessageCount.value = value;
     });
   }

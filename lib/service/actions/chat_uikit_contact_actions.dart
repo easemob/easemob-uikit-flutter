@@ -14,8 +14,8 @@ mixin ChatUIKitContactActions on ChatSDKWrapper {
   }
 
   @override
-  Future<List<String>> getAllContacts() async {
-    List<String> ret = await super.getAllContacts();
+  Future<List<String>> getAllContactIds() async {
+    List<String> ret = await super.getAllContactIds();
     ChatUIKitContext.instance.removeRequests(ret);
     return ret;
   }

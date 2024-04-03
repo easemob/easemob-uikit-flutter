@@ -23,8 +23,7 @@ class ConversationListView extends StatefulWidget {
   final void Function(List<ConversationModel> data)? onSearchTap;
   final ConversationItemBuilder? itemBuilder;
   final void Function(BuildContext context, ConversationModel info)? onTap;
-  final void Function(BuildContext context, ConversationModel info)?
-      onLongPress;
+  final void Function(BuildContext context, ConversationModel info)? onLongPress;
   final List<Widget>? beforeWidgets;
   final List<Widget>? afterWidgets;
 
@@ -40,18 +39,15 @@ class ConversationListView extends StatefulWidget {
   State<ConversationListView> createState() => _ConversationListViewState();
 }
 
-class _ConversationListViewState extends State<ConversationListView>
-    with ChatObserver, MultiObserver, ChatUIKitProviderObserver {
+class _ConversationListViewState extends State<ConversationListView> with ChatObserver, MultiObserver {
   late ConversationListViewController controller;
 
   @override
   void initState() {
     super.initState();
     ChatUIKit.instance.addObserver(this);
-    ChatUIKitProvider.instance.addObserver(this);
     controller = widget.controller ?? ConversationListViewController();
     controller.fetchItemList();
-
     controller.loadingType.addListener(() {
       setState(() {});
     });
@@ -60,16 +56,8 @@ class _ConversationListViewState extends State<ConversationListView>
   @override
   void dispose() {
     ChatUIKit.instance.removeObserver(this);
-    ChatUIKitProvider.instance.removeObserver(this);
     controller.dispose();
     super.dispose();
-  }
-
-  @override
-  void onProfilesUpdate(
-    Map<String, ChatUIKitProfile> map,
-  ) {
-    controller.reload();
   }
 
   @override
@@ -80,17 +68,15 @@ class _ConversationListViewState extends State<ConversationListView>
   }
 
   @override
-  void onMessageContentChanged(
-      Message message, String operatorId, int operationTime) {
+  void onMessageContentChanged(Message message, String operatorId, int operationTime) {
     int index = controller.list.cast<ConversationModel>().indexWhere((element) {
       return element.lastMessage?.msgId == message.msgId;
     });
 
     if (index != -1) {
-      controller.list.cast<ConversationModel>()[index] =
-          controller.list.cast<ConversationModel>()[index].copyWith(
-                lastMessage: message,
-              );
+      controller.list.cast<ConversationModel>()[index] = controller.list.cast<ConversationModel>()[index].copyWith(
+            lastMessage: message,
+          );
     }
 
     if (mounted) {
@@ -115,8 +101,7 @@ class _ConversationListViewState extends State<ConversationListView>
   }
 
   @override
-  void onConversationEvent(
-      MultiDevicesEvent event, String conversationId, ConversationType type) {
+  void onConversationEvent(MultiDevicesEvent event, String conversationId, ConversationType type) {
     if (event == MultiDevicesEvent.CONVERSATION_DELETE ||
         event == MultiDevicesEvent.CONVERSATION_PINNED ||
         event == MultiDevicesEvent.CONVERSATION_UNPINNED) {

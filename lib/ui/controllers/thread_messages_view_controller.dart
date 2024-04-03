@@ -2,10 +2,11 @@ import 'dart:io';
 import 'dart:math';
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/universal/chat_uikit_tools.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
+
 import 'package:flutter/material.dart';
 
-class ThreadMessagesViewController
-    with ChangeNotifier, ChatObserver, MessageObserver, ThreadObserver {
+class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObserver, ThreadObserver {
   MessageModel? model;
   ChatThread? thread;
   bool loadFinished = false;
@@ -29,8 +30,7 @@ class ThreadMessagesViewController
     ChatUIKit.instance.addObserver(this);
     if (ChatUIKit.instance.currentUserId != null) {
       if (ChatUIKitProvider.instance.currentUserProfile != null) {
-        userMap[ChatUIKit.instance.currentUserId!] =
-            ChatUIKitProvider.instance.currentUserProfile!;
+        userMap[ChatUIKit.instance.currentUserId!] = ChatUIKitProvider.instance.currentUserProfile!;
       }
     }
     thread ??= model?.thread;
@@ -55,8 +55,7 @@ class ThreadMessagesViewController
   void joinThreadIfCan() async {
     if (thread != null) {
       try {
-        thread = await ChatUIKit.instance
-            .fetchChatThread(chatThreadId: thread!.threadId);
+        thread = await ChatUIKit.instance.fetchChatThread(chatThreadId: thread!.threadId);
         await ChatUIKit.instance.joinChatThread(chatThreadId: thread!.threadId);
         await fetchItemList();
       } catch (e) {
@@ -71,8 +70,7 @@ class ThreadMessagesViewController
       List<Message> messages = ChatUIKitTools.tmpCreateThreadMessages(
         thread: thread!,
       );
-      msgModelList.insertAll(
-          0, messages.map((e) => MessageModel(message: e)).toList());
+      msgModelList.insertAll(0, messages.map((e) => MessageModel(message: e)).toList());
 
       updateView();
     }
@@ -88,8 +86,7 @@ class ThreadMessagesViewController
     if (thread == null || fetching || loadFinished) return;
     try {
       fetching = true;
-      CursorResult<Message> result =
-          await ChatUIKit.instance.fetchHistoryMessages(
+      CursorResult<Message> result = await ChatUIKit.instance.fetchHistoryMessages(
         conversationId: thread!.threadId,
         type: ConversationType.GroupChat,
         pageSize: pageSize,
@@ -206,8 +203,7 @@ class ThreadMessagesViewController
         messageId: message.msgId,
         msgBody: msgBody,
       );
-      final index = msgModelList
-          .indexWhere((element) => msg.msgId == element.message.msgId);
+      final index = msgModelList.indexWhere((element) => msg.msgId == element.message.msgId);
       if (index != -1) {
         msgModelList[index] = msgModelList[index].copyWith(message: msg);
         updateView();
@@ -249,10 +245,7 @@ class ThreadMessagesViewController
     }
 
     File file = File(path);
-    Image.file(file)
-        .image
-        .resolve(const ImageConfiguration())
-        .addListener(ImageStreamListener((info, synchronousCall) {
+    Image.file(file).image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((info, synchronousCall) {
       Message message = Message.createImageSendMessage(
         targetId: thread!.threadId,
         filePath: path,
@@ -284,8 +277,7 @@ class ThreadMessagesViewController
     );
     if (imageData != null) {
       final directory = await getApplicationCacheDirectory();
-      String thumbnailPath =
-          '${directory.path}/thumbnail_${Random().nextInt(999999999)}.jpeg';
+      String thumbnailPath = '${directory.path}/thumbnail_${Random().nextInt(999999999)}.jpeg';
       final file = File(thumbnailPath);
       file.writeAsBytesSync(imageData);
 
@@ -326,8 +318,8 @@ class ThreadMessagesViewController
   Future<void> sendCardMessage(ChatUIKitProfile cardProfile) async {
     if (await createThreadIfNotExits() == false) return;
     Map<String, String> param = {cardUserIdKey: cardProfile.id};
-    if (cardProfile.nickname != null) {
-      param[cardNicknameKey] = cardProfile.nickname!;
+    if (cardProfile.name != null) {
+      param[cardNicknameKey] = cardProfile.name!;
     }
     if (cardProfile.avatarUrl != null) {
       param[cardAvatarKey] = cardProfile.avatarUrl!;
@@ -354,8 +346,7 @@ class ThreadMessagesViewController
     willSendMsg.chatType = ChatType.GroupChat;
     final msg = await ChatUIKit.instance.sendMessage(message: willSendMsg);
     if (ChatUIKitProvider.instance.currentUserProfile != null) {
-      userMap[ChatUIKit.instance.currentUserId!] =
-          ChatUIKitProvider.instance.currentUserProfile!;
+      userMap[ChatUIKit.instance.currentUserId!] = ChatUIKitProvider.instance.currentUserProfile!;
     }
 
     if (loadFinished) {
@@ -365,8 +356,7 @@ class ThreadMessagesViewController
   }
 
   Future<void> resendMessage(Message message) async {
-    msgModelList
-        .removeWhere((element) => element.message.msgId == message.msgId);
+    msgModelList.removeWhere((element) => element.message.msgId == message.msgId);
     final msg = await ChatUIKit.instance.sendMessage(message: message);
     msgModelList.insert(0, MessageModel(message: msg));
 
@@ -377,8 +367,7 @@ class ThreadMessagesViewController
     ChatUIKit.instance.downloadAttachment(message: message);
   }
 
-  Future<void> translateMessage(Message message,
-      {bool showTranslate = true}) async {
+  Future<void> translateMessage(Message message, {bool showTranslate = true}) async {
     Message msg = await ChatUIKit.instance.translateMessage(
       msg: message,
       languages: [ChatUIKitSettings.translateTargetLanguage],
@@ -418,8 +407,7 @@ class ThreadMessagesViewController
   }
 
   void _replaceMessage(Message message) {
-    final index = msgModelList
-        .indexWhere((element) => element.message.msgId == message.msgId);
+    final index = msgModelList.indexWhere((element) => element.message.msgId == message.msgId);
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(message: message);
       updateView();
@@ -463,8 +451,8 @@ class ThreadMessagesViewController
 
   @override
   void onSuccess(String msgId, Message msg) {
-    final index = msgModelList.indexWhere((element) =>
-        element.message.msgId == msgId && msg.status != element.message.status);
+    final index =
+        msgModelList.indexWhere((element) => element.message.msgId == msgId && msg.status != element.message.status);
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(
         message: msg,
@@ -484,8 +472,8 @@ class ThreadMessagesViewController
   @override
   void onError(String msgId, Message msg, ChatError error) {
     debugPrint(' thread message error: $error');
-    final index = msgModelList.indexWhere((element) =>
-        element.message.msgId == msgId && msg.status != element.message.status);
+    final index =
+        msgModelList.indexWhere((element) => element.message.msgId == msgId && msg.status != element.message.status);
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(message: msg);
       updateView();
@@ -507,11 +495,9 @@ class ThreadMessagesViewController
     bool needUpdate = false;
     for (var reactionEvent in events) {
       if (reactionEvent.conversationId == thread?.threadId) {
-        final index = msgModelList.indexWhere(
-            (element) => element.message.msgId == reactionEvent.messageId);
+        final index = msgModelList.indexWhere((element) => element.message.msgId == reactionEvent.messageId);
         if (index != -1) {
-          Message? msg = await ChatUIKit.instance
-              .loadMessage(messageId: msgModelList[index].message.msgId);
+          Message? msg = await ChatUIKit.instance.loadMessage(messageId: msgModelList[index].message.msgId);
           if (msg != null) {
             needUpdate = true;
             List<MessageReaction>? reactions = await msg.reactionList();

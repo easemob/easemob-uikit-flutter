@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 class ThreadsView extends StatefulWidget {
@@ -86,7 +87,7 @@ class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
           : theme.color.neutralColor98,
       appBar: ChatUIKitAppBar(
         centerTitle: false,
-        title: ChatUIKitLocal.threadsViewTitle.getString(context),
+        title: ChatUIKitLocal.threadsViewTitle.localString(context),
         titleTextStyle: TextStyle(
           color: theme.color.isDark
               ? theme.color.neutralColor100

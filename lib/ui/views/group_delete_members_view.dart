@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 class GroupDeleteMembersView extends StatefulWidget {
@@ -101,7 +102,7 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
                   child: Text(
                     widget.title ??
                         ChatUIKitLocal.groupDeleteMembersViewTitle
-                            .getString(context),
+                            .localString(context),
                     textScaler: TextScaler.noScaling,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -127,8 +128,8 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
                     child: Text(
                       selectedProfiles.isEmpty
                           ? ChatUIKitLocal.groupDeleteMembersViewDelete
-                              .getString(context)
-                          : '${ChatUIKitLocal.groupDeleteMembersViewDelete.getString(context)}(${selectedProfiles.length})',
+                              .localString(context)
+                          : '${ChatUIKitLocal.groupDeleteMembersViewDelete.localString(context)}(${selectedProfiles.length})',
                       textScaler: TextScaler.noScaling,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -205,7 +206,7 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
           },
           canChangeSelected: selectedProfiles,
           searchHideText:
-              ChatUIKitLocal.createGroupViewSearchContact.getString(context),
+              ChatUIKitLocal.createGroupViewSearchContact.localString(context),
           searchData: list,
           enableMulti: true,
           attributes: widget.attributes,
@@ -233,16 +234,17 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
   void ensureDelete() async {
     showChatUIKitDialog(
       context: context,
-      title: ChatUIKitLocal.groupDeleteMembersViewAlertTitle.getString(context),
-      content:
-          ChatUIKitLocal.groupDeleteMembersViewAlertSubTitle.getString(context),
+      title:
+          ChatUIKitLocal.groupDeleteMembersViewAlertTitle.localString(context),
+      content: ChatUIKitLocal.groupDeleteMembersViewAlertSubTitle
+          .localString(context),
       items: [
         ChatUIKitDialogItem.cancel(
             label: ChatUIKitLocal.groupDeleteMembersViewAlertButtonCancel
-                .getString(context)),
+                .localString(context)),
         ChatUIKitDialogItem.confirm(
             label: ChatUIKitLocal.groupDeleteMembersViewAlertButtonConfirm
-                .getString(context),
+                .localString(context),
             onTap: () async => Navigator.of(context).pop(true))
       ],
     ).then((value) {

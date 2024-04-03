@@ -14,4 +14,18 @@ class ThreadMembersViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
+
+  ThreadMembersViewArguments copyWith({
+    ChatThread? thread,
+    ThreadMembersViewController? controller,
+    String? attributes,
+    ChatUIKitViewObserver? viewObserver,
+  }) {
+    return ThreadMembersViewArguments(
+      thread: thread ?? this.thread,
+      controller: controller ?? this.controller,
+      attributes: attributes ?? this.attributes,
+      viewObserver: viewObserver ?? this.viewObserver,
+    );
+  }
 }

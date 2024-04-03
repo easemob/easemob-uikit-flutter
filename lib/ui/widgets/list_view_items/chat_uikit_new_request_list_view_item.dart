@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 class ChatUIKitNewRequestListViewItem extends StatelessWidget {
@@ -34,7 +35,7 @@ class ChatUIKitNewRequestListViewItem extends StatelessWidget {
     Widget reason = Text(
       model.reason?.isNotEmpty == true
           ? model.reason!
-          : ChatUIKitLocal.newRequestItemAddReason.getString(context),
+          : ChatUIKitLocal.newRequestItemAddReason.localString(context),
       textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
@@ -76,7 +77,7 @@ class ChatUIKitNewRequestListViewItem extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                ChatUIKitLocal.newRequestItemAdd.getString(context),
+                ChatUIKitLocal.newRequestItemAdd.localString(context),
                 textScaler: TextScaler.noScaling,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(

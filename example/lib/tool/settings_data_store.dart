@@ -1,9 +1,13 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-const String themeKey = 'themeKey';
 const String languageKey = 'languageKey';
+const String threadKey = 'threadKey';
+const String translationKey = 'translationKey';
+const String reactionKey = 'reactionKey';
+const String targetLanguageKey = 'targetLanguageKey';
 
 class SettingsDataStore {
   static SettingsDataStore? _instance;
@@ -21,17 +25,11 @@ class SettingsDataStore {
   Future<void> init() async {
     WidgetsFlutterBinding.ensureInitialized();
     _sharedPreferences ??= await SharedPreferences.getInstance();
-
     ChatUIKitLocalizations().translate(currentLanguage);
-  }
-
-  int get currentThemeIndex {
-    return _sharedPreferences?.getInt(themeKey) ?? 0;
-  }
-
-  Future<void> saveTheme(int index) async {
-    _sharedPreferences ??= await SharedPreferences.getInstance();
-    _sharedPreferences?.setInt(themeKey, index);
+    ChatUIKitSettings.enableThread = enableThread;
+    ChatUIKitSettings.enableTranslation = enableTranslation;
+    ChatUIKitSettings.enableReaction = enableReaction;
+    ChatUIKitSettings.translateTargetLanguage = translateTargetLanguage;
   }
 
   String get currentLanguage {
@@ -41,14 +39,49 @@ class SettingsDataStore {
   Future<void> saveLanguage(String language) async {
     _sharedPreferences ??= await SharedPreferences.getInstance();
     _sharedPreferences?.setString(languageKey, language);
+    ChatUIKitLocalizations().translate(language);
   }
 
-  // Future<void> languageChange({String language = 'zh'}) async {
-  //   _sharedPreferences ??= await SharedPreferences.getInstance();
-  //   _sharedPreferences?.setString(languageKey, language);
-  // }
+  String get translateTargetLanguage {
+    return _sharedPreferences?.getString(targetLanguageKey) ?? 'zh-Hans';
+  }
 
-  // String getLanguage() {
-  //   return _sharedPreferences?.getString(languageKey) ?? 'en';
-  // }
+  Future<void> saveTranslateTargetLanguage(String language) async {
+    _sharedPreferences ??= await SharedPreferences.getInstance();
+    _sharedPreferences?.setString(targetLanguageKey, language);
+    ChatUIKitSettings.translateTargetLanguage = language;
+  }
+
+  bool get enableThread {
+    return _sharedPreferences?.getBool(threadKey) ??
+        ChatUIKitSettings.enableThread;
+  }
+
+  Future<void> saveThread(bool enable) async {
+    _sharedPreferences ??= await SharedPreferences.getInstance();
+    _sharedPreferences?.setBool(threadKey, enable);
+    ChatUIKitSettings.enableThread = enable;
+  }
+
+  bool get enableTranslation {
+    return _sharedPreferences?.getBool(translationKey) ??
+        ChatUIKitSettings.enableTranslation;
+  }
+
+  Future<void> saveTranslation(bool enable) async {
+    _sharedPreferences ??= await SharedPreferences.getInstance();
+    _sharedPreferences?.setBool(translationKey, enable);
+    ChatUIKitSettings.enableTranslation = enable;
+  }
+
+  bool get enableReaction {
+    return _sharedPreferences?.getBool(reactionKey) ??
+        ChatUIKitSettings.enableReaction;
+  }
+
+  Future<void> saveReaction(bool enable) async {
+    _sharedPreferences ??= await SharedPreferences.getInstance();
+    _sharedPreferences?.setBool(reactionKey, enable);
+    ChatUIKitSettings.enableReaction = enable;
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -384,7 +385,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
             );
           },
           child: ChatUIKitDetailsListViewItem(
-            title: ChatUIKitLocal.groupDetailViewMember.getString(context),
+            title: ChatUIKitLocal.groupDetailViewMember.localString(context),
             trailing: SizedBox(
               width: 100,
               child: Row(
@@ -421,7 +422,8 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
           ),
         ),
         ChatUIKitDetailsListViewItem(
-          title: ChatUIKitLocal.groupDetailViewDoNotDisturb.getString(context),
+          title:
+              ChatUIKitLocal.groupDetailViewDoNotDisturb.localString(context),
           trailing: ValueListenableBuilder(
             valueListenable: isNotDisturb,
             builder: (context, value, child) {
@@ -459,7 +461,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
           onTap: clearAllHistory,
           child: ChatUIKitDetailsListViewItem(
               title: ChatUIKitLocal.groupDetailViewClearChatHistory
-                  .getString(context)),
+                  .localString(context)),
         ),
         if (group?.permissionType == GroupPermissionType.Owner) ...[
           Container(
@@ -475,7 +477,8 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
               changeGroupName();
             },
             child: ChatUIKitDetailsListViewItem(
-              title: ChatUIKitLocal.groupDetailViewGroupName.getString(context),
+              title:
+                  ChatUIKitLocal.groupDetailViewGroupName.localString(context),
               trailing: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -515,8 +518,8 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
               changeGroupDesc();
             },
             child: ChatUIKitDetailsListViewItem(
-              title:
-                  ChatUIKitLocal.groupDetailViewDescription.getString(context),
+              title: ChatUIKitLocal.groupDetailViewDescription
+                  .localString(context),
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -560,12 +563,13 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
 
   void clearAllHistory() async {
     final ret = await showChatUIKitDialog(
-      title: ChatUIKitLocal.groupDetailViewClearChatHistory.getString(context),
+      title:
+          ChatUIKitLocal.groupDetailViewClearChatHistory.localString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
           label: ChatUIKitLocal.groupDetailViewClearChatHistoryAlertButtonCancel
-              .getString(context),
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
@@ -573,7 +577,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
         ChatUIKitDialogItem.confirm(
           label: ChatUIKitLocal
               .contactDetailViewClearChatHistoryAlertButtonConfirm
-              .getString(context),
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },
@@ -594,7 +598,8 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     if (group?.permissionType == GroupPermissionType.Owner) {
       list.add(
         ChatUIKitBottomSheetItem.normal(
-          label: ChatUIKitLocal.groupDetailViewTransferGroup.getString(context),
+          label:
+              ChatUIKitLocal.groupDetailViewTransferGroup.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
             changeOwner();
@@ -603,7 +608,8 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       );
       list.add(
         ChatUIKitBottomSheetItem.destructive(
-          label: ChatUIKitLocal.groupDetailViewDisbandGroup.getString(context),
+          label:
+              ChatUIKitLocal.groupDetailViewDisbandGroup.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
             destroyGroup();
@@ -613,7 +619,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     } else {
       list.add(
         ChatUIKitBottomSheetItem.destructive(
-          label: ChatUIKitLocal.groupDetailViewLeaveGroup.getString(context),
+          label: ChatUIKitLocal.groupDetailViewLeaveGroup.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
             leaveGroup();
@@ -623,7 +629,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     }
 
     showChatUIKitBottomSheet(
-      cancelLabel: ChatUIKitLocal.groupDetailViewCancel.getString(context),
+      cancelLabel: ChatUIKitLocal.groupDetailViewCancel.localString(context),
       context: context,
       items: list,
     );
@@ -639,21 +645,22 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
 
   void destroyGroup() async {
     final ret = await showChatUIKitDialog(
-      title: ChatUIKitLocal.groupDetailViewDisbandAlertTitle.getString(context),
-      content:
-          ChatUIKitLocal.groupDetailViewDisbandAlertSubTitle.getString(context),
+      title:
+          ChatUIKitLocal.groupDetailViewDisbandAlertTitle.localString(context),
+      content: ChatUIKitLocal.groupDetailViewDisbandAlertSubTitle
+          .localString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
           label: ChatUIKitLocal.groupDetailViewDisbandAlertButtonCancel
-              .getString(context),
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
           label: ChatUIKitLocal.groupDetailViewDisbandAlertButtonConfirm
-              .getString(context),
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },
@@ -672,21 +679,21 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
 
   void leaveGroup() async {
     final ret = await showChatUIKitDialog(
-      title: ChatUIKitLocal.groupDetailViewLeaveAlertTitle.getString(context),
+      title: ChatUIKitLocal.groupDetailViewLeaveAlertTitle.localString(context),
       content:
-          ChatUIKitLocal.groupDetailViewLeaveAlertSubTitle.getString(context),
+          ChatUIKitLocal.groupDetailViewLeaveAlertSubTitle.localString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
           label: ChatUIKitLocal.groupDetailViewLeaveAlertButtonCancel
-              .getString(context),
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
           label: ChatUIKitLocal.groupDetailViewLeaveAlertButtonConfirm
-              .getString(context),
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },
@@ -723,7 +730,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       context,
       ChatUIKitRouteNames.changeInfoView,
       ChangeInfoViewArguments(
-        title: ChatUIKitLocal.groupDetailViewGroupName.getString(context),
+        title: ChatUIKitLocal.groupDetailViewGroupName.localString(context),
         maxLength: 32,
         attributes: widget.attributes,
         inputTextCallback: () async {
@@ -749,7 +756,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       context,
       ChatUIKitRouteNames.changeInfoView,
       ChangeInfoViewArguments(
-        title: ChatUIKitLocal.groupDetailViewDescription.getString(context),
+        title: ChatUIKitLocal.groupDetailViewDescription.localString(context),
         maxLength: 256,
         attributes: widget.attributes,
         inputTextCallback: () async {

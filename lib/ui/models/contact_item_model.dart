@@ -1,7 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 
-class ContactItemModel
-    with ChatUIKitListItemModelBase, NeedAlphabetical, NeedSearch {
+class ContactItemModel with ChatUIKitListItemModelBase, NeedAlphabetical, NeedSearch {
   @override
   ChatUIKitProfile profile;
 
@@ -9,6 +8,14 @@ class ContactItemModel
     required this.profile,
   }) {
     profile = profile;
+  }
+
+  ContactItemModel copyWith({
+    ChatUIKitProfile? profile,
+  }) {
+    return ContactItemModel(
+      profile: profile ?? this.profile,
+    );
   }
 
   @override

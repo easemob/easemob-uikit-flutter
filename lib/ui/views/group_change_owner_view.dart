@@ -106,7 +106,7 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
                     child: Text(
                       widget.title ??
                           ChatUIKitLocal.groupChangeOwnerViewTitle
-                              .getString(context),
+                              .localString(context),
                       textScaler: TextScaler.noScaling,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -156,19 +156,19 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
 
   void showConfirmDialog(BuildContext context, ContactItemModel model) async {
     bool? ret = await showChatUIKitDialog(
-      title: ChatUIKitLocal.groupChangeOwnerViewAlertTitle.getString(context),
+      title: ChatUIKitLocal.groupChangeOwnerViewAlertTitle.localString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
           label: ChatUIKitLocal.groupChangeOwnerViewAlertButtonCancel
-              .getString(context),
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
           label: ChatUIKitLocal.groupChangeOwnerViewAlertButtonConfirm
-              .getString(context),
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },

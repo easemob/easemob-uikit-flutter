@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 Future<T?> showChatUIKitBottomSheet<T>({
@@ -273,7 +274,7 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
             : theme.color.neutralColor95),
       ));
       String? str = cancelLabel;
-      str ??= ChatUIKitLocal.bottomSheetCancel.getString(context);
+      str ??= ChatUIKitLocal.bottomSheetCancel.localString(context);
       list.add(
         InkWell(
           highlightColor: Colors.transparent,

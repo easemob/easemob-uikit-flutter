@@ -1,66 +1,116 @@
 // 单例模式
-import 'dart:convert';
-
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/home_page.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sqflite/sqflite.dart';
 
 const String languageKey = 'languageKey';
 
 class UserDataStore {
   static UserDataStore? _instance;
-  SharedPreferences? _sharedPreferences;
-
-  List<String> unNotifyGroupIds = [];
 
   factory UserDataStore() {
     _instance ??= UserDataStore._();
     return _instance!;
   }
 
+  Database? _db;
+
   UserDataStore._();
 
-  Future<void> init() async {
+  Future<void> init({VoidCallback? onOpened}) async {
     WidgetsFlutterBinding.ensureInitialized();
-    _sharedPreferences ??= await SharedPreferences.getInstance();
-    String? currentUser = ChatUIKit.instance.currentUserId;
-    if (currentUser?.isNotEmpty == true) {
-      String? info = _sharedPreferences?.getString(currentUser!);
-      if (info != null) {
-        Map<String, dynamic>? map = json.decode(info);
-        if (map?.isEmpty == true) return;
-        ChatUIKitProvider.instance.addProfiles(
-          [
-            ChatUIKitProfile.contact(
-                id: ChatUIKit.instance.currentUserId!,
-                nickname: map?[nicknameKey],
-                avatarUrl: map?[avatarUrlKey])
-          ],
-        );
-      }
-    }
+    await openDemoDB();
+    onOpened?.call();
   }
 
+  Future<void> dispose() async {
+    await _db?.close();
+  }
+
+  // 打开db
+  Future<void> openDemoDB() async {
+    String databasesPath = await getDatabasesPath();
+    String path = '$databasesPath/${ChatUIKit.instance.currentUserId!}.db';
+
+    await openDatabase(
+      path,
+      version: 1,
+      onCreate: (Database db, int version) async {
+        await db.execute(
+          'CREATE TABLE ${ChatUIKit.instance.currentUserId!} (id TEXT PRIMARY KEY, nickname TEXT, avatar TEXT, remark TEXT, type INTEGER)',
+        );
+      },
+      onOpen: (db) {
+        _db = db;
+        debugPrint('db opened');
+      },
+    );
+  }
+
+  // 插入或更新数据
   Future<void> saveUserData(ChatUIKitProfile profile) async {
-    String? currentUser = ChatUIKit.instance.currentUserId;
-    if (currentUser?.isNotEmpty == true) {
-      _sharedPreferences ??= await SharedPreferences.getInstance();
-      _sharedPreferences?.setString(
-        currentUser!,
-        json.encode({
-          nicknameKey: profile.showName,
-          avatarUrlKey: profile.avatarUrl,
-        }),
+    await _db?.insert(
+      ChatUIKit.instance.currentUserId!,
+      {
+        'id': profile.id,
+        'nickname': profile.name,
+        'avatar': profile.avatarUrl,
+        'remark': profile.remark,
+        'type': profile.type.index,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  // 批量插入或更新数据
+  Future<void> saveUserDatas(List<ChatUIKitProfile> profiles) async {
+    Batch? batch = _db?.batch();
+    for (var profile in profiles) {
+      batch?.insert(
+        ChatUIKit.instance.currentUserId!,
+        {
+          'id': profile.id,
+          'nickname': profile.name,
+          'avatar': profile.avatarUrl,
+          'remark': profile.remark,
+          'type': profile.type.index,
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
+    await batch?.commit();
   }
 
-  Future<void> languageChange({String language = 'zh'}) async {
-    _sharedPreferences ??= await SharedPreferences.getInstance();
-    _sharedPreferences?.setString(languageKey, language);
+  // 获取所有数据
+  Future<ChatUIKitProfile?> loadProfile(String id) async {
+    List<Map<String, dynamic>>? maps = await _db?.query(
+      ChatUIKit.instance.currentUserId!,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    if (maps?.isNotEmpty == true) {
+      return ChatUIKitProfile(
+        id: maps?.first['id'] as String,
+        name: maps?.first['nickname'] as String,
+        avatarUrl: maps?.first['avatar'] as String,
+        remark: maps?.first['remark'] as String,
+        type: ChatUIKitProfileType.values[maps?.first['type'] as int],
+      );
+    }
+    return null;
   }
 
-  String getLanguage() {
-    return _sharedPreferences?.getString(languageKey) ?? 'en';
+  Future<List<ChatUIKitProfile>> loadAllProfiles() async {
+    List<Map<String, dynamic>>? maps = await _db?.query(ChatUIKit.instance.currentUserId!);
+    return List.generate(maps?.length ?? 0, (i) {
+      final info = maps?[i];
+      return ChatUIKitProfile(
+        id: info?['id'] as String,
+        name: info?['nickname'] as String?,
+        avatarUrl: info?['avatar'] as String?,
+        remark: info?['remark'] as String?,
+        type: ChatUIKitProfileType.values[info?['type'] as int],
+      );
+    });
   }
 }

@@ -114,7 +114,7 @@ class _ChangeInfoViewState extends State<ChangeInfoView> {
             textAlign: TextAlign.start,
             decoration: InputDecoration(
               hintText: widget.hint ??
-                  ChatUIKitLocal.changInfoViewInputHint.getString(context),
+                  ChatUIKitLocal.changInfoViewInputHint.localString(context),
               hintStyle: TextStyle(
                 fontWeight: theme.font.titleMedium.fontWeight,
                 fontSize: theme.font.titleMedium.fontSize,
@@ -171,7 +171,7 @@ class _ChangeInfoViewState extends State<ChangeInfoView> {
                     },
                     child: Text(
                       widget.saveButtonTitle ??
-                          ChatUIKitLocal.changInfoViewSave.getString(context),
+                          ChatUIKitLocal.changInfoViewSave.localString(context),
                       textScaler: TextScaler.noScaling,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

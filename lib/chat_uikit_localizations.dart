@@ -1,4 +1,4 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
 import 'package:flutter/widgets.dart';
 
 mixin ChatUIKitLocal {
@@ -325,8 +325,8 @@ mixin ChatUIKitLocal {
     conversationListLongPressMenuDelete: '删除',
     conversationListLongPressMenuPin: '置顶',
     conversationListLongPressMenuUnPin: '取消置顶',
-    conversationListLongPressMenuMute: '静音',
-    conversationListLongPressMenuUnmute: '取消静音',
+    conversationListLongPressMenuMute: '免打扰',
+    conversationListLongPressMenuUnmute: '取消免打扰',
     conversationListLongPressMenuRead: '标记为已读',
     conversationListLongPressMenuCancel: '取消',
     messageListLongPressMenuCopy: '复制',
@@ -562,7 +562,7 @@ mixin ChatUIKitLocal {
     contactDetailViewSearch: 'Search message',
     contactDetailViewRemark: 'Remark',
     contactDetailViewPhone: 'Phone',
-    contactDetailViewDoNotDisturb: 'Do not disturb',
+    contactDetailViewDoNotDisturb: 'Mute Notifications',
     contactDetailViewBlock: 'Block',
     contactDetailViewClearChatHistory: 'Clear chat history',
     contactDetailViewClearChatHistoryAlertTitle: 'Clear chat history?',
@@ -581,7 +581,7 @@ mixin ChatUIKitLocal {
     forwardMessage: 'Forward',
     forwardedMessage: 'Forwarded',
     groupDetailViewSend: 'Send message',
-    groupDetailViewDoNotDisturb: 'Do not disturb',
+    groupDetailViewDoNotDisturb: 'Mute Notifications',
     groupDetailViewClearChatHistory: 'Clear chat history',
     groupDetailViewClearChatHistoryAlertButtonConfirm: 'Confirm',
     groupDetailViewClearChatHistoryAlertButtonCancel: 'Cancel',
@@ -719,10 +719,37 @@ mixin ChatUIKitLocal {
   };
 }
 
+class ChatLocal {
+  /// Constructor of the model.
+  const ChatLocal(
+    this.languageCode,
+    this.mapData, {
+    this.countryCode,
+    this.fontFamily,
+    this.scriptCode,
+  }) : assert(languageCode != '');
+
+  /// Language code. This will use to check with the supported language codes
+  /// and find the data for localization.
+  final String languageCode;
+
+  /// This is the map of data that will use for localization.
+  final Map<String, dynamic> mapData;
+
+  /// Country code is the region sub tag for the locale.
+  final String? countryCode;
+
+  /// Font family for the language
+  final String? fontFamily;
+
+  /// The script sub tag for the locale.
+  final String? scriptCode;
+}
+
 class ChatUIKitLocalizations {
-  List<MapLocale> defaultLocale = [
-    const MapLocale('zh', ChatUIKitLocal.zh),
-    const MapLocale('en', ChatUIKitLocal.en),
+  List<ChatLocal> defaultLocale = [
+    const ChatLocal('zh', ChatUIKitLocal.zh),
+    const ChatLocal('en', ChatUIKitLocal.en),
   ];
 
   static final ChatUIKitLocalizations _instance = ChatUIKitLocalizations._();
@@ -731,7 +758,15 @@ class ChatUIKitLocalizations {
   ChatUIKitLocalizations._() {
     WidgetsFlutterBinding.ensureInitialized();
     _localization.init(
-      mapLocales: defaultLocale,
+      mapLocales: defaultLocale.map((e) {
+        return MapLocale(
+          e.languageCode,
+          e.mapData,
+          countryCode: e.countryCode,
+          fontFamily: e.fontFamily,
+          scriptCode: e.scriptCode,
+        );
+      }).toList(),
       initLanguageCode: 'en',
     );
   }
@@ -747,13 +782,21 @@ class ChatUIKitLocalizations {
   Iterable<LocalizationsDelegate<dynamic>> get localizationsDelegates =>
       _localization.localizationsDelegates;
 
-  void addLocales({required List<MapLocale> locales}) {
+  void addLocales({required List<ChatLocal> locales}) {
     defaultLocale = defaultLocale + locales;
   }
 
   void resetLocales() {
     _localization.init(
-      mapLocales: defaultLocale,
+      mapLocales: defaultLocale.map((e) {
+        return MapLocale(
+          e.languageCode,
+          e.mapData,
+          countryCode: e.countryCode,
+          fontFamily: e.fontFamily,
+          scriptCode: e.scriptCode,
+        );
+      }).toList(),
       initLanguageCode: 'en',
     );
   }

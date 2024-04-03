@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 class ChatUIKitConversationListViewItem extends StatelessWidget {
@@ -48,9 +49,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style: TextStyle(
-              color: theme.color.isDark
-                  ? theme.color.neutralColor98
-                  : theme.color.neutralColor1,
+              color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
               fontSize: theme.font.titleLarge.fontSize,
               fontWeight: theme.font.titleLarge.fontWeight,
             ),
@@ -66,26 +65,19 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
             child: ChatUIKitSettings.conversationListMuteImage != null
                 ? Image(image: ChatUIKitSettings.conversationListMuteImage!)
                 : ChatUIKitImageLoader.noDisturb(
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor5
-                        : theme.color.neutralColor6),
+                    color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor6),
           )
         : const SizedBox();
 
     Widget timeLabel = showNewMessageTime
         ? Text(
-            ChatUIKitTimeFormatter.instance.formatterHandler?.call(
-                    context,
-                    ChatUIKitTimeType.conversation,
-                    timestamp ?? info.lastMessage?.serverTime ?? 0) ??
-                ChatUIKitTimeTool.getChatTimeStr(
-                    timestamp ?? info.lastMessage?.serverTime ?? 0),
+            ChatUIKitTimeFormatter.instance.formatterHandler
+                    ?.call(context, ChatUIKitTimeType.conversation, timestamp ?? info.lastMessage?.serverTime ?? 0) ??
+                ChatUIKitTimeTool.getChatTimeStr(timestamp ?? info.lastMessage?.serverTime ?? 0),
             textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: theme.color.isDark
-                  ? theme.color.neutralColor6
-                  : theme.color.neutralColor5,
+              color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
               fontSize: theme.font.bodySmall.fontSize,
               fontWeight: theme.font.bodySmall.fontWeight,
             ),
@@ -112,9 +104,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
     );
 
     final style = TextStyle(
-      color: theme.color.isDark
-          ? theme.color.neutralColor6
-          : theme.color.neutralColor5,
+      color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
       fontSize: theme.font.labelMedium.fontSize,
       fontWeight: theme.font.labelMedium.fontWeight,
     );
@@ -141,13 +131,10 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
                     children: [
                       if (info.hasMention)
                         TextSpan(
-                            text:
-                                '[${ChatUIKitLocal.conversationListItemMention.getString(context)}]',
+                            text: '[${ChatUIKitLocal.conversationListItemMention.localString(context)}]',
                             style: () {
                               final style = TextStyle(
-                                color: theme.color.isDark
-                                    ? theme.color.primaryColor6
-                                    : theme.color.primaryColor5,
+                                color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                                 fontSize: theme.font.labelMedium.fontSize,
                                 fontWeight: theme.font.labelMedium.fontWeight,
                               );
@@ -160,7 +147,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
                   child: ChatUIKitEmojiRichText(
                     text: info.lastMessage?.showInfoTranslate(
                           context,
-                          needNickname: true,
+                          needShowName: true,
                         ) ??
                         '',
                     emojiSize: const Size(16, 16),
@@ -180,9 +167,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
               width: 8,
               height: 8,
               decoration: BoxDecoration(
-                color: theme.color.isDark
-                    ? theme.color.primaryColor6
-                    : theme.color.primaryColor5,
+                color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                 borderRadius: BorderRadius.circular(4),
               ),
             )
@@ -191,9 +176,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
         child: unreadCount,
       );
     } else {
-      unreadCount = showUnreadCount &&
-              info.unreadCount > 0 &&
-              ChatUIKitSettings.showConversationListUnreadCount == true
+      unreadCount = showUnreadCount && info.unreadCount > 0 && ChatUIKitSettings.showConversationListUnreadCount == true
           ? Container(
               padding: const EdgeInsets.fromLTRB(4, 1, 4, 1),
               constraints: const BoxConstraints(
@@ -203,9 +186,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
               ),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: theme.color.isDark
-                    ? theme.color.primaryColor6
-                    : theme.color.primaryColor5,
+                color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
@@ -213,9 +194,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
                 textScaler: TextScaler.noScaling,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor1
-                      : theme.color.neutralColor98,
+                  color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
                   fontSize: theme.font.labelSmall.fontSize,
                   fontWeight: theme.font.labelSmall.fontWeight,
                 ),
@@ -256,12 +235,8 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
     content = Container(
       padding: const EdgeInsets.fromLTRB(16, 13, 16, 13),
       color: info.pinned
-          ? (theme.color.isDark
-              ? theme.color.neutralColor2
-              : theme.color.neutralColor95)
-          : (theme.color.isDark
-              ? theme.color.neutralColor1
-              : theme.color.neutralColor98),
+          ? (theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor95)
+          : (theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98),
       child: content,
     );
 
@@ -276,9 +251,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
           child: Divider(
             height: borderHeight,
             thickness: borderHeight,
-            color: theme.color.isDark
-                ? theme.color.neutralColor2
-                : theme.color.neutralColor9,
+            color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9,
           ),
         )
       ],

@@ -1,5 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/ui/custom/custom_tab_indicator.dart';
+
 import 'package:flutter/material.dart';
 
 class ForwardMessageSelectView extends StatefulWidget {
@@ -147,7 +148,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
                   child: Text(
                     widget.title ??
                         ChatUIKitLocal.forwardMessageViewTitle
-                            .getString(context),
+                            .localString(context),
                     textScaler: TextScaler.noScaling,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -285,7 +286,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
           return item;
         },
         searchHideText:
-            ChatUIKitLocal.conversationsViewSearchHint.getString(context),
+            ChatUIKitLocal.conversationsViewSearchHint.localString(context),
         searchData: list,
       ),
     ).then((value) => viewObserver = null);
@@ -317,8 +318,8 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
       },
       child: Text(
         hasForwarded
-            ? ChatUIKitLocal.forwardedMessage.getString(context)
-            : ChatUIKitLocal.forwardMessage.getString(context),
+            ? ChatUIKitLocal.forwardedMessage.localString(context)
+            : ChatUIKitLocal.forwardMessage.localString(context),
         textAlign: TextAlign.right,
         textScaler: TextScaler.noScaling,
         style: TextStyle(

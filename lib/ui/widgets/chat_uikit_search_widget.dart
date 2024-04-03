@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 class SearchNotification extends Notification {
@@ -198,7 +199,7 @@ class _ChatUIKitSearchWidgetState extends State<ChatUIKitSearchWidget> {
               child: Container(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: Text(
-                  ChatUIKitLocal.searchWidgetCancel.getString(context),
+                  ChatUIKitLocal.searchWidgetCancel.localString(context),
                   overflow: TextOverflow.ellipsis,
                   textScaler: TextScaler.noScaling,
                   style: TextStyle(

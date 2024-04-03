@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -193,8 +194,7 @@ class ThreadMessagesView extends StatefulWidget {
   State<ThreadMessagesView> createState() => _ThreadMessagesViewState();
 }
 
-class _ThreadMessagesViewState extends State<ThreadMessagesView>
-    with ThreadObserver {
+class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObserver {
   String? title;
   late ThreadMessagesViewController controller;
   late final ChatUIKitInputBarController inputBarController;
@@ -219,8 +219,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       setState(() {});
     });
 
-    inputBarController =
-        widget.inputBarController ?? ChatUIKitInputBarController();
+    inputBarController = widget.inputBarController ?? ChatUIKitInputBarController();
     inputBarController.addListener(() {
       if (showMoreBtn != !inputBarController.text.trim().isNotEmpty) {
         showMoreBtn = !inputBarController.text.trim().isNotEmpty;
@@ -253,6 +252,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
   void dispose() {
     ChatUIKit.instance.removeObserver(this);
     editBarTextEditingController?.dispose();
+    _scrollController.dispose();
     controller.dispose();
     widget.viewObserver?.dispose();
     super.dispose();
@@ -262,9 +262,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       appBar: ChatUIKitAppBar(
         title: controller.title(widget.title),
         subtitle: widget.subtitle,
@@ -281,9 +279,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                   child: Text(
                     '取消',
                     style: TextStyle(
-                      color: theme.color.isDark
-                          ? theme.color.primaryColor6
-                          : theme.color.primaryColor5,
+                      color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                       fontWeight: theme.font.labelMedium.fontWeight,
                       fontSize: theme.font.labelMedium.fontSize,
                     ),
@@ -296,9 +292,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Icon(
                     Icons.more_vert,
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor9
-                        : theme.color.neutralColor3,
+                    color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
                   ),
                 ),
               ),
@@ -364,17 +358,13 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                   itemBuilder: widget.itemBuilder ?? itemBuilder,
                   alertItemBuilder: widget.alertItemBuilder ?? alertItem,
                   onErrorBtnTap: (model) {
-                    bool ret =
-                        widget.onErrorBtnTapHandler?.call(context, model) ??
-                            false;
+                    bool ret = widget.onErrorBtnTapHandler?.call(context, model) ?? false;
                     if (ret == false) {
                       controller.resendMessage(model.message);
                     }
                   },
                   onReactionItemTap: (model, reaction) {
-                    bool? ret = widget.onReactionItemTap
-                            ?.call(context, model, reaction) ??
-                        false;
+                    bool? ret = widget.onReactionItemTap?.call(context, model, reaction) ?? false;
                     if (ret == false) {
                       controller.updateReaction(
                         model.message.msgId,
@@ -384,8 +374,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                     }
                   },
                   onReactionInfoTap: (context, model) {
-                    bool ret =
-                        widget.onReactionInfoTap?.call(context, model) ?? false;
+                    bool ret = widget.onReactionInfoTap?.call(context, model) ?? false;
                     if (ret == false) {
                       showReactionsInfo(context, model);
                     }
@@ -451,8 +440,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           ),
         if (editMessage != null)
           Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -496,12 +484,8 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       showNickname: widget.showMessageItemNickname,
       enableSelected: controller.isMultiSelectMode
           ? () {
-              if (controller.selectedMessages
-                  .map((e) => e.msgId)
-                  .toList()
-                  .contains(model.message.msgId)) {
-                controller.selectedMessages
-                    .removeWhere((e) => model.message.msgId == e.msgId);
+              if (controller.selectedMessages.map((e) => e.msgId).toList().contains(model.message.msgId)) {
+                controller.selectedMessages.removeWhere((e) => model.message.msgId == e.msgId);
               } else {
                 controller.selectedMessages.add(model.message);
               }
@@ -540,8 +524,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     );
 
     double zoom = 0.8;
-    if (MediaQuery.of(context).size.width >
-        MediaQuery.of(context).size.height) {
+    if (MediaQuery.of(context).size.width > MediaQuery.of(context).size.height) {
       zoom = 0.5;
     }
 
@@ -551,9 +534,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     );
 
     content = Align(
-      alignment: model.message.direction == MessageDirection.SEND
-          ? Alignment.centerRight
-          : Alignment.centerLeft,
+      alignment: model.message.direction == MessageDirection.SEND ? Alignment.centerRight : Alignment.centerLeft,
       child: content,
     );
 
@@ -590,20 +571,21 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        model.message.fromProfile.showName,
+                        () {
+                          ChatUIKitProfile? profile = ChatUIKitProvider.instance.profilesCache[model.message.from!];
+                          profile ??= model.message.fromProfile;
+                          return profile.showName;
+                        }(),
                         style: TextStyle(
                           fontWeight: theme.font.titleSmall.fontWeight,
                           fontSize: theme.font.titleSmall.fontSize,
-                          color: theme.color.isDark
-                              ? theme.color.neutralSpecialColor6
-                              : theme.color.neutralSpecialColor5,
+                          color:
+                              theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
                         ),
                       ),
                       Text(
-                        ChatUIKitTimeFormatter.instance.formatterHandler?.call(
-                                context,
-                                ChatUIKitTimeType.message,
-                                model.message.serverTime) ??
+                        ChatUIKitTimeFormatter.instance.formatterHandler
+                                ?.call(context, ChatUIKitTimeType.message, model.message.serverTime) ??
                             ChatUIKitTimeTool.getChatTimeStr(
                               model.message.serverTime,
                               needTime: true,
@@ -611,9 +593,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                         style: TextStyle(
                           fontWeight: theme.font.bodySmall.fontWeight,
                           fontSize: theme.font.bodySmall.fontSize,
-                          color: theme.color.isDark
-                              ? theme.color.neutralColor6
-                              : theme.color.neutralColor5,
+                          color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
                         ),
                       )
                     ],
@@ -623,9 +603,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                   Divider(
                     height: 0.5,
                     thickness: 0.5,
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor2
-                        : theme.color.neutralColor98,
+                    color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor98,
                   )
                 ],
               ),
@@ -646,9 +624,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
             style: TextStyle(
               fontWeight: theme.font.bodyMedium.fontWeight,
               fontSize: theme.font.bodyMedium.fontSize,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor98
-                  : theme.color.neutralColor2,
+              color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor2,
             ),
           ));
     } else if (model.message.bodyType == MessageType.IMAGE) {
@@ -676,7 +652,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     if (controller.hasPermission) {
       items.add(
         ChatUIKitBottomSheetItem.normal(
-          label: ChatUIKitLocal.threadsMessageEdit.getString(context),
+          label: ChatUIKitLocal.threadsMessageEdit.localString(context),
           onTap: () async {
             if (controller.thread == null) return;
             Navigator.of(context).pop();
@@ -684,8 +660,8 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
               context,
               ChatUIKitRouteNames.changeInfoView,
               ChangeInfoViewArguments(
-                title: ChatUIKitLocal.threadEditName.getString(context),
-                hint: ChatUIKitLocal.threadNewName.getString(context),
+                title: ChatUIKitLocal.threadEditName.localString(context),
+                hint: ChatUIKitLocal.threadNewName.localString(context),
                 maxLength: 128,
                 attributes: widget.attributes,
                 inputTextCallback: () async {
@@ -699,22 +675,18 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
             });
           },
           style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralColor98
-                : theme.color.neutralColor2,
+            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor2,
             fontSize: theme.font.labelLarge.fontSize,
             fontWeight: theme.font.labelLarge.fontWeight,
           ),
           icon: ChatUIKitImageLoader.messageEdit(
-              color: theme.color.isDark
-                  ? theme.color.neutralColor98
-                  : theme.color.neutralColor2),
+              color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor2),
         ),
       );
     }
     items.add(
       ChatUIKitBottomSheetItem.normal(
-        label: ChatUIKitLocal.threadsMessageMembers.getString(context),
+        label: ChatUIKitLocal.threadsMessageMembers.localString(context),
         onTap: () async {
           Navigator.of(context).pop();
           if (controller.thread == null) return;
@@ -728,21 +700,17 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           );
         },
         style: TextStyle(
-          color: theme.color.isDark
-              ? theme.color.neutralColor98
-              : theme.color.neutralColor1,
+          color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
           fontSize: theme.font.labelLarge.fontSize,
           fontWeight: theme.font.labelLarge.fontWeight,
         ),
         icon: ChatUIKitImageLoader.contacts(
-            color: theme.color.isDark
-                ? theme.color.neutralColor98
-                : theme.color.neutralColor1),
+            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1),
       ),
     );
     items.add(
       ChatUIKitBottomSheetItem.destructive(
-        label: ChatUIKitLocal.threadsMessageLeave.getString(context),
+        label: ChatUIKitLocal.threadsMessageLeave.localString(context),
         onTap: () async {
           Navigator.of(context).pop();
           if (controller.thread == null) return;
@@ -753,23 +721,19 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           });
         },
         style: TextStyle(
-          color: theme.color.isDark
-              ? theme.color.neutralColor98
-              : theme.color.neutralColor1,
+          color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
           fontSize: theme.font.labelLarge.fontSize,
           fontWeight: theme.font.labelLarge.fontWeight,
         ),
         icon: ChatUIKitImageLoader.leaveThread(
-          color: theme.color.isDark
-              ? theme.color.errorColor6
-              : theme.color.errorColor5,
+          color: theme.color.isDark ? theme.color.errorColor6 : theme.color.errorColor5,
         ),
       ),
     );
     if (controller.hasPermission) {
       items.add(
         ChatUIKitBottomSheetItem.destructive(
-          label: ChatUIKitLocal.threadsMessageDestroy.getString(context),
+          label: ChatUIKitLocal.threadsMessageDestroy.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
             if (controller.thread == null) return;
@@ -780,16 +744,12 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
             });
           },
           style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.errorColor6
-                : theme.color.errorColor5,
+            color: theme.color.isDark ? theme.color.errorColor6 : theme.color.errorColor5,
             fontSize: theme.font.labelLarge.fontSize,
             fontWeight: theme.font.labelLarge.fontWeight,
           ),
           icon: ChatUIKitImageLoader.voiceDelete(
-            color: theme.color.isDark
-                ? theme.color.errorColor6
-                : theme.color.errorColor5,
+            color: theme.color.isDark ? theme.color.errorColor6 : theme.color.errorColor5,
           ),
         ),
       );
@@ -806,8 +766,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       key: const ValueKey('editKey'),
       autofocus: true,
       onChanged: (input) {
-        final canSend =
-            input.trim() != editMessage?.textContent && input.isNotEmpty;
+        final canSend = input.trim() != editMessage?.textContent && input.isNotEmpty;
         if (messageEditCanSend != canSend) {
           messageEditCanSend = canSend;
           setState(() {});
@@ -851,24 +810,19 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
         ),
         const SizedBox(width: 2),
         Text(
-          ChatUIKitLocal.messagesViewEditMessageTitle.getString(context),
+          ChatUIKitLocal.messagesViewEditMessageTitle.localString(context),
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
               fontWeight: theme.font.labelSmall.fontWeight,
               fontSize: theme.font.labelSmall.fontSize,
-              color: theme.color.isDark
-                  ? theme.color.neutralSpecialColor6
-                  : theme.color.neutralSpecialColor5),
+              color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5),
         ),
       ],
     );
     header = Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-      decoration: BoxDecoration(
-          color: theme.color.isDark
-              ? theme.color.neutralColor2
-              : theme.color.neutralColor9),
+      decoration: BoxDecoration(color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9),
       child: header,
     );
 
@@ -954,17 +908,13 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                 splashColor: Colors.transparent,
                 onTap: () {
                   clearAllType();
-                  List<ChatUIKitBottomSheetItem>? items =
-                      widget.morePressActions;
+                  List<ChatUIKitBottomSheetItem>? items = widget.morePressActions;
                   if (items == null) {
                     items = [];
                     items.add(ChatUIKitBottomSheetItem.normal(
-                      label: ChatUIKitLocal.messagesViewMoreActionsTitleAlbum
-                          .getString(context),
+                      label: ChatUIKitLocal.messagesViewMoreActionsTitleAlbum.localString(context),
                       icon: ChatUIKitImageLoader.messageViewMoreAlbum(
-                        color: theme.color.isDark
-                            ? theme.color.primaryColor6
-                            : theme.color.primaryColor5,
+                        color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                       ),
                       onTap: () async {
                         Navigator.of(context).pop();
@@ -972,12 +922,9 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                       },
                     ));
                     items.add(ChatUIKitBottomSheetItem.normal(
-                      label: ChatUIKitLocal.messagesViewMoreActionsTitleVideo
-                          .getString(context),
+                      label: ChatUIKitLocal.messagesViewMoreActionsTitleVideo.localString(context),
                       icon: ChatUIKitImageLoader.messageViewMoreVideo(
-                        color: theme.color.isDark
-                            ? theme.color.primaryColor6
-                            : theme.color.primaryColor5,
+                        color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                       ),
                       onTap: () async {
                         Navigator.of(context).pop();
@@ -985,12 +932,9 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                       },
                     ));
                     items.add(ChatUIKitBottomSheetItem.normal(
-                      label: ChatUIKitLocal.messagesViewMoreActionsTitleCamera
-                          .getString(context),
+                      label: ChatUIKitLocal.messagesViewMoreActionsTitleCamera.localString(context),
                       icon: ChatUIKitImageLoader.messageViewMoreCamera(
-                        color: theme.color.isDark
-                            ? theme.color.primaryColor6
-                            : theme.color.primaryColor5,
+                        color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                       ),
                       onTap: () async {
                         Navigator.of(context).pop();
@@ -998,12 +942,9 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                       },
                     ));
                     items.add(ChatUIKitBottomSheetItem.normal(
-                      label: ChatUIKitLocal.messagesViewMoreActionsTitleFile
-                          .getString(context),
+                      label: ChatUIKitLocal.messagesViewMoreActionsTitleFile.localString(context),
                       icon: ChatUIKitImageLoader.messageViewMoreFile(
-                        color: theme.color.isDark
-                            ? theme.color.primaryColor6
-                            : theme.color.primaryColor5,
+                        color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                       ),
                       onTap: () async {
                         Navigator.of(context).pop();
@@ -1011,12 +952,9 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                       },
                     ));
                     items.add(ChatUIKitBottomSheetItem.normal(
-                      label: ChatUIKitLocal.messagesViewMoreActionsTitleContact
-                          .getString(context),
+                      label: ChatUIKitLocal.messagesViewMoreActionsTitleContact.localString(context),
                       icon: ChatUIKitImageLoader.messageViewMoreCard(
-                        color: theme.color.isDark
-                            ? theme.color.primaryColor6
-                            : theme.color.primaryColor5,
+                        color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                       ),
                       onTap: () async {
                         Navigator.of(context).pop();
@@ -1103,8 +1041,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     clearAllType();
     if (message.bodyType != MessageType.TXT) return;
     editMessage = message;
-    editBarTextEditingController =
-        ChatUIKitInputBarController(text: editMessage?.textContent ?? "");
+    editBarTextEditingController = ChatUIKitInputBarController(text: editMessage?.textContent ?? "");
     setState(() {});
   }
 
@@ -1170,30 +1107,22 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
         return SizedBox(
           height: MediaQuery.sizeOf(context).height * 0.95,
           child: SelectContactView(
-            backText: ChatUIKitLocal.messagesViewSelectContactCancel
-                .getString(context),
-            title: ChatUIKitLocal.messagesViewSelectContactTitle
-                .getString(context),
+            backText: ChatUIKitLocal.messagesViewSelectContactCancel.localString(context),
+            title: ChatUIKitLocal.messagesViewSelectContactTitle.localString(context),
             onTap: (context, model) {
               showChatUIKitDialog(
-                title: ChatUIKitLocal.messagesViewShareContactAlertTitle
-                    .getString(context),
-                content: ChatUIKitLocal.messagesViewShareContactAlertSubTitle
-                    .getString(context),
+                title: ChatUIKitLocal.messagesViewShareContactAlertTitle.localString(context),
+                content: ChatUIKitLocal.messagesViewShareContactAlertSubTitle.localString(context),
                 context: context,
                 items: [
                   ChatUIKitDialogItem.cancel(
-                    label: ChatUIKitLocal
-                        .messagesViewShareContactAlertButtonCancel
-                        .getString(context),
+                    label: ChatUIKitLocal.messagesViewShareContactAlertButtonCancel.localString(context),
                     onTap: () async {
                       Navigator.of(context).pop();
                     },
                   ),
                   ChatUIKitDialogItem.confirm(
-                    label: ChatUIKitLocal
-                        .messagesViewShareContactAlertButtonConfirm
-                        .getString(context),
+                    label: ChatUIKitLocal.messagesViewShareContactAlertButtonConfirm.localString(context),
                     onTap: () async {
                       Navigator.of(context).pop(model);
                     },
@@ -1227,12 +1156,9 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                 );
               },
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
                 child: ChatUIKitImageLoader.messageLongPressForward(
-                  color: theme.color.isDark
-                      ? theme.color.primaryColor6
-                      : theme.color.primaryColor5,
+                  color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                 ),
               ),
             ),
@@ -1250,8 +1176,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       File file = File(message.localPath!);
       if (!file.existsSync()) {
         await controller.downloadMessage(message);
-        ChatUIKit.instance
-            .sendChatUIKitEvent(ChatUIKitEvent.messageDownloading);
+        ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.messageDownloading);
       } else {
         try {
           await playVoice(message.localPath!);
@@ -1348,7 +1273,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
         attributes: widget.attributes,
         actions: [
           ChatUIKitModelAction(
-            title: ChatUIKitLocal.contactDetailViewSend.getString(context),
+            title: ChatUIKitLocal.contactDetailViewSend.localString(context),
             icon: 'assets/images/chat.png',
             packageName: ChatUIKitImageLoader.packageName,
             onTap: (ctx) {
@@ -1362,7 +1287,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
             },
           ),
           ChatUIKitModelAction(
-            title: ChatUIKitLocal.contactDetailViewSearch.getString(context),
+            title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
             icon: 'assets/images/search_history.png',
             packageName: ChatUIKitImageLoader.packageName,
             iconSize: const Size(32, 32),
@@ -1432,183 +1357,155 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     }
   }
 
-  List<ChatUIKitBottomSheetItem> defaultItemLongPressed(
-      MessageModel model, ChatUIKitTheme theme) {
+  List<ChatUIKitBottomSheetItem> defaultItemLongPressed(MessageModel model, ChatUIKitTheme theme) {
     List<ChatUIKitBottomSheetItem> items = [];
-    // 复制
-    if (model.message.bodyType == MessageType.TXT) {
-      items.add(ChatUIKitBottomSheetItem.normal(
-        label: ChatUIKitLocal.messagesViewLongPressActionsTitleCopy
-            .getString(context),
-        style: TextStyle(
-          color: theme.color.isDark
-              ? theme.color.neutralColor98
-              : theme.color.neutralColor1,
-          fontWeight: theme.font.bodyLarge.fontWeight,
-          fontSize: theme.font.bodyLarge.fontSize,
-        ),
-        icon: ChatUIKitImageLoader.messageLongPressCopy(
-          color: theme.color.isDark
-              ? theme.color.neutralColor7
-              : theme.color.neutralColor3,
-        ),
-        onTap: () async {
-          Clipboard.setData(ClipboardData(text: model.message.textContent));
-          ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.messageCopied);
-          Navigator.of(context).pop();
-        },
-      ));
-    }
+    for (var element in ChatUIKitSettings.msgItemLongPressActions) {
+      // 复制
+      if (model.message.bodyType == MessageType.TXT && element == MessageLongPressActionType.copy) {
+        items.add(ChatUIKitBottomSheetItem.normal(
+          label: ChatUIKitLocal.messagesViewLongPressActionsTitleCopy.localString(context),
+          style: TextStyle(
+            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            fontWeight: theme.font.bodyLarge.fontWeight,
+            fontSize: theme.font.bodyLarge.fontSize,
+          ),
+          icon: ChatUIKitImageLoader.messageLongPressCopy(
+            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+          ),
+          onTap: () async {
+            Clipboard.setData(ClipboardData(text: model.message.textContent));
+            ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.messageCopied);
+            Navigator.of(context).pop();
+          },
+        ));
+      }
 
-    // 回复
-    if (model.message.status == MessageStatus.SUCCESS) {
-      items.add(ChatUIKitBottomSheetItem.normal(
-        icon: ChatUIKitImageLoader.messageLongPressReply(
-          color: theme.color.isDark
-              ? theme.color.neutralColor7
-              : theme.color.neutralColor3,
-        ),
-        style: TextStyle(
-          color: theme.color.isDark
-              ? theme.color.neutralColor98
-              : theme.color.neutralColor1,
-          fontWeight: theme.font.bodyLarge.fontWeight,
-          fontSize: theme.font.bodyLarge.fontSize,
-        ),
-        label: ChatUIKitLocal.messagesViewLongPressActionsTitleReply
-            .getString(context),
-        onTap: () async {
-          Navigator.of(context).pop();
-          replyMessaged(model);
-        },
-      ));
-    }
-    // 转发
-    if (model.message.status == MessageStatus.SUCCESS) {
-      items.add(ChatUIKitBottomSheetItem.normal(
-        icon: ChatUIKitImageLoader.messageLongPressForward(
-          color: theme.color.isDark
-              ? theme.color.neutralColor7
-              : theme.color.neutralColor3,
-        ),
-        style: TextStyle(
-          color: theme.color.isDark
-              ? theme.color.neutralColor98
-              : theme.color.neutralColor1,
-          fontWeight: theme.font.bodyLarge.fontWeight,
-          fontSize: theme.font.bodyLarge.fontSize,
-        ),
-        label: ChatUIKitLocal.forwardedMessage.getString(context),
-        onTap: () async {
-          Navigator.of(context).pop();
-          forwardMessage(
-            [model.message],
-            isMultiSelect: false,
-          );
-        },
-      ));
-    }
+      // 回复
+      if (model.message.status == MessageStatus.SUCCESS && element == MessageLongPressActionType.reply) {
+        items.add(ChatUIKitBottomSheetItem.normal(
+          icon: ChatUIKitImageLoader.messageLongPressReply(
+            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+          ),
+          style: TextStyle(
+            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            fontWeight: theme.font.bodyLarge.fontWeight,
+            fontSize: theme.font.bodyLarge.fontSize,
+          ),
+          label: ChatUIKitLocal.messagesViewLongPressActionsTitleReply.localString(context),
+          onTap: () async {
+            Navigator.of(context).pop();
+            replyMessaged(model);
+          },
+        ));
+      }
+      // 转发
+      if (model.message.status == MessageStatus.SUCCESS && element == MessageLongPressActionType.forward) {
+        items.add(ChatUIKitBottomSheetItem.normal(
+          icon: ChatUIKitImageLoader.messageLongPressForward(
+            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+          ),
+          style: TextStyle(
+            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            fontWeight: theme.font.bodyLarge.fontWeight,
+            fontSize: theme.font.bodyLarge.fontSize,
+          ),
+          label: ChatUIKitLocal.forwardMessage.localString(context),
+          onTap: () async {
+            Navigator.of(context).pop();
+            forwardMessage(
+              [model.message],
+              isMultiSelect: false,
+            );
+          },
+        ));
+      }
 
-    // 多选
-    if (model.message.status == MessageStatus.SUCCESS) {
-      items.add(ChatUIKitBottomSheetItem.normal(
-        icon: ChatUIKitImageLoader.messageLongPressMultiSelected(
-          color: theme.color.isDark
-              ? theme.color.neutralColor7
-              : theme.color.neutralColor3,
-        ),
-        style: TextStyle(
-          color: theme.color.isDark
-              ? theme.color.neutralColor98
-              : theme.color.neutralColor1,
-          fontWeight: theme.font.bodyLarge.fontWeight,
-          fontSize: theme.font.bodyLarge.fontSize,
-        ),
-        label: ChatUIKitLocal.messageListLongPressMenuMulti.getString(context),
-        onTap: () async {
-          Navigator.of(context).pop();
-          controller.enableMultiSelectMode();
-        },
-      ));
-    }
+      // 多选
+      if (model.message.status == MessageStatus.SUCCESS && element == MessageLongPressActionType.multiSelect) {
+        items.add(ChatUIKitBottomSheetItem.normal(
+          icon: ChatUIKitImageLoader.messageLongPressMultiSelected(
+            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+          ),
+          style: TextStyle(
+            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            fontWeight: theme.font.bodyLarge.fontWeight,
+            fontSize: theme.font.bodyLarge.fontSize,
+          ),
+          label: ChatUIKitLocal.messageListLongPressMenuMulti.localString(context),
+          onTap: () async {
+            Navigator.of(context).pop();
+            controller.enableMultiSelectMode();
+          },
+        ));
+      }
 
-    // 翻译
-    if (model.message.status == MessageStatus.SUCCESS &&
-        model.message.bodyType == MessageType.TXT) {
-      items.add(ChatUIKitBottomSheetItem.normal(
-        icon: ChatUIKitImageLoader.messageLongPressTranslate(
-          color: theme.color.isDark
-              ? theme.color.neutralColor7
-              : theme.color.neutralColor3,
-        ),
-        style: TextStyle(
-          color: theme.color.isDark
-              ? theme.color.neutralColor98
-              : theme.color.neutralColor1,
-          fontWeight: theme.font.bodyLarge.fontWeight,
-          fontSize: theme.font.bodyLarge.fontSize,
-        ),
-        label: model.message.hasTranslate
-            ? ChatUIKitLocal.messageListLongPressMenuTranslateOrigin
-                .getString(context)
-            : ChatUIKitLocal.messageListLongPressMenuTranslate
-                .getString(context),
-        onTap: () async {
-          Navigator.of(context).pop();
-          controller.translateMessage(
-            model.message,
-            showTranslate: !model.message.hasTranslate,
-          );
-        },
-      ));
-    }
+      // 翻译
+      if (model.message.status == MessageStatus.SUCCESS &&
+          model.message.bodyType == MessageType.TXT &&
+          element == MessageLongPressActionType.translate &&
+          ChatUIKitSettings.enableTranslation) {
+        items.add(ChatUIKitBottomSheetItem.normal(
+          icon: ChatUIKitImageLoader.messageLongPressTranslate(
+            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+          ),
+          style: TextStyle(
+            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            fontWeight: theme.font.bodyLarge.fontWeight,
+            fontSize: theme.font.bodyLarge.fontSize,
+          ),
+          label: model.message.hasTranslate
+              ? ChatUIKitLocal.messageListLongPressMenuTranslateOrigin.localString(context)
+              : ChatUIKitLocal.messageListLongPressMenuTranslate.localString(context),
+          onTap: () async {
+            Navigator.of(context).pop();
+            controller.translateMessage(
+              model.message,
+              showTranslate: !model.message.hasTranslate,
+            );
+          },
+        ));
+      }
 
-    // 编辑
-    if (model.message.bodyType == MessageType.TXT &&
-        model.message.direction == MessageDirection.SEND) {
-      items.add(ChatUIKitBottomSheetItem.normal(
-        label: ChatUIKitLocal.messagesViewLongPressActionsTitleEdit
-            .getString(context),
-        style: TextStyle(
-          color: theme.color.isDark
-              ? theme.color.neutralColor98
-              : theme.color.neutralColor1,
-          fontWeight: theme.font.bodyLarge.fontWeight,
-          fontSize: theme.font.bodyLarge.fontSize,
-        ),
-        icon: ChatUIKitImageLoader.messageLongPressEdit(
-          color: theme.color.isDark
-              ? theme.color.neutralColor7
-              : theme.color.neutralColor3,
-        ),
-        onTap: () async {
-          Navigator.of(context).pop();
-          textMessageEdit(model.message);
-        },
-      ));
-    }
+      // 编辑
+      if (model.message.bodyType == MessageType.TXT &&
+          model.message.direction == MessageDirection.SEND &&
+          element == MessageLongPressActionType.edit) {
+        items.add(ChatUIKitBottomSheetItem.normal(
+          label: ChatUIKitLocal.messagesViewLongPressActionsTitleEdit.localString(context),
+          style: TextStyle(
+            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            fontWeight: theme.font.bodyLarge.fontWeight,
+            fontSize: theme.font.bodyLarge.fontSize,
+          ),
+          icon: ChatUIKitImageLoader.messageLongPressEdit(
+            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+          ),
+          onTap: () async {
+            Navigator.of(context).pop();
+            textMessageEdit(model.message);
+          },
+        ));
+      }
 
-    // 举报
-    items.add(ChatUIKitBottomSheetItem.normal(
-      label: ChatUIKitLocal.messagesViewLongPressActionsTitleReport
-          .getString(context),
-      style: TextStyle(
-        color: theme.color.isDark
-            ? theme.color.neutralColor98
-            : theme.color.neutralColor1,
-        fontWeight: theme.font.bodyLarge.fontWeight,
-        fontSize: theme.font.bodyLarge.fontSize,
-      ),
-      icon: ChatUIKitImageLoader.messageLongPressReport(
-        color: theme.color.isDark
-            ? theme.color.neutralColor7
-            : theme.color.neutralColor3,
-      ),
-      onTap: () async {
-        Navigator.of(context).pop();
-        reportMessage(model);
-      },
-    ));
+      if (element == MessageLongPressActionType.report) {
+        // 举报
+        items.add(ChatUIKitBottomSheetItem.normal(
+          label: ChatUIKitLocal.messagesViewLongPressActionsTitleReport.localString(context),
+          style: TextStyle(
+            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            fontWeight: theme.font.bodyLarge.fontWeight,
+            fontSize: theme.font.bodyLarge.fontSize,
+          ),
+          icon: ChatUIKitImageLoader.messageLongPressReport(
+            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+          ),
+          onTap: () async {
+            Navigator.of(context).pop();
+            reportMessage(model);
+          },
+        ));
+      }
+    }
 
     return items;
   }
@@ -1631,8 +1528,10 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
   }
 
   Widget? bottomSheetTitle(MessageModel model, ChatUIKitTheme theme) {
-    List<MessageReaction>? reactions = model.reactions;
+    if (ChatUIKitSettings.msgItemLongPressActions.contains(MessageLongPressActionType.reaction) == false ||
+        ChatUIKitSettings.enableReaction == false) return null;
 
+    List<MessageReaction>? reactions = model.reactions;
     return Padding(
       padding: EdgeInsets.zero,
       child: LayoutBuilder(
@@ -1640,9 +1539,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           double width = constraints.maxWidth;
           int maxCount = width ~/ (36 + 12) - 1;
           List<Widget> items = [];
-          for (var i = 0;
-              i < min(ChatUIKitSettings.favoriteReaction.length, maxCount);
-              i++) {
+          for (var i = 0; i < min(ChatUIKitSettings.favoriteReaction.length, maxCount); i++) {
             String emoji = ChatUIKitSettings.favoriteReaction[i];
             bool highlight = reactions?.any((element) {
                   return element.reaction == emoji && element.isAddedBySelf;
@@ -1658,9 +1555,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                 child: Container(
                   decoration: BoxDecoration(
                     color: highlight
-                        ? (theme.color.isDark
-                            ? theme.color.primaryColor6
-                            : theme.color.primaryColor5)
+                        ? (theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5)
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -1687,8 +1582,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           );
           bool full = ChatUIKitSettings.favoriteReaction.length + 1 < maxCount;
           return Row(
-            mainAxisAlignment:
-                full ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: full ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
             children: full
                 ? items
                     .map((e) => Padding(
@@ -1712,27 +1606,20 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       context: context,
       showCancel: false,
       body: ChatUIKitInputEmojiBar(
-        selectedEmojis: model.reactions
-            ?.where((e) => e.isAddedBySelf == true)
-            .map((e) => e.reaction)
-            .toList(),
-        selectedColor: theme.color.isDark
-            ? theme.color.primaryColor6
-            : theme.color.primaryColor5,
+        selectedEmojis: model.reactions?.where((e) => e.isAddedBySelf == true).map((e) => e.reaction).toList(),
+        selectedColor: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
         emojiClicked: (emojiPath) async {
           var emoji = ChatUIKitEmojiData.getEmoji(emojiPath);
           bool needAdd = false;
           if (model.reactions == null) {
             needAdd = true;
           } else {
-            needAdd = model.reactions?.indexWhere((element) =>
-                    element.reaction == emoji && element.isAddedBySelf) ==
-                -1;
+            needAdd =
+                model.reactions?.indexWhere((element) => element.reaction == emoji && element.isAddedBySelf) == -1;
           }
 
           Navigator.of(context).pop();
-          await controller.updateReaction(model.message.msgId,
-              ChatUIKitEmojiData.emojiMap[emojiPath]!, needAdd);
+          await controller.updateReaction(model.message.msgId, ChatUIKitEmojiData.emojiMap[emojiPath]!, needAdd);
         },
       ),
     );
@@ -1782,19 +1669,12 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       );
     }
 
-    if (model.message.bodyType == MessageType.CUSTOM &&
-        model.message.isCardMessage) {
-      String? userId =
-          (model.message.body as CustomMessageBody).params?[cardUserIdKey];
-      String avatar =
-          (model.message.body as CustomMessageBody).params?[cardAvatarKey] ??
-              '';
-      String name =
-          (model.message.body as CustomMessageBody).params?[cardNicknameKey] ??
-              '';
+    if (model.message.bodyType == MessageType.CUSTOM && model.message.isCardMessage) {
+      String? userId = (model.message.body as CustomMessageBody).params?[cardUserIdKey];
+      String avatar = (model.message.body as CustomMessageBody).params?[cardAvatarKey] ?? '';
+      String name = (model.message.body as CustomMessageBody).params?[cardNicknameKey] ?? '';
       if (userId?.isNotEmpty == true) {
-        ChatUIKitProfile profile = ChatUIKitProfile.contact(
-            id: userId!, avatarUrl: avatar, nickname: name);
+        ChatUIKitProfile profile = ChatUIKitProfile.contact(id: userId!, avatarUrl: avatar, nickname: name);
         pushNextPage(profile);
       }
     }
@@ -1820,12 +1700,9 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       content ??= ChatUIKitMessageListViewAlertItem(
         infos: [
           MessageAlertAction(
-            text: ChatUIKitTimeFormatter.instance.formatterHandler?.call(
-                    context,
-                    ChatUIKitTimeType.message,
-                    model.message.serverTime) ??
-                ChatUIKitTimeTool.getChatTimeStr(model.message.serverTime,
-                    needTime: true),
+            text: ChatUIKitTimeFormatter.instance.formatterHandler
+                    ?.call(context, ChatUIKitTimeType.message, model.message.serverTime) ??
+                ChatUIKitTimeTool.getChatTimeStr(model.message.serverTime, needTime: true),
           )
         ],
       );
@@ -1833,8 +1710,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     }
 
     if (model.message.isCreateThreadAlert) {
-      Map<String, String>? map =
-          (model.message.body as CustomMessageBody).params;
+      Map<String, String>? map = (model.message.body as CustomMessageBody).params;
       Widget? content = widget.alertItemBuilder?.call(
         context,
         model,
@@ -1843,7 +1719,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       String? operator = map![alertOperatorKey]!;
       String showName;
       if (ChatUIKit.instance.currentUserId == operator) {
-        showName = ChatUIKitLocal.alertYou.getString(context);
+        showName = ChatUIKitLocal.alertYou.localString(context);
       } else {
         ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
           ChatUIKitProfile.contact(id: operator),
@@ -1863,9 +1739,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
               pushNextPage(profile);
             },
           ),
-          MessageAlertAction(
-              text: ChatUIKitLocal.messagesViewAlertThreadInfoTitle
-                  .getString(context)),
+          MessageAlertAction(text: ChatUIKitLocal.messagesViewAlertThreadInfoTitle.localString(context)),
         ],
       );
       return content;
@@ -1884,7 +1758,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
 
     // 以上都不是时，检查通讯录
     else {
-      List<String> contacts = await ChatUIKit.instance.getAllContacts();
+      List<String> contacts = await ChatUIKit.instance.getAllContactIds();
       // 是好友，不是当前聊天对象，跳转到好友页面，并可以发消息
       if (contacts.contains(profile.id)) {
         pushNewContactDetail(profile);

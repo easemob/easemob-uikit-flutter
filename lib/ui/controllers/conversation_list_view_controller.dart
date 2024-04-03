@@ -2,10 +2,12 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/foundation.dart';
 
 /// 会话列表控制器
-class ConversationListViewController extends ChatUIKitListViewControllerBase {
+class ConversationListViewController with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver {
   ConversationListViewController({
     this.willShowHandler,
-  });
+  }) {
+    ChatUIKitProvider.instance.addObserver(this);
+  }
 
   /// 一次从服务器获取的会话列表数量，默认为 `50`。
   final int pageSize = 50;
@@ -15,6 +17,26 @@ class ConversationListViewController extends ChatUIKitListViewControllerBase {
 
   String? cursor;
 
+  @override
+  void dispose() {
+    ChatUIKitProvider.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+    debugPrint('controller onProfilesUpdate: $map');
+    if (list.any((element) => map.keys.contains((element as ConversationModel).profile.id))) {
+      for (var element in map.keys) {
+        int index = list.indexWhere((e) => (e as ConversationModel).profile.id == element);
+        if (index != -1) {
+          list[index] = (list[index] as ConversationModel).copyWith(profile: map[element]!);
+        }
+      }
+      refresh();
+    }
+  }
+
   /// 获取会话列表，会优先从本地获取，如果本地没有，并且没有从服务器获取过，则从服务器获取。
   ///`force` (bool) 是否强制从服务器获取，默认为 `false`。
   @override
@@ -22,9 +44,7 @@ class ConversationListViewController extends ChatUIKitListViewControllerBase {
     loadingType.value = ChatUIKitListViewType.loading;
     List<Conversation> items = await ChatUIKit.instance.getAllConversations();
     try {
-      if ((items.isEmpty &&
-              !ChatUIKitContext.instance.isConversationLoadFinished()) ||
-          force == true) {
+      if ((items.isEmpty && !ChatUIKitContext.instance.isConversationLoadFinished()) || force == true) {
         await fetchConversations();
         items = await ChatUIKit.instance.getAllConversations();
       }
@@ -33,13 +53,14 @@ class ConversationListViewController extends ChatUIKitListViewControllerBase {
       list.clear();
       list.addAll(tmp);
       list = willShowHandler?.call(list.cast<ConversationModel>()) ?? list;
+      debugPrint('conversation list: ${list.length}');
       if (list.isEmpty) {
         loadingType.value = ChatUIKitListViewType.empty;
       } else {
         loadingType.value = ChatUIKitListViewType.normal;
       }
     } catch (e) {
-      debugPrintStack();
+      debugPrint('conversation list fetchItemList: $e');
       loadingType.value = ChatUIKitListViewType.error;
     }
   }
@@ -82,16 +103,14 @@ class ConversationListViewController extends ChatUIKitListViewControllerBase {
   Future<List<Conversation>> fetchConversations() async {
     List<Conversation> items = [];
     if (!hasFetchPinned) {
-      CursorResult<Conversation> result =
-          await ChatUIKit.instance.fetchPinnedConversations(
+      CursorResult<Conversation> result = await ChatUIKit.instance.fetchPinnedConversations(
         pageSize: 50,
       );
       items.addAll(result.data);
       hasFetchPinned = true;
     }
     try {
-      CursorResult<Conversation> result =
-          await ChatUIKit.instance.fetchConversations(
+      CursorResult<Conversation> result = await ChatUIKit.instance.fetchConversations(
         pageSize: pageSize,
         cursor: cursor,
       );
@@ -121,8 +140,7 @@ class ConversationListViewController extends ChatUIKitListViewControllerBase {
     } catch (e) {}
   }
 
-  Future<List<ConversationModel>> _mappers(
-      List<Conversation> conversations) async {
+  Future<List<ConversationModel>> _mappers(List<Conversation> conversations) async {
     List<ChatUIKitProfile> tmp = () {
       List<ChatUIKitProfile> ret = [];
       for (var item in conversations) {
@@ -135,8 +153,7 @@ class ConversationListViewController extends ChatUIKitListViewControllerBase {
       return ret;
     }();
 
-    Map<String, ChatUIKitProfile> profilesMap =
-        ChatUIKitProvider.instance.getProfiles(tmp);
+    Map<String, ChatUIKitProfile> profilesMap = ChatUIKitProvider.instance.getProfiles(tmp);
     List<ConversationModel> list = [];
     for (var item in conversations) {
       ConversationModel info = await ConversationModel.fromConversation(

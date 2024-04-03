@@ -12,7 +12,7 @@ class CreateGroupViewArguments implements ChatUIKitViewArguments {
     this.appBar,
     this.controller,
     this.enableAppBar = true,
-    this.willCreateHandler,
+    this.createGroupHandler,
     this.createGroupInfo,
     this.title,
     this.viewObserver,
@@ -29,7 +29,7 @@ class CreateGroupViewArguments implements ChatUIKitViewArguments {
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final bool enableAppBar;
-  final WillCreateHandler? willCreateHandler;
+  final CreateGroupHandler? createGroupHandler;
   final CreateGroupInfo? createGroupInfo;
   final String? title;
   @override
@@ -47,8 +47,9 @@ class CreateGroupViewArguments implements ChatUIKitViewArguments {
     String? searchBarHideText,
     Widget? listViewBackground,
     bool? enableAppBar,
-    WillCreateHandler? willCreateHandler,
+    CreateGroupHandler? createGroupHandler,
     CreateGroupInfo? createGroupInfo,
+    void Function(Group? group, ChatError? error)? onCreateGroup,
     String? title,
     ChatUIKitViewObserver? viewObserver,
     String? attributes,
@@ -63,7 +64,7 @@ class CreateGroupViewArguments implements ChatUIKitViewArguments {
       searchBarHideText: searchBarHideText ?? this.searchBarHideText,
       listViewBackground: listViewBackground ?? this.listViewBackground,
       enableAppBar: enableAppBar ?? this.enableAppBar,
-      willCreateHandler: willCreateHandler ?? this.willCreateHandler,
+      createGroupHandler: createGroupHandler ?? this.createGroupHandler,
       createGroupInfo: createGroupInfo ?? this.createGroupInfo,
       title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,

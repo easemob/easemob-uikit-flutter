@@ -13,16 +13,13 @@ enum ChatUIKitRouteBackType { add, remove, update }
 /// 路由返回信息，用于标记路由返回到上一页时的变更类型和 profileId
 class ChatUIKitRouteBackModel {
   /// profileId对应信息更新。
-  ChatUIKitRouteBackModel.update(this.profileId)
-      : type = ChatUIKitRouteBackType.update;
+  ChatUIKitRouteBackModel.update(this.profileId) : type = ChatUIKitRouteBackType.update;
 
   /// 信息添加。
-  ChatUIKitRouteBackModel.add(this.profileId)
-      : type = ChatUIKitRouteBackType.add;
+  ChatUIKitRouteBackModel.add(this.profileId) : type = ChatUIKitRouteBackType.add;
 
   /// 信息删除。
-  ChatUIKitRouteBackModel.remove(this.profileId)
-      : type = ChatUIKitRouteBackType.remove;
+  ChatUIKitRouteBackModel.remove(this.profileId) : type = ChatUIKitRouteBackType.remove;
 
   const ChatUIKitRouteBackModel({
     required this.type,
@@ -59,8 +56,7 @@ class ChatUIKitRoute {
     hasInit = true;
   }
 
-  final Map<String, ChatUIKitWidgetBuilder> _uikitRoutes =
-      <String, ChatUIKitWidgetBuilder>{
+  final Map<String, ChatUIKitWidgetBuilder> _uikitRoutes = <String, ChatUIKitWidgetBuilder>{
     ChatUIKitRouteNames.changeInfoView: (context, arguments) {
       return ChangeInfoView.arguments(
         arguments as ChangeInfoViewArguments,
@@ -225,8 +221,7 @@ class ChatUIKitRoute {
   }) {
     _lastBackModel = model;
     Navigator.of(context).popUntil((route) {
-      return route.settings.name == ChatUIKitRouteNames.groupsView ||
-          route.isFirst;
+      return route.settings.name == ChatUIKitRouteNames.groupsView || route.isFirst;
     });
   }
 
@@ -237,8 +232,7 @@ class ChatUIKitRoute {
   }) {
     _lastBackModel = model;
     Navigator.of(context).popUntil((route) {
-      return route.settings.name == ChatUIKitRouteNames.contactsView ||
-          route.isFirst;
+      return route.settings.name == ChatUIKitRouteNames.contactsView || route.isFirst;
     });
   }
 
@@ -248,8 +242,11 @@ class ChatUIKitRoute {
     ChatUIKitRouteBackModel? model,
   }) {
     _lastBackModel = model;
-    Navigator.of(context)
-        .popUntil(ModalRoute.withName(ChatUIKitRouteNames.messagesView));
+    // Navigator.of(context).popAndPushNamed(ChatUIKitRouteNames.messagesView);
+    Navigator.of(context).popUntil((route) {
+      debugPrint('route.settings.name: ${route.settings.toString()}');
+      return route.settings.name == ChatUIKitRouteNames.messagesView || route.isFirst;
+    });
   }
 
   /// ChatUIKit 路由拦截器, 可以在 `onGenerateRoute` 中进行拦截，如果拦截失败，再进行你自己的路由跳转。

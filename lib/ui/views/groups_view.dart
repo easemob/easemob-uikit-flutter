@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
 
 class GroupsView extends StatefulWidget {
@@ -109,7 +110,7 @@ class _GroupsViewState extends State<GroupsView> {
                     builder: (context, value, child) {
                       return Text(
                         widget.title ??
-                            "${ChatUIKitLocal.groupsViewTitle.getString(context)}${value != 0 ? '($value)' : ''}",
+                            "${ChatUIKitLocal.groupsViewTitle.localString(context)}${value != 0 ? '($value)' : ''}",
                         textScaler: TextScaler.noScaling,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -149,7 +150,7 @@ class _GroupsViewState extends State<GroupsView> {
         profile: model.profile,
         actions: [
           ChatUIKitModelAction(
-            title: ChatUIKitLocal.groupDetailViewSend.getString(context),
+            title: ChatUIKitLocal.groupDetailViewSend.localString(context),
             icon: 'assets/images/chat.png',
             iconSize: const Size(32, 32),
             packageName: ChatUIKitImageLoader.packageName,
@@ -165,7 +166,7 @@ class _GroupsViewState extends State<GroupsView> {
             },
           ),
           ChatUIKitModelAction(
-            title: ChatUIKitLocal.contactDetailViewSearch.getString(context),
+            title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
             icon: 'assets/images/search_history.png',
             packageName: ChatUIKitImageLoader.packageName,
             iconSize: const Size(32, 32),

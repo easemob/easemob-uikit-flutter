@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/ui/widgets/chat_uikit_water_ripple.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_sound_record/flutter_sound_record.dart' as audio_record;
 
@@ -266,7 +268,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
     );
     if (statusType == ChatUIKitVoiceBarStatusType.none) {
       return Text(
-        widget.hintText ?? ChatUIKitLocal.recordBarRecord.getString(context),
+        widget.hintText ?? ChatUIKitLocal.recordBarRecord.localString(context),
         textScaler: TextScaler.noScaling,
         overflow: TextOverflow.ellipsis,
         style: widget.hintTextStyle ?? style,
@@ -274,14 +276,14 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
     } else if (statusType == ChatUIKitVoiceBarStatusType.recording) {
       return Text(
         widget.recordText ??
-            ChatUIKitLocal.recordBarRecording.getString(context),
+            ChatUIKitLocal.recordBarRecording.localString(context),
         textScaler: TextScaler.noScaling,
         overflow: TextOverflow.ellipsis,
         style: widget.recordTextStyle ?? style,
       );
     } else if (statusType == ChatUIKitVoiceBarStatusType.ready) {
       return Text(
-        widget.playText ?? ChatUIKitLocal.recordBarPlay.getString(context),
+        widget.playText ?? ChatUIKitLocal.recordBarPlay.localString(context),
         textScaler: TextScaler.noScaling,
         overflow: TextOverflow.ellipsis,
         style: widget.playTextStyle ?? style,
@@ -289,7 +291,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
     } else if (statusType == ChatUIKitVoiceBarStatusType.playing) {
       return Text(
         widget.playingText ??
-            ChatUIKitLocal.recordBarPlaying.getString(context),
+            ChatUIKitLocal.recordBarPlaying.localString(context),
         textScaler: TextScaler.noScaling,
         overflow: TextOverflow.ellipsis,
         style: widget.playingTextStyle ?? style,
@@ -303,7 +305,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
     Widget content;
     if (widget.maxDuration - recordCounter <= 10 &&
         statusType == ChatUIKitVoiceBarStatusType.recording) {
-      ChatUIKitLocal.recordBarAutoStop.getString(context);
+      ChatUIKitLocal.recordBarAutoStop.localString(context);
       content = Text(
           context.formatString(ChatUIKitLocal.recordBarAutoStop,
               ['${widget.maxDuration - recordCounter}']),

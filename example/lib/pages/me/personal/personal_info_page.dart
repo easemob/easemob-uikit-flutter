@@ -1,7 +1,11 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit_example/demo_localizations.dart';
+import 'package:em_chat_uikit_example/tool/app_server_helper.dart';
 import 'package:em_chat_uikit_example/tool/user_data_store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PersonalInfoPage extends StatefulWidget {
   const PersonalInfoPage({super.key});
@@ -10,8 +14,7 @@ class PersonalInfoPage extends StatefulWidget {
   State<PersonalInfoPage> createState() => _PersonalInfoPageState();
 }
 
-class _PersonalInfoPageState extends State<PersonalInfoPage>
-    with ChatUIKitProviderObserver {
+class _PersonalInfoPageState extends State<PersonalInfoPage> with ChatUIKitProviderObserver {
   ChatUIKitProfile? _userData;
 
   @override
@@ -44,11 +47,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage>
     final theme = ChatUIKitTheme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       appBar: ChatUIKitAppBar(
-        title: DemoLocalizations.personalInfo.getString(context),
+        title: DemoLocalizations.personalInfo.localString(context),
         titleTextStyle: TextStyle(
           fontSize: theme.font.titleMedium.fontSize,
           fontWeight: theme.font.titleMedium.fontWeight,
@@ -59,17 +60,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage>
         child: ListView(
           children: [
             PersonalInfoItem(
-              title: DemoLocalizations.avatar.getString(context),
+              title: DemoLocalizations.avatar.localString(context),
               imageWidget: ChatUIKitAvatar.current(
                 avatarUrl: _userData?.avatarUrl,
                 size: 40,
               ),
-              onTap: pushChangeAvatarPage,
+              onTap: changeAvatar,
             ),
             PersonalInfoItem(
-              title: DemoLocalizations.nickname.getString(context),
-              trailing:
-                  _userData?.showName ?? ChatUIKit.instance.currentUserId ?? '',
+              title: DemoLocalizations.nickname.localString(context),
+              trailing: _userData?.showName ?? ChatUIKit.instance.currentUserId ?? '',
               onTap: pushChangeNicknamePage,
               enableArrow: true,
             ),
@@ -79,10 +79,102 @@ class _PersonalInfoPageState extends State<PersonalInfoPage>
     );
   }
 
-  void pushChangeAvatarPage() {
-    Navigator.of(context).pushNamed('/change_avatar').then((value) {
-      setState(() {});
-    });
+  void changeAvatar() {
+    List<ChatUIKitBottomSheetItem> items = [
+      ChatUIKitBottomSheetItem.normal(
+        label: DemoLocalizations.changeAvatarCamera.localString(context),
+        onTap: () async {
+          Navigator.of(context).pop();
+          takePhoto();
+        },
+      ),
+      ChatUIKitBottomSheetItem.normal(
+        label: DemoLocalizations.changeAvatarGallery.localString(context),
+        onTap: () async {
+          Navigator.of(context).pop();
+          selectPhoto();
+        },
+      ),
+    ];
+
+    showChatUIKitBottomSheet(
+      context: context,
+      items: items,
+    );
+  }
+
+  void takePhoto() async {
+    try {
+      final XFile? image = await ImagePicker().pickImage(
+        source: ImageSource.camera,
+        maxWidth: 400,
+        maxHeight: 400,
+        imageQuality: 50,
+      );
+      if (image != null) {
+        cropImage(image.path);
+      }
+    } catch (e) {
+      ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.noCameraPermission);
+    }
+  }
+
+  void selectPhoto() async {
+    try {
+      final XFile? image = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 400,
+        maxHeight: 400,
+        imageQuality: 50,
+      );
+      if (image != null) {
+        cropImage(image.path);
+      }
+    } catch (e) {
+      ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.noCameraPermission);
+    }
+  }
+
+  Future<void> cropImage(String imagePath) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: imagePath,
+      aspectRatioPresets: [CropAspectRatioPreset.square],
+      uiSettings: [
+        AndroidUiSettings(
+          initAspectRatio: CropAspectRatioPreset.square,
+          lockAspectRatio: true,
+          hideBottomControls: true,
+        ),
+        IOSUiSettings(
+          rectX: 0,
+          rectY: 0,
+          rectWidth: 10000,
+          rectHeight: 10000,
+          aspectRatioPickerButtonHidden: true,
+        ),
+      ],
+    );
+
+    if (croppedFile != null) {
+      uploadAvatar(croppedFile.path);
+    }
+  }
+
+  void uploadAvatar(String path) async {
+    try {
+      EasyLoading.show(status: 'Updating...');
+      String url = await AppServerHelper.uploadAvatar(ChatUIKit.instance.currentUserId!, path);
+      ChatUIKitProfile? data = ChatUIKitProvider.instance.currentUserProfile;
+      if (data == null) {
+        data = ChatUIKitProfile.contact(id: ChatUIKit.instance.currentUserId!, avatarUrl: url);
+      } else {
+        data = data.copyWith(avatarUrl: url);
+      }
+      await updateUserInfo(data);
+    } catch (e) {
+      debugPrint('upload avatar error: $e');
+      EasyLoading.showError('Update failed');
+    }
   }
 
   void pushChangeNicknamePage() {
@@ -90,13 +182,11 @@ class _PersonalInfoPageState extends State<PersonalInfoPage>
       context,
       ChatUIKitRouteNames.changeInfoView,
       ChangeInfoViewArguments(
-        title: '修改昵称',
+        title: DemoLocalizations.changeNickname.localString(context),
         inputTextCallback: () {
           return Future(
             () {
-              return ChatUIKitProvider.instance.currentUserProfile?.showName ??
-                  ChatUIKit.instance.currentUserId ??
-                  '';
+              return ChatUIKitProvider.instance.currentUserProfile?.showName ?? ChatUIKit.instance.currentUserId ?? '';
             },
           );
         },
@@ -104,32 +194,44 @@ class _PersonalInfoPageState extends State<PersonalInfoPage>
     ).then(
       (value) {
         if (value is String) {
-          ChatUIKitProfile? data =
-              ChatUIKitProvider.instance.currentUserProfile;
+          ChatUIKitProfile? data = ChatUIKitProvider.instance.currentUserProfile;
           if (data == null) {
-            data = ChatUIKitProfile.contact(
-                id: ChatUIKit.instance.currentUserId!, nickname: value);
+            data = ChatUIKitProfile.contact(id: ChatUIKit.instance.currentUserId!, nickname: value);
           } else {
-            data = data.copyWith(nickname: value);
+            data = data.copyWith(name: value);
           }
-          ChatUIKitProvider.instance.addProfiles([data]);
-          UserDataStore().saveUserData(data);
-
-          setState(() {});
+          return data;
         }
       },
-    );
+    ).then((value) {
+      if (value != null) {
+        return updateUserInfo(value);
+      }
+    }).then((value) {
+      setState(() {});
+    }).catchError((e) {
+      debugPrint('change nickname error: $e');
+      EasyLoading.showError('Update failed');
+    });
+  }
+
+  Future<void> updateUserInfo(ChatUIKitProfile data) async {
+    EasyLoading.show(status: 'Updating...');
+    try {
+      await ChatUIKit.instance.updateUserInfo(nickname: data.name, avatarUrl: data.avatarUrl);
+      UserDataStore().saveUserData(data);
+      ChatUIKitProvider.instance.addProfiles([data]);
+    } catch (e) {
+      rethrow;
+    } finally {
+      EasyLoading.dismiss();
+    }
   }
 }
 
 class PersonalInfoItem extends StatelessWidget {
   const PersonalInfoItem(
-      {required this.title,
-      this.trailing,
-      this.imageWidget,
-      this.enableArrow = false,
-      this.onTap,
-      super.key});
+      {required this.title, this.trailing, this.imageWidget, this.enableArrow = false, this.onTap, super.key});
 
   final String title;
   final String? trailing;
@@ -150,9 +252,7 @@ class PersonalInfoItem extends StatelessWidget {
             style: TextStyle(
               fontSize: theme.font.titleMedium.fontSize,
               fontWeight: theme.font.titleMedium.fontWeight,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor100
-                  : theme.color.neutralColor1,
+              color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
             ),
           ),
           Expanded(
@@ -164,9 +264,7 @@ class PersonalInfoItem extends StatelessWidget {
               style: TextStyle(
                 fontSize: theme.font.labelLarge.fontSize,
                 fontWeight: theme.font.labelLarge.fontWeight,
-                color: theme.color.isDark
-                    ? theme.color.neutralColor7
-                    : theme.color.neutralColor5,
+                color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor5,
               ),
             ),
           ),
@@ -182,8 +280,7 @@ class PersonalInfoItem extends StatelessWidget {
       ),
     );
 
-    content = Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16), child: content);
+    content = Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: content);
 
     content = Column(
       children: [
@@ -191,9 +288,7 @@ class PersonalInfoItem extends StatelessWidget {
         Divider(
           height: 0.5,
           indent: 16,
-          color: theme.color.isDark
-              ? theme.color.neutralColor2
-              : theme.color.neutralColor9,
+          color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9,
         )
       ],
     );

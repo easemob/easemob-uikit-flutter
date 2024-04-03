@@ -161,7 +161,7 @@ class _SearchHistoryViewState extends State<SearchHistoryView> {
                         scrollPadding: EdgeInsets.zero,
                         decoration: InputDecoration(
                           hintText:
-                              ChatUIKitLocal.searchHistory.getString(context),
+                              ChatUIKitLocal.searchHistory.localString(context),
                           contentPadding: EdgeInsets.zero,
                           isDense: true,
                           hintStyle: TextStyle(
@@ -214,7 +214,7 @@ class _SearchHistoryViewState extends State<SearchHistoryView> {
               child: Container(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: Text(
-                  ChatUIKitLocal.searchWidgetCancel.getString(context),
+                  ChatUIKitLocal.searchWidgetCancel.localString(context),
                   overflow: TextOverflow.ellipsis,
                   textScaler: TextScaler.noScaling,
                   style: TextStyle(

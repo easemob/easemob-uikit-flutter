@@ -10,6 +10,14 @@ class GroupItemModel with ChatUIKitListItemModelBase, NeedSearch {
     profile = profile;
   }
 
+  GroupItemModel copyWith({
+    ChatUIKitProfile? profile,
+  }) {
+    return GroupItemModel(
+      profile: profile ?? this.profile,
+    );
+  }
+
   @override
   String get showName {
     return profile.showName;
