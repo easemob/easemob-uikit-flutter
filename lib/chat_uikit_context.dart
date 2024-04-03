@@ -2,10 +2,8 @@ import 'dart:convert';
 
 import 'package:em_chat_uikit/universal/inner_headers.dart';
 
-const String convLoadFinishedKey =
-    'EaseChatUIKit_conversation_load_more_finished';
-const String contactLoadFinishedKey =
-    'EaseChatUIKit_contact_load_more_finished';
+const String convLoadFinishedKey = 'EaseChatUIKit_conversation_load_more_finished';
+const String contactLoadFinishedKey = 'EaseChatUIKit_contact_load_more_finished';
 const String muteMapKey = 'EaseChatUIKit_conversation_mute_map';
 const String requestsKey = 'EaseChatUIKit_friend_requests';
 
@@ -56,8 +54,7 @@ extension Request on ChatUIKitContext {
 
   bool addRequest(String userId, String? reason, [bool isGroup = false]) {
     List requestList = cachedMap[requestsKey] ?? [];
-    if (requestList.any((element) =>
-        element['id'] == userId && element['isGroup'] == isGroup)) {
+    if (requestList.any((element) => element['id'] == userId && element['isGroup'] == isGroup)) {
       return false;
     }
     requestList.add({
@@ -72,8 +69,7 @@ extension Request on ChatUIKitContext {
 
   void removeRequest(String userId, [bool isGroup = false]) {
     List requestList = cachedMap[requestsKey] ?? [];
-    int index = requestList.indexWhere(
-        (element) => element['id'] == userId && element['isGroup'] == isGroup);
+    int index = requestList.indexWhere((element) => element['id'] == userId && element['isGroup'] == isGroup);
     if (index != -1) {
       requestList.removeAt(index);
       cachedMap[requestsKey] = requestList;
@@ -85,8 +81,7 @@ extension Request on ChatUIKitContext {
     List requestList = cachedMap[requestsKey] ?? [];
     bool needUpdate = false;
     for (var userId in userIds) {
-      int index = requestList.indexWhere((element) =>
-          element['id'] == userId && element['isGroup'] == isGroup);
+      int index = requestList.indexWhere((element) => element['id'] == userId && element['isGroup'] == isGroup);
       if (index != -1) {
         needUpdate = true;
         requestList.removeAt(index);

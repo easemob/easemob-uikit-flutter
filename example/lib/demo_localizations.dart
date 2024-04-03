@@ -1,6 +1,29 @@
 mixin DemoLocalizations {
   static String confirm = 'confirm';
 
+  // welcome
+  static String welcome = 'welcome';
+
+  // login
+  static String login = 'login';
+  static String loginEaseMob = 'loginEaseMob';
+  static String loginFailed = 'loginFailed';
+  static String loginSuccess = 'loginSuccess';
+  static String loginInputPhoneHint = 'loginInputPhoneHint';
+  static String loginInputSmsHint = 'loginInputSmsHint';
+  static String loginSendSms = 'loginSendSms';
+  static String loginSendSmsSuccess = 'loginSendSmsSuccess';
+  static String loginSendSmsFailed = 'loginSendSmsFailed';
+  static String loginPleaseInputPhone = 'loginPleaseInputPhone';
+  static String loginPleaseInputSms = 'loginPleaseInputSms';
+  static String loginResendSms = 'loginResendSms';
+  static String loggingIn = 'loggingIn';
+  static String loginCheck = 'loginCheck';
+  static String loginTermsOfService = 'loginTermsOfService';
+  static String loginAnd = 'loginAnd';
+  static String loginPrivacyPolicy = 'loginPrivacyPolicy';
+  static String loginPleaseAgreeTermsOfServicePrivacyPolicy = 'loginPleaseAgreeTermsOfServicePrivacyPolicy';
+
   // home
   static String chat = 'chat';
 
@@ -87,6 +110,29 @@ mixin DemoLocalizations {
   static Map<String, dynamic> zh = {
     confirm: '确认',
 
+    // welcome
+    welcome: '环信即时通讯云',
+
+    // login
+    login: '登录',
+    loginEaseMob: '登录环信IM',
+    loginFailed: '登录失败',
+    loginSuccess: '登录成功',
+    loginInputPhoneHint: '请输入手机号',
+    loginInputSmsHint: '请输入验证码',
+    loginSendSms: '发送验证码',
+    loginSendSmsSuccess: '发送成功',
+    loginSendSmsFailed: '发送失败',
+    loginPleaseInputPhone: '请输入手机号',
+    loginPleaseInputSms: '请输入验证码',
+    loginResendSms: '重新发送',
+    loggingIn: '登录中...',
+    loginCheck: '请选择同意',
+    loginTermsOfService: '《环信服务条款》',
+    loginAnd: '与',
+    loginPrivacyPolicy: '《环信隐私协议》',
+    loginPleaseAgreeTermsOfServicePrivacyPolicy: '请同意环信服务条款和隐私协议',
+
     // home
     chat: '会话',
 
@@ -145,12 +191,12 @@ mixin DemoLocalizations {
     colorSettingsNeutralSpecial: '特殊中性色',
 
     // general feature settings
-    featureSettingsTranslation: '翻译',
-    featureSettingsTranslationDesc: '翻译功能描述',
-    featureSettingsThread: '线程',
-    featureSettingsThreadDesc: '线程功能描述',
-    featureSettingsReaction: '表情',
-    featureSettingsReactionDesc: '表情功能描述',
+    featureSettingsTranslation: '消息翻译',
+    featureSettingsTranslationDesc: '通过长按将消息翻译为指定语言',
+    featureSettingsThread: '群组话题',
+    featureSettingsThreadDesc: '通过长按群内的一条消息创建一个话题',
+    featureSettingsReaction: '消息表情回应',
+    featureSettingsReactionDesc: '通过长按消息为消息添加表情回应',
 
     // general translate target language
     translateTargetLanguageChinese: '简体中文',
@@ -173,6 +219,29 @@ mixin DemoLocalizations {
   };
   static Map<String, dynamic> en = {
     confirm: 'Confirm',
+
+    // welcome
+    welcome: 'EaseMob IM',
+
+    // login
+    login: 'Login',
+    loginEaseMob: 'Login EaseMob IM',
+    loginFailed: 'Login failed',
+    loginSuccess: 'Login success',
+    loginInputPhoneHint: 'Please enter the phone number',
+    loginInputSmsHint: 'Verification code',
+    loginSendSms: 'Get Code',
+    loginSendSmsSuccess: 'Send Success',
+    loginSendSmsFailed: 'Send Failed',
+    loginPleaseInputPhone: 'Please enter the phone number',
+    loginPleaseInputSms: 'Please enter the verification code',
+    loginResendSms: 'Resend',
+    loggingIn: 'Logging in...',
+    loginCheck: 'By joining, you agree to the',
+    loginTermsOfService: ' Terms of Service',
+    loginAnd: ' and',
+    loginPrivacyPolicy: ' Privacy Policy',
+    loginPleaseAgreeTermsOfServicePrivacyPolicy: 'Please agree to the Terms of Service and Privacy Policy',
 
     // home
     chat: 'Chat',
@@ -233,11 +302,11 @@ mixin DemoLocalizations {
 
     // general feature settings
     featureSettingsTranslation: 'Translation',
-    featureSettingsTranslationDesc: 'Translation special',
+    featureSettingsTranslationDesc: 'Long press to translate message to specified language',
     featureSettingsThread: 'Thread',
-    featureSettingsThreadDesc: 'Thread special',
+    featureSettingsThreadDesc: 'Long press a message in a group to create a thread',
     featureSettingsReaction: 'Reaction',
-    featureSettingsReactionDesc: 'Reaction special',
+    featureSettingsReactionDesc: 'Long press a message to add emoji reactions',
 
     // general translate target language
     translateTargetLanguageChinese: 'Simplified Chinese',

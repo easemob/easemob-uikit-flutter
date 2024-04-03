@@ -53,7 +53,7 @@ class ConversationListViewController with ChatUIKitListViewControllerBase, ChatU
       list.clear();
       list.addAll(tmp);
       list = willShowHandler?.call(list.cast<ConversationModel>()) ?? list;
-      debugPrint('conversation list: ${list.length}');
+
       if (list.isEmpty) {
         loadingType.value = ChatUIKitListViewType.empty;
       } else {

@@ -47,6 +47,7 @@ class _NewRequestsListViewState extends State<NewRequestsListView> with ContactO
 
   @override
   void dispose() {
+    ChatUIKit.instance.removeObserver(this);
     controller.dispose();
     super.dispose();
   }

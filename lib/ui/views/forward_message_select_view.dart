@@ -39,12 +39,10 @@ class ForwardMessageSelectView extends StatefulWidget {
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
   @override
-  State<ForwardMessageSelectView> createState() =>
-      _ForwardMessageSelectViewState();
+  State<ForwardMessageSelectView> createState() => _ForwardMessageSelectViewState();
 }
 
-class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
-    with SingleTickerProviderStateMixin {
+class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   List<String> forwardedList = [];
@@ -128,9 +126,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       appBar: !widget.enableAppBar
           ? null
           : widget.appBar ??
@@ -146,15 +142,11 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
                     Navigator.maybePop(context);
                   },
                   child: Text(
-                    widget.title ??
-                        ChatUIKitLocal.forwardMessageViewTitle
-                            .localString(context),
+                    widget.title ?? ChatUIKitLocal.forwardMessageViewTitle.localString(context),
                     textScaler: TextScaler.noScaling,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: theme.color.isDark
-                          ? theme.color.neutralColor98
-                          : theme.color.neutralColor1,
+                      color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
                       fontWeight: theme.font.titleMedium.fontWeight,
                       fontSize: theme.font.titleMedium.fontSize,
                     ),
@@ -174,8 +166,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
             ),
             controller: _tabController,
             labelStyle: TextStyle(
-              fontWeight:
-                  ChatUIKitTheme.of(context).font.titleMedium.fontWeight,
+              fontWeight: ChatUIKitTheme.of(context).font.titleMedium.fontWeight,
               fontSize: ChatUIKitTheme.of(context).font.titleMedium.fontSize,
             ),
             labelColor: (ChatUIKitTheme.of(context).color.isDark
@@ -201,7 +192,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
                     ChatUIKitContactListViewItem(model),
                     SizedBox(
                       width: 80,
-                      height: 28,
+                      height: 40,
                       child: forwardButton(theme, model.profile.id, false),
                     ),
                   ],
@@ -245,8 +236,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
     return content;
   }
 
-  void onSearchTap(List<ContactItemModel> data, BuildContext context,
-      ChatUIKitTheme theme) async {
+  void onSearchTap(List<ContactItemModel> data, BuildContext context, ChatUIKitTheme theme) async {
     viewObserver ??= ChatUIKitViewObserver();
     List<NeedSearch> list = [];
     for (var item in data) {
@@ -285,8 +275,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
 
           return item;
         },
-        searchHideText:
-            ChatUIKitLocal.conversationsViewSearchHint.localString(context),
+        searchHideText: ChatUIKitLocal.conversationsViewSearchHint.localString(context),
         searchData: list,
       ),
     ).then((value) => viewObserver = null);
@@ -303,9 +292,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
       style: ElevatedButton.styleFrom(
         shadowColor: Colors.transparent,
         padding: EdgeInsets.zero,
-        backgroundColor: theme.color.isDark
-            ? theme.color.neutralColor3
-            : theme.color.neutralColor95,
+        backgroundColor: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
         ),

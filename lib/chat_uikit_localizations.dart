@@ -251,6 +251,7 @@ mixin ChatUIKitLocal {
       'messages_view_share_contact_alert_confirm';
   static const messagesViewShareContactAlertButtonCancel =
       'messages_view_share_contact_alert_cancel';
+  static const messagesViewTyping = 'messages_view_typing';
 
   static const messageCellCombineText = 'message_cell_combine_text';
   static const messageCellCombineImage = 'message_cell_combine_image';
@@ -462,6 +463,7 @@ mixin ChatUIKitLocal {
     messagesViewShareContactAlertSubTitle: '分享名片给对方',
     messagesViewShareContactAlertButtonConfirm: '分享',
     messagesViewShareContactAlertButtonCancel: '取消',
+    messagesViewTyping: '正在输入...',
     messageCellCombineText: '文本',
     messageCellCombineImage: '图片',
     messageCellCombineVoice: '语音',
@@ -668,6 +670,7 @@ mixin ChatUIKitLocal {
     messagesViewShareContactAlertSubTitle: 'Share contact with the other party',
     messagesViewShareContactAlertButtonConfirm: 'Share',
     messagesViewShareContactAlertButtonCancel: 'Cancel',
+    messagesViewTyping: 'Typing...',
     messageCellCombineText: 'Text',
     messageCellCombineImage: 'Image',
     messageCellCombineVoice: 'Voice',

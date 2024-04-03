@@ -1183,7 +1183,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
               ),
               const SizedBox(width: 5),
               Text(
-                '对方正在输入...',
+                ChatUIKitLocal.messagesViewTyping.localString(context),
                 style: TextStyle(
                     fontWeight: theme.font.bodyExtraSmall.fontWeight,
                     fontSize: theme.font.bodyExtraSmall.fontSize,

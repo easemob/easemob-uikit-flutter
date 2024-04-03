@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit_example/demo_localizations.dart';
 import 'package:em_chat_uikit_example/main.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +52,7 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
               const SizedBox(height: 38),
               Text(
-                '环信即时通讯云',
+                DemoLocalizations.welcome.localString(context),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25,

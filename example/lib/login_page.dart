@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit_example/demo_localizations.dart';
 // import 'package:em_chat_uikit_example/tool/app_server_helper.dart';
 import 'package:em_chat_uikit_example/tool/app_server_helper.dart';
 import 'package:flutter/gestures.dart';
@@ -23,6 +24,8 @@ class _LoginPageState extends State<LoginPage> {
 
   TextEditingController phoneController = TextEditingController();
   TextEditingController codeController = TextEditingController();
+
+  bool agreeServiceAgreement = false;
 
   @override
   void dispose() {
@@ -60,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   children: [
                     Text(
-                      '登录环信IM',
+                      DemoLocalizations.loginEaseMob.localString(context),
                       style: TextStyle(
                         color: theme.color.primaryColor5,
                         fontWeight: FontWeight.w500,
@@ -87,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                     scrollPadding: EdgeInsets.zero,
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
-                      hintText: '请输入您的手机号',
+                      hintText: DemoLocalizations.loginInputPhoneHint.localString(context),
                       contentPadding: EdgeInsets.zero,
                       isDense: true,
                       hintStyle: TextStyle(
@@ -115,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                     // controller: searchController,
                     scrollPadding: EdgeInsets.zero,
                     decoration: InputDecoration(
-                      hintText: '请输入验证码',
+                      hintText: DemoLocalizations.loginInputSmsHint.localString(context),
                       contentPadding: EdgeInsets.zero,
                       isDense: true,
                       hintStyle: TextStyle(
@@ -124,25 +127,13 @@ class _LoginPageState extends State<LoginPage> {
                       suffixIconConstraints: BoxConstraints.loose(const Size(100, 40)),
                       suffixIcon: InkWell(
                         onTap: () {
-                          debugPrint('获取验证码');
-                          if (phoneController.text.isEmpty) {
-                            EasyLoading.showError('请输入手机号');
-                            return;
-                          }
                           fetchSmsCode();
-                          timer = 60;
-                          _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-                            setState(() {
-                              this.timer--;
-                              if (this.timer == 0) {
-                                timer.cancel();
-                              }
-                            });
-                          });
                         },
                         enableFeedback: false,
                         child: Text(
-                          timer == 0 ? '获取验证码' : '重新获取(${timer}s)',
+                          timer == 0
+                              ? DemoLocalizations.loginSendSms.localString(context)
+                              : '${DemoLocalizations.loginResendSms.localString(context)}(${timer}s)',
                           style: TextStyle(
                             color: timer == 0 ? theme.color.primaryColor5 : theme.color.neutralColor7,
                             fontWeight: FontWeight.w500,
@@ -169,21 +160,11 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     onPressed: () {
-                      if (phoneController.text.isEmpty) {
-                        EasyLoading.showError('请输入手机号');
-                        return;
-                      }
-
-                      if (codeController.text.isEmpty) {
-                        EasyLoading.showError('请输入验证码');
-                        return;
-                      }
-
                       login();
                     },
-                    child: const Text(
-                      '登录',
-                      style: TextStyle(
+                    child: Text(
+                      DemoLocalizations.login.localString(context),
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
                       ),
@@ -195,26 +176,38 @@ class _LoginPageState extends State<LoginPage> {
                   TextSpan(
                     children: [
                       WidgetSpan(
-                        child: Icon(
-                          Icons.check_box,
-                          size: 20,
-                          color: theme.color.primaryColor5,
+                        child: InkWell(
+                          onTap: () => setState(() {
+                            agreeServiceAgreement = !agreeServiceAgreement;
+                          }),
+                          child: () {
+                            return agreeServiceAgreement
+                                ? Icon(
+                                    Icons.check_box,
+                                    size: 20,
+                                    color: theme.color.primaryColor5,
+                                  )
+                                : Icon(
+                                    Icons.check_box_outline_blank,
+                                    size: 20,
+                                    color: theme.color.primaryColor5,
+                                  );
+                          }(),
                         ),
                       ),
-                      const TextSpan(text: '请选择同意 '),
+                      TextSpan(text: DemoLocalizations.loginCheck.localString(context)),
                       TextSpan(
-                          text: '《环信服务条款》',
+                          text: DemoLocalizations.loginTermsOfService.localString(context),
                           style: linkStyle,
                           recognizer: TapGestureRecognizer()..onTap = serviceAgreement),
-                      const TextSpan(text: ' 与 '),
+                      TextSpan(text: DemoLocalizations.loginAnd.localString(context)),
                       TextSpan(
-                          text: '《环信隐私协议》',
+                          text: DemoLocalizations.loginPrivacyPolicy.localString(context),
                           style: linkStyle,
                           recognizer: TapGestureRecognizer()..onTap = privacyPolicy),
                     ],
                   ),
                   textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             )
@@ -224,20 +217,51 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void fetchSmsCode() {
+  bool checkout() {
+    if (agreeServiceAgreement == false) {
+      EasyLoading.showInfo(DemoLocalizations.loginPleaseAgreeTermsOfServicePrivacyPolicy.localString(context));
+      return false;
+    }
+
+    if (phoneController.text.isEmpty) {
+      EasyLoading.showInfo(DemoLocalizations.loginPleaseInputSms.localString(context));
+      return false;
+    }
+
+    return true;
+  }
+
+  void fetchSmsCode() async {
+    if (!checkout()) return;
+
+    EasyLoading.show();
     AppServerHelper.sendSmsCodeRequest(phoneController.text).then((value) {
-      EasyLoading.showSuccess('验证码已发送');
+      EasyLoading.showSuccess(DemoLocalizations.loginSendSmsSuccess.localString(context));
+      timer = 60;
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        setState(() {
+          this.timer--;
+          if (this.timer == 0) {
+            timer.cancel();
+          }
+        });
+      });
     }).catchError((e) {
-      debugPrint(e.toString());
-      _timer?.cancel();
-      timer = 0;
-      setState(() {});
-      EasyLoading.showError(e.toString());
+      EasyLoading.showError(DemoLocalizations.loginSendSmsFailed.localString(context));
+    }).whenComplete(() {
+      EasyLoading.dismiss();
     });
   }
 
   void login() async {
-    EasyLoading.show(status: '登录中...');
+    if (!checkout()) return;
+
+    if (codeController.text.isEmpty) {
+      EasyLoading.showInfo(DemoLocalizations.loginPleaseInputSms.localString(context));
+      return;
+    }
+
+    EasyLoading.show(status: DemoLocalizations.loggingIn.localString(context));
     Future(() async {
       try {
         LoginUserData data = await AppServerHelper.login(
@@ -257,7 +281,7 @@ class _LoginPageState extends State<LoginPage> {
       EasyLoading.dismiss();
       Navigator.of(context).pushReplacementNamed('/home');
     }).catchError((e) {
-      EasyLoading.showError(e.toString());
+      EasyLoading.showError(DemoLocalizations.loginFailed.localString(context));
     });
   }
 

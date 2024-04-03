@@ -46,7 +46,8 @@ class NewRequestListViewController with ChatUIKitListViewControllerBase, ChatUIK
     Map<String, ChatUIKitProfile> map = ChatUIKitProvider.instance.getProfiles(() {
       List<ChatUIKitProfile> list = [];
       for (var item in requests) {
-        list.add(ChatUIKitProfile.contact(id: item.groupId));
+        String userId = item['id'];
+        list.add(ChatUIKitProfile.contact(id: userId));
       }
       return list;
     }());
