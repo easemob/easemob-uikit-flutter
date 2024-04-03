@@ -100,6 +100,12 @@ class _ChatUIKitAvatarState extends State<ChatUIKitAvatar> with ChatUIKitProvide
                     width: widget.size,
                   );
                 },
+                errorWidget: (context, url, error) {
+                  return ChatUIKitImageLoader.defaultAvatar(
+                    height: widget.size,
+                    width: widget.size,
+                  );
+                },
               )
             : ChatUIKitImageLoader.defaultAvatar(
                 height: widget.size,
