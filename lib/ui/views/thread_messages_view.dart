@@ -252,7 +252,6 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
   void dispose() {
     ChatUIKit.instance.removeObserver(this);
     editBarTextEditingController?.dispose();
-    _scrollController.dispose();
     controller.dispose();
     widget.viewObserver?.dispose();
     super.dispose();

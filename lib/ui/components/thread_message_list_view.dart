@@ -49,8 +49,7 @@ class ThreadMessageListView extends StatefulWidget {
   final MessageItemBubbleBuilder? bubbleBuilder;
   final MessageItemBuilder? bubbleContentBuilder;
   final bool? forceLeft;
-  final void Function(MessageModel model, MessageReaction reaction)?
-      onReactionItemTap;
+  final void Function(MessageModel model, MessageReaction reaction)? onReactionItemTap;
   final MessageItemTapHandler? onReactionInfoTap;
   final MessageItemBuilder? reactionItemsBuilder;
   final MessageItemTapHandler? onThreadItemTap;
@@ -139,9 +138,7 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView> {
         child: content,
         onNotification: (notification) {
           if (notification is ScrollUpdateNotification) {
-            if (_scrollController.position.pixels -
-                    _scrollController.position.maxScrollExtent >
-                -1500) {
+            if (_scrollController.position.pixels - _scrollController.position.maxScrollExtent > -1500) {
               controller.fetchItemList();
             }
           }
@@ -168,10 +165,8 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView> {
       content ??= ChatUIKitMessageListViewAlertItem(
         infos: [
           MessageAlertAction(
-            text: ChatUIKitTimeFormatter.instance.formatterHandler?.call(
-                    context,
-                    ChatUIKitTimeType.message,
-                    model.message.serverTime) ??
+            text: ChatUIKitTimeFormatter.instance.formatterHandler
+                    ?.call(context, ChatUIKitTimeType.message, model.message.serverTime) ??
                 ChatUIKitTimeTool.getChatTimeStr(
                   model.message.serverTime,
                   needTime: true,
@@ -200,12 +195,8 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView> {
       enableThread: false,
       enableSelected: controller.isMultiSelectMode
           ? () {
-              if (controller.selectedMessages
-                  .map((e) => e.msgId)
-                  .toList()
-                  .contains(model.message.msgId)) {
-                controller.selectedMessages
-                    .removeWhere((e) => model.message.msgId == e.msgId);
+              if (controller.selectedMessages.map((e) => e.msgId).toList().contains(model.message.msgId)) {
+                controller.selectedMessages.removeWhere((e) => model.message.msgId == e.msgId);
               } else {
                 controller.selectedMessages.add(model.message);
               }
@@ -286,12 +277,8 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView> {
         children: [
           InkWell(
             onTap: () {
-              if (controller.selectedMessages
-                  .map((e) => e.msgId)
-                  .toList()
-                  .contains(model.message.msgId)) {
-                controller.selectedMessages
-                    .removeWhere((e) => e.msgId == model.message.msgId);
+              if (controller.selectedMessages.map((e) => e.msgId).toList().contains(model.message.msgId)) {
+                controller.selectedMessages.removeWhere((e) => e.msgId == model.message.msgId);
               } else {
                 controller.selectedMessages.add(model.message);
               }
@@ -299,23 +286,16 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView> {
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 0, right: 10, bottom: 20),
-              child: controller.selectedMessages
-                      .map((e) => e.msgId)
-                      .toList()
-                      .contains(model.message.msgId)
+              child: controller.selectedMessages.map((e) => e.msgId).toList().contains(model.message.msgId)
                   ? Icon(
                       Icons.check_box,
                       size: 28,
-                      color: theme!.color.isDark
-                          ? theme!.color.primaryColor6
-                          : theme!.color.primaryColor5,
+                      color: theme!.color.isDark ? theme!.color.primaryColor6 : theme!.color.primaryColor5,
                     )
                   : Icon(
                       Icons.check_box_outline_blank,
                       size: 28,
-                      color: theme!.color.isDark
-                          ? theme!.color.neutralColor4
-                          : theme!.color.neutralColor7,
+                      color: theme!.color.isDark ? theme!.color.neutralColor4 : theme!.color.neutralColor7,
                     ),
             ),
           ),
@@ -328,9 +308,7 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView> {
       key: ValueKey(model.id),
       controller: _scrollController,
       index: index,
-      highlightColor: theme!.color.isDark
-          ? theme!.color.neutralColor2
-          : theme!.color.neutralColor95,
+      highlightColor: theme!.color.isDark ? theme!.color.neutralColor2 : theme!.color.neutralColor95,
       child: content,
     );
 
@@ -352,8 +330,7 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView> {
   }
 
   void jumpToQuoteModel(QuoteModel model) async {
-    int index = controller.msgModelList
-        .indexWhere((element) => element.message.msgId == model.msgId);
+    int index = controller.msgModelList.indexWhere((element) => element.message.msgId == model.msgId);
 
     if (index != -1) {
       _scrollController.scrollToIndex(
