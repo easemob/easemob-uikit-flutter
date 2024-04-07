@@ -41,6 +41,13 @@ class ChatUIKitProfile {
     return id;
   }
 
+  String get nickname {
+    if (name != null && name!.isNotEmpty) {
+      return name!;
+    }
+    return id;
+  }
+
   ChatUIKitProfile({
     required this.id,
     required this.type,

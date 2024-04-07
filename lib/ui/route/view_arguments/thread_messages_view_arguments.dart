@@ -4,8 +4,8 @@ import 'package:flutter/widgets.dart';
 class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
   ThreadMessagesViewArguments({
     this.inputBar,
-    this.showMessageItemAvatar = true,
-    this.showMessageItemNickname = true,
+    this.showMessageItemAvatar,
+    this.showMessageItemNickname,
     this.onItemTap,
     this.onItemLongPress,
     this.onDoubleTap,
@@ -66,10 +66,10 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
   final Widget? inputBar;
 
   /// 是否显示头像, 默认为 `true`。 如果设置为 `false` 将不会显示头像。
-  final bool showMessageItemAvatar;
+  final MessageItemShowHandler? showMessageItemAvatar;
 
   /// 是否显示昵称, 默认为 `true`。如果设置为 `false` 将不会显示昵称。
-  final bool showMessageItemNickname;
+  final MessageItemShowHandler? showMessageItemNickname;
 
   /// 消息点击事件, 如果设置后消息点击事件将直接回调，如果不处理可以返回 `false`。
   final MessageItemTapHandler? onItemTap;
@@ -151,8 +151,8 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
     String? title,
     String? subtitle,
     Widget? inputBar,
-    bool? showMessageItemAvatar,
-    bool? showMessageItemNickname,
+    MessageItemShowHandler? showMessageItemAvatar,
+    MessageItemShowHandler? showMessageItemNickname,
     MessageItemTapHandler? onItemTap,
     MessageItemTapHandler? onItemLongPress,
     MessageItemTapHandler? onDoubleTap,

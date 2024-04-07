@@ -8,6 +8,8 @@ typedef MessageItemTapHandler = bool? Function(BuildContext context, MessageMode
 
 typedef MessageReactionItemTapHandler = bool? Function(BuildContext context, MessageModel model, MessageReaction reaction);
 
+typedef MessageItemShowHandler = bool Function(MessageModel model);
+
 typedef MessagesViewItemLongPressHandler = List<ChatUIKitBottomSheetItem>? Function(
   BuildContext context,
   MessageModel model,

@@ -5,8 +5,8 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   const ChatUIKitMessageListViewMessageItem({
     required this.model,
     this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
-    this.showAvatar = true,
-    this.showNickname = true,
+    this.showAvatar,
+    this.showNickname,
     this.messageWidget,
     this.avatarWidget,
     this.avatarSize = 32,
@@ -39,8 +39,8 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
   final MessageModel model;
   final List<MessageReaction>? reactions;
-  final bool showAvatar;
-  final bool showNickname;
+  final MessageItemShowHandler? showAvatar;
+  final MessageItemShowHandler? showNickname;
   final bool? forceLeft;
   final Widget? messageWidget;
   final Widget? avatarWidget;
@@ -72,8 +72,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
 
-    bool left =
-        forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
+    bool left = forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     Widget? msgWidget = messageWidget;
 
@@ -98,10 +97,8 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
 
     Widget bubbleWidget;
 
-    if (model.message.bodyType == MessageType.VIDEO ||
-        model.message.bodyType == MessageType.IMAGE) {
-      bubbleWidget =
-          bubbleBuilder?.call(context, msgWidget, model) ?? msgWidget;
+    if (model.message.bodyType == MessageType.VIDEO || model.message.bodyType == MessageType.IMAGE) {
+      bubbleWidget = bubbleBuilder?.call(context, msgWidget, model) ?? msgWidget;
     } else {
       bubbleWidget = bubbleBuilder?.call(context, msgWidget, model) ??
           ChatUIKitMessageListViewBubble(
@@ -141,10 +138,10 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
       onLongPress: enableSelected != null ? null : onBubbleLongPressed,
       child: bubbleWidget,
     );
-    Widget avatar = _avatarWidget(theme, context);
+    bool showAvatar = this.showAvatar?.call(model) ?? true;
+    Widget avatar = _avatarWidget(theme, context, showAvatar);
 
-    if (left == false ||
-        (left == true && model.message.direction == MessageDirection.SEND)) {
+    if (left == false || (left == true && model.message.direction == MessageDirection.SEND)) {
       bubbleWidget = Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -157,8 +154,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
               onErrorBtnTap: onErrorBtnTap,
               size: 16,
               statusType: () {
-                if (model.message.status == MessageStatus.CREATE ||
-                    model.message.status == MessageStatus.PROGRESS) {
+                if (model.message.status == MessageStatus.CREATE || model.message.status == MessageStatus.PROGRESS) {
                   return MessageStatusType.loading;
                 } else if (model.message.status == MessageStatus.FAIL) {
                   return MessageStatusType.fail;
@@ -198,13 +194,10 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     );
 
     Widget item = Column(
-      crossAxisAlignment:
-          left ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+      crossAxisAlignment: left ? CrossAxisAlignment.start : CrossAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
       children: [
-        showNickname
-            ? _nickname(theme, context, isLeft: left)
-            : const SizedBox(),
+        showNickname?.call(model) ?? true ? _nickname(theme, context, showAvatar, isLeft: left) : const SizedBox(),
         quoteWidget(context, model: model.message.getQuote, isLeft: left),
         avatarAndBubble,
         if (model.reactions?.isNotEmpty == true) const SizedBox(height: 4),
@@ -229,14 +222,11 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     return item;
   }
 
-  Widget _buildTextMessage(
-      BuildContext context, MessageModel model, bool isLeft) {
-    return bubbleContentBuilder?.call(context, model) ??
-        ChatUIKitTextMessageWidget(model: model, forceLeft: isLeft);
+  Widget _buildTextMessage(BuildContext context, MessageModel model, bool isLeft) {
+    return bubbleContentBuilder?.call(context, model) ?? ChatUIKitTextMessageWidget(model: model, forceLeft: isLeft);
   }
 
-  Widget _buildImageMessage(
-      BuildContext context, MessageModel model, bool isLeft) {
+  Widget _buildImageMessage(BuildContext context, MessageModel model, bool isLeft) {
     return bubbleContentBuilder?.call(context, model) ??
         ChatUIKitImageMessageWidget(
           model: model,
@@ -260,8 +250,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     return content;
   }
 
-  Widget _buildVideoMessage(
-      BuildContext context, MessageModel model, bool isLeft) {
+  Widget _buildVideoMessage(BuildContext context, MessageModel model, bool isLeft) {
     return bubbleContentBuilder?.call(context, model) ??
         ChatUIKitVideoMessageWidget(
           model: model,
@@ -270,8 +259,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
         );
   }
 
-  Widget _buildFileMessage(
-      BuildContext context, MessageModel model, bool isLeft) {
+  Widget _buildFileMessage(BuildContext context, MessageModel model, bool isLeft) {
     return bubbleContentBuilder?.call(context, model) ??
         ChatUIKitFileMessageWidget(
           model: model,
@@ -280,8 +268,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
         );
   }
 
-  Widget _buildCombineMessage(
-      BuildContext context, MessageModel model, bool isLeft) {
+  Widget _buildCombineMessage(BuildContext context, MessageModel model, bool isLeft) {
     return bubbleContentBuilder?.call(context, model) ??
         ChatUIKitCombineMessageWidget(
           model: model,
@@ -289,8 +276,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
         );
   }
 
-  Widget _buildCardMessage(
-      BuildContext context, MessageModel model, bool isLeft) {
+  Widget _buildCardMessage(BuildContext context, MessageModel model, bool isLeft) {
     return bubbleContentBuilder?.call(context, model) ??
         ChatUIKitCardMessageWidget(
           model: model,
@@ -298,8 +284,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
         );
   }
 
-  Widget _buildNonsupportMessage(
-      BuildContext context, MessageModel model, bool isLeft) {
+  Widget _buildNonsupportMessage(BuildContext context, MessageModel model, bool isLeft) {
     return bubbleContentBuilder?.call(context, model) ??
         ChatUIKitNonsupportMessageWidget(
           model: model,
@@ -307,69 +292,67 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
         );
   }
 
-  Widget _avatarWidget(ChatUIKitTheme theme, BuildContext context) {
+  Widget _avatarWidget(ChatUIKitTheme theme, BuildContext context, bool showAvatar) {
     Widget? content;
-    if (!showAvatar) return const SizedBox();
-    content = avatarWidget;
-    if (content == null) {
-      String? avatarUrl =
-          ShareUserData.of(context)?.showAvatar(model.message.from!) ??
-              model.message.avatarUrl;
-      content = ChatUIKitAvatar(
-        avatarUrl: avatarUrl,
-        size: avatarSize,
+    if (showAvatar) {
+      content = avatarWidget;
+      if (content == null) {
+        String? avatarUrl = ShareUserData.of(context)?.showAvatar(model.message.from!) ?? model.message.avatarUrl;
+        content = ChatUIKitAvatar(
+          avatarUrl: avatarUrl,
+          size: avatarSize,
+        );
+      }
+
+      content = InkWell(
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        onTap: enableSelected != null ? null : onAvatarTap,
+        onLongPress: enableSelected != null ? null : onAvatarLongPressed,
+        child: content,
       );
+    } else {
+      content = const SizedBox(width: 0, height: 0);
+    }
+    return content;
+  }
+
+  Widget _nickname(ChatUIKitTheme theme, BuildContext context, bool showAvatar, {bool isLeft = false}) {
+    Widget content;
+    if (showNickname?.call(model) ?? true) {
+      String nickname = ShareUserData.of(context)?.showName(model.message.from!) ?? model.message.from!;
+      content = nicknameWidget ??
+          Text(
+            nickname,
+            textScaler: TextScaler.noScaling,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontWeight: theme.font.labelSmall.fontWeight,
+                fontSize: theme.font.labelSmall.fontSize,
+                color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5),
+          );
+
+      content = InkWell(
+        onTap: enableSelected != null ? null : onNicknameTap,
+        child: content,
+      );
+      double padding = getArrowWidth + arrowPadding + (showAvatar ? avatarSize : 0);
+      content = Padding(
+        padding: EdgeInsets.only(
+          left: isLeft ? padding : 0,
+          right: !isLeft ? padding : 0,
+        ),
+        child: content,
+      );
+    } else {
+      content = const SizedBox();
     }
 
-    content = InkWell(
-      highlightColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      onTap: enableSelected != null ? null : onAvatarTap,
-      onLongPress: enableSelected != null ? null : onAvatarLongPressed,
-      child: content,
-    );
-
     return content;
   }
 
-  Widget _nickname(ChatUIKitTheme theme, BuildContext context,
-      {bool isLeft = false}) {
-    if (!showNickname) return const SizedBox();
-    String nickname =
-        ShareUserData.of(context)?.showName(model.message.from!) ??
-            model.message.from!;
-    Widget content = nicknameWidget ??
-        Text(
-          nickname,
-          textScaler: TextScaler.noScaling,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-              fontWeight: theme.font.labelSmall.fontWeight,
-              fontSize: theme.font.labelSmall.fontSize,
-              color: theme.color.isDark
-                  ? theme.color.neutralSpecialColor6
-                  : theme.color.neutralSpecialColor5),
-        );
-
-    content = InkWell(
-      onTap: enableSelected != null ? null : onNicknameTap,
-      child: content,
-    );
-    double padding = getArrowWidth + avatarSize + arrowPadding;
-    content = Padding(
-      padding: EdgeInsets.only(
-        left: isLeft ? padding : 0,
-        right: !isLeft ? padding : 0,
-      ),
-      child: content,
-    );
-
-    return content;
-  }
-
-  Widget quoteWidget(BuildContext context,
-      {QuoteModel? model, bool isLeft = false}) {
+  Widget quoteWidget(BuildContext context, {QuoteModel? model, bool isLeft = false}) {
     if (model == null) return const SizedBox();
     Widget? content = quoteBuilder?.call(context, model);
     double padding = getArrowWidth + avatarSize + arrowPadding;
@@ -389,14 +372,12 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
       return const SizedBox();
     } else {
       double arrowWidth = 0;
-      if (model.message.bodyType != MessageType.IMAGE &&
-          model.message.bodyType != MessageType.VIDEO) {
+      if (model.message.bodyType != MessageType.IMAGE && model.message.bodyType != MessageType.VIDEO) {
         arrowWidth = getArrowWidth;
       }
       return Row(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment:
-            left ? MainAxisAlignment.start : MainAxisAlignment.end,
+        mainAxisAlignment: left ? MainAxisAlignment.start : MainAxisAlignment.end,
         textDirection: left ? TextDirection.ltr : TextDirection.rtl,
         children: [
           SizedBox(width: arrowWidth + avatarSize + arrowPadding),
@@ -421,14 +402,12 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
       return const SizedBox();
     } else {
       double arrowWidth = 0;
-      if (model.message.bodyType != MessageType.IMAGE &&
-          model.message.bodyType != MessageType.VIDEO) {
+      if (model.message.bodyType != MessageType.IMAGE && model.message.bodyType != MessageType.VIDEO) {
         arrowWidth = getArrowWidth;
       }
       return Row(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment:
-            left ? MainAxisAlignment.start : MainAxisAlignment.end,
+        mainAxisAlignment: left ? MainAxisAlignment.start : MainAxisAlignment.end,
         textDirection: left ? TextDirection.ltr : TextDirection.rtl,
         children: [
           SizedBox(width: arrowWidth + avatarSize + arrowPadding),
@@ -437,10 +416,8 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
                 ChatUIKitMessageReactionsRow(
                   reactions: reactions!,
                   isLeft: left,
-                  onReactionTap:
-                      enableSelected != null ? null : onReactionItemTap,
-                  onReactionInfoTap:
-                      enableSelected != null ? null : onReactionInfoTap,
+                  onReactionTap: enableSelected != null ? null : onReactionItemTap,
+                  onReactionInfoTap: enableSelected != null ? null : onReactionInfoTap,
                 ),
           ),
         ],
@@ -464,20 +441,16 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
                 ChatUIKitTimeType.message,
                 model.message.serverTime,
               ) ??
-              ChatUIKitTimeTool.getChatTimeStr(model.message.serverTime,
-                  needTime: true),
+              ChatUIKitTimeTool.getChatTimeStr(model.message.serverTime, needTime: true),
           textDirection: left ? TextDirection.ltr : TextDirection.rtl,
           style: TextStyle(
               fontWeight: theme.font.bodySmall.fontWeight,
               fontSize: theme.font.bodySmall.fontSize,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor5
-                  : theme.color.neutralColor7),
+              color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7),
         ),
       ],
     );
   }
 
-  double get getArrowWidth =>
-      bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow ? arrowWidth : 0;
+  double get getArrowWidth => bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow ? arrowWidth : 0;
 }

@@ -8,8 +8,8 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     this.appBar,
     this.title,
     this.inputBar,
-    this.showMessageItemAvatar = true,
-    this.showMessageItemNickname = true,
+    this.showMessageItemAvatar,
+    this.showMessageItemNickname,
     this.onItemTap,
     this.onItemLongPress,
     this.onDoubleTap,
@@ -61,10 +61,10 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   final Widget? inputBar;
 
   /// 是否显示头像, 默认为 `true`。 如果设置为 `false` 将不会显示头像。
-  final bool showMessageItemAvatar;
+  final MessageItemShowHandler? showMessageItemAvatar;
 
   /// 是否显示昵称, 默认为 `true`。如果设置为 `false` 将不会显示昵称。
-  final bool showMessageItemNickname;
+  final MessageItemShowHandler? showMessageItemNickname;
 
   /// 消息点击事件, 如果设置后消息点击事件将直接回调，如果不处理可以返回 `false`。
   final MessageItemTapHandler? onItemTap;
@@ -155,8 +155,8 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     ChatUIKitAppBar? appBar,
     Widget? inputBar,
     String? title,
-    bool? showMessageItemAvatar,
-    bool? showMessageItemNickname,
+    MessageItemShowHandler? showMessageItemAvatar,
+    MessageItemShowHandler? showMessageItemNickname,
     MessageItemTapHandler? onItemTap,
     MessageItemTapHandler? onItemLongPress,
     MessageItemTapHandler? onDoubleTap,
@@ -172,8 +172,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     Widget? emojiWidget,
     Widget? Function(BuildContext context, MessageModel model)? replyBarBuilder,
     Widget Function(BuildContext context, QuoteModel model)? quoteBuilder,
-    bool Function(BuildContext context, MessageModel message)?
-        onErrorBtnTapHandler,
+    bool Function(BuildContext context, MessageModel message)? onErrorBtnTapHandler,
     MessageItemBubbleBuilder? bubbleBuilder,
     MessageItemBuilder? bubbleContentBuilder,
     MessagesViewMorePressHandler? onMoreActionsItemsHandler,
@@ -196,10 +195,8 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       appBar: appBar ?? this.appBar,
       title: title ?? this.title,
       inputBar: inputBar ?? this.inputBar,
-      showMessageItemAvatar:
-          showMessageItemAvatar ?? this.showMessageItemAvatar,
-      showMessageItemNickname:
-          showMessageItemNickname ?? this.showMessageItemNickname,
+      showMessageItemAvatar: showMessageItemAvatar ?? this.showMessageItemAvatar,
+      showMessageItemNickname: showMessageItemNickname ?? this.showMessageItemNickname,
       onItemTap: onItemTap ?? this.onItemTap,
       onItemLongPress: onItemLongPress ?? this.onItemLongPress,
       onDoubleTap: onDoubleTap ?? this.onDoubleTap,
@@ -217,13 +214,10 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       onErrorBtnTapHandler: onErrorBtnTapHandler ?? this.onErrorBtnTapHandler,
       bubbleBuilder: bubbleBuilder ?? this.bubbleBuilder,
       bubbleContentBuilder: bubbleContentBuilder ?? this.bubbleContentBuilder,
-      onMoreActionsItemsHandler:
-          onMoreActionsItemsHandler ?? this.onMoreActionsItemsHandler,
-      onItemLongPressHandler:
-          onItemLongPressHandler ?? this.onItemLongPressHandler,
+      onMoreActionsItemsHandler: onMoreActionsItemsHandler ?? this.onMoreActionsItemsHandler,
+      onItemLongPressHandler: onItemLongPressHandler ?? this.onItemLongPressHandler,
       enableAppBar: enableAppBar ?? this.enableAppBar,
-      inputBarTextEditingController:
-          inputBarTextEditingController ?? this.inputBarTextEditingController,
+      inputBarTextEditingController: inputBarTextEditingController ?? this.inputBarTextEditingController,
       forceLeft: forceLeft ?? this.forceLeft,
       multiSelectBottomBar: multiSelectBottomBar ?? this.multiSelectBottomBar,
       viewObserver: viewObserver ?? this.viewObserver,

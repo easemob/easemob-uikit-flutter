@@ -18,8 +18,10 @@ class _UserProviderWidgetState extends State<UserProviderWidget> with GroupObser
   void initState() {
     super.initState();
     ChatUIKit.instance.addObserver(this);
-    ChatUIKitProvider.instance.profilesHandler = onProfilesRequest;
+    // 打开db
     UserDataStore().init(onOpened: onOpened);
+    // 设置Provider回调
+    ChatUIKitProvider.instance.profilesHandler = onProfilesRequest;
   }
 
   @override
@@ -53,7 +55,7 @@ class _UserProviderWidgetState extends State<UserProviderWidget> with GroupObser
         nickname: map.values.first.nickName,
         avatarUrl: map.values.first.avatarUrl,
       );
-      UserDataStore().saveUserDatas([profile]);
+      UserDataStore().saveUserData(profile);
       ChatUIKitProvider.instance.addProfiles([profile]);
     } catch (e) {
       debugPrint('fetchCurrentUserInfo error: $e');

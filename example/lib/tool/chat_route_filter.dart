@@ -22,22 +22,16 @@ class ChatRouteFilter {
     return settings;
   }
 
-  // 为 MessagesView 添加文件点击下载
   static RouteSettings groupDetail(RouteSettings settings) {
     ChatUIKitViewObserver? viewObserver = ChatUIKitViewObserver();
     GroupDetailsViewArguments arguments = settings.arguments as GroupDetailsViewArguments;
 
     arguments = arguments.copyWith(viewObserver: viewObserver);
     Future(() async {
-      try {
-        // 更新群组详情
-        Group group = await ChatUIKit.instance.fetchGroupInfo(groupId: arguments.profile.id);
-        ChatUIKitProfile profile = arguments.profile.copyWith(name: group.name, avatarUrl: group.extension);
-        ChatUIKitProvider.instance.addProfiles([profile]);
-        UserDataStore().saveUserData(profile);
-      } catch (e) {
-        debugPrint('fetch group info error');
-      }
+      Group group = await ChatUIKit.instance.fetchGroupInfo(groupId: arguments.profile.id);
+      ChatUIKitProfile profile = arguments.profile.copyWith(name: group.name, avatarUrl: group.extension);
+      ChatUIKitProvider.instance.addProfiles([profile]);
+      UserDataStore().saveUserData(profile);
     }).then((value) {
       // 刷新ui
       viewObserver.refresh();
@@ -126,7 +120,11 @@ class ChatRouteFilter {
   static RouteSettings messagesView(RouteSettings settings) {
     MessagesViewArguments arguments = settings.arguments as MessagesViewArguments;
     arguments = arguments.copyWith(
-      showMessageItemNickname: arguments.profile.type == ChatUIKitProfileType.group,
+      showMessageItemNickname: (model) {
+        // 只有群组消息并且不是自己发的消息显示昵称
+        return (arguments.profile.type == ChatUIKitProfileType.group) &&
+            model.message.from != ChatUIKit.instance.currentUserId;
+      },
       onItemTap: (ctx, messageModel) {
         if (messageModel.message.bodyType == MessageType.FILE) {
           Navigator.of(ctx).push(

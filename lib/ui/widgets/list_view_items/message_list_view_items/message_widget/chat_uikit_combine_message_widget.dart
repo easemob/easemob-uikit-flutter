@@ -1,7 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ChatUIKitCombineMessageWidget extends StatelessWidget {
   const ChatUIKitCombineMessageWidget({
@@ -19,80 +18,81 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    bool left =
-        forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
+    bool left = forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
-    List<Widget> widgets = [];
-    Widget content = ChatUIKitEmojiRichText(
+    Widget topWidget = ChatUIKitEmojiRichText(
       emojiSize: const Size(14, 14),
       text: summary(context),
       textScaler: TextScaler.noScaling,
+      textAlign: TextAlign.left,
       maxLines: 4,
       style: style ??
           (left
               ? TextStyle(
                   fontWeight: theme.font.bodySmall.fontWeight,
                   fontSize: theme.font.bodySmall.fontSize,
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor98
-                      : theme.color.neutralColor1,
+                  color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
                 )
               : TextStyle(
                   fontWeight: theme.font.bodySmall.fontWeight,
                   fontSize: theme.font.bodySmall.fontSize,
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor1
-                      : theme.color.neutralColor98,
+                  color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
                 )),
     );
 
-    widgets.add(content);
-
-    content = Column(
+    topWidget = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: widgets,
+      children: [topWidget],
     );
 
-    content = Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        content,
-        const SizedBox(height: 4),
-        RichText(
-          text: TextSpan(
-            children: [
-              WidgetSpan(
-                  child: ChatUIKitImageLoader.messageHistory(
-                width: 16,
-                height: 16,
-                color: left
-                    ? theme.color.isDark
-                        ? theme.color.neutralSpecialColor7
-                        : theme.color.neutralSpecialColor5
-                    : theme.color.isDark
-                        ? theme.color.neutralSpecialColor3
-                        : theme.color.neutralSpecialColor98,
-              )),
-              TextSpan(
-                text: ChatUIKitLocal.historyMessages.localString(context),
-                style: TextStyle(
-                  fontWeight: theme.font.labelSmall.fontWeight,
-                  fontSize: theme.font.labelSmall.fontSize,
-                  color: left
-                      ? theme.color.isDark
-                          ? theme.color.neutralSpecialColor7
-                          : theme.color.neutralSpecialColor5
-                      : theme.color.isDark
-                          ? theme.color.neutralSpecialColor3
-                          : theme.color.neutralSpecialColor98,
-                ),
-              ),
-            ],
+    Widget bottomWidget = RichText(
+      text: TextSpan(
+        children: [
+          WidgetSpan(
+              child: ChatUIKitImageLoader.messageHistory(
+            width: 16,
+            height: 16,
+            color: left
+                ? theme.color.isDark
+                    ? theme.color.neutralSpecialColor7
+                    : theme.color.neutralSpecialColor5
+                : theme.color.isDark
+                    ? theme.color.neutralSpecialColor3
+                    : theme.color.neutralSpecialColor98,
+          )),
+          TextSpan(
+            text: ChatUIKitLocal.historyMessages.localString(context),
+            style: TextStyle(
+              fontWeight: theme.font.labelSmall.fontWeight,
+              fontSize: theme.font.labelSmall.fontSize,
+              color: left
+                  ? theme.color.isDark
+                      ? theme.color.neutralSpecialColor7
+                      : theme.color.neutralSpecialColor5
+                  : theme.color.isDark
+                      ? theme.color.neutralSpecialColor3
+                      : theme.color.neutralSpecialColor98,
+            ),
           ),
-          textScaler: TextScaler.noScaling,
-          overflow: TextOverflow.ellipsis,
+        ],
+      ),
+      textAlign: TextAlign.right,
+      textScaler: TextScaler.noScaling,
+      overflow: TextOverflow.ellipsis,
+    );
+
+    Widget content = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          fit: FlexFit.loose,
+          child: topWidget,
+        ),
+        const SizedBox(height: 4),
+        Flexible(
+          fit: FlexFit.loose,
+          child: bottomWidget,
         ),
       ],
     );
@@ -137,8 +137,7 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
         hasCatch = true;
       }
       if (typeStr == '[Location]') {
-        typeStr =
-            ChatUIKitLocal.messageCellCombineLocation.localString(context);
+        typeStr = ChatUIKitLocal.messageCellCombineLocation.localString(context);
         hasCatch = true;
       }
       if (typeStr == '[Video]') {

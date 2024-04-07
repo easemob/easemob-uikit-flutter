@@ -57,8 +57,8 @@ class MessagesView extends StatefulWidget {
     this.title,
     this.inputBar,
     this.controller,
-    this.showMessageItemAvatar = true,
-    this.showMessageItemNickname = true,
+    this.showMessageItemAvatar,
+    this.showMessageItemNickname,
     this.onItemTap,
     this.onItemLongPress,
     this.onDoubleTap,
@@ -110,10 +110,10 @@ class MessagesView extends StatefulWidget {
   final Widget? inputBar;
 
   /// 是否显示头像, 默认为 `true`。 如果设置为 `false` 将不会显示头像。
-  final bool showMessageItemAvatar;
+  final MessageItemShowHandler? showMessageItemAvatar;
 
   /// 是否显示昵称, 默认为 `true`。如果设置为 `false` 将不会显示昵称。
-  final bool showMessageItemNickname;
+  final MessageItemShowHandler? showMessageItemNickname;
 
   /// 消息点击事件, 如果设置后消息点击事件将直接回调，如果不处理可以返回 `false`。
   final MessageItemTapHandler? onItemTap;
@@ -229,14 +229,14 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     ChatUIKit.instance.addObserver(this);
     _scrollController = AutoScrollController();
     widget.viewObserver?.addListener(() {
-      setState(() {});
+      updateView();
     });
     inputBarController = widget.inputBarTextEditingController ?? ChatUIKitInputBarController();
     inputBarController.addListener(() {
       attemptSendInputType();
       if (showMoreBtn != !inputBarController.text.trim().isNotEmpty) {
         showMoreBtn = !inputBarController.text.trim().isNotEmpty;
-        setState(() {});
+        updateView();
       }
       if (inputBarController.needMention) {
         if (profile?.type == ChatUIKitProfileType.group) {
@@ -248,13 +248,13 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       if (editMessage != null) return;
       if (inputBarController.hasFocus) {
         showEmoji = false;
-        setState(() {});
+        updateView();
       }
     });
 
     controller = widget.controller ?? MessageListViewController(profile: profile!);
     controller.addListener(() {
-      setState(() {});
+      updateView();
       if (controller.lastActionType == MessageLastActionType.topPosition) {
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
           int index =
@@ -543,7 +543,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
               onTap: () {
                 editMessage = null;
                 messageEditCanSend = false;
-                setState(() {});
+                updateView();
               },
               child: Opacity(
                 opacity: 0.5,
@@ -627,7 +627,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
               } else {
                 controller.selectedMessages.add(model.message);
               }
-              setState(() {});
+              updateView();
             }
           : null,
       bubbleStyle: widget.bubbleStyle,
@@ -883,7 +883,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           messageModel: replyMessage!,
           onCancelTap: () {
             replyMessage = null;
-            setState(() {});
+            updateView();
           },
         );
 
@@ -908,7 +908,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         final canSend = input.trim() != editMessage?.textContent && input.isNotEmpty;
         if (messageEditCanSend != canSend) {
           messageEditCanSend = canSend;
-          setState(() {});
+          updateView();
         }
       },
       inputBarController: editBarTextEditingController!,
@@ -923,7 +923,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
             editBarTextEditingController?.clear();
             editMessage = null;
             messageEditCanSend = false;
-            setState(() {});
+            updateView();
           }
         },
         child: Icon(
@@ -985,7 +985,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         onTap: () async {
           showEmoji = false;
           inputBarController.unfocus();
-          setState(() {});
+          updateView();
           ChatUIKitRecordModel? model = await showChatUIKitRecordBar(
             context: context,
             statusChangeCallback: (type, duration, path) {
@@ -1016,7 +1016,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 onTap: () {
                   inputBarController.unfocus();
                   showEmoji = !showEmoji;
-                  setState(() {});
+                  updateView();
                 },
                 child: ChatUIKitImageLoader.faceKeyboard(),
               ),
@@ -1027,7 +1027,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 onTap: () {
                   showEmoji = !showEmoji;
                   inputBarController.requestFocus();
-                  setState(() {});
+                  updateView();
                 },
                 child: ChatUIKitImageLoader.textKeyboard(),
               ),
@@ -1139,7 +1139,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                       replyMessage = null;
                     }
                     showMoreBtn = true;
-                    setState(() {});
+                    updateView();
                   }
                 },
                 child: ChatUIKitImageLoader.sendKeyboard(),
@@ -1194,6 +1194,10 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         );
       },
     );
+  }
+
+  void updateView() {
+    setState(() {});
   }
 
   Widget multiSelectBar(ChatUIKitTheme theme) {
@@ -1276,7 +1280,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       needUpdate = true;
     }
     if (needUpdate) {
-      setState(() {});
+      updateView();
     }
   }
 
@@ -1367,14 +1371,14 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     if (message.bodyType != MessageType.TXT) return;
     editMessage = message;
     editBarTextEditingController = ChatUIKitInputBarController(text: editMessage?.textContent ?? "");
-    setState(() {});
+    updateView();
   }
 
   void replyMessaged(MessageModel model) {
     // clearAllType();
     // inputBarController.requestFocus();
     replyMessage = model;
-    setState(() {});
+    updateView();
   }
 
   void deleteMessage(MessageModel model) async {
@@ -1541,7 +1545,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         }
       }
     }
-    setState(() {});
+    updateView();
   }
 
   Future<void> previewVoice(bool play, {String? path}) async {
@@ -1560,7 +1564,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     await _player.play(DeviceFileSource(path));
     _player.onPlayerComplete.first.whenComplete(() async {
       _playingMessage = null;
-      setState(() {});
+      updateView();
     }).onError((error, stackTrace) {});
   }
 
@@ -1568,7 +1572,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     if (_player.state == PlayerState.playing) {
       await _player.stop();
       _playingMessage = null;
-      setState(() {});
+      updateView();
     }
   }
 

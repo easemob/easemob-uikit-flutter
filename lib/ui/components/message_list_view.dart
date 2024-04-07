@@ -12,8 +12,8 @@ class MessageListView extends StatefulWidget {
     this.onAvatarTap,
     this.onAvatarLongPressed,
     this.onNicknameTap,
-    this.showAvatar = true,
-    this.showNickname = true,
+    this.showAvatar,
+    this.showNickname,
     this.itemBuilder,
     this.alertItemBuilder,
     this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
@@ -41,15 +41,14 @@ class MessageListView extends StatefulWidget {
   final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
   final MessageItemBuilder? itemBuilder;
   final MessageItemBuilder? alertItemBuilder;
-  final bool showAvatar;
-  final bool showNickname;
+  final MessageItemShowHandler? showAvatar;
+  final MessageItemShowHandler? showNickname;
   final Widget Function(BuildContext context, QuoteModel model)? quoteBuilder;
   final void Function(MessageModel model)? onErrorBtnTap;
   final MessageItemBubbleBuilder? bubbleBuilder;
   final MessageItemBuilder? bubbleContentBuilder;
   final bool? forceLeft;
-  final void Function(MessageModel model, MessageReaction reaction)?
-      onReactionItemTap;
+  final void Function(MessageModel model, MessageReaction reaction)? onReactionItemTap;
   final MessageItemTapHandler? onReactionInfoTap;
   final MessageItemBuilder? reactionItemsBuilder;
   final MessageItemTapHandler? onThreadItemTap;
@@ -84,9 +83,8 @@ class _MessageListViewState extends State<MessageListView> {
     theme ??= ChatUIKitTheme.of(context);
     size ??= MediaQuery.of(context).size;
     Widget content = CustomScrollView(
-      physics: controller.msgModelList.length > 15
-          ? const AlwaysScrollableScrollPhysics()
-          : const BouncingScrollPhysics(),
+      physics:
+          controller.msgModelList.length > 15 ? const AlwaysScrollableScrollPhysics() : const BouncingScrollPhysics(),
       controller: _scrollController,
       reverse: true,
       shrinkWrap: controller.msgModelList.length > 15 ? false : true,
@@ -127,9 +125,7 @@ class _MessageListViewState extends State<MessageListView> {
     content = Scaffold(
       key: ValueKey(controller.profile.id),
       body: content,
-      backgroundColor: theme!.color.isDark
-          ? theme!.color.neutralColor1
-          : theme!.color.neutralColor98,
+      backgroundColor: theme!.color.isDark ? theme!.color.neutralColor1 : theme!.color.neutralColor98,
     );
 
     return content;
@@ -144,10 +140,8 @@ class _MessageListViewState extends State<MessageListView> {
       content ??= ChatUIKitMessageListViewAlertItem(
         infos: [
           MessageAlertAction(
-            text: ChatUIKitTimeFormatter.instance.formatterHandler?.call(
-                    context,
-                    ChatUIKitTimeType.message,
-                    model.message.serverTime) ??
+            text: ChatUIKitTimeFormatter.instance.formatterHandler
+                    ?.call(context, ChatUIKitTimeType.message, model.message.serverTime) ??
                 ChatUIKitTimeTool.getChatTimeStr(
                   model.message.serverTime,
                   needTime: true,
@@ -175,12 +169,8 @@ class _MessageListViewState extends State<MessageListView> {
     content ??= ChatUIKitMessageListViewMessageItem(
       enableSelected: controller.isMultiSelectMode
           ? () {
-              if (controller.selectedMessages
-                  .map((e) => e.msgId)
-                  .toList()
-                  .contains(model.message.msgId)) {
-                controller.selectedMessages
-                    .removeWhere((e) => model.message.msgId == e.msgId);
+              if (controller.selectedMessages.map((e) => e.msgId).toList().contains(model.message.msgId)) {
+                controller.selectedMessages.removeWhere((e) => model.message.msgId == e.msgId);
               } else {
                 controller.selectedMessages.add(model.message);
               }
@@ -261,12 +251,8 @@ class _MessageListViewState extends State<MessageListView> {
         children: [
           InkWell(
             onTap: () {
-              if (controller.selectedMessages
-                  .map((e) => e.msgId)
-                  .toList()
-                  .contains(model.message.msgId)) {
-                controller.selectedMessages
-                    .removeWhere((e) => e.msgId == model.message.msgId);
+              if (controller.selectedMessages.map((e) => e.msgId).toList().contains(model.message.msgId)) {
+                controller.selectedMessages.removeWhere((e) => e.msgId == model.message.msgId);
               } else {
                 controller.selectedMessages.add(model.message);
               }
@@ -274,23 +260,16 @@ class _MessageListViewState extends State<MessageListView> {
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 0, right: 10, bottom: 20),
-              child: controller.selectedMessages
-                      .map((e) => e.msgId)
-                      .toList()
-                      .contains(model.message.msgId)
+              child: controller.selectedMessages.map((e) => e.msgId).toList().contains(model.message.msgId)
                   ? Icon(
                       Icons.check_box,
                       size: 28,
-                      color: theme!.color.isDark
-                          ? theme!.color.primaryColor6
-                          : theme!.color.primaryColor5,
+                      color: theme!.color.isDark ? theme!.color.primaryColor6 : theme!.color.primaryColor5,
                     )
                   : Icon(
                       Icons.check_box_outline_blank,
                       size: 28,
-                      color: theme!.color.isDark
-                          ? theme!.color.neutralColor4
-                          : theme!.color.neutralColor7,
+                      color: theme!.color.isDark ? theme!.color.neutralColor4 : theme!.color.neutralColor7,
                     ),
             ),
           ),
@@ -303,9 +282,7 @@ class _MessageListViewState extends State<MessageListView> {
       key: ValueKey(model.id),
       controller: _scrollController,
       index: index,
-      highlightColor: theme!.color.isDark
-          ? theme!.color.neutralColor2
-          : theme!.color.neutralColor95,
+      highlightColor: theme!.color.isDark ? theme!.color.neutralColor2 : theme!.color.neutralColor95,
       child: content,
     );
 
@@ -327,8 +304,7 @@ class _MessageListViewState extends State<MessageListView> {
   }
 
   void jumpToQuoteModel(QuoteModel model) async {
-    int index = controller.msgModelList
-        .indexWhere((element) => element.message.msgId == model.msgId);
+    int index = controller.msgModelList.indexWhere((element) => element.message.msgId == model.msgId);
 
     if (index != -1) {
       _scrollController.scrollToIndex(
