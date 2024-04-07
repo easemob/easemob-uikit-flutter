@@ -100,6 +100,17 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
       for (var msg in result.data) {
         List<MessageReaction>? list = await msg.reactionList();
         msgModelList.add(MessageModel(message: msg, reactions: list));
+
+        // 先从缓存的profile中取
+        ChatUIKitProfile? profile = ChatUIKitProvider.instance.profilesCache[msg.from!];
+        if (profile != null) {
+          userMap[msg.from!] = profile;
+        } else {
+          ChatUIKitProfile? mapProfile = userMap[msg.from!];
+          if ((mapProfile?.timestamp ?? 0) < msg.fromProfile.timestamp) {
+            userMap[msg.from!] = msg.fromProfile;
+          }
+        }
       }
 
       updateView();
