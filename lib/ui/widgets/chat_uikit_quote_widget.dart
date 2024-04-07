@@ -85,6 +85,8 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
             return voiceWidget(theme, message);
           case MessageType.FILE:
             return fileWidget(theme, message);
+          case MessageType.COMBINE:
+            return combineWidget(theme, message);
           case MessageType.CUSTOM:
             return custom(theme, message);
           default:
@@ -524,6 +526,66 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       children: [
         Text(
           message.nickname ?? message.from ?? '',
+          textScaler: TextScaler.noScaling,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: theme.color.isDark ? theme.color.neutralSpecialColor5 : theme.color.neutralSpecialColor6,
+            fontSize: theme.font.labelSmall.fontSize,
+            fontWeight: theme.font.labelSmall.fontWeight,
+          ),
+        ),
+        content,
+      ],
+    );
+
+    return content;
+  }
+
+  Widget combineWidget(ChatUIKitTheme theme, Message message) {
+    Widget content = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: 16,
+          height: 16,
+          child: ChatUIKitImageLoader.messageHistory(
+              width: 32, height: 32, color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor7),
+        ),
+        const SizedBox(width: 4),
+        Flexible(
+          child: RichText(
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            textScaler: TextScaler.noScaling,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: ChatUIKitLocal.quoteWidgetTitleCombine.localString(context),
+                  style: TextStyle(
+                    fontWeight: theme.font.labelSmall.fontWeight,
+                    fontSize: theme.font.labelSmall.fontSize,
+                    color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
+                  ),
+                ),
+                TextSpan(
+                  text: message.displayName,
+                  style: TextStyle(
+                    fontWeight: theme.font.bodySmall.fontWeight,
+                    fontSize: theme.font.bodySmall.fontSize,
+                    color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+    content = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          message.fromProfile.showName,
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(

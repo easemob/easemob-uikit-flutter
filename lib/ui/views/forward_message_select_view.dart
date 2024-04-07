@@ -340,6 +340,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView> wit
         chatType: isGroup ? ChatType.GroupChat : ChatType.Chat,
       );
     }
+    message.addProfile();
 
     final ret = await ChatUIKit.instance.sendMessage(message: message);
     // ignore: invalid_use_of_protected_member

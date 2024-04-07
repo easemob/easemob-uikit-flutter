@@ -85,14 +85,14 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
     Widget content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Flexible(
-          fit: FlexFit.loose,
-          child: topWidget,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [Expanded(child: topWidget)],
         ),
         const SizedBox(height: 4),
-        Flexible(
-          fit: FlexFit.loose,
-          child: bottomWidget,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [Expanded(child: bottomWidget)],
         ),
       ],
     );

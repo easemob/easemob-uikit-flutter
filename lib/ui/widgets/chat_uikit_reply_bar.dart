@@ -135,6 +135,8 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
       return _voiceWidget(theme);
     } else if (widget.messageModel.message.bodyType == MessageType.FILE) {
       return _fileWidget(theme);
+    } else if (widget.messageModel.message.bodyType == MessageType.COMBINE) {
+      return _combineWidget(theme);
     } else if (widget.messageModel.message.bodyType == MessageType.CUSTOM) {
       return _customWidget(theme);
     } else {
@@ -265,6 +267,45 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
             children: [
               TextSpan(
                 text: ChatUIKitLocal.replayBarTitleFile.localString(context),
+                style: TextStyle(
+                  fontWeight: theme.font.labelSmall.fontWeight,
+                  fontSize: theme.font.labelSmall.fontSize,
+                  color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
+                ),
+              ),
+              TextSpan(
+                text: widget.messageModel.message.displayName,
+                style: TextStyle(
+                  fontWeight: theme.font.bodySmall.fontWeight,
+                  fontSize: theme.font.bodySmall.fontSize,
+                  color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
+                ),
+              ),
+            ],
+          ),
+        )),
+      ],
+    );
+  }
+
+  Widget _combineWidget(ChatUIKitTheme theme) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 16,
+          height: 16,
+          child: ChatUIKitImageLoader.messageHistory(
+              width: 32, height: 32, color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor7),
+        ),
+        const SizedBox(width: 4),
+        Expanded(
+            child: RichText(
+          textScaler: TextScaler.noScaling,
+          overflow: TextOverflow.ellipsis,
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: ChatUIKitLocal.replayBarTitleCombine.localString(context),
                 style: TextStyle(
                   fontWeight: theme.font.labelSmall.fontWeight,
                   fontSize: theme.font.labelSmall.fontSize,
