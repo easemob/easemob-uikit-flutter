@@ -452,6 +452,9 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
           needUpdate = true;
           List<MessageReaction>? list = await msg.reactionList();
           msgModelList.add(MessageModel(message: msg, reactions: list));
+          ChatUIKitProfile? profile = ChatUIKitProvider.instance.profilesCache[msg.from!];
+          profile ??= msg.fromProfile;
+          userMap[msg.from!] = profile;
         }
       }
     }
