@@ -1638,7 +1638,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       // 是好友，不是当前聊天对象，跳转到好友页面，并可以发消息
       if (contacts.contains(profile.id)) {
         ChatUIKitProfile? tmpProfile = ChatUIKitProvider.instance.profilesCache[profile.id];
-        pushNewContactDetail(tmpProfile ?? profile);
+        pushContactDetail(tmpProfile ?? profile);
       }
       // 不是好友，跳转到添加好友页面
       else {
@@ -1772,7 +1772,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
   }
 
   // 处理不是当前聊天对象的好友
-  void pushNewContactDetail(ChatUIKitProfile profile) {
+  void pushContactDetail(ChatUIKitProfile profile) {
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.contactDetailsView,
