@@ -1753,18 +1753,13 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                     ),
                   ).then((value) {
                     if (value != null && value is Message) {
-                      ChatUIKitRoute.pushOrPushNamed(
-                        context,
-                        ChatUIKitRouteNames.messagesView,
-                        MessagesViewArguments(
-                          profile: profile,
-                          attributes: widget.attributes,
-                          controller: MessageListViewController(
-                            profile: profile,
-                            searchedMsg: value,
-                          ),
-                        ),
-                      );
+                      int count = 0;
+                      Navigator.of(context).popUntil((route) {
+                        count++;
+                        if (count == 2) return true;
+                        return route.settings.name == ChatUIKitRouteNames.messagesView || route.isFirst;
+                      });
+                      controller.jumpToSearchedMessage(value);
                     }
                   });
                 },
@@ -1815,18 +1810,13 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                     ),
                   ).then((value) {
                     if (value != null && value is Message) {
-                      ChatUIKitRoute.pushOrPushNamed(
-                        context,
-                        ChatUIKitRouteNames.messagesView,
-                        MessagesViewArguments(
-                          profile: profile,
-                          attributes: widget.attributes,
-                          controller: MessageListViewController(
-                            profile: profile,
-                            searchedMsg: value,
-                          ),
-                        ),
-                      );
+                      int count = 0;
+                      Navigator.of(context).popUntil((route) {
+                        count++;
+                        if (count == 2) return true;
+                        return route.settings.name == ChatUIKitRouteNames.messagesView || route.isFirst;
+                      });
+                      controller.jumpToSearchedMessage(value);
                     }
                   });
                 },
