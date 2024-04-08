@@ -258,69 +258,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     List<Widget> items = [];
 
     List<ChatUIKitModelAction> actions = widget.actionsBuilder.call(context);
-
-    double width = () {
-      if (actions.length > 2) {
-        return (MediaQuery.of(context).size.width -
-                24 -
-                actions.length * 8 -
-                MediaQuery.of(context).padding.left -
-                MediaQuery.of(context).padding.right) /
-            actions.length;
-      } else {
-        return 114.0;
-      }
-    }();
-
-    for (var action in actions) {
-      items.add(
-        InkWell(
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          onTap: () => action.onTap?.call(context),
-          child: Container(
-            margin: const EdgeInsets.only(left: 4, right: 4),
-            height: 62,
-            width: width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor95,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: action.iconSize?.width ?? 24,
-                  height: action.iconSize?.height ?? 24,
-                  child: Image.asset(
-                    action.icon,
-                    color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
-                    package: action.packageName,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  action.title ?? '',
-                  textScaler: TextScaler.noScaling,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: theme.font.bodySmall.fontSize,
-                    fontWeight: theme.font.bodySmall.fontWeight,
-                    color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-
-    Widget actionItem = Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: items,
-    );
+    assert(actions.length <= 5, 'The maximum number of actions is 5');
 
     Widget content = Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -336,7 +274,63 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
         const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.only(left: 12, right: 12),
-          child: actionItem,
+          child: LayoutBuilder(builder: (context, constraints) {
+            double maxWidth = () {
+              if (actions.length > 2) {
+                return (constraints.maxWidth - 24 - actions.length * 8) / actions.length;
+              } else {
+                return 114.0;
+              }
+            }();
+            for (var action in actions) {
+              items.add(
+                InkWell(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  onTap: () => action.onTap?.call(context),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
+                    ),
+                    constraints: BoxConstraints(minWidth: maxWidth),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: action.iconSize?.width ?? 24,
+                          height: action.iconSize?.height ?? 24,
+                          child: Image.asset(
+                            action.icon,
+                            color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                            package: action.packageName,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          action.title ?? '',
+                          textScaler: TextScaler.noScaling,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: theme.font.bodySmall.fontSize,
+                            fontWeight: theme.font.bodySmall.fontWeight,
+                            color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: items,
+            );
+          }),
         ),
         const SizedBox(height: 20),
       ],
