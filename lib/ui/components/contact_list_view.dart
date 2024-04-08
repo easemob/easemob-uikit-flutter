@@ -24,8 +24,7 @@ class ContactListView extends StatefulWidget {
   final List<Widget>? afterWidgets;
   final ChatUIKitContactItemBuilder? itemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
-  final void Function(BuildContext context, ContactItemModel model)?
-      onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
   final String? searchHideText;
   final Widget? background;
   final String? errorMessage;
@@ -36,8 +35,7 @@ class ContactListView extends StatefulWidget {
   State<ContactListView> createState() => _ContactListViewState();
 }
 
-class _ContactListViewState extends State<ContactListView>
-    with ChatUIKitProviderObserver {
+class _ContactListViewState extends State<ContactListView> with ChatUIKitProviderObserver {
   ScrollController scrollController = ScrollController();
   late final ContactListViewController controller;
 
@@ -56,9 +54,7 @@ class _ContactListViewState extends State<ContactListView>
   void onProfilesUpdate(
     Map<String, ChatUIKitProfile> map,
   ) {
-    if (controller.list
-        .cast<ContactItemModel>()
-        .any((element) => map.keys.contains(element.profile.id))) {
+    if (controller.list.cast<ContactItemModel>().any((element) => map.keys.contains(element.profile.id))) {
       controller.reload();
     }
   }

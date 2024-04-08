@@ -30,7 +30,7 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
   final ChatUIKitAppBar? appBar;
 
   /// 点击搜索按钮的回调，点击后会把当前的会话列表数据传递过来。如果不设置默认会跳转到搜索页面。具体参考 [SearchView]。
-  final void Function(List<ConversationModel> data)? onSearchTap;
+  final void Function(List<ConversationItemModel> data)? onSearchTap;
 
   /// 会话列表之前的数据。
   final List<Widget>? beforeWidgets;
@@ -44,8 +44,8 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
   /// 会话列表的 `头像` 构建器，如果设置后需要显示会话头像，如果不处理可以返回 `null`。
   final ConversationItemBuilder? avatarItemBuilder;
 
-  /// 点击会话列表的回调，点击后会把当前的会话数据传递过来。具体参考 [ConversationModel]。 如果不是设置默认会跳转到消息页面。具体参考 [MessagesView]。
-  final void Function(BuildContext context, ConversationModel info)? onTap;
+  /// 点击会话列表的回调，点击后会把当前的会话数据传递过来。具体参考 [ConversationItemModel]。 如果不是设置默认会跳转到消息页面。具体参考 [MessagesView]。
+  final void Function(BuildContext context, ConversationItemModel info)? onTap;
 
   /// 长按会话列表的回调，如果不设置默认会弹出默认的长按菜单。如果设置长按时会把默认的弹出菜单项传给你，你需要调整后返回来，返回来的数据会用于菜单显示，如果返回 `null` 将不会显示菜单。
   final ConversationsViewItemLongPressHandler? onLongPressHandler;
@@ -77,12 +77,12 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
   ConversationsViewArguments copyWith({
     ConversationListViewController? controller,
     ChatUIKitAppBar? appBar,
-    void Function(List<ConversationModel> data)? onSearchTap,
+    void Function(List<ConversationItemModel> data)? onSearchTap,
     List<NeedAlphabeticalWidget>? beforeWidgets,
     List<NeedAlphabeticalWidget>? afterWidgets,
     ChatUIKitListItemBuilder? listViewItemBuilder,
     ChatUIKitListItemBuilder? avatarItemBuilder,
-    void Function(BuildContext context, ConversationModel model)? onTap,
+    void Function(BuildContext context, ConversationItemModel model)? onTap,
     ConversationsViewItemLongPressHandler? onLongPressHandler,
     String? searchBarHideText,
     Widget? listViewBackground,
@@ -106,8 +106,7 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
       searchBarHideText: searchBarHideText ?? this.searchBarHideText,
       listViewBackground: listViewBackground ?? this.listViewBackground,
       enableAppBar: enableAppBar ?? this.enableAppBar,
-      appBarMoreActionsBuilder:
-          appBarMoreActionsBuilder ?? this.appBarMoreActionsBuilder,
+      appBarMoreActionsBuilder: appBarMoreActionsBuilder ?? this.appBarMoreActionsBuilder,
       title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,
       avatarItemBuilder: avatarItemBuilder ?? this.avatarItemBuilder,

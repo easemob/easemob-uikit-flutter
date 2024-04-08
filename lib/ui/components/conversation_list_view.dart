@@ -20,10 +20,10 @@ class ConversationListView extends StatefulWidget {
     super.key,
   });
 
-  final void Function(List<ConversationModel> data)? onSearchTap;
+  final void Function(List<ConversationItemModel> data)? onSearchTap;
   final ConversationItemBuilder? itemBuilder;
-  final void Function(BuildContext context, ConversationModel info)? onTap;
-  final void Function(BuildContext context, ConversationModel info)? onLongPress;
+  final void Function(BuildContext context, ConversationItemModel info)? onTap;
+  final void Function(BuildContext context, ConversationItemModel info)? onLongPress;
   final List<Widget>? beforeWidgets;
   final List<Widget>? afterWidgets;
 
@@ -69,14 +69,15 @@ class _ConversationListViewState extends State<ConversationListView> with ChatOb
 
   @override
   void onMessageContentChanged(Message message, String operatorId, int operationTime) {
-    int index = controller.list.cast<ConversationModel>().indexWhere((element) {
+    int index = controller.list.cast<ConversationItemModel>().indexWhere((element) {
       return element.lastMessage?.msgId == message.msgId;
     });
 
     if (index != -1) {
-      controller.list.cast<ConversationModel>()[index] = controller.list.cast<ConversationModel>()[index].copyWith(
-            lastMessage: message,
-          );
+      controller.list.cast<ConversationItemModel>()[index] =
+          controller.list.cast<ConversationItemModel>()[index].copyWith(
+                lastMessage: message,
+              );
     }
 
     if (mounted) {
@@ -87,7 +88,7 @@ class _ConversationListViewState extends State<ConversationListView> with ChatOb
   @override
   void onMessagesRecalled(List<Message> recalled, List<Message> replaces) {
     List<String> recalledIds = recalled.map((e) => e.msgId).toList();
-    bool has = controller.list.cast<ConversationModel>().any((element) {
+    bool has = controller.list.cast<ConversationItemModel>().any((element) {
       return recalledIds.contains(element.lastMessage?.msgId ?? "");
     });
     if (mounted && has) {
@@ -124,9 +125,9 @@ class _ConversationListViewState extends State<ConversationListView> with ChatOb
       afterWidgets: widget.afterWidgets,
       background: widget.background,
       onSearchTap: (data) {
-        List<ConversationModel> list = [];
+        List<ConversationItemModel> list = [];
         for (var item in data) {
-          if (item is ConversationModel) {
+          if (item is ConversationItemModel) {
             list.add(item);
           }
         }
@@ -138,7 +139,7 @@ class _ConversationListViewState extends State<ConversationListView> with ChatOb
         if (key is ValueKey<String>) {
           final ValueKey<String> valueKey = key;
           index = controller.list.indexWhere((info) {
-            if (info is ConversationModel) {
+            if (info is ConversationItemModel) {
               return info.profile.id == valueKey.value;
             } else {
               return false;
@@ -149,7 +150,7 @@ class _ConversationListViewState extends State<ConversationListView> with ChatOb
         return index > -1 ? index : null;
       },
       itemBuilder: (context, model) {
-        if (model is ConversationModel) {
+        if (model is ConversationItemModel) {
           Widget? item;
           if (widget.itemBuilder != null) {
             item = widget.itemBuilder!(context, model);

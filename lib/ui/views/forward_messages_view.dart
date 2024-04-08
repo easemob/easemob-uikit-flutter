@@ -37,8 +37,7 @@ class ForwardMessagesView extends StatefulWidget {
   State<ForwardMessagesView> createState() => _ForwardMessagesViewState();
 }
 
-class _ForwardMessagesViewState extends State<ForwardMessagesView>
-    with ChatObserver {
+class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObserver {
   late Message message;
   List<MessageModel> models = [];
   @override
@@ -59,16 +58,13 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
 
   void fetchCombineList() async {
     try {
-      List<Message> fetchedMsgs =
-          await ChatUIKit.instance.fetchCombineMessageDetail(message: message);
+      List<Message> fetchedMsgs = await ChatUIKit.instance.fetchCombineMessageDetail(message: message);
 
       models.addAll(fetchedMsgs.map((e) => MessageModel(message: e)));
     } catch (e) {
       debugPrint('download error: $e');
     } finally {
-      ChatUIKit.instance
-          .loadMessage(messageId: widget.message.msgId)
-          .then((value) {
+      ChatUIKit.instance.loadMessage(messageId: widget.message.msgId).then((value) {
         if (value != null) {
           message = value;
         }
@@ -89,31 +85,26 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
           height: 30,
           child: CircularProgressIndicator(
             strokeWidth: 2,
-            color: theme.color.isDark
-                ? theme.color.neutralColor4
-                : theme.color.neutralColor7,
+            color: theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor7,
           ),
         ),
       );
     } else if (body.fileStatus == DownloadStatus.SUCCESS) {
       content = historyWidget(theme);
     } else {
-      content = const Center(
-        child: Text('下载失败'),
+      content = Center(
+        child: Text(ChatUIKitLocal.forwardedMessageDownloadError.localString(context)),
       );
     }
 
     content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       appBar: widget.enableAppBar
           ? widget.appBar ??
               ChatUIKitAppBar(
                 centerTitle: false,
-                title: widget.title ??
-                    ChatUIKitLocal.historyMessages.localString(context),
+                title: widget.title ?? ChatUIKitLocal.historyMessages.localString(context),
               )
           : null,
       body: SafeArea(child: content),
@@ -133,9 +124,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
           endIndent: 0,
           height: .5,
           thickness: .5,
-          color: theme.color.isDark
-              ? theme.color.neutralColor3
-              : theme.color.neutralColor9,
+          color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor9,
         );
       },
       itemCount: models.length,
@@ -189,9 +178,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style: TextStyle(
-              color: theme.color.isDark
-                  ? theme.color.neutralSpecialColor6
-                  : theme.color.neutralSpecialColor5,
+              color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
               fontSize: theme.font.titleSmall.fontSize,
               fontWeight: theme.font.titleSmall.fontWeight,
             ),
@@ -199,15 +186,13 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
         ),
         const SizedBox(width: 10),
         Text(
-          ChatUIKitTimeFormatter.instance.formatterHandler?.call(context,
-                  ChatUIKitTimeType.conversation, model.message.serverTime) ??
+          ChatUIKitTimeFormatter.instance.formatterHandler
+                  ?.call(context, ChatUIKitTimeType.conversation, model.message.serverTime) ??
               ChatUIKitTimeTool.getChatTimeStr(model.message.serverTime),
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralColor6
-                : theme.color.neutralColor5,
+            color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
             fontSize: theme.font.bodySmall.fontSize,
             fontWeight: theme.font.bodySmall.fontWeight,
           ),
@@ -250,9 +235,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
       style: TextStyle(
         fontWeight: theme.font.bodyMedium.fontWeight,
         fontSize: theme.font.bodyMedium.fontSize,
-        color: theme.color.isDark
-            ? theme.color.neutralColor98
-            : theme.color.neutralColor1,
+        color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
       ),
     );
   }
@@ -260,11 +243,8 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
   Widget imageWidget(MessageModel model, ChatUIKitTheme theme) {
     return InkWell(
       onTap: () {
-        ChatUIKitRoute.pushOrPushNamed(
-            context,
-            ChatUIKitRouteNames.showImageView,
-            ShowImageViewArguments(
-                message: model.message, attributes: widget.attributes));
+        ChatUIKitRoute.pushOrPushNamed(context, ChatUIKitRouteNames.showImageView,
+            ShowImageViewArguments(message: model.message, attributes: widget.attributes));
       },
       child: ChatUIKitImageMessageWidget(model: model),
     );
@@ -287,6 +267,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
         Text(
           " ${body.duration}'",
           textScaler: TextScaler.noScaling,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             textBaseline: TextBaseline.alphabetic,
             fontWeight: theme.font.bodyMedium.fontWeight,
@@ -300,11 +281,8 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
   Widget videoWidget(MessageModel model, ChatUIKitTheme theme) {
     return InkWell(
       onTap: () {
-        ChatUIKitRoute.pushOrPushNamed(
-            context,
-            ChatUIKitRouteNames.showVideoView,
-            ShowVideoViewArguments(
-                message: message, attributes: widget.attributes));
+        ChatUIKitRoute.pushOrPushNamed(context, ChatUIKitRouteNames.showVideoView,
+            ShowVideoViewArguments(message: message, attributes: widget.attributes));
       },
       child: ChatUIKitVideoMessageWidget(model: model),
     );
@@ -327,6 +305,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
         Text(
           " ${body.address ?? ''}'",
           textScaler: TextScaler.noScaling,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             textBaseline: TextBaseline.alphabetic,
             fontWeight: theme.font.bodyMedium.fontWeight,
@@ -353,6 +332,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
         Text(
           " ${model.message.cardUserNickname ?? model.message.cardUserId ?? ''}",
           textScaler: TextScaler.noScaling,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             textBaseline: TextBaseline.alphabetic,
             fontWeight: theme.font.bodyMedium.fontWeight,
@@ -367,6 +347,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
     return Text(
       "${[ChatUIKitLocal.messageCellCombineCombine.localString(context)]}",
       textScaler: TextScaler.noScaling,
+      overflow: TextOverflow.ellipsis,
       style: TextStyle(
         textBaseline: TextBaseline.alphabetic,
         fontWeight: theme.font.bodyMedium.fontWeight,
@@ -389,8 +370,9 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
           ),
         ),
         Text(
-          " ${message.displayName}",
+          " ${model.message.displayName}",
           textScaler: TextScaler.noScaling,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             textBaseline: TextBaseline.alphabetic,
             fontWeight: theme.font.bodyMedium.fontWeight,

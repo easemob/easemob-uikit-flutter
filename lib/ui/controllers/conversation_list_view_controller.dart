@@ -25,12 +25,11 @@ class ConversationListViewController with ChatUIKitListViewControllerBase, ChatU
 
   @override
   void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
-    debugPrint('controller onProfilesUpdate: $map');
-    if (list.any((element) => map.keys.contains((element as ConversationModel).profile.id))) {
+    if (list.any((element) => map.keys.contains((element as ConversationItemModel).profile.id))) {
       for (var element in map.keys) {
-        int index = list.indexWhere((e) => (e as ConversationModel).profile.id == element);
+        int index = list.indexWhere((e) => (e as ConversationItemModel).profile.id == element);
         if (index != -1) {
-          list[index] = (list[index] as ConversationModel).copyWith(profile: map[element]!);
+          list[index] = (list[index] as ConversationItemModel).copyWith(profile: map[element]!);
         }
       }
       refresh();
@@ -49,10 +48,10 @@ class ConversationListViewController with ChatUIKitListViewControllerBase, ChatU
         items = await ChatUIKit.instance.getAllConversations();
       }
       items = await _clearEmpty(items);
-      List<ConversationModel> tmp = await _mappers(items);
+      List<ConversationItemModel> tmp = await _mappers(items);
       list.clear();
       list.addAll(tmp);
-      list = willShowHandler?.call(list.cast<ConversationModel>()) ?? list;
+      list = willShowHandler?.call(list.cast<ConversationItemModel>()) ?? list;
 
       if (list.isEmpty) {
         loadingType.value = ChatUIKitListViewType.empty;
@@ -71,10 +70,10 @@ class ConversationListViewController with ChatUIKitListViewControllerBase, ChatU
     loadingType.value = ChatUIKitListViewType.refresh;
     List<Conversation> items = await ChatUIKit.instance.getAllConversations();
     items = await _clearEmpty(items);
-    List<ConversationModel> tmp = await _mappers(items);
+    List<ConversationItemModel> tmp = await _mappers(items);
     list.clear();
     list.addAll(tmp);
-    list = willShowHandler?.call(list.cast<ConversationModel>()) ?? list;
+    list = willShowHandler?.call(list.cast<ConversationItemModel>()) ?? list;
     if (list.isEmpty) {
       loadingType.value = ChatUIKitListViewType.empty;
     } else {
@@ -92,7 +91,8 @@ class ConversationListViewController with ChatUIKitListViewControllerBase, ChatU
     List<Conversation> tmp = [];
     for (var item in list) {
       final latest = await item.latestMessage();
-      if (latest != null) {
+      final unreadCount = await item.unreadCount();
+      if (latest != null || unreadCount > 0) {
         tmp.add(item);
       }
     }
@@ -140,7 +140,7 @@ class ConversationListViewController with ChatUIKitListViewControllerBase, ChatU
     } catch (e) {}
   }
 
-  Future<List<ConversationModel>> _mappers(List<Conversation> conversations) async {
+  Future<List<ConversationItemModel>> _mappers(List<Conversation> conversations) async {
     List<ChatUIKitProfile> tmp = () {
       List<ChatUIKitProfile> ret = [];
       for (var item in conversations) {
@@ -154,9 +154,9 @@ class ConversationListViewController with ChatUIKitListViewControllerBase, ChatU
     }();
 
     Map<String, ChatUIKitProfile> profilesMap = ChatUIKitProvider.instance.getProfiles(tmp);
-    List<ConversationModel> list = [];
+    List<ConversationItemModel> list = [];
     for (var item in conversations) {
-      ConversationModel info = await ConversationModel.fromConversation(
+      ConversationItemModel info = await ConversationItemModel.fromConversation(
         item,
         profilesMap[item.id]!,
       );

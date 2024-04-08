@@ -11,6 +11,10 @@ mixin NeedSearch on ChatUIKitListItemModelBase {
 
 mixin NeedAlphabetical on ChatUIKitListItemModelBase {
   double get itemHeight;
+  String get firstLetter {
+    if (showName.isEmpty) return '#';
+    return showName.substring(0, 1);
+  }
 }
 
 mixin NeedAlphabeticalWidget implements Widget {

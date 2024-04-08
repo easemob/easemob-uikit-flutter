@@ -6,12 +6,10 @@ class ChatUIKitMessageReactionInfo extends StatefulWidget {
 
   final MessageModel model;
   @override
-  State<ChatUIKitMessageReactionInfo> createState() =>
-      _ChatUIKitMessageReactionInfoState();
+  State<ChatUIKitMessageReactionInfo> createState() => _ChatUIKitMessageReactionInfoState();
 }
 
-class _ChatUIKitMessageReactionInfoState
-    extends State<ChatUIKitMessageReactionInfo>
+class _ChatUIKitMessageReactionInfoState extends State<ChatUIKitMessageReactionInfo>
     with SingleTickerProviderStateMixin {
   late final TabController tabController;
   int selectIndex = 0;
@@ -62,13 +60,9 @@ class _ChatUIKitMessageReactionInfoState
                     reactions[index],
                     theme: theme,
                     highlightColor: Colors.transparent,
-                    highlightTextColor: theme.color.isDark
-                        ? theme.color.neutralColor95
-                        : theme.color.neutralColor3,
+                    highlightTextColor: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
                     bgColor: selectIndex == index
-                        ? (theme.color.isDark
-                            ? theme.color.neutralColor3
-                            : theme.color.neutralColor9)
+                        ? (theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor9)
                         : Colors.transparent,
                   ),
                 ),
@@ -101,8 +95,7 @@ class _ChatUIKitMessageReactionInfoState
       userCount: reaction.userCount - 1,
       isAddedBySelf: false,
     );
-    int index = reactions
-        .indexWhere((element) => reaction.reaction == element.reaction);
+    int index = reactions.indexWhere((element) => reaction.reaction == element.reaction);
     reactions[index] = newReaction;
     setState(() {});
   }
@@ -153,8 +146,7 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
     if (fetching) return;
     fetching = true;
     try {
-      CursorResult<MessageReaction> result =
-          await ChatUIKit.instance.fetchReactionDetail(
+      CursorResult<MessageReaction> result = await ChatUIKit.instance.fetchReactionDetail(
         messageId: widget.msgId,
         cursor: cursor,
         reaction: widget.reaction.reaction,
@@ -167,8 +159,7 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
       cursor = result.cursor;
       MessageReaction reaction = result.data.first;
       reaction.userList.remove(ChatUIKit.instance.currentUserId);
-      Map<String, ChatUIKitProfile> map =
-          ChatUIKitProvider.instance.getProfiles(
+      Map<String, ChatUIKitProfile> map = ChatUIKitProvider.instance.getProfiles(
         reaction.userList.map((e) => ChatUIKitProfile.contact(id: e)).toList(),
       );
 
@@ -177,8 +168,7 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
       }
 
       if (reaction.isAddedBySelf) {
-        ChatUIKitProfile profile = ChatUIKitProvider
-                .instance.profilesCache[ChatUIKit.instance.currentUserId!] ??
+        ChatUIKitProfile profile = ChatUIKitProvider.instance.profilesCache[ChatUIKit.instance.currentUserId!] ??
             ChatUIKitProfile.contact(id: ChatUIKit.instance.currentUserId!);
 
         profiles.insert(0, profile);
@@ -203,9 +193,7 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
           height: 30,
           child: CircularProgressIndicator(
             strokeWidth: 2,
-            color: theme.color.isDark
-                ? theme.color.neutralColor3
-                : theme.color.neutralColor7,
+            color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor7,
           ),
         ),
       );
@@ -213,8 +201,7 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
       return NotificationListener(
         onNotification: (notification) {
           if (notification is ScrollEndNotification) {
-            if (notification.metrics.pixels ==
-                notification.metrics.maxScrollExtent) {
+            if (notification.metrics.pixels == notification.metrics.maxScrollExtent) {
               if (hasMore) {
                 fetchReactionInfo();
               }
@@ -260,9 +247,7 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
               child: ChatUIKitImageLoader.voiceDelete(
                 width: 28,
                 height: 28,
-                color: (theme.color.isDark
-                    ? theme.color.neutralColor4
-                    : theme.color.neutralColor7),
+                color: (theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor7),
               ),
             ),
           ),

@@ -1,6 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 
-class ConversationModel with ChatUIKitListItemModelBase, NeedSearch {
+class ConversationItemModel with ChatUIKitListItemModelBase, NeedSearch {
   final Message? lastMessage;
   final int unreadCount;
   final bool pinned;
@@ -10,7 +10,7 @@ class ConversationModel with ChatUIKitListItemModelBase, NeedSearch {
   @override
   ChatUIKitProfile profile;
 
-  ConversationModel({
+  ConversationItemModel({
     required this.profile,
     this.lastMessage,
     this.unreadCount = 0,
@@ -20,7 +20,7 @@ class ConversationModel with ChatUIKitListItemModelBase, NeedSearch {
     this.attribute,
   });
 
-  static Future<ConversationModel> fromConversation(
+  static Future<ConversationItemModel> fromConversation(
     Conversation conversation,
     ChatUIKitProfile profile,
   ) async {
@@ -29,7 +29,7 @@ class ConversationModel with ChatUIKitListItemModelBase, NeedSearch {
 
     bool noDisturb = ChatUIKitContext.instance.conversationIsMute(conversation.id);
 
-    ConversationModel info = ConversationModel(
+    ConversationItemModel info = ConversationItemModel(
       profile: profile,
       unreadCount: unreadCount,
       lastMessage: lastMessage,
@@ -40,7 +40,7 @@ class ConversationModel with ChatUIKitListItemModelBase, NeedSearch {
     return info;
   }
 
-  ConversationModel copyWith({
+  ConversationItemModel copyWith({
     ChatUIKitProfile? profile,
     Message? lastMessage,
     int? unreadCount,
@@ -49,7 +49,7 @@ class ConversationModel with ChatUIKitListItemModelBase, NeedSearch {
     bool? hasMention,
     String? attribute,
   }) {
-    return ConversationModel(
+    return ConversationItemModel(
       profile: profile ?? this.profile,
       lastMessage: lastMessage ?? this.lastMessage,
       unreadCount: unreadCount ?? this.unreadCount,

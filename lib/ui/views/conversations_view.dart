@@ -52,7 +52,7 @@ class ConversationsView extends StatefulWidget {
   final ChatUIKitAppBar? appBar;
 
   /// 点击搜索按钮的回调，点击后会把当前的会话列表数据传递过来。如果不设置默认会跳转到搜索页面。具体参考 [SearchView]。
-  final void Function(List<ConversationModel> data)? onSearchTap;
+  final void Function(List<ConversationItemModel> data)? onSearchTap;
 
   /// 会话列表之前的数据。
   final List<Widget>? beforeWidgets;
@@ -66,8 +66,8 @@ class ConversationsView extends StatefulWidget {
   /// 会话列表的 `头像` 构建器，如果设置后需要显示会话头像，如果不处理可以返回 `null`。
   final ConversationItemBuilder? avatarItemBuilder;
 
-  /// 点击会话列表的回调，点击后会把当前的会话数据传递过来。具体参考 [ConversationModel]。 如果不是设置默认会跳转到消息页面。具体参考 [MessagesView]。
-  final void Function(BuildContext context, ConversationModel info)? onTap;
+  /// 点击会话列表的回调，点击后会把当前的会话数据传递过来。具体参考 [ConversationItemModel]。 如果不是设置默认会跳转到消息页面。具体参考 [MessagesView]。
+  final void Function(BuildContext context, ConversationItemModel info)? onTap;
 
   /// 长按会话列表的回调，如果不设置默认会弹出默认的长按菜单。如果设置长按时会把默认的弹出菜单项传给你，你需要调整后返回来，返回来的数据会用于菜单显示，如果返回 `null` 将不会显示菜单。
   final ConversationsViewItemLongPressHandler? onLongPressHandler;
@@ -160,10 +160,10 @@ class _ConversationsViewState extends State<ConversationsView> {
           searchBarHideText: widget.searchBarHideText,
           background: widget.listViewBackground,
           onTap: widget.onTap ??
-              (BuildContext context, ConversationModel info) {
+              (BuildContext context, ConversationItemModel info) {
                 pushToMessagePage(info);
               },
-          onLongPress: (BuildContext context, ConversationModel info) {
+          onLongPress: (BuildContext context, ConversationItemModel info) {
             longPressed(info);
           },
           onSearchTap: widget.onSearchTap ?? onSearchTap,
@@ -174,7 +174,7 @@ class _ConversationsViewState extends State<ConversationsView> {
     return content;
   }
 
-  void onSearchTap(List<ConversationModel> data) {
+  void onSearchTap(List<ConversationItemModel> data) {
     List<NeedSearch> list = [];
     for (var item in data) {
       list.add(item);
@@ -203,7 +203,7 @@ class _ConversationsViewState extends State<ConversationsView> {
     });
   }
 
-  void pushToMessagePage(ConversationModel info) {
+  void pushToMessagePage(ConversationItemModel info) {
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.messagesView,
@@ -215,7 +215,7 @@ class _ConversationsViewState extends State<ConversationsView> {
     });
   }
 
-  void longPressed(ConversationModel info) async {
+  void longPressed(ConversationItemModel info) async {
     List<ChatUIKitBottomSheetItem>? list;
     if (widget.onLongPressHandler != null) {
       list = widget.onLongPressHandler?.call(context, info, defaultLongPressActions(info));
@@ -232,7 +232,7 @@ class _ConversationsViewState extends State<ConversationsView> {
     }
   }
 
-  List<ChatUIKitBottomSheetItem> defaultLongPressActions(ConversationModel info) {
+  List<ChatUIKitBottomSheetItem> defaultLongPressActions(ConversationItemModel info) {
     return [
       ChatUIKitBottomSheetItem.normal(
         label: info.noDisturb

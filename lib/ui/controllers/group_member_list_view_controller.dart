@@ -3,6 +3,7 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 class GroupMemberListViewController with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver {
   GroupMemberListViewController({
     required this.groupId,
+    this.willShowHandler,
     this.includeOwner = true,
     this.pageSize = 200,
   }) {
@@ -12,6 +13,9 @@ class GroupMemberListViewController with ChatUIKitListViewControllerBase, ChatUI
   final int pageSize;
   final bool includeOwner;
   String? cursor;
+
+  /// 会话列表显示前的回调，你可以在这里对会话列表进行处理，比如排序或者加减等。如果不设置将会直接显示。
+  final ContactListViewShowHandler? willShowHandler;
 
   @override
   void dispose() {
@@ -102,19 +106,26 @@ class GroupMemberListViewController with ChatUIKitListViewControllerBase, ChatUI
     }
   }
 
-  List<ContactItemModel> mappers(List<String> contacts) {
-    List<ContactItemModel> mapperList = [];
+  List<ContactItemModel> mappers(List<String> userIds) {
+    List<ContactItemModel> models = [];
     Map<String, ChatUIKitProfile> map = ChatUIKitProvider.instance.getProfiles(() {
       List<ChatUIKitProfile> profile = [];
-      for (var item in contacts) {
+      for (var item in userIds) {
         profile.add(ChatUIKitProfile.contact(id: item));
       }
       return profile;
     }());
-    for (var item in contacts) {
+    for (var item in userIds) {
       ContactItemModel info = ContactItemModel.fromProfile(map[item]!);
-      mapperList.add(info);
+      models.add(info);
     }
-    return mapperList;
+
+    List<ContactItemModel>? contacts = willShowHandler?.call(models);
+    if (contacts?.isNotEmpty == true) {
+      models.clear();
+      models.addAll(contacts!);
+    }
+
+    return models;
   }
 }

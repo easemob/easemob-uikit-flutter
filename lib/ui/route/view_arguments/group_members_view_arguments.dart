@@ -27,8 +27,7 @@ class GroupMembersViewArguments implements ChatUIKitViewArguments {
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
-  final void Function(BuildContext context, ContactItemModel model)?
-      onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final String? loadErrorMessage;
@@ -69,8 +68,7 @@ class GroupMembersViewArguments implements ChatUIKitViewArguments {
       searchBarHideText: searchBarHideText ?? this.searchBarHideText,
       listViewBackground: listViewBackground ?? this.listViewBackground,
       loadErrorMessage: loadErrorMessage ?? this.loadErrorMessage,
-      enableMemberOperation:
-          enableMemberOperation ?? this.enableMemberOperation,
+      enableMemberOperation: enableMemberOperation ?? this.enableMemberOperation,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,

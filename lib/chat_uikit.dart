@@ -81,7 +81,7 @@ export 'ui/controllers/thread_messages_view_controller.dart';
 export 'ui/controllers/thread_members_view_controller.dart';
 
 export 'ui/models/chat_uikit_list_item_model_base.dart';
-export 'ui/models/conversation_model.dart';
+export 'ui/models/conversation_item_model.dart';
 export 'ui/models/contact_item_model.dart';
 export 'ui/models/group_item_model.dart';
 export 'ui/models/new_request_item_model.dart';
@@ -165,3 +165,4 @@ export 'universal/chat_uikit_action_model.dart';
 export 'chat_uikit_emoji_data.dart';
 export 'chat_uikit_defines.dart';
 export 'universal/defines.dart';
+export 'chat_uikit_alphabet_sort_helper.dart';

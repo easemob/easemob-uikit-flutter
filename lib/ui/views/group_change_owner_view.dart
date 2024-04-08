@@ -3,8 +3,7 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
 class GroupChangeOwnerView extends StatefulWidget {
-  GroupChangeOwnerView.arguments(GroupChangeOwnerViewArguments arguments,
-      {super.key})
+  GroupChangeOwnerView.arguments(GroupChangeOwnerViewArguments arguments, {super.key})
       : groupId = arguments.groupId,
         listViewItemBuilder = arguments.listViewItemBuilder,
         onSearchTap = arguments.onSearchTap,
@@ -46,8 +45,7 @@ class GroupChangeOwnerView extends StatefulWidget {
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onItemTap;
-  final void Function(BuildContext context, ContactItemModel model)?
-      onItemLongPress;
+  final void Function(BuildContext context, ContactItemModel model)? onItemLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final String? loadErrorMessage;
@@ -89,9 +87,7 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       appBar: !widget.enableAppBar
           ? null
           : widget.appBar ??
@@ -104,15 +100,11 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
                       Navigator.maybePop(context);
                     },
                     child: Text(
-                      widget.title ??
-                          ChatUIKitLocal.groupChangeOwnerViewTitle
-                              .localString(context),
+                      widget.title ?? ChatUIKitLocal.groupChangeOwnerViewTitle.localString(context),
                       textScaler: TextScaler.noScaling,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: theme.color.isDark
-                            ? theme.color.neutralColor98
-                            : theme.color.neutralColor1,
+                        color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
                         fontWeight: theme.font.titleMedium.fontWeight,
                         fontSize: theme.font.titleMedium.fontSize,
                       ),
@@ -160,15 +152,13 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal.groupChangeOwnerViewAlertButtonCancel
-              .localString(context),
+          label: ChatUIKitLocal.groupChangeOwnerViewAlertButtonCancel.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
-          label: ChatUIKitLocal.groupChangeOwnerViewAlertButtonConfirm
-              .localString(context),
+          label: ChatUIKitLocal.groupChangeOwnerViewAlertButtonConfirm.localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },
@@ -177,9 +167,7 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
     );
 
     if (ret == true) {
-      ChatUIKit.instance
-          .changeGroupOwner(groupId: widget.groupId, newOwner: model.profile.id)
-          .then((value) {
+      ChatUIKit.instance.changeGroupOwner(groupId: widget.groupId, newOwner: model.profile.id).then((value) {
         Navigator.of(context).pop(true);
       }).catchError((e) {});
     }

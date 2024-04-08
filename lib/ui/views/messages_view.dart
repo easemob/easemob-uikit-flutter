@@ -47,6 +47,7 @@ class MessagesView extends StatefulWidget {
         onReactionInfoTap = arguments.onReactionInfoTap,
         reactionItemsBuilder = arguments.reactionItemsBuilder,
         onThreadItemTap = arguments.onThreadItemTap,
+        appBarTrailing = arguments.appBarTrailing,
         threadItemBuilder = arguments.threadItemBuilder;
 
   /// 构造函数。
@@ -88,6 +89,7 @@ class MessagesView extends StatefulWidget {
     this.reactionItemsBuilder,
     this.onThreadItemTap,
     this.threadItemBuilder,
+    this.appBarTrailing,
     super.key,
   });
 
@@ -196,6 +198,8 @@ class MessagesView extends StatefulWidget {
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+
+  final Widget? appBarTrailing;
 
   @override
   State<MessagesView> createState() => _MessagesViewState();
@@ -499,34 +503,35 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                   },
                   avatarUrl: controller.profile.avatarUrl,
                 ),
-                trailing: controller.isMultiSelectMode
-                    ? InkWell(
-                        highlightColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        onTap: () {
-                          controller.disableMultiSelectMode();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(24, 5, 24, 5),
-                          child: Text(
-                            ChatUIKitLocal.bottomSheetCancel.localString(context),
-                            style: TextStyle(
-                              color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
-                              fontWeight: theme.font.labelMedium.fontWeight,
-                              fontSize: theme.font.labelMedium.fontSize,
-                            ),
-                          ),
-                        ),
-                      )
-                    : (controller.conversationType == ConversationType.GroupChat
-                        ? Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: InkWell(
-                              onTap: onThreadsViewTap,
-                              child: ChatUIKitImageLoader.messageLongPressThread(),
+                trailing: widget.appBarTrailing ??
+                    (controller.isMultiSelectMode
+                        ? InkWell(
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            onTap: () {
+                              controller.disableMultiSelectMode();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(24, 5, 24, 5),
+                              child: Text(
+                                ChatUIKitLocal.bottomSheetCancel.localString(context),
+                                style: TextStyle(
+                                  color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                                  fontWeight: theme.font.labelMedium.fontWeight,
+                                  fontSize: theme.font.labelMedium.fontSize,
+                                ),
+                              ),
                             ),
                           )
-                        : null),
+                        : (controller.conversationType == ConversationType.GroupChat && ChatUIKitSettings.enableThread
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                child: InkWell(
+                                  onTap: onThreadsViewTap,
+                                  child: ChatUIKitImageLoader.messageLongPressThread(),
+                                ),
+                              )
+                            : null)),
               ),
       body: SafeArea(child: content),
     );

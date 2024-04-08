@@ -6,7 +6,8 @@ typedef MessageItemBuilder = Widget? Function(BuildContext context, MessageModel
 
 typedef MessageItemTapHandler = bool? Function(BuildContext context, MessageModel model);
 
-typedef MessageReactionItemTapHandler = bool? Function(BuildContext context, MessageModel model, MessageReaction reaction);
+typedef MessageReactionItemTapHandler = bool? Function(
+    BuildContext context, MessageModel model, MessageReaction reaction);
 
 typedef MessageItemShowHandler = bool Function(MessageModel model);
 
@@ -44,13 +45,16 @@ typedef CreateGroupHandler = Future<CreateGroupInfo?> Function(
 );
 
 // conversation
-typedef ConversationItemBuilder = Widget? Function(BuildContext context, ConversationModel model);
+typedef ConversationItemBuilder = Widget? Function(BuildContext context, ConversationItemModel model);
 
-typedef ConversationListViewShowHandler = List<ConversationModel> Function(List<ConversationModel> conversations);
+typedef ConversationListViewShowHandler = List<ConversationItemModel> Function(
+    List<ConversationItemModel> conversations);
+
+typedef ContactListViewShowHandler = List<ContactItemModel> Function(List<ContactItemModel> contacts);
 
 typedef ConversationsViewItemLongPressHandler = List<ChatUIKitBottomSheetItem>? Function(
   BuildContext context,
-  ConversationModel info,
+  ConversationItemModel info,
   List<ChatUIKitBottomSheetItem> defaultActions,
 );
 
@@ -58,7 +62,8 @@ typedef ConversationsViewItemLongPressHandler = List<ChatUIKitBottomSheetItem>? 
 typedef ChatUIKitNewRequestItemBuilder = Widget Function(BuildContext context, NewRequestItemModel model);
 
 // app bar
-typedef AppBarMoreActionsBuilder = List<ChatUIKitBottomSheetItem> Function(BuildContext context, List<ChatUIKitBottomSheetItem> items);
+typedef AppBarMoreActionsBuilder = List<ChatUIKitBottomSheetItem> Function(
+    BuildContext context, List<ChatUIKitBottomSheetItem> items);
 
 // time
 typedef TimeFormatterHandler = String? Function(

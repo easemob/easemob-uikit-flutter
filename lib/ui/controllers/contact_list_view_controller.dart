@@ -3,9 +3,12 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 /// 联系人列表控制器
 class ContactListViewController with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver {
-  ContactListViewController() {
+  ContactListViewController({this.willShowHandler}) {
     ChatUIKitProvider.instance.addObserver(this);
   }
+
+  /// 会话列表显示前的回调，你可以在这里对会话列表进行处理，比如排序或者加减等。如果不设置将会直接显示。
+  final ContactListViewShowHandler? willShowHandler;
 
   @override
   void dispose() {
@@ -62,18 +65,24 @@ class ContactListViewController with ChatUIKitListViewControllerBase, ChatUIKitP
     return result;
   }
 
-  List<ContactItemModel> _mappers(List<String> contacts) {
+  List<ContactItemModel> _mappers(List<String> userIds) {
     List<ContactItemModel> list = [];
     Map<String, ChatUIKitProfile> map = ChatUIKitProvider.instance.getProfiles(() {
       List<ChatUIKitProfile> profile = [];
-      for (var item in contacts) {
+      for (var item in userIds) {
         profile.add(ChatUIKitProfile.contact(id: item));
       }
       return profile;
     }());
-    for (var item in contacts) {
+    for (var item in userIds) {
       ContactItemModel info = ContactItemModel.fromProfile(map[item]!);
       list.add(info);
+    }
+
+    List<ContactItemModel>? contacts = willShowHandler?.call(list);
+    if (contacts?.isNotEmpty == true) {
+      list.clear();
+      list.addAll(contacts!);
     }
     return list;
   }
@@ -95,6 +104,7 @@ class ContactListViewController with ChatUIKitListViewControllerBase, ChatUIKitP
     List<ContactItemModel> tmp = _mappers(items);
     list.clear();
     list.addAll(tmp);
+
     loadingType.value = ChatUIKitListViewType.normal;
   }
 }

@@ -76,6 +76,7 @@ mixin ChatUIKitLocal {
   static const forwardMessageViewTitle = 'forward_message_view_title';
   static const forwardMessage = 'forward_message';
   static const forwardedMessage = 'forwarded_message';
+  static const forwardedMessageDownloadError = 'forwarded_message_download_error';
   static const groupDetailViewSend = 'group_detail_view_send';
   static const groupDetailViewDoNotDisturb = 'group_detail_view_do_not_disturb';
   static const groupDetailViewClearChatHistory = 'group_detail_view_clear_chat_history';
@@ -296,6 +297,7 @@ mixin ChatUIKitLocal {
     forwardMessageViewTitle: '转发给',
     forwardMessage: '转发',
     forwardedMessage: '已转发',
+    forwardedMessageDownloadError: '下载失败',
     groupDetailViewSend: '发消息',
     groupDetailViewDoNotDisturb: '消息免打扰',
     groupDetailViewClearChatHistory: '清空聊天记录',
@@ -497,6 +499,7 @@ mixin ChatUIKitLocal {
     forwardMessageViewTitle: 'Forward to',
     forwardMessage: 'Forward',
     forwardedMessage: 'Forwarded',
+    forwardedMessageDownloadError: 'Download failed',
     groupDetailViewSend: 'Send message',
     groupDetailViewDoNotDisturb: 'Mute Notifications',
     groupDetailViewClearChatHistory: 'Clear chat history',

@@ -3,6 +3,7 @@ import 'package:em_chat_uikit_example/tool/app_server_helper.dart';
 
 import 'package:em_chat_uikit_example/tool/user_data_store.dart';
 import 'package:flutter/material.dart';
+import 'package:lpinyin/lpinyin.dart';
 
 class UserProviderWidget extends StatefulWidget {
   const UserProviderWidget({required this.child, super.key});
@@ -22,6 +23,7 @@ class _UserProviderWidgetState extends State<UserProviderWidget> with GroupObser
     UserDataStore().init(onOpened: onOpened);
     // 设置Provider回调
     ChatUIKitProvider.instance.profilesHandler = onProfilesRequest;
+    ChatUIKitAlphabetSortHelper.instance.sortHandler = onAlphabetSortLetterRequest;
   }
 
   @override
@@ -60,6 +62,11 @@ class _UserProviderWidgetState extends State<UserProviderWidget> with GroupObser
     } catch (e) {
       debugPrint('fetchCurrentUserInfo error: $e');
     }
+  }
+
+  // 返回排序用首字母，比如中文显示时，可以返回首字母以便排序
+  String onAlphabetSortLetterRequest(String showName) {
+    return PinyinHelper.getPinyinE(showName, defPinyin: '#', format: PinyinFormat.WITHOUT_TONE).substring(0, 1);
   }
 
   // uikit 需要展示用户信息时，而缓存不存在时会回调该方法，需要通过用户属性请求并存储到db；

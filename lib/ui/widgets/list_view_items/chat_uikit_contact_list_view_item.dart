@@ -11,9 +11,7 @@ class ChatUIKitContactListViewItem extends StatelessWidget {
     final theme = ChatUIKitTheme.of(context);
 
     TextStyle normalStyle = TextStyle(
-      color: theme.color.isDark
-          ? theme.color.neutralColor98
-          : theme.color.neutralColor1,
+      color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
       fontSize: theme.font.titleMedium.fontSize,
       fontWeight: theme.font.titleMedium.fontWeight,
     );
@@ -40,9 +38,7 @@ class ChatUIKitContactListViewItem extends StatelessWidget {
     content = Container(
       padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
       height: model.itemHeight - 0.5,
-      color: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       child: content,
     );
 
@@ -57,9 +53,7 @@ class ChatUIKitContactListViewItem extends StatelessWidget {
           child: Divider(
             height: borderHeight,
             thickness: borderHeight,
-            color: theme.color.isDark
-                ? theme.color.neutralColor2
-                : theme.color.neutralColor9,
+            color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9,
           ),
         )
       ],
