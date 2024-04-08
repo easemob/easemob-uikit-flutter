@@ -2,10 +2,11 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 class ContactDetailsView extends StatefulWidget {
   ContactDetailsView.arguments(ContactDetailsViewArguments arguments, {super.key})
-      : actions = arguments.actions,
+      : actionsBuilder = arguments.actionsBuilder,
         profile = arguments.profile,
         onMessageDidClear = arguments.onMessageDidClear,
         enableAppBar = arguments.enableAppBar,
@@ -16,7 +17,7 @@ class ContactDetailsView extends StatefulWidget {
 
   const ContactDetailsView({
     required this.profile,
-    required this.actions,
+    required this.actionsBuilder,
     this.onMessageDidClear,
     this.appBar,
     this.enableAppBar = true,
@@ -27,7 +28,7 @@ class ContactDetailsView extends StatefulWidget {
   });
 
   final ChatUIKitProfile profile;
-  final List<ChatUIKitModelAction> actions;
+  final ChatUIKitModelActionsBuilder actionsBuilder;
   final VoidCallback? onMessageDidClear;
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
@@ -38,19 +39,18 @@ class ContactDetailsView extends StatefulWidget {
   State<ContactDetailsView> createState() => _ContactDetailsViewState();
 }
 
-class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitProviderObserver {
+class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitProviderObserver, ChatUIKitRouteHelper {
   ValueNotifier<bool> isNotDisturb = ValueNotifier<bool>(false);
   ChatUIKitProfile? profile;
-  late final List<ChatUIKitModelAction>? actions;
+
   @override
   void initState() {
     super.initState();
-    assert(widget.actions.length <= 5, 'The number of actions in the list cannot exceed 5');
     widget.viewObserver?.addListener(() {
       setState(() {});
     });
     profile = widget.profile;
-    actions = widget.actions;
+
     ChatUIKitProvider.instance.addObserver(this);
     isNotDisturb.value = ChatUIKitContext.instance.conversationIsMute(profile!.id);
     fetchInfo();
@@ -164,33 +164,23 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
 
     List<Widget> items = [];
 
-    double width = () {
-      if (widget.actions.length > 2) {
-        return (MediaQuery.of(context).size.width -
-                24 -
-                widget.actions.length * 8 -
-                MediaQuery.of(context).padding.left -
-                MediaQuery.of(context).padding.right) /
-            widget.actions.length;
-      } else {
-        return 114.0;
-      }
-    }();
+    List<ChatUIKitModelAction> actions = widget.actionsBuilder.call(context);
+    assert(actions.length <= 5, 'The maximum number of actions is 5');
 
-    for (var action in widget.actions) {
+    for (var action in actions) {
       items.add(
         InkWell(
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
           onTap: () => action.onTap?.call(context),
           child: Container(
-            margin: const EdgeInsets.only(left: 4, right: 4),
-            height: 62,
-            width: width,
+            margin: const EdgeInsets.symmetric(horizontal: 4),
+            padding: const EdgeInsets.symmetric(vertical: 4),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
             ),
+            constraints: const BoxConstraints(minWidth: 100),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -205,7 +195,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  action.title,
+                  action.title ?? '',
                   textScaler: TextScaler.noScaling,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -214,18 +204,13 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
                     color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                   ),
                 ),
+                const SizedBox(height: 4),
               ],
             ),
           ),
         ),
       );
     }
-
-    Widget actionItem = Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: items,
-    );
 
     Widget content = Column(
       children: [
@@ -238,7 +223,20 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
         const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.only(left: 12, right: 12),
-          child: actionItem,
+          child: LayoutBuilder(builder: (context, constraints) {
+            debugPrint('constraints.maxWidth: ${constraints.maxWidth}');
+            if (constraints.maxWidth < 300) {
+              return Wrap(
+                alignment: WrapAlignment.center,
+                children: items,
+              );
+            } else {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: items,
+              );
+            }
+          }),
         ),
         const SizedBox(height: 20),
       ],
@@ -373,4 +371,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
       }).catchError((e) {});
     }
   }
+
+  @override
+  String get getRouteName => ChatUIKitRouteNames.contactDetailsView;
 }

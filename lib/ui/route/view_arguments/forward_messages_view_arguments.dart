@@ -11,7 +11,7 @@ class ForwardMessagesViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-
+  @override
   ForwardMessagesViewArguments({
     required this.message,
     this.enableAppBar = true,

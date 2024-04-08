@@ -111,7 +111,6 @@ class _ContactListViewState extends State<ContactListView> with ChatUIKitProvide
                 }
               });
             }
-            debugPrint('index:$index');
             return index > -1 ? index : null;
           },
           searchBarHideText: widget.searchHideText,

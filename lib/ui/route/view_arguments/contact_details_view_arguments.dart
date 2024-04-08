@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 class ContactDetailsViewArguments implements ChatUIKitViewArguments {
   ContactDetailsViewArguments({
     required this.profile,
-    required this.actions,
+    required this.actionsBuilder,
     this.onMessageDidClear,
     this.enableAppBar = true,
     this.appBar,
@@ -15,7 +15,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
   });
 
   final ChatUIKitProfile profile;
-  final List<ChatUIKitModelAction> actions;
+  final ChatUIKitModelActionsBuilder actionsBuilder;
   final VoidCallback? onMessageDidClear;
   final bool enableAppBar;
   final ChatUIKitAppBar? appBar;
@@ -27,7 +27,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
 
   ContactDetailsViewArguments copyWith({
     ChatUIKitProfile? profile,
-    List<ChatUIKitModelAction>? actions,
+    ChatUIKitModelActionsBuilder? actionsBuilder,
     VoidCallback? onMessageDidClear,
     bool? enableAppBar,
     ChatUIKitAppBar? appBar,
@@ -37,7 +37,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
   }) {
     return ContactDetailsViewArguments(
       profile: profile ?? this.profile,
-      actions: actions ?? this.actions,
+      actionsBuilder: actionsBuilder ?? this.actionsBuilder,
       onMessageDidClear: onMessageDidClear ?? this.onMessageDidClear,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       appBar: appBar ?? this.appBar,

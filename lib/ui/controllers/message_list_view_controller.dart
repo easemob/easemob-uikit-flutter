@@ -684,7 +684,7 @@ class MessageListViewController extends ChangeNotifier
         // updateView();
         // ignore: empty_catches
       } catch (e) {
-        debugPrint('sendConversationsReadAck: $e');
+        chatPrint('sendConversationsReadAck: $e');
       }
     }
   }
@@ -776,7 +776,7 @@ class MessageListViewController extends ChangeNotifier
         );
       }
     } catch (e) {
-      debugPrint('updateReaction: $e');
+      chatPrint('updateReaction: $e');
     }
   }
 }

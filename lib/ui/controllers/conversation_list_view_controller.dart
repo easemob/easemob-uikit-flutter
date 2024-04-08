@@ -1,5 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:flutter/foundation.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
 
 /// 会话列表控制器
 class ConversationListViewController with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver {
@@ -59,7 +59,7 @@ class ConversationListViewController with ChatUIKitListViewControllerBase, ChatU
         loadingType.value = ChatUIKitListViewType.normal;
       }
     } catch (e) {
-      debugPrint('conversation list fetchItemList: $e');
+      chatPrint('conversation list fetchItemList: $e');
       loadingType.value = ChatUIKitListViewType.error;
     }
   }

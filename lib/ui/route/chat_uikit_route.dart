@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
 
 import 'package:flutter/material.dart';
 
@@ -244,7 +245,7 @@ class ChatUIKitRoute {
     _lastBackModel = model;
     // Navigator.of(context).popAndPushNamed(ChatUIKitRouteNames.messagesView);
     Navigator.of(context).popUntil((route) {
-      debugPrint('route.settings.name: ${route.settings.toString()}');
+      chatPrint('route.settings.name: ${route.settings.toString()}');
       return route.settings.name == ChatUIKitRouteNames.messagesView || route.isFirst;
     });
   }

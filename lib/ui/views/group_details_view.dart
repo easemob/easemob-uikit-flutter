@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class GroupDetailsView extends StatefulWidget {
   })  : profile = arguments.profile,
         appBar = arguments.appBar,
         enableAppBar = arguments.enableAppBar,
-        actions = arguments.actions,
+        actionsBuilder = arguments.actionsBuilder,
         onMessageDidClear = arguments.onMessageDidClear,
         viewObserver = arguments.viewObserver,
         contentWidgetBuilder = arguments.contentWidgetBuilder,
@@ -19,7 +20,7 @@ class GroupDetailsView extends StatefulWidget {
 
   const GroupDetailsView({
     required this.profile,
-    required this.actions,
+    required this.actionsBuilder,
     this.appBar,
     this.enableAppBar = true,
     this.attributes,
@@ -28,7 +29,7 @@ class GroupDetailsView extends StatefulWidget {
     this.viewObserver,
     super.key,
   });
-  final List<ChatUIKitModelAction> actions;
+  final ChatUIKitModelActionsBuilder actionsBuilder;
   final ChatUIKitProfile profile;
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
@@ -49,26 +50,23 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   int memberCount = 0;
   Group? group;
   ChatUIKitProfile? profile;
-  late final List<ChatUIKitModelAction>? actions;
+
   @override
   void initState() {
     super.initState();
-    assert(widget.actions.length <= 5,
-        'The number of actions in the list cannot exceed 5');
 
     ChatUIKit.instance.addObserver(this);
     ChatUIKitProvider.instance.addObserver(this);
     widget.viewObserver?.addListener(() {
       setState(() {});
     });
-    actions = widget.actions;
+
     profile = widget.profile;
     fetchGroupInfos();
   }
 
   void fetchGroupInfos() {
-    isNotDisturb.value =
-        ChatUIKitContext.instance.conversationIsMute(profile!.id);
+    isNotDisturb.value = ChatUIKitContext.instance.conversationIsMute(profile!.id);
     fetchGroup();
   }
 
@@ -103,8 +101,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   }
 
   @override
-  void onOwnerChangedFromGroup(
-      String groupId, String newOwner, String oldOwner) {
+  void onOwnerChangedFromGroup(String groupId, String newOwner, String oldOwner) {
     if (groupId == profile!.id) {
       fetchGroup();
     }
@@ -118,8 +115,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   }
 
   @override
-  void onGroupEvent(
-      MultiDevicesEvent event, String groupId, List<String>? userIds) {
+  void onGroupEvent(MultiDevicesEvent event, String groupId, List<String>? userIds) {
     if (groupId == profile!.id) {
       if (event == MultiDevicesEvent.GROUP_LEAVE) {
         ChatUIKitRoute.popToGroupsView(
@@ -149,20 +145,18 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       memberCount = group?.memberCount ?? 0;
       safeSetState(() {});
     } on ChatError catch (e) {
-      debugPrint(e.toString());
+      chatPrint(e.toString());
     }
   }
 
   void fetchSilentInfo() async {
     try {
-      Conversation conversation = await ChatUIKit.instance.createConversation(
-          conversationId: profile!.id, type: ConversationType.GroupChat);
-      Map<String, ChatSilentModeResult> map = await ChatUIKit.instance
-          .fetchSilentModel(conversations: [conversation]);
-      isNotDisturb.value =
-          map.values.first.remindType != ChatPushRemindType.ALL;
+      Conversation conversation =
+          await ChatUIKit.instance.createConversation(conversationId: profile!.id, type: ConversationType.GroupChat);
+      Map<String, ChatSilentModeResult> map = await ChatUIKit.instance.fetchSilentModel(conversations: [conversation]);
+      isNotDisturb.value = map.values.first.remindType != ChatPushRemindType.ALL;
     } on ChatError catch (e) {
-      debugPrint(e.toString());
+      chatPrint(e.toString());
     }
   }
 
@@ -177,9 +171,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: theme.color.isDark
-            ? theme.color.neutralColor1
-            : theme.color.neutralColor98,
+        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
         appBar: !widget.enableAppBar
             ? null
             : widget.appBar ??
@@ -187,9 +179,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                   showBackButton: true,
                   trailing: IconButton(
                     iconSize: 24,
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor95
-                        : theme.color.neutralColor3,
+                    color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
                     icon: const Icon(Icons.more_vert),
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
@@ -213,9 +203,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       style: TextStyle(
         fontSize: theme.font.headlineLarge.fontSize,
         fontWeight: theme.font.headlineLarge.fontWeight,
-        color: theme.color.isDark
-            ? theme.color.neutralColor100
-            : theme.color.neutralColor1,
+        color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
       ),
     );
 
@@ -229,9 +217,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
             style: TextStyle(
               fontSize: theme.font.bodySmall.fontSize,
               fontWeight: theme.font.bodySmall.fontWeight,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor95
-                  : theme.color.neutralColor3,
+              color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
             ),
           )
         : const SizedBox();
@@ -244,9 +230,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       style: TextStyle(
         fontSize: theme.font.bodySmall.fontSize,
         fontWeight: theme.font.bodySmall.fontWeight,
-        color: theme.color.isDark
-            ? theme.color.neutralColor5
-            : theme.color.neutralColor7,
+        color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
       ),
     );
 
@@ -265,9 +249,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
           child: Icon(
             Icons.file_copy_sharp,
             size: 16,
-            color: theme.color.isDark
-                ? theme.color.neutralColor5
-                : theme.color.neutralColor7,
+            color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
           ),
         ),
       ],
@@ -275,20 +257,22 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
 
     List<Widget> items = [];
 
+    List<ChatUIKitModelAction> actions = widget.actionsBuilder.call(context);
+
     double width = () {
-      if (widget.actions.length > 2) {
+      if (actions.length > 2) {
         return (MediaQuery.of(context).size.width -
                 24 -
-                widget.actions.length * 8 -
+                actions.length * 8 -
                 MediaQuery.of(context).padding.left -
                 MediaQuery.of(context).padding.right) /
-            widget.actions.length;
+            actions.length;
       } else {
         return 114.0;
       }
     }();
 
-    for (var action in widget.actions) {
+    for (var action in actions) {
       items.add(
         InkWell(
           highlightColor: Colors.transparent,
@@ -300,9 +284,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
             width: width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: theme.color.isDark
-                  ? theme.color.neutralColor2
-                  : theme.color.neutralColor95,
+              color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor95,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -312,23 +294,19 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                   height: action.iconSize?.height ?? 24,
                   child: Image.asset(
                     action.icon,
-                    color: theme.color.isDark
-                        ? theme.color.primaryColor6
-                        : theme.color.primaryColor5,
+                    color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                     package: action.packageName,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  action.title,
+                  action.title ?? '',
                   textScaler: TextScaler.noScaling,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: theme.font.bodySmall.fontSize,
                     fontWeight: theme.font.bodySmall.fontWeight,
-                    color: theme.color.isDark
-                        ? theme.color.primaryColor6
-                        : theme.color.primaryColor5,
+                    color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                   ),
                 ),
               ],
@@ -367,8 +345,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     content = ListView(
       children: [
         content,
-        if (widget.contentWidgetBuilder != null)
-          widget.contentWidgetBuilder!.call(context),
+        if (widget.contentWidgetBuilder != null) widget.contentWidgetBuilder!.call(context),
         InkWell(
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
@@ -378,8 +355,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
               ChatUIKitRouteNames.groupMembersView,
               GroupMembersViewArguments(
                 profile: widget.profile,
-                enableMemberOperation:
-                    group?.permissionType == GroupPermissionType.Owner,
+                enableMemberOperation: group?.permissionType == GroupPermissionType.Owner,
                 attributes: widget.attributes,
               ),
             );
@@ -400,9 +376,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                         textScaler: TextScaler.noScaling,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: theme.color.isDark
-                              ? theme.color.neutralColor6
-                              : theme.color.neutralColor5,
+                          color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
                           fontSize: theme.font.labelLarge.fontSize,
                           fontWeight: theme.font.labelLarge.fontWeight,
                         ),
@@ -411,9 +385,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                   }(),
                   Icon(
                     Icons.arrow_forward_ios,
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor5
-                        : theme.color.neutralColor7,
+                    color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
                     size: 18,
                   )
                 ],
@@ -422,30 +394,23 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
           ),
         ),
         ChatUIKitDetailsListViewItem(
-          title:
-              ChatUIKitLocal.groupDetailViewDoNotDisturb.localString(context),
+          title: ChatUIKitLocal.groupDetailViewDoNotDisturb.localString(context),
           trailing: ValueListenableBuilder(
             valueListenable: isNotDisturb,
             builder: (context, value, child) {
               return CupertinoSwitch(
                 value: isNotDisturb.value,
-                activeColor: theme.color.isDark
-                    ? theme.color.primaryColor6
-                    : theme.color.primaryColor5,
-                trackColor: theme.color.isDark
-                    ? theme.color.neutralColor3
-                    : theme.color.neutralColor9,
+                activeColor: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                trackColor: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor9,
                 onChanged: (value) async {
                   if (value == true) {
                     await ChatUIKit.instance.setSilentMode(
                         conversationId: profile!.id,
                         type: ConversationType.GroupChat,
-                        param: ChatSilentModeParam.remindType(
-                            ChatPushRemindType.MENTION_ONLY));
+                        param: ChatSilentModeParam.remindType(ChatPushRemindType.MENTION_ONLY));
                   } else {
-                    await ChatUIKit.instance.clearSilentMode(
-                        conversationId: profile!.id,
-                        type: ConversationType.GroupChat);
+                    await ChatUIKit.instance
+                        .clearSilentMode(conversationId: profile!.id, type: ConversationType.GroupChat);
                   }
                   safeSetState(() {
                     isNotDisturb.value = value;
@@ -459,16 +424,13 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
           onTap: clearAllHistory,
-          child: ChatUIKitDetailsListViewItem(
-              title: ChatUIKitLocal.groupDetailViewClearChatHistory
-                  .localString(context)),
+          child:
+              ChatUIKitDetailsListViewItem(title: ChatUIKitLocal.groupDetailViewClearChatHistory.localString(context)),
         ),
         if (group?.permissionType == GroupPermissionType.Owner) ...[
           Container(
             height: 20,
-            color: theme.color.isDark
-                ? theme.color.neutralColor3
-                : theme.color.neutralColor95,
+            color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
           ),
           InkWell(
             highlightColor: Colors.transparent,
@@ -477,8 +439,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
               changeGroupName();
             },
             child: ChatUIKitDetailsListViewItem(
-              title:
-                  ChatUIKitLocal.groupDetailViewGroupName.localString(context),
+              title: ChatUIKitLocal.groupDetailViewGroupName.localString(context),
               trailing: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -491,9 +452,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                       maxLines: 1,
                       textAlign: TextAlign.end,
                       style: TextStyle(
-                        color: theme.color.isDark
-                            ? theme.color.neutralColor6
-                            : theme.color.neutralColor5,
+                        color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
                         fontSize: theme.font.labelLarge.fontSize,
                         fontWeight: theme.font.labelLarge.fontWeight,
                       ),
@@ -502,9 +461,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                   const SizedBox(width: 2),
                   Icon(
                     Icons.arrow_forward_ios,
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor5
-                        : theme.color.neutralColor7,
+                    color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
                     size: 18,
                   )
                 ],
@@ -518,8 +475,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
               changeGroupDesc();
             },
             child: ChatUIKitDetailsListViewItem(
-              title: ChatUIKitLocal.groupDetailViewDescription
-                  .localString(context),
+              title: ChatUIKitLocal.groupDetailViewDescription.localString(context),
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -531,9 +487,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                       maxLines: 1,
                       textScaler: TextScaler.noScaling,
                       style: TextStyle(
-                        color: theme.color.isDark
-                            ? theme.color.neutralColor6
-                            : theme.color.neutralColor5,
+                        color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
                         fontSize: theme.font.labelLarge.fontSize,
                         fontWeight: theme.font.labelLarge.fontWeight,
                       ),
@@ -542,9 +496,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                   const SizedBox(width: 2),
                   Icon(
                     Icons.arrow_forward_ios,
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor5
-                        : theme.color.neutralColor7,
+                    color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
                     size: 18,
                   )
                 ],
@@ -563,21 +515,17 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
 
   void clearAllHistory() async {
     final ret = await showChatUIKitDialog(
-      title:
-          ChatUIKitLocal.groupDetailViewClearChatHistory.localString(context),
+      title: ChatUIKitLocal.groupDetailViewClearChatHistory.localString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal.groupDetailViewClearChatHistoryAlertButtonCancel
-              .localString(context),
+          label: ChatUIKitLocal.groupDetailViewClearChatHistoryAlertButtonCancel.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
-          label: ChatUIKitLocal
-              .contactDetailViewClearChatHistoryAlertButtonConfirm
-              .localString(context),
+          label: ChatUIKitLocal.contactDetailViewClearChatHistoryAlertButtonConfirm.localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },
@@ -598,8 +546,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     if (group?.permissionType == GroupPermissionType.Owner) {
       list.add(
         ChatUIKitBottomSheetItem.normal(
-          label:
-              ChatUIKitLocal.groupDetailViewTransferGroup.localString(context),
+          label: ChatUIKitLocal.groupDetailViewTransferGroup.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
             changeOwner();
@@ -608,8 +555,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       );
       list.add(
         ChatUIKitBottomSheetItem.destructive(
-          label:
-              ChatUIKitLocal.groupDetailViewDisbandGroup.localString(context),
+          label: ChatUIKitLocal.groupDetailViewDisbandGroup.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
             destroyGroup();
@@ -645,22 +591,18 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
 
   void destroyGroup() async {
     final ret = await showChatUIKitDialog(
-      title:
-          ChatUIKitLocal.groupDetailViewDisbandAlertTitle.localString(context),
-      content: ChatUIKitLocal.groupDetailViewDisbandAlertSubTitle
-          .localString(context),
+      title: ChatUIKitLocal.groupDetailViewDisbandAlertTitle.localString(context),
+      content: ChatUIKitLocal.groupDetailViewDisbandAlertSubTitle.localString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal.groupDetailViewDisbandAlertButtonCancel
-              .localString(context),
+          label: ChatUIKitLocal.groupDetailViewDisbandAlertButtonCancel.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
-          label: ChatUIKitLocal.groupDetailViewDisbandAlertButtonConfirm
-              .localString(context),
+          label: ChatUIKitLocal.groupDetailViewDisbandAlertButtonConfirm.localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },
@@ -680,20 +622,17 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   void leaveGroup() async {
     final ret = await showChatUIKitDialog(
       title: ChatUIKitLocal.groupDetailViewLeaveAlertTitle.localString(context),
-      content:
-          ChatUIKitLocal.groupDetailViewLeaveAlertSubTitle.localString(context),
+      content: ChatUIKitLocal.groupDetailViewLeaveAlertSubTitle.localString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal.groupDetailViewLeaveAlertButtonCancel
-              .localString(context),
+          label: ChatUIKitLocal.groupDetailViewLeaveAlertButtonCancel.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
-          label: ChatUIKitLocal.groupDetailViewLeaveAlertButtonConfirm
-              .localString(context),
+          label: ChatUIKitLocal.groupDetailViewLeaveAlertButtonConfirm.localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },
@@ -742,9 +681,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       ),
     ).then((value) {
       if (value is String) {
-        ChatUIKit.instance
-            .changeGroupName(groupId: group!.groupId, name: value)
-            .then((_) {
+        ChatUIKit.instance.changeGroupName(groupId: group!.groupId, name: value).then((_) {
           fetchGroup();
         }).catchError((e) {});
       }
@@ -768,12 +705,10 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       ),
     ).then((value) {
       if (value is String) {
-        ChatUIKit.instance
-            .changeGroupDescription(groupId: group!.groupId, desc: value)
-            .then((_) {
+        ChatUIKit.instance.changeGroupDescription(groupId: group!.groupId, desc: value).then((_) {
           fetchGroup();
         }).catchError((e) {
-          debugPrint(e.toString());
+          chatPrint(e.toString());
         });
       }
     });

@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
 
 import 'package:flutter/material.dart';
 
@@ -82,16 +83,12 @@ class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
     return Scaffold(
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       appBar: ChatUIKitAppBar(
         centerTitle: false,
         title: ChatUIKitLocal.threadsViewTitle.localString(context),
         titleTextStyle: TextStyle(
-          color: theme.color.isDark
-              ? theme.color.neutralColor100
-              : theme.color.neutralColor1,
+          color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
           fontWeight: theme.font.titleMedium.fontWeight,
           fontSize: theme.font.titleMedium.fontSize,
         ),
@@ -101,8 +98,7 @@ class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
         child: NotificationListener(
           onNotification: (notification) {
             if (notification is ScrollEndNotification) {
-              if (notification.metrics.pixels ==
-                  notification.metrics.maxScrollExtent) {
+              if (notification.metrics.pixels == notification.metrics.maxScrollExtent) {
                 fetchThreads();
               }
             }
@@ -115,9 +111,7 @@ class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
                 child: Divider(
                   height: 0.5,
                   thickness: 0.5,
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor2
-                      : theme.color.neutralColor9,
+                  color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9,
                 ),
               );
             },
@@ -133,24 +127,18 @@ class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
                             pushToThread(list[index]);
                           },
                           titleStyle: TextStyle(
-                            color: theme.color.isDark
-                                ? theme.color.neutralColor100
-                                : theme.color.neutralColor1,
+                            color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
                             fontWeight: theme.font.titleSmall.fontWeight,
                             fontSize: theme.font.titleSmall.fontSize,
                           ),
                           subtitleStyle: TextStyle(
-                            color: theme.color.isDark
-                                ? theme.color.neutralColor6
-                                : theme.color.neutralColor5,
+                            color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
                             fontWeight: theme.font.labelMedium.fontWeight,
                             fontSize: theme.font.labelMedium.fontSize,
                           ),
                           threadIcon: const SizedBox(),
                           chatThread: list[index],
-                          backgroundColor: theme.color.isDark
-                              ? theme.color.neutralColor1
-                              : theme.color.neutralColor98,
+                          backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
                         ),
                       ),
                     ],
@@ -167,8 +155,7 @@ class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
     if (fetching || hasMore == false) return;
     fetching = true;
     try {
-      CursorResult<ChatThread> result =
-          await ChatUIKit.instance.fetchChatThreadsWithParentId(
+      CursorResult<ChatThread> result = await ChatUIKit.instance.fetchChatThreadsWithParentId(
         parentId: widget.profile.id,
         cursor: cursor,
         limit: limit,
@@ -178,8 +165,7 @@ class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
         hasMore = false;
       }
       list.addAll(result.data);
-      Map<String, Message> map =
-          await ChatUIKit.instance.fetchLatestMessageWithChatThreads(
+      Map<String, Message> map = await ChatUIKit.instance.fetchLatestMessageWithChatThreads(
         chatThreadIds: result.data.map((e) => e.threadId).toList(),
       );
 
@@ -194,15 +180,14 @@ class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
 
       setState(() {});
     } catch (e) {
-      debugPrint('fetchThreads error: $e');
+      chatPrint('fetchThreads error: $e');
     }
     fetching = false;
   }
 
   void pushToThread(ChatThread thread) async {
     Future(() async {
-      Message? msg =
-          await ChatUIKit.instance.loadMessage(messageId: thread.messageId);
+      Message? msg = await ChatUIKit.instance.loadMessage(messageId: thread.messageId);
       if (msg != null) {
         return MessageModel(message: msg, thread: thread);
       }

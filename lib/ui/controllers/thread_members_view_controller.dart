@@ -1,4 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
+
 import 'package:flutter/foundation.dart';
 
 class ThreadMembersViewController extends ChangeNotifier with ChatUIKitProviderObserver {
@@ -49,7 +51,7 @@ class ThreadMembersViewController extends ChangeNotifier with ChatUIKitProviderO
       }
       cursor = result.cursor;
     } catch (e) {
-      debugPrint('fetchChatThreadMembers error: $e');
+      chatPrint('fetchChatThreadMembers error: $e');
     } finally {
       fetching = false;
       updateView();

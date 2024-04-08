@@ -28,12 +28,11 @@ class ChatUIKitRouteNames {
   static const String groupMentionView = '/GroupMentionView';
   static const String reportMessageView = '/ReportMessageView';
   static const String threadMessagesView = '/ThreadMessagesView';
-  static const String threadMembersView = '/threadMembersView';
-  static const String threadsView = '/threadsView';
-  static const String searchHistoryView = '/searchHistoryView';
+  static const String threadMembersView = '/ThreadMembersView';
+  static const String threadsView = '/ThreadsView';
+  static const String searchHistoryView = '/SearchHistoryView';
 
-  static Widget getWidgetFromName(
-      String name, ChatUIKitViewArguments arguments) {
+  static Widget getWidgetFromName(String name, ChatUIKitViewArguments arguments) {
     switch (name) {
       case ChatUIKitRouteNames.changeInfoView:
         return ChangeInfoView.arguments(

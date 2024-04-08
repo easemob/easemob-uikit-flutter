@@ -91,9 +91,7 @@ class _GroupsViewState extends State<GroupsView> {
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       appBar: !widget.enableAppBar
           ? null
           : widget.appBar ??
@@ -116,9 +114,7 @@ class _GroupsViewState extends State<GroupsView> {
                         style: TextStyle(
                           fontWeight: theme.font.titleMedium.fontWeight,
                           fontSize: theme.font.titleMedium.fontSize,
-                          color: theme.color.isDark
-                              ? theme.color.neutralColor98
-                              : theme.color.neutralColor1,
+                          color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
                         ),
                       );
                     },
@@ -146,65 +142,65 @@ class _GroupsViewState extends State<GroupsView> {
       context,
       ChatUIKitRouteNames.groupDetailsView,
       GroupDetailsViewArguments(
-        attributes: widget.attributes,
-        profile: model.profile,
-        actions: [
-          ChatUIKitModelAction(
-            title: ChatUIKitLocal.groupDetailViewSend.localString(context),
-            icon: 'assets/images/chat.png',
-            iconSize: const Size(32, 32),
-            packageName: ChatUIKitImageLoader.packageName,
-            onTap: (context) {
-              ChatUIKitRoute.pushOrPushNamed(
-                context,
-                ChatUIKitRouteNames.messagesView,
-                MessagesViewArguments(
-                  profile: model.profile,
-                  attributes: widget.attributes,
-                ),
-              );
-            },
-          ),
-          ChatUIKitModelAction(
-            title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
-            icon: 'assets/images/search_history.png',
-            packageName: ChatUIKitImageLoader.packageName,
-            iconSize: const Size(32, 32),
-            onTap: (context) {
-              ChatUIKitRoute.pushOrPushNamed(
-                context,
-                ChatUIKitRouteNames.searchHistoryView,
-                SearchHistoryViewArguments(
-                  profile: model.profile,
-                  attributes: widget.attributes,
-                ),
-              ).then((value) {
-                if (value != null && value is Message) {
+          attributes: widget.attributes,
+          profile: model.profile,
+          actionsBuilder: (context) {
+            return [
+              ChatUIKitModelAction(
+                title: ChatUIKitLocal.groupDetailViewSend.localString(context),
+                icon: 'assets/images/chat.png',
+                iconSize: const Size(32, 32),
+                packageName: ChatUIKitImageLoader.packageName,
+                onTap: (context) {
                   ChatUIKitRoute.pushOrPushNamed(
                     context,
                     ChatUIKitRouteNames.messagesView,
                     MessagesViewArguments(
                       profile: model.profile,
                       attributes: widget.attributes,
-                      controller: MessageListViewController(
-                        profile: model.profile,
-                        searchedMsg: value,
-                      ),
                     ),
                   );
-                }
-              });
-            },
-          ),
-        ],
-      ),
+                },
+              ),
+              ChatUIKitModelAction(
+                title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
+                icon: 'assets/images/search_history.png',
+                packageName: ChatUIKitImageLoader.packageName,
+                iconSize: const Size(32, 32),
+                onTap: (context) {
+                  ChatUIKitRoute.pushOrPushNamed(
+                    context,
+                    ChatUIKitRouteNames.searchHistoryView,
+                    SearchHistoryViewArguments(
+                      profile: model.profile,
+                      attributes: widget.attributes,
+                    ),
+                  ).then((value) {
+                    if (value != null && value is Message) {
+                      ChatUIKitRoute.pushOrPushNamed(
+                        context,
+                        ChatUIKitRouteNames.messagesView,
+                        MessagesViewArguments(
+                          profile: model.profile,
+                          attributes: widget.attributes,
+                          controller: MessageListViewController(
+                            profile: model.profile,
+                            searchedMsg: value,
+                          ),
+                        ),
+                      );
+                    }
+                  });
+                },
+              ),
+            ];
+          }),
     ).then((value) {
       ChatUIKitRouteBackModel? model = ChatUIKitRoute.lastModel;
       if (model != null) {
         if (model.type == ChatUIKitRouteBackType.remove) {
           controller.list.removeWhere((element) {
-            return element is GroupItemModel &&
-                element.profile.id == model.profileId;
+            return element is GroupItemModel && element.profile.id == model.profileId;
           });
           controller.refresh();
         }

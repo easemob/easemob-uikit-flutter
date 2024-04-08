@@ -159,7 +159,7 @@ export 'ui/route/view_arguments/threads_view_arguments.dart';
 export 'ui/route/view_arguments/search_history_view_arguments.dart';
 
 export 'ui/route/chat_uikit_view_observer.dart';
-
+export 'ui/route/chat_uikit_route_helper.dart';
 export 'universal/chat_uikit_action_model.dart';
 
 export 'chat_uikit_emoji_data.dart';

@@ -716,7 +716,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
           controller.leaveChatThread().then((value) {
             Navigator.of(context).pop();
           }).catchError((e) {
-            debugPrint('leaveChatThread: $e');
+            chatPrint('leaveChatThread: $e');
           });
         },
         style: TextStyle(
@@ -739,7 +739,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
             controller.destroyChatThread().then((value) {
               Navigator.of(context).pop();
             }).catchError((e) {
-              debugPrint('destroyChatThread: $e');
+              chatPrint('destroyChatThread: $e');
             });
           },
           style: TextStyle(
@@ -1182,7 +1182,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
           _playingMessage = message;
           // ignore: empty_catches
         } catch (e) {
-          debugPrint('playVoice: $e');
+          chatPrint('playVoice: $e');
         }
       }
     }
@@ -1207,7 +1207,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
       _playingMessage = null;
       setState(() {});
     }).onError((error, stackTrace) {
-      debugPrint('playVoice: $error');
+      chatPrint('playVoice: $error');
     });
   }
 
@@ -1268,56 +1268,57 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
       context,
       ChatUIKitRouteNames.contactDetailsView,
       ContactDetailsViewArguments(
-        profile: profile,
-        attributes: widget.attributes,
-        actions: [
-          ChatUIKitModelAction(
-            title: ChatUIKitLocal.contactDetailViewSend.localString(context),
-            icon: 'assets/images/chat.png',
-            packageName: ChatUIKitImageLoader.packageName,
-            onTap: (ctx) {
-              Navigator.of(context).pushNamed(
-                ChatUIKitRouteNames.messagesView,
-                arguments: MessagesViewArguments(
-                  profile: profile,
-                  attributes: widget.attributes,
-                ),
-              );
-            },
-          ),
-          ChatUIKitModelAction(
-            title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
-            icon: 'assets/images/search_history.png',
-            packageName: ChatUIKitImageLoader.packageName,
-            iconSize: const Size(32, 32),
-            onTap: (context) {
-              ChatUIKitRoute.pushOrPushNamed(
-                context,
-                ChatUIKitRouteNames.searchHistoryView,
-                SearchHistoryViewArguments(
-                  profile: profile,
-                  attributes: widget.attributes,
-                ),
-              ).then((value) {
-                if (value != null && value is Message) {
-                  ChatUIKitRoute.pushOrPushNamed(
-                    context,
+          profile: profile,
+          attributes: widget.attributes,
+          actionsBuilder: (context) {
+            return [
+              ChatUIKitModelAction(
+                title: ChatUIKitLocal.contactDetailViewSend.localString(context),
+                icon: 'assets/images/chat.png',
+                packageName: ChatUIKitImageLoader.packageName,
+                onTap: (ctx) {
+                  Navigator.of(context).pushNamed(
                     ChatUIKitRouteNames.messagesView,
-                    MessagesViewArguments(
+                    arguments: MessagesViewArguments(
                       profile: profile,
                       attributes: widget.attributes,
-                      controller: MessageListViewController(
-                        profile: profile,
-                        searchedMsg: value,
-                      ),
                     ),
                   );
-                }
-              });
-            },
-          ),
-        ],
-      ),
+                },
+              ),
+              ChatUIKitModelAction(
+                title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
+                icon: 'assets/images/search_history.png',
+                packageName: ChatUIKitImageLoader.packageName,
+                iconSize: const Size(32, 32),
+                onTap: (context) {
+                  ChatUIKitRoute.pushOrPushNamed(
+                    context,
+                    ChatUIKitRouteNames.searchHistoryView,
+                    SearchHistoryViewArguments(
+                      profile: profile,
+                      attributes: widget.attributes,
+                    ),
+                  ).then((value) {
+                    if (value != null && value is Message) {
+                      ChatUIKitRoute.pushOrPushNamed(
+                        context,
+                        ChatUIKitRouteNames.messagesView,
+                        MessagesViewArguments(
+                          profile: profile,
+                          attributes: widget.attributes,
+                          controller: MessageListViewController(
+                            profile: profile,
+                            searchedMsg: value,
+                          ),
+                        ),
+                      );
+                    }
+                  });
+                },
+              ),
+            ];
+          }),
     );
   }
 

@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 class GroupDetailsViewArguments implements ChatUIKitViewArguments {
   GroupDetailsViewArguments({
     required this.profile,
-    required this.actions,
+    required this.actionsBuilder,
     this.appBar,
     this.enableAppBar = true,
     this.onMessageDidClear,
@@ -13,7 +13,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
     this.attributes,
   });
   final ChatUIKitProfile profile;
-  final List<ChatUIKitModelAction> actions;
+  final ChatUIKitModelActionsBuilder actionsBuilder;
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
   final VoidCallback? onMessageDidClear;
@@ -26,7 +26,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
 
   GroupDetailsViewArguments copyWith({
     ChatUIKitProfile? profile,
-    List<ChatUIKitModelAction>? actions,
+    ChatUIKitModelActionsBuilder? actionsBuilder,
     bool? enableAppBar,
     ChatUIKitAppBar? appBar,
     WidgetBuilder? contentWidgetBuilder,
@@ -36,7 +36,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
   }) {
     return GroupDetailsViewArguments(
       profile: profile ?? this.profile,
-      actions: actions ?? this.actions,
+      actionsBuilder: actionsBuilder ?? this.actionsBuilder,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       appBar: appBar ?? this.appBar,
       onMessageDidClear: onMessageDidClear ?? this.onMessageDidClear,

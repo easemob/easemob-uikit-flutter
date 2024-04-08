@@ -243,57 +243,58 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
       context,
       ChatUIKitRouteNames.contactDetailsView,
       ContactDetailsViewArguments(
-        profile: profile,
-        attributes: widget.attributes,
-        actions: [
-          ChatUIKitModelAction(
-            title: ChatUIKitLocal.groupDetailViewSend.localString(context),
-            icon: 'assets/images/chat.png',
-            packageName: ChatUIKitImageLoader.packageName,
-            onTap: (context) {
-              ChatUIKitRoute.pushOrPushNamed(
-                context,
-                ChatUIKitRouteNames.messagesView,
-                MessagesViewArguments(
-                  profile: profile,
-                  attributes: widget.attributes,
-                ),
-              );
-            },
-          ),
-          ChatUIKitModelAction(
-            title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
-            icon: 'assets/images/search_history.png',
-            packageName: ChatUIKitImageLoader.packageName,
-            iconSize: const Size(32, 32),
-            onTap: (context) {
-              ChatUIKitRoute.pushOrPushNamed(
-                context,
-                ChatUIKitRouteNames.searchHistoryView,
-                SearchHistoryViewArguments(
-                  profile: profile,
-                  attributes: widget.attributes,
-                ),
-              ).then((value) {
-                if (value != null && value is Message) {
+          profile: profile,
+          attributes: widget.attributes,
+          actionsBuilder: (context) {
+            return [
+              ChatUIKitModelAction(
+                title: ChatUIKitLocal.groupDetailViewSend.localString(context),
+                icon: 'assets/images/chat.png',
+                packageName: ChatUIKitImageLoader.packageName,
+                onTap: (context) {
                   ChatUIKitRoute.pushOrPushNamed(
                     context,
                     ChatUIKitRouteNames.messagesView,
                     MessagesViewArguments(
                       profile: profile,
                       attributes: widget.attributes,
-                      controller: MessageListViewController(
-                        profile: profile,
-                        searchedMsg: value,
-                      ),
                     ),
                   );
-                }
-              });
-            },
-          ),
-        ],
-      ),
+                },
+              ),
+              ChatUIKitModelAction(
+                title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
+                icon: 'assets/images/search_history.png',
+                packageName: ChatUIKitImageLoader.packageName,
+                iconSize: const Size(32, 32),
+                onTap: (context) {
+                  ChatUIKitRoute.pushOrPushNamed(
+                    context,
+                    ChatUIKitRouteNames.searchHistoryView,
+                    SearchHistoryViewArguments(
+                      profile: profile,
+                      attributes: widget.attributes,
+                    ),
+                  ).then((value) {
+                    if (value != null && value is Message) {
+                      ChatUIKitRoute.pushOrPushNamed(
+                        context,
+                        ChatUIKitRouteNames.messagesView,
+                        MessagesViewArguments(
+                          profile: profile,
+                          attributes: widget.attributes,
+                          controller: MessageListViewController(
+                            profile: profile,
+                            searchedMsg: value,
+                          ),
+                        ),
+                      );
+                    }
+                  });
+                },
+              ),
+            ];
+          }),
     );
   }
 

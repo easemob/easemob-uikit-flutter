@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
 
 import 'package:flutter/material.dart';
 
@@ -62,7 +63,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObse
 
       models.addAll(fetchedMsgs.map((e) => MessageModel(message: e)));
     } catch (e) {
-      debugPrint('download error: $e');
+      chatPrint('download error: $e');
     } finally {
       ChatUIKit.instance.loadMessage(messageId: widget.message.msgId).then((value) {
         if (value != null) {

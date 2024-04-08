@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
 import 'package:flutter/material.dart';
 
 class ChatUIKitMessageReactionInfo extends StatefulWidget {
@@ -176,7 +177,7 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
       firstLoadSucceed = true;
       setState(() {});
     } catch (e) {
-      debugPrint(e.toString());
+      chatPrint(e.toString());
     }
     fetching = false;
   }
@@ -239,7 +240,7 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
                 widget.onReactionDeleteTap?.call();
                 setState(() {});
               } catch (e) {
-                debugPrint(e.toString());
+                chatPrint(e.toString());
               }
             },
             child: Padding(

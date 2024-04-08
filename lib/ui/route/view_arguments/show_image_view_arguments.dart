@@ -21,7 +21,7 @@ class ShowImageViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-
+ 
   ShowImageViewArguments copyWith({
     Message? message,
     void Function(Message message)? onLongPressed,

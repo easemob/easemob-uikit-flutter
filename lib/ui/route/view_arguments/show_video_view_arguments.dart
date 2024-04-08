@@ -21,7 +21,7 @@ class ShowVideoViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-
+ 
   ShowVideoViewArguments copyWith({
     Message? message,
     void Function(Message message)? onLongPressed,

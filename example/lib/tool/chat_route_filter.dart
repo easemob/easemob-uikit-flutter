@@ -48,6 +48,39 @@ class ChatRouteFilter {
 
     arguments = arguments.copyWith(
       viewObserver: viewObserver,
+      actionsBuilder: (context) {
+        return [
+          ChatUIKitModelAction(
+            title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
+            icon: 'assets/images/search_history.png',
+            packageName: ChatUIKitImageLoader.packageName,
+            iconSize: const Size(32, 32),
+            onTap: (context) {},
+          ),
+          ChatUIKitModelAction(
+            title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
+            icon: 'assets/images/search_history.png',
+            packageName: ChatUIKitImageLoader.packageName,
+            iconSize: const Size(32, 32),
+            onTap: (context) {},
+          ),
+          ChatUIKitModelAction(
+            title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
+            icon: 'assets/images/search_history.png',
+            packageName: ChatUIKitImageLoader.packageName,
+            iconSize: const Size(32, 32),
+            onTap: (context) {},
+          ),
+          ChatUIKitModelAction(
+            title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
+            icon: 'assets/images/search_history.png',
+            packageName: ChatUIKitImageLoader.packageName,
+            iconSize: const Size(32, 32),
+            onTap: (context) {},
+          ),
+        ];
+      },
+
       // 添加 remark 实现
       contentWidgetBuilder: (context) {
         return InkWell(

@@ -59,7 +59,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
         await ChatUIKit.instance.joinChatThread(chatThreadId: thread!.threadId);
         await fetchItemList();
       } catch (e) {
-        debugPrint('join thread error: $e');
+        chatPrint('join thread error: $e');
       }
       await insertCreateMessage();
     }
@@ -115,7 +115,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
 
       updateView();
     } catch (e) {
-      debugPrint('fetch history messages error: $e');
+      chatPrint('fetch history messages error: $e');
     } finally {
       fetching = false;
     }
@@ -154,7 +154,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
       updateView();
       return true;
     } catch (e) {
-      debugPrint('create thread error: $e');
+      chatPrint('create thread error: $e');
     }
     return false;
   }
@@ -166,7 +166,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
         newName: newName,
       );
     } catch (e) {
-      debugPrint('change thread name error: $e');
+      chatPrint('change thread name error: $e');
     }
   }
 
@@ -176,7 +176,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
         chatThreadId: thread?.threadId ?? model?.thread?.threadId ?? '',
       );
     } catch (e) {
-      debugPrint('destroy thread error: $e');
+      chatPrint('destroy thread error: $e');
     }
   }
 
@@ -186,7 +186,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
         chatThreadId: thread?.threadId ?? model?.thread?.threadId ?? '',
       );
     } catch (e) {
-      debugPrint('leave thread error: $e');
+      chatPrint('leave thread error: $e');
     }
   }
 
@@ -413,7 +413,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
         );
       }
     } catch (e) {
-      debugPrint('updateReaction: $e');
+      chatPrint('updateReaction: $e');
     }
   }
 
@@ -478,14 +478,14 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
           messageId: msg.msgId,
         );
       } catch (e) {
-        debugPrint('delete local thread message error: $e');
+        chatPrint('delete local thread message error: $e');
       }
     }
   }
 
   @override
   void onError(String msgId, Message msg, ChatError error) {
-    debugPrint(' thread message error: $error');
+    chatPrint(' thread message error: $error');
     final index =
         msgModelList.indexWhere((element) => element.message.msgId == msgId && msg.status != element.message.status);
     if (index != -1) {

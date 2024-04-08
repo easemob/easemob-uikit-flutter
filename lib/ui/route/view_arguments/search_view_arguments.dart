@@ -18,8 +18,7 @@ class SearchViewArguments implements ChatUIKitViewArguments {
   final List<NeedSearch> searchData;
   final String searchHideText;
   final void Function(BuildContext context, ChatUIKitProfile profile)? onTap;
-  final Widget Function(BuildContext context, ChatUIKitProfile profile,
-      String? searchKeyword)? itemBuilder;
+  final Widget Function(BuildContext context, ChatUIKitProfile profile, String? searchKeyword)? itemBuilder;
   final bool enableMulti;
   final List<ChatUIKitProfile>? cantChangeSelected;
   final List<ChatUIKitProfile>? canChangeSelected;
@@ -35,9 +34,7 @@ class SearchViewArguments implements ChatUIKitViewArguments {
     List<NeedSearch>? searchData,
     String? searchHideText,
     void Function(BuildContext context, ChatUIKitProfile profile)? onTap,
-    Widget Function(BuildContext context, ChatUIKitProfile profile,
-            String? searchKeyword)?
-        itemBuilder,
+    Widget Function(BuildContext context, ChatUIKitProfile profile, String? searchKeyword)? itemBuilder,
     bool? enableMulti,
     List<ChatUIKitProfile>? cantChangeSelected,
     List<ChatUIKitProfile>? canChangeSelected,

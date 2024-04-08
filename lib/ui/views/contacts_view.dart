@@ -224,55 +224,59 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.contactDetailsView,
-      ContactDetailsViewArguments(profile: profile, actions: [
-        ChatUIKitModelAction(
-          title: ChatUIKitLocal.contactDetailViewSend.localString(context),
-          icon: 'assets/images/chat.png',
-          iconSize: const Size(32, 32),
-          packageName: ChatUIKitImageLoader.packageName,
-          onTap: (context) {
-            ChatUIKitRoute.pushOrPushNamed(
-              context,
-              ChatUIKitRouteNames.messagesView,
-              MessagesViewArguments(
-                profile: profile,
-                attributes: widget.attributes,
-              ),
-            );
-          },
-        ),
-        ChatUIKitModelAction(
-          title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
-          icon: 'assets/images/search_history.png',
-          packageName: ChatUIKitImageLoader.packageName,
-          iconSize: const Size(32, 32),
-          onTap: (context) {
-            ChatUIKitRoute.pushOrPushNamed(
-              context,
-              ChatUIKitRouteNames.searchHistoryView,
-              SearchHistoryViewArguments(
-                profile: profile,
-                attributes: widget.attributes,
-              ),
-            ).then((value) {
-              if (value != null && value is Message) {
-                ChatUIKitRoute.pushOrPushNamed(
-                  context,
-                  ChatUIKitRouteNames.messagesView,
-                  MessagesViewArguments(
-                    profile: profile,
-                    attributes: widget.attributes,
-                    controller: MessageListViewController(
+      ContactDetailsViewArguments(
+          profile: profile,
+          actionsBuilder: (context) {
+            return [
+              ChatUIKitModelAction(
+                title: ChatUIKitLocal.contactDetailViewSend.localString(context),
+                icon: 'assets/images/chat.png',
+                iconSize: const Size(32, 32),
+                packageName: ChatUIKitImageLoader.packageName,
+                onTap: (context) {
+                  ChatUIKitRoute.pushOrPushNamed(
+                    context,
+                    ChatUIKitRouteNames.messagesView,
+                    MessagesViewArguments(
                       profile: profile,
-                      searchedMsg: value,
+                      attributes: widget.attributes,
                     ),
-                  ),
-                );
-              }
-            });
-          },
-        ),
-      ]),
+                  );
+                },
+              ),
+              ChatUIKitModelAction(
+                title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
+                icon: 'assets/images/search_history.png',
+                packageName: ChatUIKitImageLoader.packageName,
+                iconSize: const Size(32, 32),
+                onTap: (context) {
+                  ChatUIKitRoute.pushOrPushNamed(
+                    context,
+                    ChatUIKitRouteNames.searchHistoryView,
+                    SearchHistoryViewArguments(
+                      profile: profile,
+                      attributes: widget.attributes,
+                    ),
+                  ).then((value) {
+                    if (value != null && value is Message) {
+                      ChatUIKitRoute.pushOrPushNamed(
+                        context,
+                        ChatUIKitRouteNames.messagesView,
+                        MessagesViewArguments(
+                          profile: profile,
+                          attributes: widget.attributes,
+                          controller: MessageListViewController(
+                            profile: profile,
+                            searchedMsg: value,
+                          ),
+                        ),
+                      );
+                    }
+                  });
+                },
+              ),
+            ];
+          }),
     ).then((value) {
       ChatUIKit.instance.onConversationsUpdate();
     });
