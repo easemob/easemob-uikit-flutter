@@ -12,14 +12,13 @@ class SelectContactView extends StatefulWidget {
         onLongPress = arguments.onLongPress,
         appBar = arguments.appBar,
         controller = arguments.controller,
-        backText = arguments.backText,
         enableAppBar = arguments.enableAppBar,
         title = arguments.title,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const SelectContactView({
-    this.backText,
     this.title,
     this.listViewItemBuilder,
     this.onSearchTap,
@@ -32,11 +31,11 @@ class SelectContactView extends StatefulWidget {
     this.controller,
     this.attributes,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
   final String? title;
-  final String? backText;
   final ContactListViewController? controller;
   final ChatUIKitAppBar? appBar;
   final void Function(List<ContactItemModel> data)? onSearchTap;
@@ -51,6 +50,7 @@ class SelectContactView extends StatefulWidget {
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<SelectContactView> createState() => _SelectContactViewState();
@@ -86,25 +86,26 @@ class _SelectContactViewState extends State<SelectContactView> {
               ChatUIKitAppBar(
                 title: widget.title,
                 showBackButton: true,
-                leading: widget.backText?.isNotEmpty == true
-                    ? InkWell(
-                        highlightColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(
-                          widget.backText!,
-                          textScaler: TextScaler.noScaling,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
-                            fontWeight: theme.font.titleMedium.fontWeight,
-                            fontSize: theme.font.titleMedium.fontSize,
-                          ),
+                trailingActions: () {
+                  List<ChatUIKitAppBarTrailingAction> actions = [
+                    ChatUIKitAppBarTrailingAction(
+                      onTap: (context) {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        ChatUIKitLocal.messagesViewSelectContactCancel.localString(context),
+                        textScaler: TextScaler.noScaling,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                          fontWeight: theme.font.titleMedium.fontWeight,
+                          fontSize: theme.font.titleMedium.fontSize,
                         ),
-                      )
-                    : null,
+                      ),
+                    )
+                  ];
+                  return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                }(),
               ),
       body: ContactListView(
         controller: controller,

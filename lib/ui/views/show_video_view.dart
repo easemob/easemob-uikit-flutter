@@ -3,14 +3,15 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
 class ShowVideoView extends StatefulWidget {
-  ShowVideoView.arguments(ShowVideoViewArguments argument, {super.key})
-      : message = argument.message,
-        onLongPressed = argument.onLongPressed,
-        appBar = argument.appBar,
-        enableAppBar = argument.enableAppBar,
-        playIcon = argument.playIcon,
-        viewObserver = argument.viewObserver,
-        attributes = argument.attributes;
+  ShowVideoView.arguments(ShowVideoViewArguments arguments, {super.key})
+      : message = arguments.message,
+        onLongPressed = arguments.onLongPressed,
+        appBar = arguments.appBar,
+        enableAppBar = arguments.enableAppBar,
+        playIcon = arguments.playIcon,
+        viewObserver = arguments.viewObserver,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
+        attributes = arguments.attributes;
 
   const ShowVideoView({
     required this.message,
@@ -20,18 +21,20 @@ class ShowVideoView extends StatefulWidget {
     this.enableAppBar = true,
     this.attributes,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
   final Message message;
   final void Function(Message message)? onLongPressed;
   final Widget? playIcon;
-  final AppBar? appBar;
+  final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
   final String? attributes;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<ShowVideoView> createState() => _ShowVideoViewState();
@@ -54,7 +57,6 @@ class _ShowVideoViewState extends State<ShowVideoView> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
     Widget content = ChatUIKitShowVideoWidget(
       message: widget.message,
       onLongPressed: widget.onLongPressed,
@@ -67,23 +69,9 @@ class _ShowVideoViewState extends State<ShowVideoView> {
       appBar: !widget.enableAppBar
           ? null
           : widget.appBar ??
-              AppBar(
+              ChatUIKitAppBar(
                 backgroundColor: const Color.fromARGB(120, 0, 0, 0),
-                elevation: 0.0,
-                leading: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 10),
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      color: theme.color.neutralColor95,
-                    ),
-                  ),
-                ),
+                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
               ),
       body: content,
     );

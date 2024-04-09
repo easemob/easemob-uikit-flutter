@@ -11,7 +11,8 @@ class ForwardMessagesViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-  @override
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+
   ForwardMessagesViewArguments({
     required this.message,
     this.enableAppBar = true,
@@ -20,19 +21,20 @@ class ForwardMessagesViewArguments implements ChatUIKitViewArguments {
     this.viewObserver,
     this.summaryBuilder,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
   });
 
-  ForwardMessagesViewArguments copyWith({
-    Message? message,
-    bool? enableAppBar,
-    ChatUIKitAppBar? appBar,
-    String? title,
-    List<Widget>? pages,
-    List<String>? pageTitles,
-    ChatUIKitViewObserver? viewObserver,
-    String? Function(BuildContext context, Message message)? summaryBuilder,
-    String? attributes,
-  }) {
+  ForwardMessagesViewArguments copyWith(
+      {Message? message,
+      bool? enableAppBar,
+      ChatUIKitAppBar? appBar,
+      String? title,
+      List<Widget>? pages,
+      List<String>? pageTitles,
+      ChatUIKitViewObserver? viewObserver,
+      String? Function(BuildContext context, Message message)? summaryBuilder,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return ForwardMessagesViewArguments(
       message: message ?? this.message,
       enableAppBar: enableAppBar ?? this.enableAppBar,
@@ -41,6 +43,7 @@ class ForwardMessagesViewArguments implements ChatUIKitViewArguments {
       summaryBuilder: summaryBuilder ?? this.summaryBuilder,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

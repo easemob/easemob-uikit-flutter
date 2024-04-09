@@ -14,10 +14,10 @@ class GroupMembersViewArguments implements ChatUIKitViewArguments {
     this.listViewBackground,
     this.loadErrorMessage,
     this.enableAppBar = true,
-    this.enableMemberOperation = false,
     this.title,
     this.viewObserver,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
   });
 
   final ChatUIKitProfile profile;
@@ -31,7 +31,6 @@ class GroupMembersViewArguments implements ChatUIKitViewArguments {
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final String? loadErrorMessage;
-  final bool enableMemberOperation;
   final bool enableAppBar;
 
   final String? title;
@@ -39,40 +38,40 @@ class GroupMembersViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
-  GroupMembersViewArguments copyWith({
-    ChatUIKitProfile? profile,
-    GroupMemberListViewController? controller,
-    ChatUIKitAppBar? appBar,
-    void Function(List<ContactItemModel> data)? onSearchTap,
-    ChatUIKitContactItemBuilder? listViewItemBuilder,
-    void Function(BuildContext context, ContactItemModel model)? onTap,
-    void Function(BuildContext context, ContactItemModel model)? onLongPress,
-    String? searchBarHideText,
-    Widget? listViewBackground,
-    String? loadErrorMessage,
-    bool? enableMemberOperation,
-    bool? enableAppBar,
-    String? title,
-    ChatUIKitViewObserver? viewObserver,
-    String? attributes,
-  }) {
+  GroupMembersViewArguments copyWith(
+      {ChatUIKitProfile? profile,
+      GroupMemberListViewController? controller,
+      ChatUIKitAppBar? appBar,
+      void Function(List<ContactItemModel> data)? onSearchTap,
+      ChatUIKitContactItemBuilder? listViewItemBuilder,
+      void Function(BuildContext context, ContactItemModel model)? onTap,
+      void Function(BuildContext context, ContactItemModel model)? onLongPress,
+      String? searchBarHideText,
+      Widget? listViewBackground,
+      String? loadErrorMessage,
+      bool? enableMemberOperation,
+      bool? enableAppBar,
+      String? title,
+      ChatUIKitViewObserver? viewObserver,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return GroupMembersViewArguments(
-      profile: profile ?? this.profile,
-      controller: controller ?? this.controller,
-      appBar: appBar ?? this.appBar,
-      onSearchTap: onSearchTap ?? this.onSearchTap,
-      listViewItemBuilder: listViewItemBuilder ?? this.listViewItemBuilder,
-      onTap: onTap ?? this.onTap,
-      onLongPress: onLongPress ?? this.onLongPress,
-      searchBarHideText: searchBarHideText ?? this.searchBarHideText,
-      listViewBackground: listViewBackground ?? this.listViewBackground,
-      loadErrorMessage: loadErrorMessage ?? this.loadErrorMessage,
-      enableMemberOperation: enableMemberOperation ?? this.enableMemberOperation,
-      enableAppBar: enableAppBar ?? this.enableAppBar,
-      title: title ?? this.title,
-      viewObserver: viewObserver ?? this.viewObserver,
-      attributes: attributes ?? this.attributes,
-    );
+        profile: profile ?? this.profile,
+        controller: controller ?? this.controller,
+        appBar: appBar ?? this.appBar,
+        onSearchTap: onSearchTap ?? this.onSearchTap,
+        listViewItemBuilder: listViewItemBuilder ?? this.listViewItemBuilder,
+        onTap: onTap ?? this.onTap,
+        onLongPress: onLongPress ?? this.onLongPress,
+        searchBarHideText: searchBarHideText ?? this.searchBarHideText,
+        listViewBackground: listViewBackground ?? this.listViewBackground,
+        loadErrorMessage: loadErrorMessage ?? this.loadErrorMessage,
+        enableAppBar: enableAppBar ?? this.enableAppBar,
+        title: title ?? this.title,
+        viewObserver: viewObserver ?? this.viewObserver,
+        attributes: attributes ?? this.attributes,
+        appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder);
   }
 }

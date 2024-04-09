@@ -6,25 +6,29 @@ class CurrentUserInfoView extends StatefulWidget {
   CurrentUserInfoView.arguments(CurrentUserInfoViewArguments arguments, {super.key})
       : profile = arguments.profile,
         appBar = arguments.appBar,
-        enableAppBar = arguments.enableAppBar,
         viewObserver = arguments.viewObserver,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
+        enableAppBar = arguments.enableAppBar,
         attributes = arguments.attributes;
 
   const CurrentUserInfoView({
     required this.profile,
     this.appBar,
-    this.enableAppBar = true,
     this.attributes,
+    this.enableAppBar = true,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
   final ChatUIKitProfile profile;
   final ChatUIKitAppBar? appBar;
-  final bool enableAppBar;
   final String? attributes;
+  final bool enableAppBar;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<CurrentUserInfoView> createState() => _CurrentUserInfoViewState();
@@ -70,8 +74,8 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> with ChatUIKi
         appBar: !widget.enableAppBar
             ? null
             : widget.appBar ??
-                const ChatUIKitAppBar(
-                  showBackButton: true,
+                ChatUIKitAppBar(
+                  trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
                 ),
         body: _buildContent());
 

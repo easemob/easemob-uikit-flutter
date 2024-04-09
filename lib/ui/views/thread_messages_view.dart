@@ -9,44 +9,45 @@ import 'package:flutter/services.dart';
 
 class ThreadMessagesView extends StatefulWidget {
   ThreadMessagesView.arguments(
-    ThreadMessagesViewArguments argument, {
+    ThreadMessagesViewArguments arguments, {
     super.key,
-  })  : attributes = argument.attributes,
-        viewObserver = argument.viewObserver,
-        controller = argument.controller,
-        appBar = argument.appBar,
-        enableAppBar = argument.enableAppBar,
-        title = argument.title,
-        subtitle = argument.subtitle,
-        inputBarController = argument.inputBarController,
-        morePressActions = argument.morePressActions,
-        onMoreActionsItemsHandler = argument.onMoreActionsItemsHandler,
-        longPressActions = argument.longPressActions,
-        onItemLongPressHandler = argument.onItemLongPressHandler,
-        forceLeft = argument.forceLeft,
-        emojiWidget = argument.emojiWidget,
-        replyBarBuilder = argument.replyBarBuilder,
-        quoteBuilder = argument.quoteBuilder,
-        alertItemBuilder = argument.alertItemBuilder,
-        onErrorBtnTapHandler = argument.onErrorBtnTapHandler,
-        bubbleBuilder = argument.bubbleBuilder,
-        bubbleContentBuilder = argument.bubbleContentBuilder,
-        inputBarTextEditingController = argument.inputBarTextEditingController,
-        multiSelectBottomBar = argument.multiSelectBottomBar,
-        onReactionItemTap = argument.onReactionItemTap,
-        onReactionInfoTap = argument.onReactionInfoTap,
-        reactionItemsBuilder = argument.reactionItemsBuilder,
-        showMessageItemAvatar = argument.showMessageItemAvatar,
-        showMessageItemNickname = argument.showMessageItemNickname,
-        onItemTap = argument.onItemTap,
-        onItemLongPress = argument.onItemLongPress,
-        onDoubleTap = argument.onDoubleTap,
-        onAvatarTap = argument.onAvatarTap,
-        onAvatarLongPress = argument.onAvatarLongPress,
-        onNicknameTap = argument.onNicknameTap,
-        bubbleStyle = argument.bubbleStyle,
-        inputBar = argument.inputBar,
-        itemBuilder = argument.itemBuilder;
+  })  : attributes = arguments.attributes,
+        viewObserver = arguments.viewObserver,
+        controller = arguments.controller,
+        appBar = arguments.appBar,
+        enableAppBar = arguments.enableAppBar,
+        title = arguments.title,
+        subtitle = arguments.subtitle,
+        inputBarController = arguments.inputBarController,
+        morePressActions = arguments.morePressActions,
+        onMoreActionsItemsHandler = arguments.onMoreActionsItemsHandler,
+        longPressActions = arguments.longPressActions,
+        onItemLongPressHandler = arguments.onItemLongPressHandler,
+        forceLeft = arguments.forceLeft,
+        emojiWidget = arguments.emojiWidget,
+        replyBarBuilder = arguments.replyBarBuilder,
+        quoteBuilder = arguments.quoteBuilder,
+        alertItemBuilder = arguments.alertItemBuilder,
+        onErrorBtnTapHandler = arguments.onErrorBtnTapHandler,
+        bubbleBuilder = arguments.bubbleBuilder,
+        bubbleContentBuilder = arguments.bubbleContentBuilder,
+        inputBarTextEditingController = arguments.inputBarTextEditingController,
+        multiSelectBottomBar = arguments.multiSelectBottomBar,
+        onReactionItemTap = arguments.onReactionItemTap,
+        onReactionInfoTap = arguments.onReactionInfoTap,
+        reactionItemsBuilder = arguments.reactionItemsBuilder,
+        showMessageItemAvatar = arguments.showMessageItemAvatar,
+        showMessageItemNickname = arguments.showMessageItemNickname,
+        onItemTap = arguments.onItemTap,
+        onItemLongPress = arguments.onItemLongPress,
+        onDoubleTap = arguments.onDoubleTap,
+        onAvatarTap = arguments.onAvatarTap,
+        onAvatarLongPress = arguments.onAvatarLongPress,
+        onNicknameTap = arguments.onNicknameTap,
+        bubbleStyle = arguments.bubbleStyle,
+        inputBar = arguments.inputBar,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
+        itemBuilder = arguments.itemBuilder;
 
   const ThreadMessagesView({
     this.attributes,
@@ -86,6 +87,7 @@ class ThreadMessagesView extends StatefulWidget {
     this.onReactionItemTap,
     this.onReactionInfoTap,
     this.reactionItemsBuilder,
+    this.appBarTrailingActionsBuilder,
   });
 
   final ChatUIKitInputBarController? inputBarController;
@@ -189,6 +191,7 @@ class ThreadMessagesView extends StatefulWidget {
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<ThreadMessagesView> createState() => _ThreadMessagesViewState();
@@ -262,40 +265,41 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
       backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
-      appBar: ChatUIKitAppBar(
-        title: controller.title(widget.title),
-        subtitle: widget.subtitle,
-        centerTitle: false,
-        trailing: controller.isMultiSelectMode
-            ? InkWell(
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                onTap: () {
-                  controller.disableMultiSelectMode();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 5, 24, 5),
-                  child: Text(
-                    '取消',
-                    style: TextStyle(
-                      color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
-                      fontWeight: theme.font.labelMedium.fontWeight,
-                      fontSize: theme.font.labelMedium.fontSize,
-                    ),
-                  ),
-                ),
-              )
-            : InkWell(
-                onTap: showMenuBottomSheet,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Icon(
-                    Icons.more_vert,
-                    color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
-                  ),
-                ),
+      appBar: !widget.enableAppBar
+          ? null
+          : widget.appBar ??
+              ChatUIKitAppBar(
+                title: controller.title(widget.title),
+                subtitle: widget.subtitle,
+                centerTitle: false,
+                trailingActions: () {
+                  List<ChatUIKitAppBarTrailingAction> actions = [
+                    ChatUIKitAppBarTrailingAction(
+                      onTap: (context) {
+                        if (controller.isMultiSelectMode) {
+                          controller.disableMultiSelectMode();
+                        } else {
+                          showMenuBottomSheet();
+                        }
+                      },
+                      child: controller.isMultiSelectMode
+                          ? Text(
+                              ChatUIKitLocal.bottomSheetCancel.localString(context),
+                              style: TextStyle(
+                                color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                                fontWeight: theme.font.labelMedium.fontWeight,
+                                fontSize: theme.font.labelMedium.fontSize,
+                              ),
+                            )
+                          : Icon(
+                              Icons.more_vert,
+                              color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
+                            ),
+                    )
+                  ];
+                  return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                }(),
               ),
-      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -1106,7 +1110,6 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
         return SizedBox(
           height: MediaQuery.sizeOf(context).height * 0.95,
           child: SelectContactView(
-            backText: ChatUIKitLocal.messagesViewSelectContactCancel.localString(context),
             title: ChatUIKitLocal.messagesViewSelectContactTitle.localString(context),
             onTap: (context, model) {
               showChatUIKitDialog(

@@ -14,6 +14,7 @@ class ForwardMessageSelectView extends StatefulWidget {
         viewObserver = arguments.viewObserver,
         summaryBuilder = arguments.summaryBuilder,
         isMulti = arguments.isMulti,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
   const ForwardMessageSelectView({
@@ -25,6 +26,7 @@ class ForwardMessageSelectView extends StatefulWidget {
     this.viewObserver,
     this.summaryBuilder,
     this.isMulti = true,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
@@ -38,6 +40,8 @@ class ForwardMessageSelectView extends StatefulWidget {
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
   @override
   State<ForwardMessageSelectView> createState() => _ForwardMessageSelectViewState();
 }
@@ -136,23 +140,9 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView> wit
                 onBackButtonPressed: () {
                   Navigator.of(context).pop(forwardedList.isNotEmpty);
                 },
-                leading: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    Navigator.maybePop(context);
-                  },
-                  child: Text(
-                    widget.title ?? ChatUIKitLocal.forwardMessageViewTitle.localString(context),
-                    textScaler: TextScaler.noScaling,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
-                      fontWeight: theme.font.titleMedium.fontWeight,
-                      fontSize: theme.font.titleMedium.fontSize,
-                    ),
-                  ),
-                ),
+                centerTitle: false,
+                title: widget.title ?? ChatUIKitLocal.forwardMessageViewTitle.localString(context),
+                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
               ),
       body: Column(
         children: [

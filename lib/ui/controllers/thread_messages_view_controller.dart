@@ -72,7 +72,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
       );
       msgModelList.insertAll(0, messages.map((e) => MessageModel(message: e)).toList());
 
-      updateView();
+      refresh();
     }
   }
 
@@ -113,7 +113,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
         }
       }
 
-      updateView();
+      refresh();
     } catch (e) {
       chatPrint('fetch history messages error: $e');
     } finally {
@@ -151,7 +151,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
       thread = createdThread;
       loadFinished = true;
       hasPermission = true;
-      updateView();
+      refresh();
       return true;
     } catch (e) {
       chatPrint('create thread error: $e');
@@ -217,7 +217,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
       final index = msgModelList.indexWhere((element) => msg.msgId == element.message.msgId);
       if (index != -1) {
         msgModelList[index] = msgModelList[index].copyWith(message: msg);
-        updateView();
+        refresh();
       }
       // ignore: empty_catches
     } catch (e) {}
@@ -362,7 +362,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
 
     if (loadFinished) {
       msgModelList.add(MessageModel(message: msg));
-      updateView();
+      refresh();
     }
   }
 
@@ -371,7 +371,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
     final msg = await ChatUIKit.instance.sendMessage(message: message);
     msgModelList.insert(0, MessageModel(message: msg));
 
-    updateView();
+    refresh();
   }
 
   Future<void> downloadMessage(Message message) async {
@@ -421,16 +421,16 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
     final index = msgModelList.indexWhere((element) => element.message.msgId == message.msgId);
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(message: message);
-      updateView();
+      refresh();
     }
   }
 
   void addCreateMessage(Message message) {
     msgModelList.add(MessageModel(message: message));
-    updateView();
+    refresh();
   }
 
-  void updateView() {
+  void refresh() {
     notifyListeners();
   }
 
@@ -459,7 +459,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
       }
     }
     if (needUpdate) {
-      updateView();
+      refresh();
     }
   }
 
@@ -471,7 +471,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
       msgModelList[index] = msgModelList[index].copyWith(
         message: msg,
       );
-      updateView();
+      refresh();
       try {
         ChatUIKit.instance.deleteLocalThreadMessageById(
           threadId: thread!.threadId,
@@ -490,7 +490,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
         msgModelList.indexWhere((element) => element.message.msgId == msgId && msg.status != element.message.status);
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(message: msg);
-      updateView();
+      refresh();
     }
   }
 
@@ -500,7 +500,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
       model = model?.copyWith(thread: thread);
       thread = event.chatThread;
       updatePermission();
-      updateView();
+      refresh();
     }
   }
 
@@ -524,7 +524,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
       }
     }
     if (needUpdate) {
-      updateView();
+      refresh();
     }
   }
 }

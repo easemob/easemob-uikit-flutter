@@ -7,6 +7,7 @@ class CurrentUserInfoViewArguments implements ChatUIKitViewArguments {
     this.appBar,
     this.enableAppBar = true,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
   });
 
   final ChatUIKitProfile profile;
@@ -16,20 +17,22 @@ class CurrentUserInfoViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
-  CurrentUserInfoViewArguments copyWith({
-    ChatUIKitProfile? profile,
-    bool? enableAppBar,
-    ChatUIKitAppBar? appBar,
-    ChatUIKitViewObserver? viewObserver,
-    String? attributes,
-  }) {
+  CurrentUserInfoViewArguments copyWith(
+      {ChatUIKitProfile? profile,
+      ChatUIKitAppBar? appBar,
+      bool? enableAppBar,
+      ChatUIKitViewObserver? viewObserver,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return CurrentUserInfoViewArguments(
       profile: profile ?? this.profile,
-      enableAppBar: enableAppBar ?? this.enableAppBar,
       appBar: appBar ?? this.appBar,
+      enableAppBar: enableAppBar ?? this.enableAppBar,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

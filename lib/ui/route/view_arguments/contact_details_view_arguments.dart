@@ -7,43 +7,47 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
     required this.profile,
     required this.actionsBuilder,
     this.onMessageDidClear,
-    this.enableAppBar = true,
     this.appBar,
     this.viewObserver,
     this.contentWidgetBuilder,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
+    this.enableAppBar = true,
   });
 
   final ChatUIKitProfile profile;
   final ChatUIKitModelActionsBuilder actionsBuilder;
   final VoidCallback? onMessageDidClear;
-  final bool enableAppBar;
   final ChatUIKitAppBar? appBar;
   final WidgetBuilder? contentWidgetBuilder;
   @override
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+  final bool enableAppBar;
 
   ContactDetailsViewArguments copyWith({
     ChatUIKitProfile? profile,
     ChatUIKitModelActionsBuilder? actionsBuilder,
     VoidCallback? onMessageDidClear,
-    bool? enableAppBar,
     ChatUIKitAppBar? appBar,
     ChatUIKitViewObserver? viewObserver,
     String? attributes,
     WidgetBuilder? contentWidgetBuilder,
+    ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder,
+    bool? enableAppBar,
   }) {
     return ContactDetailsViewArguments(
       profile: profile ?? this.profile,
       actionsBuilder: actionsBuilder ?? this.actionsBuilder,
       onMessageDidClear: onMessageDidClear ?? this.onMessageDidClear,
-      enableAppBar: enableAppBar ?? this.enableAppBar,
       appBar: appBar ?? this.appBar,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
       contentWidgetBuilder: contentWidgetBuilder ?? this.contentWidgetBuilder,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      enableAppBar: enableAppBar ?? this.enableAppBar,
     );
   }
 }

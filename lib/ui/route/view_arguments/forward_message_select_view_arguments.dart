@@ -13,7 +13,8 @@ class ForwardMessageSelectViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-  @override
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+
   ForwardMessageSelectViewArguments({
     required this.messages,
     this.enableAppBar = true,
@@ -23,20 +24,21 @@ class ForwardMessageSelectViewArguments implements ChatUIKitViewArguments {
     this.summaryBuilder,
     this.isMulti = true,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
   });
 
-  ForwardMessageSelectViewArguments copyWith({
-    List<Message>? messages,
-    bool? enableAppBar,
-    ChatUIKitAppBar? appBar,
-    String? title,
-    List<Widget>? pages,
-    List<String>? pageTitles,
-    ChatUIKitViewObserver? viewObserver,
-    String? Function(BuildContext context, Message message)? summaryBuilder,
-    bool? isMulti,
-    String? attributes,
-  }) {
+  ForwardMessageSelectViewArguments copyWith(
+      {List<Message>? messages,
+      bool? enableAppBar,
+      ChatUIKitAppBar? appBar,
+      String? title,
+      List<Widget>? pages,
+      List<String>? pageTitles,
+      ChatUIKitViewObserver? viewObserver,
+      String? Function(BuildContext context, Message message)? summaryBuilder,
+      bool? isMulti,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return ForwardMessageSelectViewArguments(
       messages: messages ?? this.messages,
       enableAppBar: enableAppBar ?? this.enableAppBar,
@@ -46,6 +48,7 @@ class ForwardMessageSelectViewArguments implements ChatUIKitViewArguments {
       viewObserver: viewObserver ?? this.viewObserver,
       isMulti: isMulti ?? this.isMulti,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

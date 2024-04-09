@@ -8,10 +8,11 @@ class ContactDetailsView extends StatefulWidget {
       : actionsBuilder = arguments.actionsBuilder,
         profile = arguments.profile,
         onMessageDidClear = arguments.onMessageDidClear,
-        enableAppBar = arguments.enableAppBar,
         appBar = arguments.appBar,
         contentWidgetBuilder = arguments.contentWidgetBuilder,
         viewObserver = arguments.viewObserver,
+        enableAppBar = arguments.enableAppBar,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
   const ContactDetailsView({
@@ -19,10 +20,11 @@ class ContactDetailsView extends StatefulWidget {
     required this.actionsBuilder,
     this.onMessageDidClear,
     this.appBar,
-    this.enableAppBar = true,
     this.attributes,
     this.contentWidgetBuilder,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
+    this.enableAppBar = true,
     super.key,
   });
 
@@ -30,10 +32,12 @@ class ContactDetailsView extends StatefulWidget {
   final ChatUIKitModelActionsBuilder actionsBuilder;
   final VoidCallback? onMessageDidClear;
   final ChatUIKitAppBar? appBar;
-  final bool enableAppBar;
   final String? attributes;
   final WidgetBuilder? contentWidgetBuilder;
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+  final bool enableAppBar;
+
   @override
   State<ContactDetailsView> createState() => _ContactDetailsViewState();
 }
@@ -98,14 +102,21 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
             : widget.appBar ??
                 ChatUIKitAppBar(
                   showBackButton: true,
-                  trailing: IconButton(
-                    iconSize: 24,
-                    color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
-                    icon: const Icon(Icons.more_vert),
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    onPressed: showBottom,
-                  ),
+                  trailingActions: () {
+                    List<ChatUIKitAppBarTrailingAction> actions = [
+                      ChatUIKitAppBarTrailingAction(
+                        onTap: (context) {
+                          showBottom();
+                        },
+                        child: Icon(
+                          Icons.more_vert,
+                          size: 24,
+                          color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
+                        ),
+                      )
+                    ];
+                    return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                  }(),
                 ),
         body: _buildContent());
 

@@ -54,11 +54,11 @@ class ThreadMembersViewController extends ChangeNotifier with ChatUIKitProviderO
       chatPrint('fetchChatThreadMembers error: $e');
     } finally {
       fetching = false;
-      updateView();
+      refresh();
     }
   }
 
-  void updateView() {
+  void refresh() {
     notifyListeners();
   }
 
@@ -68,7 +68,7 @@ class ThreadMembersViewController extends ChangeNotifier with ChatUIKitProviderO
       for (var i = 0; i < modelsList.length; i++) {
         modelsList[i].profile = map[modelsList[i].profile.id]!;
       }
-      updateView();
+      refresh();
     }
   }
 }

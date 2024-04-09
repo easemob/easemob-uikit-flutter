@@ -72,7 +72,7 @@ class MessageListViewController extends ChangeNotifier
     onBottom = true;
     hasNew = false;
     _lastMessageId = null;
-    updateView();
+    refresh();
   }
 
   MessageListViewController({
@@ -115,7 +115,7 @@ class MessageListViewController extends ChangeNotifier
     if (map.keys.contains(profile.id)) {
       profile = map[profile.id]!;
     }
-    updateView();
+    refresh();
   }
 
   @override
@@ -191,7 +191,7 @@ class MessageListViewController extends ChangeNotifier
       }
       msgModelList.addAll(modelLists.reversed);
 
-      updateView();
+      refresh();
     }
 
     _isFetching = false;
@@ -202,7 +202,7 @@ class MessageListViewController extends ChangeNotifier
       msgModelList.insertAll(0, cacheMessages.reversed);
       lastActionType = MessageLastActionType.bottomPosition;
       cacheMessages.clear();
-      updateView();
+      refresh();
     }
   }
 
@@ -216,7 +216,7 @@ class MessageListViewController extends ChangeNotifier
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(message: message);
 
-      updateView();
+      refresh();
     }
   }
 
@@ -243,7 +243,7 @@ class MessageListViewController extends ChangeNotifier
         lastActionType = MessageLastActionType.originalPosition;
       }
 
-      updateView();
+      refresh();
     }
   }
 
@@ -254,7 +254,7 @@ class MessageListViewController extends ChangeNotifier
         element.message.hasReadAck = true;
       }
 
-      updateView();
+      refresh();
     }
   }
 
@@ -267,7 +267,7 @@ class MessageListViewController extends ChangeNotifier
       for (var element in list) {
         element.message.hasDeliverAck = true;
       }
-      updateView();
+      refresh();
     }
   }
 
@@ -280,7 +280,7 @@ class MessageListViewController extends ChangeNotifier
       for (var element in list) {
         element.message.hasReadAck = true;
       }
-      updateView();
+      refresh();
     }
   }
 
@@ -295,7 +295,7 @@ class MessageListViewController extends ChangeNotifier
       }
     }
     if (needReload) {
-      updateView();
+      refresh();
     }
   }
 
@@ -320,7 +320,7 @@ class MessageListViewController extends ChangeNotifier
     }
     if (needUpdate) {
       lastActionType = MessageLastActionType.originalPosition;
-      updateView();
+      refresh();
     }
   }
 
@@ -330,7 +330,7 @@ class MessageListViewController extends ChangeNotifier
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(thread: event.chatThread);
       lastActionType = MessageLastActionType.originalPosition;
-      updateView();
+      refresh();
     }
   }
 
@@ -340,7 +340,7 @@ class MessageListViewController extends ChangeNotifier
         msgModelList.indexWhere((element) => element.message.msgId == msgId && msg.status != element.message.status);
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(message: msg);
-      updateView();
+      refresh();
     }
   }
 
@@ -350,7 +350,7 @@ class MessageListViewController extends ChangeNotifier
         msgModelList.indexWhere((element) => element.message.msgId == msgId && msg.status != element.message.status);
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(message: msg);
-      updateView();
+      refresh();
     }
   }
 
@@ -358,7 +358,7 @@ class MessageListViewController extends ChangeNotifier
     final index = msgModelList.indexWhere((element) => element.message.msgId == message.msgId);
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(message: message);
-      updateView();
+      refresh();
     }
   }
 
@@ -397,7 +397,7 @@ class MessageListViewController extends ChangeNotifier
     }
   }
 
-  void updateView() {
+  void refresh() {
     if (isDisposed) return;
     if (msgModelList.isEmpty) {
       lastActionType = MessageLastActionType.bottomPosition;
@@ -462,7 +462,7 @@ class MessageListViewController extends ChangeNotifier
       final index = msgModelList.indexWhere((element) => msg.msgId == element.message.msgId);
       if (index != -1) {
         msgModelList[index] = msgModelList[index].copyWith(message: msg);
-        updateView();
+        refresh();
       }
       // ignore: empty_catches
     } catch (e) {}
@@ -480,7 +480,7 @@ class MessageListViewController extends ChangeNotifier
         msgModelList.insert(0, cacheMessages.first);
         cacheMessages.removeAt(0);
       }
-      updateView();
+      refresh();
       // ignore: empty_catches
     } catch (e) {}
   }
@@ -490,7 +490,7 @@ class MessageListViewController extends ChangeNotifier
     if (index != -1) {
       try {
         await ChatUIKit.instance.recallMessage(message: message);
-        updateView();
+        refresh();
         // ignore: empty_catches
       } catch (e) {}
     }
@@ -636,7 +636,7 @@ class MessageListViewController extends ChangeNotifier
     msgModelList.insert(0, MessageModel(message: msg));
     hasNew = true;
     lastActionType = MessageLastActionType.bottomPosition;
-    updateView();
+    refresh();
   }
 
   Future<void> resendMessage(Message message) async {
@@ -645,7 +645,7 @@ class MessageListViewController extends ChangeNotifier
     msgModelList.insert(0, MessageModel(message: msg));
     hasNew = true;
     lastActionType = MessageLastActionType.bottomPosition;
-    updateView();
+    refresh();
   }
 
   void clearMentionIfNeed() {
@@ -753,7 +753,7 @@ class MessageListViewController extends ChangeNotifier
       );
       msgModelList.removeWhere((element) => messageIds.contains(element.message.msgId));
 
-      updateView();
+      refresh();
       // ignore: empty_catches
     } catch (e) {}
   }

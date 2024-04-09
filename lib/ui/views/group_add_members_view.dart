@@ -17,6 +17,7 @@ class GroupAddMembersView extends StatefulWidget {
         inGroupMembers = arguments.inGroupMembers,
         title = arguments.title,
         viewObserver = arguments.viewObserver,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
   const GroupAddMembersView({
@@ -34,6 +35,7 @@ class GroupAddMembersView extends StatefulWidget {
     this.title,
     this.viewObserver,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
@@ -53,6 +55,7 @@ class GroupAddMembersView extends StatefulWidget {
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<GroupAddMembersView> createState() => _GroupAddMembersViewState();
@@ -88,48 +91,33 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
           : widget.appBar ??
               ChatUIKitAppBar(
                 showBackButton: true,
-                leading: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    Navigator.maybePop(context);
-                  },
-                  child: Text(
-                    widget.title ?? ChatUIKitLocal.groupAddMembersViewTitle.localString(context),
-                    textScaler: TextScaler.noScaling,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
-                      fontWeight: theme.font.titleMedium.fontWeight,
-                      fontSize: theme.font.titleMedium.fontSize,
-                    ),
-                  ),
-                ),
-                trailing: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    if (selectedProfiles.isEmpty) {
-                      return;
-                    }
-                    Navigator.of(context).pop(selectedProfiles);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 5, 24, 5),
-                    child: Text(
-                      selectedProfiles.isEmpty
-                          ? ChatUIKitLocal.groupAddMembersViewAdd.localString(context)
-                          : '${ChatUIKitLocal.groupAddMembersViewAdd.localString(context)}(${selectedProfiles.length})',
-                      textScaler: TextScaler.noScaling,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
-                        fontWeight: theme.font.labelMedium.fontWeight,
-                        fontSize: theme.font.labelMedium.fontSize,
+                centerTitle: false,
+                title: widget.title ?? ChatUIKitLocal.groupAddMembersViewTitle.localString(context),
+                trailingActions: () {
+                  List<ChatUIKitAppBarTrailingAction> actions = [
+                    ChatUIKitAppBarTrailingAction(
+                      onTap: (context) {
+                        if (selectedProfiles.isEmpty) {
+                          return;
+                        }
+                        Navigator.of(context).pop(selectedProfiles);
+                      },
+                      child: Text(
+                        selectedProfiles.isEmpty
+                            ? ChatUIKitLocal.groupAddMembersViewAdd.localString(context)
+                            : '${ChatUIKitLocal.groupAddMembersViewAdd.localString(context)}(${selectedProfiles.length})',
+                        textScaler: TextScaler.noScaling,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                          fontWeight: theme.font.labelMedium.fontWeight,
+                          fontSize: theme.font.labelMedium.fontSize,
+                        ),
                       ),
-                    ),
-                  ),
-                ),
+                    )
+                  ];
+                  return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                }(),
               ),
       body: ContactListView(
         controller: controller,

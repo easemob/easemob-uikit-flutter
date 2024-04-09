@@ -19,6 +19,7 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
     this.title,
     this.viewObserver,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
   });
 
   /// 联系人列表控制器，用于控制联系人列表数据，如果不设置将会自动创建。详细参考 [ContactListViewController]。
@@ -68,23 +69,24 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
-  ContactsViewArguments copyWith({
-    ContactListViewController? controller,
-    ChatUIKitAppBar? appBar,
-    void Function(List<ContactItemModel> data)? onSearchTap,
-    ChatUIKitContactItemBuilder? listViewItemBuilder,
-    void Function(BuildContext context, ContactItemModel model)? onTap,
-    void Function(BuildContext context, ContactItemModel model)? onLongPress,
-    String? searchHideText,
-    Widget? listViewBackground,
-    String? loadErrorMessage,
-    bool? enableSearchBar,
-    bool? enableAppBar,
-    String? title,
-    ChatUIKitViewObserver? viewObserver,
-    String? attributes,
-  }) {
+  ContactsViewArguments copyWith(
+      {ContactListViewController? controller,
+      ChatUIKitAppBar? appBar,
+      void Function(List<ContactItemModel> data)? onSearchTap,
+      ChatUIKitContactItemBuilder? listViewItemBuilder,
+      void Function(BuildContext context, ContactItemModel model)? onTap,
+      void Function(BuildContext context, ContactItemModel model)? onLongPress,
+      String? searchHideText,
+      Widget? listViewBackground,
+      String? loadErrorMessage,
+      bool? enableSearchBar,
+      bool? enableAppBar,
+      String? title,
+      ChatUIKitViewObserver? viewObserver,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return ContactsViewArguments(
       controller: controller ?? this.controller,
       appBar: appBar ?? this.appBar,
@@ -100,6 +102,7 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
       title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

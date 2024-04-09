@@ -16,6 +16,7 @@ class GroupChangeOwnerView extends StatefulWidget {
         enableAppBar = arguments.enableAppBar,
         loadErrorMessage = arguments.loadErrorMessage,
         title = arguments.title,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
@@ -34,6 +35,7 @@ class GroupChangeOwnerView extends StatefulWidget {
     this.title,
     this.attributes,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
@@ -55,6 +57,7 @@ class GroupChangeOwnerView extends StatefulWidget {
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<GroupChangeOwnerView> createState() => _GroupChangeOwnerViewState();
@@ -92,24 +95,11 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
           ? null
           : widget.appBar ??
               ChatUIKitAppBar(
-                  showBackButton: true,
-                  leading: InkWell(
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    onTap: () {
-                      Navigator.maybePop(context);
-                    },
-                    child: Text(
-                      widget.title ?? ChatUIKitLocal.groupChangeOwnerViewTitle.localString(context),
-                      textScaler: TextScaler.noScaling,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
-                        fontWeight: theme.font.titleMedium.fontWeight,
-                        fontSize: theme.font.titleMedium.fontSize,
-                      ),
-                    ),
-                  )),
+                showBackButton: true,
+                centerTitle: false,
+                title: widget.title ?? ChatUIKitLocal.groupChangeOwnerViewTitle.localString(context),
+                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
+              ),
       body: GroupMemberListView(
         groupId: widget.groupId,
         controller: controller,

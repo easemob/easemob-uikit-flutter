@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class NewRequestDetailsView extends StatefulWidget {
-  NewRequestDetailsView.arguments(NewRequestDetailsViewArguments arguments,
-      {super.key})
+  NewRequestDetailsView.arguments(NewRequestDetailsViewArguments arguments, {super.key})
       : profile = arguments.profile,
         btnText = arguments.btnText,
         appBar = arguments.appBar,
         enableAppBar = arguments.enableAppBar,
         isReceivedRequest = arguments.isReceivedRequest,
         title = arguments.title,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
@@ -24,6 +24,7 @@ class NewRequestDetailsView extends StatefulWidget {
     this.attributes,
     this.title,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
@@ -38,6 +39,7 @@ class NewRequestDetailsView extends StatefulWidget {
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<NewRequestDetailsView> createState() => _NewRequestDetailsViewState();
@@ -65,13 +67,15 @@ class _NewRequestDetailsViewState extends State<NewRequestDetailsView> {
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
-      appBar: ChatUIKitAppBar(
-        title: widget.title,
-        showBackButton: true,
-      ),
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      appBar: !widget.enableAppBar
+          ? null
+          : widget.appBar ??
+              ChatUIKitAppBar(
+                title: widget.title,
+                showBackButton: true,
+                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
+              ),
       body: _buildContent(),
     );
 
@@ -93,9 +97,7 @@ class _NewRequestDetailsViewState extends State<NewRequestDetailsView> {
       style: TextStyle(
         fontSize: theme.font.headlineLarge.fontSize,
         fontWeight: theme.font.headlineLarge.fontWeight,
-        color: theme.color.isDark
-            ? theme.color.neutralColor100
-            : theme.color.neutralColor1,
+        color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
       ),
     );
 
@@ -107,9 +109,7 @@ class _NewRequestDetailsViewState extends State<NewRequestDetailsView> {
       style: TextStyle(
         fontSize: theme.font.bodySmall.fontSize,
         fontWeight: theme.font.bodySmall.fontWeight,
-        color: theme.color.isDark
-            ? theme.color.neutralColor5
-            : theme.color.neutralColor7,
+        color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
       ),
     );
 
@@ -128,9 +128,7 @@ class _NewRequestDetailsViewState extends State<NewRequestDetailsView> {
           child: Icon(
             Icons.file_copy_sharp,
             size: 16,
-            color: theme.color.isDark
-                ? theme.color.neutralColor5
-                : theme.color.neutralColor7,
+            color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
           ),
         ),
       ],
@@ -141,27 +139,19 @@ class _NewRequestDetailsViewState extends State<NewRequestDetailsView> {
       width: 120,
       decoration: BoxDecoration(
         color: hasSend
-            ? (theme.color.isDark
-                ? theme.color.neutralColor2
-                : theme.color.neutralColor9)
-            : (theme.color.isDark
-                ? theme.color.primaryColor6
-                : theme.color.primaryColor5),
+            ? (theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9)
+            : (theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Center(
         child: Text(
-          widget.btnText ??
-              ChatUIKitLocal.newRequestDetailsViewAddContact
-                  .localString(context),
+          widget.btnText ?? ChatUIKitLocal.newRequestDetailsViewAddContact.localString(context),
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontSize: theme.font.headlineSmall.fontSize,
             fontWeight: theme.font.headlineSmall.fontWeight,
-            color: theme.color.isDark
-                ? theme.color.neutralColor1
-                : theme.color.neutralColor98,
+            color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
           ),
         ),
       ),
@@ -195,15 +185,12 @@ class _NewRequestDetailsViewState extends State<NewRequestDetailsView> {
     bool needSetState = false;
     try {
       if (widget.isReceivedRequest) {
-        await ChatUIKit.instance
-            .acceptContactRequest(userId: widget.profile.id)
-            .then((value) {
+        await ChatUIKit.instance.acceptContactRequest(userId: widget.profile.id).then((value) {
           Navigator.of(context).pop();
         });
       } else {
         try {
-          await ChatUIKit.instance
-              .sendContactRequest(userId: widget.profile.id);
+          await ChatUIKit.instance.sendContactRequest(userId: widget.profile.id);
           needSetState = true;
           // ignore: empty_catches
         } catch (e) {}

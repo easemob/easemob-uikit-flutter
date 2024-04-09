@@ -15,6 +15,7 @@ class GroupDeleteMembersView extends StatefulWidget {
         enableAppBar = arguments.enableAppBar,
         groupId = arguments.groupId,
         title = arguments.title,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
@@ -32,6 +33,7 @@ class GroupDeleteMembersView extends StatefulWidget {
     this.title,
     this.attributes,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
@@ -51,6 +53,7 @@ class GroupDeleteMembersView extends StatefulWidget {
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<GroupDeleteMembersView> createState() => _GroupDeleteMembersViewState();
@@ -89,54 +92,40 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
           : widget.appBar ??
               ChatUIKitAppBar(
                 showBackButton: true,
-                leading: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    Navigator.maybePop(context);
-                  },
-                  child: Text(
-                    widget.title ?? ChatUIKitLocal.groupDeleteMembersViewTitle.localString(context),
-                    textScaler: TextScaler.noScaling,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
-                      fontWeight: theme.font.titleMedium.fontWeight,
-                      fontSize: theme.font.titleMedium.fontSize,
-                    ),
-                  ),
-                ),
-                trailing: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    if (selectedProfiles.isEmpty) {
-                      return;
-                    }
-                    ensureDelete();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 5, 24, 5),
-                    child: Text(
-                      selectedProfiles.isEmpty
-                          ? ChatUIKitLocal.groupDeleteMembersViewDelete.localString(context)
-                          : '${ChatUIKitLocal.groupDeleteMembersViewDelete.localString(context)}(${selectedProfiles.length})',
-                      textScaler: TextScaler.noScaling,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: theme.color.isDark
-                            ? selectedProfiles.isEmpty
-                                ? theme.color.neutralColor5
-                                : theme.color.errorColor6
-                            : selectedProfiles.isEmpty
-                                ? theme.color.neutralColor7
-                                : theme.color.errorColor5,
-                        fontWeight: theme.font.labelMedium.fontWeight,
-                        fontSize: theme.font.labelMedium.fontSize,
+                centerTitle: false,
+                title: widget.title ?? ChatUIKitLocal.groupDeleteMembersViewTitle.localString(context),
+                trailingActions: () {
+                  List<ChatUIKitAppBarTrailingAction> actions = [
+                    ChatUIKitAppBarTrailingAction(
+                      onTap: (context) {
+                        if (selectedProfiles.isEmpty) {
+                          return;
+                        }
+                        ensureDelete();
+                      },
+                      child: Text(
+                        selectedProfiles.isEmpty
+                            ? ChatUIKitLocal.groupDeleteMembersViewDelete.localString(context)
+                            : '${ChatUIKitLocal.groupDeleteMembersViewDelete.localString(context)}(${selectedProfiles.length})',
+                        textScaler: TextScaler.noScaling,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          color: theme.color.isDark
+                              ? selectedProfiles.isEmpty
+                                  ? theme.color.neutralColor5
+                                  : theme.color.errorColor6
+                              : selectedProfiles.isEmpty
+                                  ? theme.color.neutralColor7
+                                  : theme.color.errorColor5,
+                          fontWeight: theme.font.labelMedium.fontWeight,
+                          fontSize: theme.font.labelMedium.fontSize,
+                        ),
                       ),
-                    ),
-                  ),
-                ),
+                    )
+                  ];
+                  return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                }(),
               ),
       body: GroupMemberListView(
         groupId: widget.groupId,

@@ -11,6 +11,7 @@ class SearchGroupMembersViewArguments implements ChatUIKitViewArguments {
     this.enableAppBar = false,
     this.viewObserver,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
   });
 
   final List<NeedSearch> searchData;
@@ -23,17 +24,18 @@ class SearchGroupMembersViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-  
-  SearchGroupMembersViewArguments copyWith({
-    List<NeedSearch>? searchData,
-    String? searchHideText,
-    void Function(BuildContext context, ChatUIKitProfile profile)? onTap,
-    Widget Function(BuildContext context, ChatUIKitProfile profile, String? searchKeyword)? itemBuilder,
-    ChatUIKitAppBar? appBar,
-    bool? enableAppBar,
-    ChatUIKitViewObserver? viewObserver,
-    String? attributes,
-  }) {
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+
+  SearchGroupMembersViewArguments copyWith(
+      {List<NeedSearch>? searchData,
+      String? searchHideText,
+      void Function(BuildContext context, ChatUIKitProfile profile)? onTap,
+      Widget Function(BuildContext context, ChatUIKitProfile profile, String? searchKeyword)? itemBuilder,
+      ChatUIKitAppBar? appBar,
+      bool? enableAppBar,
+      ChatUIKitViewObserver? viewObserver,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return SearchGroupMembersViewArguments(
       searchData: searchData ?? this.searchData,
       searchHideText: searchHideText ?? this.searchHideText,
@@ -43,6 +45,7 @@ class SearchGroupMembersViewArguments implements ChatUIKitViewArguments {
       enableAppBar: enableAppBar ?? this.enableAppBar,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

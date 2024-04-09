@@ -2,10 +2,12 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/universal/inner_headers.dart';
 
 /// 会话列表控制器
-class ConversationListViewController with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver {
+class ConversationListViewController
+    with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver, ChatObserver, MultiObserver {
   ConversationListViewController({
     this.willShowHandler,
   }) {
+    ChatUIKit.instance.addObserver(this);
     ChatUIKitProvider.instance.addObserver(this);
   }
 
@@ -20,7 +22,53 @@ class ConversationListViewController with ChatUIKitListViewControllerBase, ChatU
   @override
   void dispose() {
     ChatUIKitProvider.instance.removeObserver(this);
+    ChatUIKit.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void onMessagesReceived(List<Message> messages) async {
+    reload();
+  }
+
+  @override
+  void onMessageContentChanged(Message message, String operatorId, int operationTime) {
+    int index = list.cast<ConversationItemModel>().indexWhere((element) {
+      return element.lastMessage?.msgId == message.msgId;
+    });
+
+    if (index != -1) {
+      list.cast<ConversationItemModel>()[index] = list.cast<ConversationItemModel>()[index].copyWith(
+            lastMessage: message,
+          );
+    }
+
+    refresh();
+  }
+
+  @override
+  void onMessagesRecalled(List<Message> recalled, List<Message> replaces) {
+    List<String> recalledIds = recalled.map((e) => e.msgId).toList();
+    bool has = list.cast<ConversationItemModel>().any((element) {
+      return recalledIds.contains(element.lastMessage?.msgId ?? "");
+    });
+    if (has) {
+      reload();
+    }
+  }
+
+  @override
+  void onConversationsUpdate() {
+    reload();
+  }
+
+  @override
+  void onConversationEvent(MultiDevicesEvent event, String conversationId, ConversationType type) {
+    if (event == MultiDevicesEvent.CONVERSATION_DELETE ||
+        event == MultiDevicesEvent.CONVERSATION_PINNED ||
+        event == MultiDevicesEvent.CONVERSATION_UNPINNED) {
+      fetchItemList();
+    }
   }
 
   @override

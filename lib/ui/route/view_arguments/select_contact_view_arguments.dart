@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 class SelectContactViewArguments implements ChatUIKitViewArguments {
   SelectContactViewArguments({
     this.title,
-    this.backText,
     this.controller,
     this.appBar,
     this.onSearchTap,
@@ -16,6 +15,7 @@ class SelectContactViewArguments implements ChatUIKitViewArguments {
     this.enableAppBar = true,
     this.viewObserver,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
   });
   final ContactListViewController? controller;
   final ChatUIKitAppBar? appBar;
@@ -25,7 +25,6 @@ class SelectContactViewArguments implements ChatUIKitViewArguments {
   final void Function(BuildContext context, ContactItemModel model)? onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
-  final String? backText;
   final String? title;
   final bool enableAppBar;
 
@@ -33,22 +32,22 @@ class SelectContactViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
-  SelectContactViewArguments copyWith({
-    ContactListViewController? controller,
-    ChatUIKitAppBar? appBar,
-    void Function(List<ContactItemModel> data)? onSearchTap,
-    ChatUIKitContactItemBuilder? listViewItemBuilder,
-    void Function(BuildContext context, ContactItemModel model)? onTap,
-    void Function(BuildContext context, ContactItemModel model)? onLongPress,
-    String? searchBarHideText,
-    Widget? listViewBackground,
-    String? backText,
-    String? title,
-    bool? enableAppBar,
-    ChatUIKitViewObserver? viewObserver,
-    String? attributes,
-  }) {
+  SelectContactViewArguments copyWith(
+      {ContactListViewController? controller,
+      ChatUIKitAppBar? appBar,
+      void Function(List<ContactItemModel> data)? onSearchTap,
+      ChatUIKitContactItemBuilder? listViewItemBuilder,
+      void Function(BuildContext context, ContactItemModel model)? onTap,
+      void Function(BuildContext context, ContactItemModel model)? onLongPress,
+      String? searchBarHideText,
+      Widget? listViewBackground,
+      String? title,
+      bool? enableAppBar,
+      ChatUIKitViewObserver? viewObserver,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return SelectContactViewArguments(
       controller: controller ?? this.controller,
       appBar: appBar ?? this.appBar,
@@ -58,11 +57,11 @@ class SelectContactViewArguments implements ChatUIKitViewArguments {
       onLongPress: onLongPress ?? this.onLongPress,
       searchBarHideText: searchBarHideText ?? this.searchBarHideText,
       listViewBackground: listViewBackground ?? this.listViewBackground,
-      backText: backText ?? this.backText,
       title: title ?? this.title,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

@@ -21,6 +21,7 @@ class ContactsView extends StatefulWidget {
         title = arguments.title,
         enableSearchBar = arguments.enableSearchBar,
         viewObserver = arguments.viewObserver,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
   const ContactsView({
@@ -40,6 +41,7 @@ class ContactsView extends StatefulWidget {
     this.title,
     this.attributes,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
@@ -91,6 +93,8 @@ class ContactsView extends StatefulWidget {
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
 
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+
   @override
   State<ContactsView> createState() => _ContactsViewState();
 }
@@ -126,29 +130,35 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
           ? null
           : widget.appBar ??
               ChatUIKitAppBar(
-                title: widget.title ?? 'Contacts',
-                titleTextStyle: TextStyle(
-                  color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
-                  fontSize: theme.font.titleLarge.fontSize,
-                  fontWeight: FontWeight.w900,
-                ),
-                showBackButton: false,
-                leading: Container(
-                  margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
-                  child: ChatUIKitAvatar.current(
-                    size: 32,
-                    avatarUrl: ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
+                  title: widget.title ?? 'Contacts',
+                  titleTextStyle: TextStyle(
+                    color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                    fontSize: theme.font.titleLarge.fontSize,
+                    fontWeight: FontWeight.w900,
                   ),
-                ),
-                trailing: IconButton(
-                  iconSize: 24,
-                  color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
-                  icon: const Icon(Icons.person_add_alt_1_outlined),
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onPressed: addContact,
-                ),
-              ),
+                  showBackButton: false,
+                  leading: Container(
+                    margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
+                    child: ChatUIKitAvatar.current(
+                      size: 32,
+                      avatarUrl: ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
+                    ),
+                  ),
+                  trailingActions: () {
+                    List<ChatUIKitAppBarTrailingAction> actions = [
+                      ChatUIKitAppBarTrailingAction(
+                        onTap: (context) {
+                          addContact();
+                        },
+                        child: Icon(
+                          Icons.person_add_alt_1_outlined,
+                          color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
+                          size: 24,
+                        ),
+                      ),
+                    ];
+                    return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                  }()),
       body: SafeArea(
         child: ContactListView(
           controller: controller,

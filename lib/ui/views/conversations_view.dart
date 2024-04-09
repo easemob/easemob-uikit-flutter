@@ -21,6 +21,7 @@ class ConversationsView extends StatefulWidget {
         enableSearchBar = arguments.enableSearchBar,
         viewObserver = arguments.viewObserver,
         avatarItemBuilder = arguments.avatarItemBuilder,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
   /// 会话列表构造方法，如果需要自定义会话列表可以使用这个方法。
@@ -42,6 +43,7 @@ class ConversationsView extends StatefulWidget {
     this.attributes,
     this.avatarItemBuilder,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
@@ -96,6 +98,8 @@ class ConversationsView extends StatefulWidget {
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
 
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+
   @override
   State<ConversationsView> createState() => _ConversationsViewState();
 }
@@ -141,14 +145,21 @@ class _ConversationsViewState extends State<ConversationsView> {
                     avatarUrl: ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
                   ),
                 ),
-                trailing: IconButton(
-                  iconSize: 24,
-                  color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
-                  icon: const Icon(Icons.add_circle_outline),
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onPressed: showMoreInfo,
-                ),
+                trailingActions: () {
+                  List<ChatUIKitAppBarTrailingAction> actions = [
+                    ChatUIKitAppBarTrailingAction(
+                      onTap: (context) {
+                        showMoreInfo();
+                      },
+                      child: Icon(
+                        Icons.add_circle_outline,
+                        size: 24,
+                        color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
+                      ),
+                    ),
+                  ];
+                  return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                }(),
               ),
       body: SafeArea(
         child: ConversationListView(
@@ -349,8 +360,7 @@ class _ConversationsViewState extends State<ConversationsView> {
       context,
       ChatUIKitRouteNames.selectContactsView,
       SelectContactViewArguments(
-          backText: ChatUIKitLocal.conversationsViewMenuCreateNewChat.localString(context),
-          attributes: widget.attributes),
+          title: ChatUIKitLocal.conversationsViewMenuCreateNewChat.localString(context), attributes: widget.attributes),
     ).then((profile) {
       if (profile != null && profile is ChatUIKitProfile) {
         pushNewConversation(profile);

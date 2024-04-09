@@ -13,6 +13,7 @@ class SearchGroupMembersView extends StatefulWidget {
         appBar = arguments.appBar,
         onTap = arguments.onTap,
         viewObserver = arguments.viewObserver,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
   const SearchGroupMembersView({
@@ -24,20 +25,21 @@ class SearchGroupMembersView extends StatefulWidget {
     this.enableAppBar = false,
     this.attributes,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
   final List<NeedSearch> searchData;
   final String searchHideText;
   final void Function(BuildContext context, ChatUIKitProfile profile)? onTap;
-  final Widget Function(BuildContext context, ChatUIKitProfile profile,
-      String? searchKeyword)? itemBuilder;
+  final Widget Function(BuildContext context, ChatUIKitProfile profile, String? searchKeyword)? itemBuilder;
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
   final String? attributes;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<SearchGroupMembersView> createState() => _SearchGroupMembersViewState();
@@ -68,15 +70,12 @@ class _SearchGroupMembersViewState extends State<SearchGroupMembersView> {
       builder: (context, searchKeyword, list) {
         return ChatUIKitListView(
           list: list,
-          type: list.isEmpty
-              ? ChatUIKitListViewType.empty
-              : ChatUIKitListViewType.normal,
+          type: list.isEmpty ? ChatUIKitListViewType.empty : ChatUIKitListViewType.normal,
           enableSearchBar: false,
           itemBuilder: (context, model) {
             if (model is NeedSearch) {
               if (widget.itemBuilder != null) {
-                return widget.itemBuilder!
-                    .call(context, model.profile, searchKeyword);
+                return widget.itemBuilder!.call(context, model.profile, searchKeyword);
               }
 
               return InkWell(
@@ -110,12 +109,14 @@ class _SearchGroupMembersViewState extends State<SearchGroupMembersView> {
     );
 
     content = Scaffold(
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       appBar: !widget.enableAppBar
           ? null
-          : widget.appBar ?? const ChatUIKitAppBar(showBackButton: false),
+          : widget.appBar ??
+              ChatUIKitAppBar(
+                showBackButton: false,
+                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
+              ),
       body: SafeArea(child: content),
     );
 

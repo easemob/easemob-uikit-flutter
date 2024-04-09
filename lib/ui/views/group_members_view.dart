@@ -15,8 +15,8 @@ class GroupMembersView extends StatefulWidget {
         controller = arguments.controller,
         loadErrorMessage = arguments.loadErrorMessage,
         enableAppBar = arguments.enableAppBar,
-        enableMemberOperation = arguments.enableMemberOperation,
         title = arguments.title,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes,
         viewObserver = arguments.viewObserver,
         super(key: key);
@@ -32,11 +32,11 @@ class GroupMembersView extends StatefulWidget {
     this.appBar,
     this.controller,
     this.loadErrorMessage,
-    this.enableMemberOperation = false,
     this.enableAppBar = true,
     this.title,
     this.attributes,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
@@ -52,13 +52,13 @@ class GroupMembersView extends StatefulWidget {
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final String? loadErrorMessage;
-  final bool enableMemberOperation;
   final bool enableAppBar;
   final String? title;
   final String? attributes;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
   @override
   State<GroupMembersView> createState() => _GroupMembersViewState();
 }
@@ -118,41 +118,59 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
           : widget.appBar ??
               ChatUIKitAppBar(
                 showBackButton: true,
-                trailing: widget.enableMemberOperation ? actionsWidget() : const SizedBox(),
-                leading: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    Navigator.of(context).pop();
+                trailingActions: () {
+                  List<ChatUIKitAppBarTrailingAction> actions = [
+                    ChatUIKitAppBarTrailingAction(
+                      onTap: (context) {
+                        pushToAddMember();
+                      },
+                      child: Icon(
+                        Icons.person_add_alt_1_outlined,
+                        color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
+                        size: 24,
+                      ),
+                    ),
+                    ChatUIKitAppBarTrailingAction(
+                      onTap: (context) {
+                        pushToRemoveMember();
+                      },
+                      child: Icon(
+                        Icons.person_remove_alt_1_outlined,
+                        color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
+                        size: 24,
+                      ),
+                    )
+                  ];
+                  return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                }(),
+                centerTitle: false,
+                titleWidget: ValueListenableBuilder(
+                  valueListenable: memberCount,
+                  builder: (context, value, child) {
+                    if (memberCount.value == 0) {
+                      return Text(
+                        widget.title ?? ChatUIKitLocal.groupMembersViewTitle.localString(context),
+                        textScaler: TextScaler.noScaling,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                          fontWeight: theme.font.titleMedium.fontWeight,
+                          fontSize: theme.font.titleMedium.fontSize,
+                        ),
+                      );
+                    } else {
+                      return Text(
+                        '${ChatUIKitLocal.groupMembersViewTitle.localString(context)}(${memberCount.value})',
+                        textScaler: TextScaler.noScaling,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                          fontWeight: theme.font.titleMedium.fontWeight,
+                          fontSize: theme.font.titleMedium.fontSize,
+                        ),
+                      );
+                    }
                   },
-                  child: ValueListenableBuilder(
-                    valueListenable: memberCount,
-                    builder: (context, value, child) {
-                      if (memberCount.value == 0) {
-                        return Text(
-                          widget.title ?? ChatUIKitLocal.groupMembersViewTitle.localString(context),
-                          textScaler: TextScaler.noScaling,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
-                            fontWeight: theme.font.titleMedium.fontWeight,
-                            fontSize: theme.font.titleMedium.fontSize,
-                          ),
-                        );
-                      } else {
-                        return Text(
-                          '${ChatUIKitLocal.groupMembersViewTitle.localString(context)}(${memberCount.value})',
-                          textScaler: TextScaler.noScaling,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
-                            fontWeight: theme.font.titleMedium.fontWeight,
-                            fontSize: theme.font.titleMedium.fontSize,
-                          ),
-                        );
-                      }
-                    },
-                  ),
                 ),
               ),
       body: SafeArea(

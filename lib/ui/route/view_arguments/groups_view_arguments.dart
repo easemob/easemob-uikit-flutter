@@ -16,6 +16,7 @@ class GroupsViewArguments implements ChatUIKitViewArguments {
     this.title,
     this.viewObserver,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
   });
   final GroupListViewController? controller;
   final ChatUIKitAppBar? appBar;
@@ -33,22 +34,22 @@ class GroupsViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-
-  GroupsViewArguments copyWith({
-    GroupListViewController? controller,
-    ChatUIKitAppBar? appBar,
-    void Function(List<GroupItemModel> data)? onSearchTap,
-    ChatUIKitGroupItemBuilder? listViewItemBuilder,
-    void Function(BuildContext context, GroupItemModel model)? onTap,
-    void Function(BuildContext context, GroupItemModel model)? onLongPress,
-    String? searchBarHideText,
-    Widget? listViewBackground,
-    String? loadErrorMessage,
-    bool? enableAppBar,
-    String? title,
-    ChatUIKitViewObserver? viewObserver,
-    String? attributes,
-  }) {
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+  GroupsViewArguments copyWith(
+      {GroupListViewController? controller,
+      ChatUIKitAppBar? appBar,
+      void Function(List<GroupItemModel> data)? onSearchTap,
+      ChatUIKitGroupItemBuilder? listViewItemBuilder,
+      void Function(BuildContext context, GroupItemModel model)? onTap,
+      void Function(BuildContext context, GroupItemModel model)? onLongPress,
+      String? searchBarHideText,
+      Widget? listViewBackground,
+      String? loadErrorMessage,
+      bool? enableAppBar,
+      String? title,
+      ChatUIKitViewObserver? viewObserver,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return GroupsViewArguments(
       controller: controller ?? this.controller,
       appBar: appBar ?? this.appBar,
@@ -63,6 +64,7 @@ class GroupsViewArguments implements ChatUIKitViewArguments {
       title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

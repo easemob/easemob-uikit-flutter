@@ -11,6 +11,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
     this.viewObserver,
     this.contentWidgetBuilder,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
   });
   final ChatUIKitProfile profile;
   final ChatUIKitModelActionsBuilder actionsBuilder;
@@ -23,17 +24,17 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-
-  GroupDetailsViewArguments copyWith({
-    ChatUIKitProfile? profile,
-    ChatUIKitModelActionsBuilder? actionsBuilder,
-    bool? enableAppBar,
-    ChatUIKitAppBar? appBar,
-    WidgetBuilder? contentWidgetBuilder,
-    ChatUIKitViewObserver? viewObserver,
-    VoidCallback? onMessageDidClear,
-    String? attributes,
-  }) {
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+  GroupDetailsViewArguments copyWith(
+      {ChatUIKitProfile? profile,
+      ChatUIKitModelActionsBuilder? actionsBuilder,
+      bool? enableAppBar,
+      ChatUIKitAppBar? appBar,
+      WidgetBuilder? contentWidgetBuilder,
+      ChatUIKitViewObserver? viewObserver,
+      VoidCallback? onMessageDidClear,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return GroupDetailsViewArguments(
       profile: profile ?? this.profile,
       actionsBuilder: actionsBuilder ?? this.actionsBuilder,
@@ -43,6 +44,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
       viewObserver: viewObserver ?? this.viewObserver,
       contentWidgetBuilder: contentWidgetBuilder ?? this.contentWidgetBuilder,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:flutter/material.dart';
 
 class ShowImageViewArguments implements ChatUIKitViewArguments {
   ShowImageViewArguments({
@@ -10,27 +9,29 @@ class ShowImageViewArguments implements ChatUIKitViewArguments {
     this.enableAppBar = true,
     this.viewObserver,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
   });
 
   final Message message;
   final void Function(Message message)? onLongPressed;
   final void Function(Message message)? onTap;
-  final AppBar? appBar;
+  final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
   @override
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
- 
-  ShowImageViewArguments copyWith({
-    Message? message,
-    void Function(Message message)? onLongPressed,
-    void Function(Message message)? onTap,
-    AppBar? appBar,
-    bool? enableAppBar,
-    ChatUIKitViewObserver? viewObserver,
-    String? attributes,
-  }) {
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+
+  ShowImageViewArguments copyWith(
+      {Message? message,
+      void Function(Message message)? onLongPressed,
+      void Function(Message message)? onTap,
+      ChatUIKitAppBar? appBar,
+      bool? enableAppBar,
+      ChatUIKitViewObserver? viewObserver,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return ShowImageViewArguments(
       message: message ?? this.message,
       onLongPressed: onLongPressed ?? this.onLongPressed,
@@ -39,6 +40,7 @@ class ShowImageViewArguments implements ChatUIKitViewArguments {
       enableAppBar: enableAppBar ?? this.enableAppBar,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

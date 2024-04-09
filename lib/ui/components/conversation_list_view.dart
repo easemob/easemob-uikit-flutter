@@ -39,13 +39,12 @@ class ConversationListView extends StatefulWidget {
   State<ConversationListView> createState() => _ConversationListViewState();
 }
 
-class _ConversationListViewState extends State<ConversationListView> with ChatObserver, MultiObserver {
+class _ConversationListViewState extends State<ConversationListView> {
   late ConversationListViewController controller;
 
   @override
   void initState() {
     super.initState();
-    ChatUIKit.instance.addObserver(this);
     controller = widget.controller ?? ConversationListViewController();
     controller.fetchItemList();
     controller.loadingType.addListener(() {
@@ -55,61 +54,11 @@ class _ConversationListViewState extends State<ConversationListView> with ChatOb
 
   @override
   void dispose() {
-    ChatUIKit.instance.removeObserver(this);
     controller.dispose();
     super.dispose();
   }
 
   @override
-  void onMessagesReceived(List<Message> messages) async {
-    if (mounted) {
-      controller.reload();
-    }
-  }
-
-  @override
-  void onMessageContentChanged(Message message, String operatorId, int operationTime) {
-    int index = controller.list.cast<ConversationItemModel>().indexWhere((element) {
-      return element.lastMessage?.msgId == message.msgId;
-    });
-
-    if (index != -1) {
-      controller.list.cast<ConversationItemModel>()[index] =
-          controller.list.cast<ConversationItemModel>()[index].copyWith(
-                lastMessage: message,
-              );
-    }
-
-    if (mounted) {
-      controller.refresh();
-    }
-  }
-
-  @override
-  void onMessagesRecalled(List<Message> recalled, List<Message> replaces) {
-    List<String> recalledIds = recalled.map((e) => e.msgId).toList();
-    bool has = controller.list.cast<ConversationItemModel>().any((element) {
-      return recalledIds.contains(element.lastMessage?.msgId ?? "");
-    });
-    if (mounted && has) {
-      controller.reload();
-    }
-  }
-
-  @override
-  void onConversationsUpdate() {
-    controller.reload();
-  }
-
-  @override
-  void onConversationEvent(MultiDevicesEvent event, String conversationId, ConversationType type) {
-    if (event == MultiDevicesEvent.CONVERSATION_DELETE ||
-        event == MultiDevicesEvent.CONVERSATION_PINNED ||
-        event == MultiDevicesEvent.CONVERSATION_UNPINNED) {
-      controller.fetchItemList();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return ChatUIKitListView(

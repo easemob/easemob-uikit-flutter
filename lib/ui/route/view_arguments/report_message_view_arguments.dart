@@ -9,6 +9,7 @@ class ReportMessageViewArguments implements ChatUIKitViewArguments {
     this.title,
     this.viewObserver,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
   });
   final String messageId;
   final List<String> reportReasons;
@@ -20,6 +21,7 @@ class ReportMessageViewArguments implements ChatUIKitViewArguments {
 
   @override
   ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   ReportMessageViewArguments copyWith({
     String? messageId,
@@ -29,6 +31,7 @@ class ReportMessageViewArguments implements ChatUIKitViewArguments {
     String? title,
     ChatUIKitViewObserver? viewObserver,
     String? attributes,
+    ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder,
   }) {
     return ReportMessageViewArguments(
       messageId: messageId ?? this.messageId,
@@ -38,6 +41,7 @@ class ReportMessageViewArguments implements ChatUIKitViewArguments {
       title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

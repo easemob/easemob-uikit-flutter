@@ -14,7 +14,7 @@ class SearchHistoryViewArguments implements ChatUIKitViewArguments {
 
   @override
   ChatUIKitViewObserver? viewObserver;
-  
+
   SearchHistoryViewArguments copyWith({
     ChatUIKitProfile? profile,
     String? attributes,

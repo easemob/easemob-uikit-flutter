@@ -16,6 +16,7 @@ class GroupDeleteMembersViewArguments implements ChatUIKitViewArguments {
     this.title,
     this.viewObserver,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
   });
 
   final String groupId;
@@ -36,22 +37,22 @@ class GroupDeleteMembersViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-
-  GroupDeleteMembersViewArguments copyWith({
-    String? groupId,
-    GroupMemberListViewController? controller,
-    ChatUIKitAppBar? appBar,
-    void Function(List<ContactItemModel> data)? onSearchTap,
-    ChatUIKitContactItemBuilder? listViewItemBuilder,
-    void Function(BuildContext context, ContactItemModel model)? onTap,
-    void Function(BuildContext context, ContactItemModel model)? onLongPress,
-    String? searchBarHideText,
-    Widget? listViewBackground,
-    bool? enableAppBar,
-    String? title,
-    ChatUIKitViewObserver? viewObserver,
-    String? attributes,
-  }) {
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+  GroupDeleteMembersViewArguments copyWith(
+      {String? groupId,
+      GroupMemberListViewController? controller,
+      ChatUIKitAppBar? appBar,
+      void Function(List<ContactItemModel> data)? onSearchTap,
+      ChatUIKitContactItemBuilder? listViewItemBuilder,
+      void Function(BuildContext context, ContactItemModel model)? onTap,
+      void Function(BuildContext context, ContactItemModel model)? onLongPress,
+      String? searchBarHideText,
+      Widget? listViewBackground,
+      bool? enableAppBar,
+      String? title,
+      ChatUIKitViewObserver? viewObserver,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return GroupDeleteMembersViewArguments(
       groupId: groupId ?? this.groupId,
       controller: controller ?? this.controller,
@@ -66,6 +67,7 @@ class GroupDeleteMembersViewArguments implements ChatUIKitViewArguments {
       title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

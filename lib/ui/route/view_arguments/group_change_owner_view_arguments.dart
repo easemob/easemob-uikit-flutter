@@ -17,6 +17,7 @@ class GroupChangeOwnerViewArguments implements ChatUIKitViewArguments {
     this.title,
     this.viewObserver,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
   });
 
   final String groupId;
@@ -38,38 +39,38 @@ class GroupChangeOwnerViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-
-  GroupChangeOwnerViewArguments copyWith({
-    String? groupId,
-    GroupMemberListViewController? controller,
-    ChatUIKitAppBar? appBar,
-    void Function(List<ContactItemModel> data)? onSearchTap,
-    ChatUIKitContactItemBuilder? listViewItemBuilder,
-    void Function(BuildContext context, ContactItemModel model)? onItemTap,
-    void Function(BuildContext context, ContactItemModel model)? onItemLongPress,
-    String? searchBarHideText,
-    Widget? listViewBackground,
-    String? loadErrorMessage,
-    bool? enableAppBar,
-    String? title,
-    ChatUIKitViewObserver? viewObserver,
-    String? attributes,
-  }) {
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+  GroupChangeOwnerViewArguments copyWith(
+      {String? groupId,
+      GroupMemberListViewController? controller,
+      ChatUIKitAppBar? appBar,
+      void Function(List<ContactItemModel> data)? onSearchTap,
+      ChatUIKitContactItemBuilder? listViewItemBuilder,
+      void Function(BuildContext context, ContactItemModel model)? onItemTap,
+      void Function(BuildContext context, ContactItemModel model)? onItemLongPress,
+      String? searchBarHideText,
+      Widget? listViewBackground,
+      String? loadErrorMessage,
+      bool? enableAppBar,
+      String? title,
+      ChatUIKitViewObserver? viewObserver,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return GroupChangeOwnerViewArguments(
-      groupId: groupId ?? this.groupId,
-      controller: controller ?? this.controller,
-      appBar: appBar ?? this.appBar,
-      onSearchTap: onSearchTap ?? this.onSearchTap,
-      listViewItemBuilder: listViewItemBuilder ?? this.listViewItemBuilder,
-      onItemTap: onItemTap ?? this.onItemTap,
-      onItemLongPress: onItemLongPress ?? this.onItemLongPress,
-      searchBarHideText: searchBarHideText ?? this.searchBarHideText,
-      listViewBackground: listViewBackground ?? this.listViewBackground,
-      loadErrorMessage: loadErrorMessage ?? this.loadErrorMessage,
-      enableAppBar: enableAppBar ?? this.enableAppBar,
-      title: title ?? this.title,
-      viewObserver: viewObserver ?? this.viewObserver,
-      attributes: attributes ?? this.attributes,
-    );
+        groupId: groupId ?? this.groupId,
+        controller: controller ?? this.controller,
+        appBar: appBar ?? this.appBar,
+        onSearchTap: onSearchTap ?? this.onSearchTap,
+        listViewItemBuilder: listViewItemBuilder ?? this.listViewItemBuilder,
+        onItemTap: onItemTap ?? this.onItemTap,
+        onItemLongPress: onItemLongPress ?? this.onItemLongPress,
+        searchBarHideText: searchBarHideText ?? this.searchBarHideText,
+        listViewBackground: listViewBackground ?? this.listViewBackground,
+        loadErrorMessage: loadErrorMessage ?? this.loadErrorMessage,
+        enableAppBar: enableAppBar ?? this.enableAppBar,
+        title: title ?? this.title,
+        viewObserver: viewObserver ?? this.viewObserver,
+        attributes: attributes ?? this.attributes,
+        appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder);
   }
 }

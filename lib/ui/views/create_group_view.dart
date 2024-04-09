@@ -19,6 +19,7 @@ class CreateGroupView extends StatefulWidget {
         controller = arguments.controller,
         title = arguments.title,
         viewObserver = arguments.viewObserver,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
   const CreateGroupView({
@@ -36,6 +37,7 @@ class CreateGroupView extends StatefulWidget {
     this.title,
     this.attributes,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
@@ -56,6 +58,8 @@ class CreateGroupView extends StatefulWidget {
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<CreateGroupView> createState() => _CreateGroupViewState();
@@ -90,49 +94,33 @@ class _CreateGroupViewState extends State<CreateGroupView> {
           ? null
           : widget.appBar ??
               ChatUIKitAppBar(
-                showBackButton: true,
-                leading: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    Navigator.maybePop(context);
-                  },
-                  child: Text(
-                    widget.title ?? ChatUIKitLocal.createGroupViewTitle.localString(context),
-                    textScaler: TextScaler.noScaling,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
-                      fontWeight: theme.font.titleMedium.fontWeight,
-                      fontSize: theme.font.titleMedium.fontSize,
-                    ),
-                  ),
-                ),
-                trailing: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    if (selectedProfiles.isEmpty) {
-                      return;
-                    }
-                    createGroup();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 5, 24, 5),
-                    child: Text(
-                      selectedProfiles.isEmpty
-                          ? ChatUIKitLocal.createGroupViewCreate.localString(context)
-                          : '${ChatUIKitLocal.createGroupViewCreate.localString(context)}(${selectedProfiles.length})',
-                      textScaler: TextScaler.noScaling,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
-                        fontWeight: theme.font.labelMedium.fontWeight,
-                        fontSize: theme.font.labelMedium.fontSize,
+                centerTitle: false,
+                title: widget.title ?? ChatUIKitLocal.createGroupViewTitle.localString(context),
+                trailingActions: () {
+                  List<ChatUIKitAppBarTrailingAction> actions = [
+                    ChatUIKitAppBarTrailingAction(
+                      onTap: (context) {
+                        if (selectedProfiles.isEmpty) {
+                          return;
+                        }
+                        createGroup();
+                      },
+                      child: Text(
+                        selectedProfiles.isEmpty
+                            ? ChatUIKitLocal.createGroupViewCreate.localString(context)
+                            : '${ChatUIKitLocal.createGroupViewCreate.localString(context)}(${selectedProfiles.length})',
+                        textScaler: TextScaler.noScaling,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                          fontWeight: theme.font.labelMedium.fontWeight,
+                          fontSize: theme.font.labelMedium.fontSize,
+                        ),
                       ),
                     ),
-                  ),
-                ),
+                  ];
+                  return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                }(),
               ),
       body: ContactListView(
         controller: controller,

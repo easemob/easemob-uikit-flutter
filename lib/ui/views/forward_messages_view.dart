@@ -13,6 +13,7 @@ class ForwardMessagesView extends StatefulWidget {
         title = arguments.title,
         viewObserver = arguments.viewObserver,
         summaryBuilder = arguments.summaryBuilder,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
   const ForwardMessagesView({
@@ -23,6 +24,7 @@ class ForwardMessagesView extends StatefulWidget {
     this.attributes,
     this.summaryBuilder,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
@@ -33,6 +35,7 @@ class ForwardMessagesView extends StatefulWidget {
   final String? attributes;
   final String? Function(BuildContext context, Message message)? summaryBuilder;
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<ForwardMessagesView> createState() => _ForwardMessagesViewState();
@@ -106,6 +109,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObse
               ChatUIKitAppBar(
                 centerTitle: false,
                 title: widget.title ?? ChatUIKitLocal.historyMessages.localString(context),
+                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
               )
           : null,
       body: SafeArea(child: content),

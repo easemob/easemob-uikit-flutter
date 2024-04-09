@@ -21,6 +21,7 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
     this.title,
     this.viewObserver,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
   });
 
   /// 会话列表控制器，用户管理会话列表数据，如果不设置将会自动创建。详细参考 [ConversationListViewController]。
@@ -73,26 +74,27 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
-  ConversationsViewArguments copyWith({
-    ConversationListViewController? controller,
-    ChatUIKitAppBar? appBar,
-    void Function(List<ConversationItemModel> data)? onSearchTap,
-    List<NeedAlphabeticalWidget>? beforeWidgets,
-    List<NeedAlphabeticalWidget>? afterWidgets,
-    ChatUIKitListItemBuilder? listViewItemBuilder,
-    ChatUIKitListItemBuilder? avatarItemBuilder,
-    void Function(BuildContext context, ConversationItemModel model)? onTap,
-    ConversationsViewItemLongPressHandler? onLongPressHandler,
-    String? searchBarHideText,
-    Widget? listViewBackground,
-    bool? enableAppBar,
-    bool? enableSearchBar,
-    AppBarMoreActionsBuilder? appBarMoreActionsBuilder,
-    String? title,
-    ChatUIKitViewObserver? viewObserver,
-    String? attributes,
-  }) {
+  ConversationsViewArguments copyWith(
+      {ConversationListViewController? controller,
+      ChatUIKitAppBar? appBar,
+      void Function(List<ConversationItemModel> data)? onSearchTap,
+      List<NeedAlphabeticalWidget>? beforeWidgets,
+      List<NeedAlphabeticalWidget>? afterWidgets,
+      ChatUIKitListItemBuilder? listViewItemBuilder,
+      ChatUIKitListItemBuilder? avatarItemBuilder,
+      void Function(BuildContext context, ConversationItemModel model)? onTap,
+      ConversationsViewItemLongPressHandler? onLongPressHandler,
+      String? searchBarHideText,
+      Widget? listViewBackground,
+      bool? enableAppBar,
+      bool? enableSearchBar,
+      AppBarMoreActionsBuilder? appBarMoreActionsBuilder,
+      String? title,
+      ChatUIKitViewObserver? viewObserver,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return ConversationsViewArguments(
       controller: controller ?? this.controller,
       appBar: appBar ?? this.appBar,
@@ -111,6 +113,7 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
       viewObserver: viewObserver ?? this.viewObserver,
       avatarItemBuilder: avatarItemBuilder ?? this.avatarItemBuilder,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

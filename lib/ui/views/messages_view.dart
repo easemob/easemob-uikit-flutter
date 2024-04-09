@@ -47,7 +47,7 @@ class MessagesView extends StatefulWidget {
         onReactionInfoTap = arguments.onReactionInfoTap,
         reactionItemsBuilder = arguments.reactionItemsBuilder,
         onThreadItemTap = arguments.onThreadItemTap,
-        appBarTrailing = arguments.appBarTrailing,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         threadItemBuilder = arguments.threadItemBuilder;
 
   /// 构造函数。
@@ -89,7 +89,7 @@ class MessagesView extends StatefulWidget {
     this.reactionItemsBuilder,
     this.onThreadItemTap,
     this.threadItemBuilder,
-    this.appBarTrailing,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
@@ -199,7 +199,7 @@ class MessagesView extends StatefulWidget {
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
 
-  final Widget? appBarTrailing;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<MessagesView> createState() => _MessagesViewState();
@@ -503,35 +503,38 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                   },
                   avatarUrl: controller.profile.avatarUrl,
                 ),
-                trailing: widget.appBarTrailing ??
-                    (controller.isMultiSelectMode
-                        ? InkWell(
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            onTap: () {
-                              controller.disableMultiSelectMode();
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(24, 5, 24, 5),
-                              child: Text(
-                                ChatUIKitLocal.bottomSheetCancel.localString(context),
-                                style: TextStyle(
-                                  color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
-                                  fontWeight: theme.font.labelMedium.fontWeight,
-                                  fontSize: theme.font.labelMedium.fontSize,
-                                ),
+                trailingActions: () {
+                  List<ChatUIKitAppBarTrailingAction> actions = [
+                    ChatUIKitAppBarTrailingAction(
+                      onTap: (context) {
+                        if (controller.isMultiSelectMode) {
+                          controller.disableMultiSelectMode();
+                        } else {
+                          if (controller.conversationType == ConversationType.GroupChat &&
+                              ChatUIKitSettings.enableThread) {
+                            onThreadsViewTap();
+                          }
+                        }
+                      },
+                      child: controller.isMultiSelectMode
+                          ? Text(
+                              ChatUIKitLocal.bottomSheetCancel.localString(context),
+                              style: TextStyle(
+                                color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                                fontWeight: theme.font.labelMedium.fontWeight,
+                                fontSize: theme.font.labelMedium.fontSize,
                               ),
-                            ),
-                          )
-                        : (controller.conversationType == ConversationType.GroupChat && ChatUIKitSettings.enableThread
-                            ? Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8),
-                                child: InkWell(
-                                  onTap: onThreadsViewTap,
+                            )
+                          : controller.conversationType == ConversationType.GroupChat && ChatUIKitSettings.enableThread
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8),
                                   child: ChatUIKitImageLoader.messageLongPressThread(),
-                                ),
-                              )
-                            : null)),
+                                )
+                              : const SizedBox(),
+                    )
+                  ];
+                  return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                }(),
               ),
       body: SafeArea(child: content),
     );
@@ -1493,7 +1496,6 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         return SizedBox(
           height: MediaQuery.sizeOf(context).height * 0.95,
           child: SelectContactView(
-            backText: ChatUIKitLocal.messagesViewSelectContactCancel.localString(context),
             title: ChatUIKitLocal.messagesViewSelectContactTitle.localString(context),
             onTap: (context, model) {
               showChatUIKitDialog(
@@ -1711,7 +1713,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
             ];
           }),
     ).then((value) {
-      controller.updateView();
+      controller.refresh();
     });
   }
 
@@ -1767,7 +1769,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
             ];
           }),
     ).then((value) {
-      controller.updateView();
+      controller.refresh();
     });
   }
 
@@ -1824,7 +1826,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
             ];
           }),
     ).then((value) {
-      controller.updateView();
+      controller.refresh();
     });
   }
 

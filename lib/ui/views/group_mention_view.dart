@@ -15,6 +15,7 @@ class GroupMentionView extends StatefulWidget {
         enableAppBar = arguments.enableAppBar,
         groupId = arguments.groupId,
         title = arguments.title,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
@@ -32,6 +33,7 @@ class GroupMentionView extends StatefulWidget {
     this.attributes,
     this.title,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
@@ -51,6 +53,7 @@ class GroupMentionView extends StatefulWidget {
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
   @override
   State<GroupMentionView> createState() => _GroupMentionViewState();
 }
@@ -85,23 +88,9 @@ class _GroupMentionViewState extends State<GroupMentionView> {
           : widget.appBar ??
               ChatUIKitAppBar(
                 showBackButton: true,
-                leading: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    '@${ChatUIKitLocal.groupMembersViewTitle.localString(context)}',
-                    textScaler: TextScaler.noScaling,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
-                      fontWeight: theme.font.titleMedium.fontWeight,
-                      fontSize: theme.font.titleMedium.fontSize,
-                    ),
-                  ),
-                ),
+                centerTitle: false,
+                title: widget.title ?? '@${ChatUIKitLocal.groupMembersViewTitle.localString(context)}',
+                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
               ),
       body: ValueListenableBuilder(
         valueListenable: selectedProfiles,

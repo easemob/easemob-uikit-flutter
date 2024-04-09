@@ -10,27 +10,29 @@ class ShowVideoViewArguments implements ChatUIKitViewArguments {
     this.appBar,
     this.enableAppBar = true,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
   });
 
   final Message message;
   final void Function(Message message)? onLongPressed;
   final Widget? playIcon;
-  final AppBar? appBar;
+  final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
   @override
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
- 
-  ShowVideoViewArguments copyWith({
-    Message? message,
-    void Function(Message message)? onLongPressed,
-    Widget? playIcon,
-    AppBar? appBar,
-    bool? enableAppBar,
-    String? attributes,
-    ChatUIKitViewObserver? viewObserver,
-  }) {
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+
+  ShowVideoViewArguments copyWith(
+      {Message? message,
+      void Function(Message message)? onLongPressed,
+      Widget? playIcon,
+      ChatUIKitAppBar? appBar,
+      bool? enableAppBar,
+      String? attributes,
+      ChatUIKitViewObserver? viewObserver,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return ShowVideoViewArguments(
       message: message ?? this.message,
       onLongPressed: onLongPressed ?? this.onLongPressed,
@@ -39,6 +41,7 @@ class ShowVideoViewArguments implements ChatUIKitViewArguments {
       enableAppBar: enableAppBar ?? this.enableAppBar,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

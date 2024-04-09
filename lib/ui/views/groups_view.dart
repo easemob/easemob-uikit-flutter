@@ -3,20 +3,21 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
 class GroupsView extends StatefulWidget {
-  GroupsView.arguments(GroupsViewArguments argument, {super.key})
-      : controller = argument.controller,
-        appBar = argument.appBar,
-        onSearchTap = argument.onSearchTap,
-        listViewItemBuilder = argument.listViewItemBuilder,
-        onTap = argument.onTap,
-        onLongPress = argument.onLongPress,
-        searchBarHideText = argument.searchBarHideText,
-        listViewBackground = argument.listViewBackground,
-        enableAppBar = argument.enableAppBar,
-        loadErrorMessage = argument.loadErrorMessage,
-        title = argument.title,
-        viewObserver = argument.viewObserver,
-        attributes = argument.attributes;
+  GroupsView.arguments(GroupsViewArguments arguments, {super.key})
+      : controller = arguments.controller,
+        appBar = arguments.appBar,
+        onSearchTap = arguments.onSearchTap,
+        listViewItemBuilder = arguments.listViewItemBuilder,
+        onTap = arguments.onTap,
+        onLongPress = arguments.onLongPress,
+        searchBarHideText = arguments.searchBarHideText,
+        listViewBackground = arguments.listViewBackground,
+        enableAppBar = arguments.enableAppBar,
+        loadErrorMessage = arguments.loadErrorMessage,
+        title = arguments.title,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
+        viewObserver = arguments.viewObserver,
+        attributes = arguments.attributes;
 
   const GroupsView({
     this.controller,
@@ -32,6 +33,7 @@ class GroupsView extends StatefulWidget {
     this.title,
     this.attributes,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
@@ -50,6 +52,7 @@ class GroupsView extends StatefulWidget {
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
   @override
   State<GroupsView> createState() => _GroupsViewState();
 }
@@ -97,28 +100,23 @@ class _GroupsViewState extends State<GroupsView> {
           : widget.appBar ??
               ChatUIKitAppBar(
                 showBackButton: true,
-                leading: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    Navigator.maybePop(context);
+                centerTitle: false,
+                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
+                titleWidget: ValueListenableBuilder<int>(
+                  valueListenable: joinedCount,
+                  builder: (context, value, child) {
+                    return Text(
+                      widget.title ??
+                          "${ChatUIKitLocal.groupsViewTitle.localString(context)}${value != 0 ? '($value)' : ''}",
+                      textScaler: TextScaler.noScaling,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontWeight: theme.font.titleMedium.fontWeight,
+                        fontSize: theme.font.titleMedium.fontSize,
+                        color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                      ),
+                    );
                   },
-                  child: ValueListenableBuilder<int>(
-                    valueListenable: joinedCount,
-                    builder: (context, value, child) {
-                      return Text(
-                        widget.title ??
-                            "${ChatUIKitLocal.groupsViewTitle.localString(context)}${value != 0 ? '($value)' : ''}",
-                        textScaler: TextScaler.noScaling,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontWeight: theme.font.titleMedium.fontWeight,
-                          fontSize: theme.font.titleMedium.fontSize,
-                          color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
-                        ),
-                      );
-                    },
-                  ),
                 ),
               ),
       body: SafeArea(

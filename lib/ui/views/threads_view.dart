@@ -8,19 +8,28 @@ class ThreadsView extends StatefulWidget {
     ThreadsViewArguments arguments, {
     super.key,
   })  : profile = arguments.profile,
+        enableAppBar = arguments.enableAppBar,
+        appBar = arguments.appBar,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes,
         viewObserver = arguments.viewObserver;
 
   const ThreadsView({
     required this.profile,
     super.key,
+    this.enableAppBar = true,
+    this.appBar,
     this.attributes,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
   });
 
   final String? attributes;
 
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+  final bool enableAppBar;
+  final ChatUIKitAppBar? appBar;
 
   final ChatUIKitProfile profile;
 
@@ -84,16 +93,20 @@ class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
     final theme = ChatUIKitTheme.of(context);
     return Scaffold(
       backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
-      appBar: ChatUIKitAppBar(
-        centerTitle: false,
-        title: ChatUIKitLocal.threadsViewTitle.localString(context),
-        titleTextStyle: TextStyle(
-          color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
-          fontWeight: theme.font.titleMedium.fontWeight,
-          fontSize: theme.font.titleMedium.fontSize,
-        ),
-        subtitle: widget.profile.showName,
-      ),
+      appBar: !widget.enableAppBar
+          ? null
+          : widget.appBar ??
+              ChatUIKitAppBar(
+                centerTitle: false,
+                title: ChatUIKitLocal.threadsViewTitle.localString(context),
+                titleTextStyle: TextStyle(
+                  color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
+                  fontWeight: theme.font.titleMedium.fontWeight,
+                  fontSize: theme.font.titleMedium.fontSize,
+                ),
+                subtitle: widget.profile.showName,
+                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, []),
+              ),
       body: SafeArea(
         child: NotificationListener(
           onNotification: (notification) {

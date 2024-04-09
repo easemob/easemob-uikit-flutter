@@ -17,3 +17,19 @@ class ChatUIKitModelAction {
   final Size? iconSize;
   final String? packageName;
 }
+
+class ChatUIKitAppBarTrailingAction {
+  final Widget child;
+  final ChatUIKitActionItemOnTap? onTap;
+
+  ChatUIKitAppBarTrailingAction({
+    required this.child,
+    this.onTap,
+  });
+
+  ChatUIKitAppBarTrailingAction copyWith({
+    Widget? child,
+  }) {
+    return ChatUIKitAppBarTrailingAction(child: child ?? this.child, onTap: onTap);
+  }
+}

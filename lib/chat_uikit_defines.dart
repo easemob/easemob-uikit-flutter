@@ -75,3 +75,8 @@ typedef TimeFormatterHandler = String? Function(
 typedef GroupCreateCallback = void Function(Group? group, ChatError? error);
 
 typedef ChatUIKitModelActionsBuilder = List<ChatUIKitModelAction> Function(BuildContext context);
+
+typedef ChatUIKitAppBarTrailingActionsBuilder = List<ChatUIKitAppBarTrailingAction> Function(
+  BuildContext context,
+  List<ChatUIKitAppBarTrailingAction>? defaultList,
+);

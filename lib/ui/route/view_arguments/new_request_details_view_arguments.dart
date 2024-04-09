@@ -10,6 +10,7 @@ class NewRequestDetailsViewArguments implements ChatUIKitViewArguments {
     this.title,
     this.viewObserver,
     this.enableAppBar = true,
+    this.appBarTrailingActionsBuilder,
   });
   final ChatUIKitProfile profile;
   final bool isReceivedRequest;
@@ -21,17 +22,18 @@ class NewRequestDetailsViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
-  NewRequestDetailsViewArguments copyWith({
-    ChatUIKitProfile? profile,
-    bool? isReceivedRequest,
-    String? btnText,
-    ChatUIKitAppBar? appBar,
-    bool? enableAppBar,
-    String? title,
-    ChatUIKitViewObserver? viewObserver,
-    String? attributes,
-  }) {
+  NewRequestDetailsViewArguments copyWith(
+      {ChatUIKitProfile? profile,
+      bool? isReceivedRequest,
+      String? btnText,
+      ChatUIKitAppBar? appBar,
+      bool? enableAppBar,
+      String? title,
+      ChatUIKitViewObserver? viewObserver,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return NewRequestDetailsViewArguments(
       profile: profile ?? this.profile,
       isReceivedRequest: isReceivedRequest ?? this.isReceivedRequest,
@@ -41,6 +43,7 @@ class NewRequestDetailsViewArguments implements ChatUIKitViewArguments {
       title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

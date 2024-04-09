@@ -11,6 +11,7 @@ class ChangeInfoView extends StatefulWidget {
         maxLength = arguments.maxLength,
         appBar = arguments.appBar,
         enableAppBar = arguments.enableAppBar,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
   const ChangeInfoView({
@@ -22,6 +23,7 @@ class ChangeInfoView extends StatefulWidget {
     this.appBar,
     this.enableAppBar = true,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
   final String? title;
@@ -32,6 +34,7 @@ class ChangeInfoView extends StatefulWidget {
   final Future<String?> Function()? inputTextCallback;
   final bool enableAppBar;
   final String? attributes;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<ChangeInfoView> createState() => _ChangeInfoViewState();
@@ -119,56 +122,42 @@ class _ChangeInfoViewState extends State<ChangeInfoView> with ChatUIKitRouteHelp
     content = Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
-      appBar: widget.appBar ??
-          ChatUIKitAppBar(
-            // title: widget.title,
-            leading: InkWell(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                widget.title ?? '',
-                overflow: TextOverflow.ellipsis,
-                textScaler: TextScaler.noScaling,
-                style: TextStyle(
-                    fontWeight: theme.font.titleMedium.fontWeight,
-                    fontSize: theme.font.titleMedium.fontSize,
-                    color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1),
-              ),
-            ),
-            centerTitle: false,
-            trailing: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 5, 16, 5),
-              child: ValueListenableBuilder(
-                valueListenable: isChanged,
-                builder: (context, value, child) {
-                  return InkWell(
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    onTap: () {
-                      if (value) {
-                        Navigator.of(context).pop(controller.text);
-                      }
-                    },
-                    child: Text(
-                      widget.saveButtonTitle ?? ChatUIKitLocal.changInfoViewSave.localString(context),
-                      textScaler: TextScaler.noScaling,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontWeight: theme.font.labelMedium.fontWeight,
-                        fontSize: theme.font.labelMedium.fontSize,
-                        color: value
-                            ? (theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5)
-                            : (theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor6),
+      appBar: !widget.enableAppBar
+          ? null
+          : widget.appBar ??
+              ChatUIKitAppBar(
+                title: widget.title,
+                centerTitle: false,
+                trailingActions: () {
+                  List<ChatUIKitAppBarTrailingAction> actions = [
+                    ChatUIKitAppBarTrailingAction(
+                      onTap: (context) {
+                        if (isChanged.value) {
+                          Navigator.of(context).pop(controller.text);
+                        }
+                      },
+                      child: ValueListenableBuilder(
+                        valueListenable: isChanged,
+                        builder: (context, value, child) {
+                          return Text(
+                            widget.saveButtonTitle ?? ChatUIKitLocal.changInfoViewSave.localString(context),
+                            textScaler: TextScaler.noScaling,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontWeight: theme.font.labelMedium.fontWeight,
+                              fontSize: theme.font.labelMedium.fontSize,
+                              color: value
+                                  ? (theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5)
+                                  : (theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor6),
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                  );
-                },
+                    )
+                  ];
+                  return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                }(),
               ),
-            ),
-          ),
       body: SafeArea(child: content),
     );
 

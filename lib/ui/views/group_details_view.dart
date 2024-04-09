@@ -15,6 +15,7 @@ class GroupDetailsView extends StatefulWidget {
         actionsBuilder = arguments.actionsBuilder,
         onMessageDidClear = arguments.onMessageDidClear,
         viewObserver = arguments.viewObserver,
+        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         contentWidgetBuilder = arguments.contentWidgetBuilder,
         attributes = arguments.attributes;
 
@@ -27,6 +28,7 @@ class GroupDetailsView extends StatefulWidget {
     this.onMessageDidClear,
     this.contentWidgetBuilder,
     this.viewObserver,
+    this.appBarTrailingActionsBuilder,
     super.key,
   });
   final ChatUIKitModelActionsBuilder actionsBuilder;
@@ -39,6 +41,7 @@ class GroupDetailsView extends StatefulWidget {
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<GroupDetailsView> createState() => _GroupDetailsViewState();
@@ -177,14 +180,21 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
             : widget.appBar ??
                 ChatUIKitAppBar(
                   showBackButton: true,
-                  trailing: IconButton(
-                    iconSize: 24,
-                    color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
-                    icon: const Icon(Icons.more_vert),
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    onPressed: showBottom,
-                  ),
+                  trailingActions: () {
+                    List<ChatUIKitAppBarTrailingAction> actions = [
+                      ChatUIKitAppBarTrailingAction(
+                        onTap: (context) {
+                          showBottom();
+                        },
+                        child: Icon(
+                          Icons.more_vert,
+                          size: 24,
+                          color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
+                        ),
+                      )
+                    ];
+                    return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                  }(),
                 ),
         body: _buildContent());
 
@@ -349,7 +359,6 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
               ChatUIKitRouteNames.groupMembersView,
               GroupMembersViewArguments(
                 profile: widget.profile,
-                enableMemberOperation: group?.permissionType == GroupPermissionType.Owner,
                 attributes: widget.attributes,
               ),
             );

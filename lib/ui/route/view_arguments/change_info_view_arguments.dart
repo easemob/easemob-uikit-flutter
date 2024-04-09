@@ -11,6 +11,7 @@ class ChangeInfoViewArguments implements ChatUIKitViewArguments {
     this.enableAppBar = true,
     this.viewObserver,
     this.attributes,
+    this.appBarTrailingActionsBuilder,
   });
 
   final String? title;
@@ -25,18 +26,19 @@ class ChangeInfoViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
-  ChangeInfoViewArguments copyWith({
-    String? title,
-    String? hint,
-    String? saveButtonTitle,
-    Future<String?> Function()? inputTextCallback,
-    ChatUIKitAppBar? appBar,
-    int? maxLength,
-    bool? enableAppBar,
-    ChatUIKitViewObserver? viewObserver,
-    String? attributes,
-  }) {
+  ChangeInfoViewArguments copyWith(
+      {String? title,
+      String? hint,
+      String? saveButtonTitle,
+      Future<String?> Function()? inputTextCallback,
+      ChatUIKitAppBar? appBar,
+      int? maxLength,
+      bool? enableAppBar,
+      ChatUIKitViewObserver? viewObserver,
+      String? attributes,
+      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return ChangeInfoViewArguments(
       title: title ?? this.title,
       hint: hint ?? this.hint,
@@ -47,6 +49,7 @@ class ChangeInfoViewArguments implements ChatUIKitViewArguments {
       enableAppBar: enableAppBar ?? this.enableAppBar,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

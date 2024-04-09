@@ -10,7 +10,7 @@ class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.subtitle,
     this.subTitleTextStyle,
     this.leading,
-    this.trailing,
+    this.trailingActions,
     this.showBackButton = true,
     this.onBackButtonPressed,
     this.centerTitle = true,
@@ -27,7 +27,7 @@ class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String? subtitle;
   final TextStyle? subTitleTextStyle;
   final Widget? leading;
-  final Widget? trailing;
+  final List<ChatUIKitAppBarTrailingAction>? trailingActions;
   final bool centerTitle;
   final Color? backgroundColor;
   final SystemUiOverlayStyle? systemOverlayStyle;
@@ -56,10 +56,8 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
 
-    Color backgroundColor = widget.backgroundColor ??
-        (theme.color.isDark
-            ? theme.color.neutralColor1
-            : theme.color.neutralColor98);
+    Color backgroundColor =
+        widget.backgroundColor ?? (theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98);
 
     Widget? title;
     if (widget.title?.isNotEmpty == true) {
@@ -72,9 +70,7 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
             TextStyle(
               fontSize: theme.font.titleMedium.fontSize,
               fontWeight: theme.font.titleMedium.fontWeight,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor98
-                  : theme.color.neutralColor1,
+              color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
             ),
       );
     }
@@ -100,18 +96,14 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
             TextStyle(
               fontSize: theme.font.bodyExtraSmall.fontSize,
               fontWeight: theme.font.bodyExtraSmall.fontWeight,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor6
-                  : theme.color.neutralColor5,
+              color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
             ),
       );
     }
 
     Widget middle = Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: widget.centerTitle
-          ? CrossAxisAlignment.center
-          : CrossAxisAlignment.start,
+      crossAxisAlignment: widget.centerTitle ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
         title ?? const SizedBox(),
         subTitle ?? const SizedBox(),
@@ -164,9 +156,7 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
               child: Icon(
                 Icons.arrow_back_ios,
                 size: 16,
-                color: theme.color.isDark
-                    ? theme.color.neutralColor95
-                    : theme.color.neutralColor3,
+                color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
               ),
             ),
           ),
@@ -189,10 +179,31 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
       );
     }
 
+    List<ChatUIKitAppBarTrailingAction>? actions = widget.trailingActions;
+    Widget? trailing;
+    if (actions?.isNotEmpty == true) {
+      trailing = Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: actions!.map((e) {
+          return InkWell(
+            onTap: () {
+              e.onTap?.call(context);
+            },
+            child: Container(
+              padding: const EdgeInsets.only(left: 8, right: 8),
+              // color: Colors.red,
+              child: e.child,
+            ),
+          );
+        }).toList(),
+      );
+    }
+
     Widget content = NavigationToolbar(
       leading: leading,
       middle: middle,
-      trailing: widget.trailing,
+      trailing: trailing,
       centerMiddle: widget.centerTitle,
       middleSpacing: 0,
     );
@@ -233,11 +244,9 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
     );
   }
 
-  SystemUiOverlayStyle _systemOverlayStyleForBrightness(Brightness brightness,
-      [Color? backgroundColor]) {
-    final SystemUiOverlayStyle style = brightness == Brightness.dark
-        ? SystemUiOverlayStyle.light
-        : SystemUiOverlayStyle.dark;
+  SystemUiOverlayStyle _systemOverlayStyleForBrightness(Brightness brightness, [Color? backgroundColor]) {
+    final SystemUiOverlayStyle style =
+        brightness == Brightness.dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark;
 
     return SystemUiOverlayStyle(
       statusBarColor: backgroundColor,

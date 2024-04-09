@@ -254,8 +254,7 @@ class ChatUIKitRoute {
   ///
   /// ```dart
   ///   onGenerateRoute: (settings) {
-  ///     RouteSettings newSettings = ChatRouteFilter.chatRouteSettings(settings);
-  ///     return ChatUIKitRoute().generateRoute(newSettings) ??
+  ///     return ChatUIKitRoute().generateRoute(settings) ??
   ///         MaterialPageRoute(
   ///             builder: (context) {
   ///               return const HomePage();

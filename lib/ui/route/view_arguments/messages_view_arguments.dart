@@ -40,7 +40,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     this.reactionItemsBuilder,
     this.onThreadItemTap,
     this.threadItemBuilder,
-    this.appBarTrailing,
+    this.appBarTrailingActionsBuilder,
   });
 
   /// 用户信息对象，用于设置对方信息。详细参考 [ChatUIKitProfile]。
@@ -143,7 +143,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
 
   final MessageItemBuilder? threadItemBuilder;
 
-  final Widget? appBarTrailing;
+  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   @override
@@ -191,7 +191,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     MessageItemBuilder? reactionItemsBuilder,
     MessageItemTapHandler? onThreadItemTap,
     MessageItemBuilder? threadItemBuilder,
-    Widget? appBarTrailing,
+    ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder,
   }) {
     return MessagesViewArguments(
       profile: profile ?? this.profile,
@@ -231,7 +231,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       reactionItemsBuilder: reactionItemsBuilder ?? this.reactionItemsBuilder,
       onThreadItemTap: onThreadItemTap ?? this.onThreadItemTap,
       threadItemBuilder: threadItemBuilder ?? this.threadItemBuilder,
-      appBarTrailing: appBarTrailing ?? this.appBarTrailing,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }
