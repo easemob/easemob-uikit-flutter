@@ -32,8 +32,17 @@ class MessageModel {
     );
   }
 
+  MessageModel clearThread() {
+    return MessageModel(
+      modelId: id,
+      message: message,
+      reactions: reactions,
+      quoteMessage: quoteMessage,
+      thread: null,
+    );
+  }
+
   static String randomId(Message message) {
-    return Random().nextInt(999999999).toString() +
-        message.localTime.toString();
+    return Random().nextInt(999999999).toString() + message.localTime.toString();
   }
 }

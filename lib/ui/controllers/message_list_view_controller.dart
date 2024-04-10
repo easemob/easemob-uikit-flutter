@@ -328,7 +328,25 @@ class MessageListViewController extends ChangeNotifier
   void onChatThreadUpdate(ChatThreadEvent event) async {
     int index = msgModelList.indexWhere((element) => element.message.msgId == event.chatThread?.messageId);
     if (index != -1) {
-      msgModelList[index] = msgModelList[index].copyWith(thread: event.chatThread);
+      if (event.type == ChatThreadOperation.Update_Msg) {
+        msgModelList[index] = msgModelList[index].copyWith(thread: event.chatThread);
+        lastActionType = MessageLastActionType.originalPosition;
+      } else if (event.type == ChatThreadOperation.Update) {
+        ChatThread oldThread = msgModelList[index].thread!;
+        ChatThread newThread = event.chatThread!;
+        newThread = newThread.copyWith(lastMessage: oldThread.lastMessage);
+        msgModelList[index] = msgModelList[index].copyWith(thread: newThread);
+        lastActionType = MessageLastActionType.originalPosition;
+      }
+      refresh();
+    }
+  }
+
+  @override
+  void onChatThreadDestroy(ChatThreadEvent event) async {
+    int index = msgModelList.indexWhere((element) => element.message.msgId == event.chatThread?.messageId);
+    if (index != -1) {
+      msgModelList[index] = msgModelList[index].clearThread();
       lastActionType = MessageLastActionType.originalPosition;
       refresh();
     }

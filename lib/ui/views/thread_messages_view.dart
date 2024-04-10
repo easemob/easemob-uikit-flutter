@@ -740,9 +740,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
           onTap: () async {
             Navigator.of(context).pop();
             if (controller.thread == null) return;
-            controller.destroyChatThread().then((value) {
-              Navigator.of(context).pop();
-            }).catchError((e) {
+            controller.destroyChatThread().catchError((e) {
               chatPrint('destroyChatThread: $e');
             });
           },
@@ -1779,13 +1777,6 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
   void onChatThreadDestroy(ChatThreadEvent event) async {
     if (event.chatThread?.threadId == controller.thread?.threadId) {
       Navigator.of(context).pop();
-    }
-  }
-
-  @override
-  void onChatThreadUpdate(ChatThreadEvent event) {
-    if (event.chatThread?.threadId == controller.thread?.threadId) {
-      if (event.type == ChatThreadOperation.Create) {}
     }
   }
 

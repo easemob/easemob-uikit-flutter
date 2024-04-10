@@ -191,12 +191,16 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
               e.onTap?.call(context);
             },
             child: Container(
-              padding: const EdgeInsets.only(left: 12, right: 12),
+              padding: const EdgeInsets.only(left: 8, right: 8),
               // color: Colors.red,
               child: e.child,
             ),
           );
         }).toList(),
+      );
+      trailing = Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: trailing,
       );
     }
 

@@ -84,10 +84,10 @@ class _MessageListViewState extends State<MessageListView> {
     size ??= MediaQuery.of(context).size;
     Widget content = CustomScrollView(
       physics:
-          controller.msgModelList.length > 15 ? const AlwaysScrollableScrollPhysics() : const BouncingScrollPhysics(),
+          controller.msgModelList.length > 30 ? const AlwaysScrollableScrollPhysics() : const BouncingScrollPhysics(),
       controller: _scrollController,
       reverse: true,
-      shrinkWrap: controller.msgModelList.length > 15 ? false : true,
+      shrinkWrap: controller.msgModelList.length > 30 ? false : true,
       cacheExtent: 1500,
       slivers: [
         SliverPadding(
