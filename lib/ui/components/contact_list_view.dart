@@ -78,9 +78,11 @@ class _ContactListViewState extends State<ContactListView> with ChatUIKitProvide
       scrollController: scrollController,
       builder: (context, list) {
         return ChatUIKitListView(
-          onRefresh: () async {
-            await controller.fetchItemList(reload: true);
-          },
+          onRefresh: controller.enableRefresh
+              ? () async {
+                  await controller.fetchItemList(reload: true);
+                }
+              : null,
           scrollController: scrollController,
           type: controller.loadingType.value,
           list: list,

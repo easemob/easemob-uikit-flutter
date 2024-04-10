@@ -3,9 +3,14 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 /// 联系人列表控制器
 class ContactListViewController with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver {
-  ContactListViewController({this.willShowHandler}) {
+  ContactListViewController({
+    this.willShowHandler,
+    this.enableRefresh = true,
+  }) {
     ChatUIKitProvider.instance.addObserver(this);
   }
+
+  final bool enableRefresh;
 
   /// 会话列表显示前的回调，你可以在这里对会话列表进行处理，比如排序或者加减等。如果不设置将会直接显示。
   final ContactListViewShowHandler? willShowHandler;
