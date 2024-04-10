@@ -442,7 +442,6 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
                 model.message.serverTime,
               ) ??
               ChatUIKitTimeTool.getChatTimeStr(model.message.serverTime, needTime: true),
-          textDirection: left ? TextDirection.ltr : TextDirection.rtl,
           style: TextStyle(
               fontWeight: theme.font.bodySmall.fontWeight,
               fontSize: theme.font.bodySmall.fontSize,

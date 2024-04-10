@@ -10,15 +10,10 @@ abstract mixin class ChatUIKitTimeTool {
       return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
     } else {
       if (needTime) {
-        return '${dateTime.month.toString().padLeft(2, '0')} ${dateTime.day.toString().padLeft(2, '0')} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+        return '${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
       } else {
-        return '${dateTime.month.toString().padLeft(2, '0')} ${dateTime.day.toString().padLeft(2, '0')}';
+        return '${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
       }
-      // if (needTime) {
-      //   return '${getMTM(dateTime.month)} ${dateTime.day.toString().padLeft(2, '0')} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
-      // } else {
-      //   return '${getMTM(dateTime.month)} ${dateTime.day.toString().padLeft(2, '0')}';
-      // }
     }
   }
 

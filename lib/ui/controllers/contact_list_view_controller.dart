@@ -34,8 +34,16 @@ class ContactListViewController with ChatUIKitListViewControllerBase, ChatUIKitP
   /// 获取联系人列表，会优先从本地获取，如果本地没有，并且没有从服务器获取过，则从服务器获取。
   /// `force` (bool) 是否强制从服务器获取，默认为 `false`。
   @override
-  Future<void> fetchItemList({bool force = false}) async {
-    loadingType.value = ChatUIKitListViewType.loading;
+  Future<void> fetchItemList({
+    bool force = false,
+    bool reload = false,
+  }) async {
+    if (reload) {
+      loadingType.value = ChatUIKitListViewType.refresh;
+    } else {
+      loadingType.value = ChatUIKitListViewType.loading;
+    }
+
     List<String> items = await ChatUIKit.instance.getAllContactIds();
     try {
       if ((items.isEmpty && !ChatUIKitContext.instance.isContactLoadFinished()) || force == true) {

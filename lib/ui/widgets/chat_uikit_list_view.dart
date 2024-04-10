@@ -31,6 +31,7 @@ class ChatUIKitListView extends StatefulWidget {
     this.beforeWidgets,
     this.afterWidgets,
     this.findChildIndexCallback,
+    this.onRefresh,
     super.key,
   });
 
@@ -50,6 +51,7 @@ class ChatUIKitListView extends StatefulWidget {
   final List<Widget>? beforeWidgets;
   final List<Widget>? afterWidgets;
   final int? Function(Key key)? findChildIndexCallback;
+  final Future<void> Function()? onRefresh;
 
   @override
   State<ChatUIKitListView> createState() => _ChatUIKitListViewState();
@@ -199,6 +201,15 @@ class _ChatUIKitListViewState extends State<ChatUIKitListView> {
         ),
       ],
     );
+
+    if (widget.onRefresh != null) {
+      content = RefreshIndicator(
+        onRefresh: () async {
+          await widget.onRefresh?.call();
+        },
+        child: content,
+      );
+    }
 
     content = NotificationListener(
       onNotification: (notification) {
