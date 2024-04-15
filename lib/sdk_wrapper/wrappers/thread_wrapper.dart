@@ -26,7 +26,7 @@ mixin ThreadWrapper on ChatUIKitWrapperBase {
   }
 
   void onChatThreadCreate(ChatThreadEvent event) {
-    SDKWrapperTools.insertThreadEventMessage(event: event);
+    SDKWrapperTools.insertCreateThreadEventMessage(event: event);
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ThreadObserver) {
         observer.onChatThreadCreate(event);
@@ -35,7 +35,7 @@ mixin ThreadWrapper on ChatUIKitWrapperBase {
   }
 
   void onChatThreadDestroy(ChatThreadEvent event) {
-    SDKWrapperTools.insertThreadEventMessage(event: event);
+    // SDKWrapperTools.insertThreadEventMessage(event: event);
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ThreadObserver) {
         observer.onChatThreadDestroy(event);
@@ -44,7 +44,7 @@ mixin ThreadWrapper on ChatUIKitWrapperBase {
   }
 
   void onChatThreadUpdate(ChatThreadEvent event) {
-    SDKWrapperTools.insertThreadEventMessage(event: event);
+    // SDKWrapperTools.insertThreadEventMessage(event: event);
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ThreadObserver) {
         observer.onChatThreadUpdate(event);
@@ -53,7 +53,7 @@ mixin ThreadWrapper on ChatUIKitWrapperBase {
   }
 
   void onUserKickOutOfChatThread(ChatThreadEvent event) {
-    SDKWrapperTools.insertThreadEventMessage(event: event);
+    // SDKWrapperTools.insertThreadEventMessage(event: event);
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ThreadObserver) {
         observer.onUserKickOutOfChatThread(event);

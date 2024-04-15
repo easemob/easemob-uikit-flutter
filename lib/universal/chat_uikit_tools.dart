@@ -6,7 +6,7 @@ class ChatUIKitTools {
   }) {
     String eventKey = '';
     String? operator = thread.owner;
-    String? operatorInfo = thread.threadName;
+
     eventKey = alertCreateThreadKey;
     int time = thread.createAt;
     Message timeMsg = Message.createCustomSendMessage(
@@ -23,10 +23,7 @@ class ChatUIKitTools {
       event: eventKey,
       chatType: ChatType.GroupChat,
       params: {
-        alertOperatorKey: operator ?? '',
-        alertOperatorInfoKey: operatorInfo ?? '',
-        alertThreadId: thread.threadId,
-        alertThreadInMsgId: thread.messageId,
+        alertOperatorIdKey: operator ?? '',
       },
     );
 

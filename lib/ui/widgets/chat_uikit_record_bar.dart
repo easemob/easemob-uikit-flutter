@@ -184,12 +184,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
     content = Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        content,
-        const SizedBox(height: 16),
-        _label(theme),
-        _remainingLabel(theme)
-      ],
+      children: [content, const SizedBox(height: 16), _label(theme), _remainingLabel(theme)],
     );
 
     content = Container(
@@ -200,9 +195,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
                 topRight: Radius.circular(16),
               )
             : null,
-        color: theme.color.isDark
-            ? theme.color.neutralColor1
-            : theme.color.neutralColor98,
+        color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       ),
       child: content,
     );
@@ -234,8 +227,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
                   opacity: voiceShow ? 1 : 0,
                   duration: Duration(milliseconds: voiceShow ? 10 : 100),
                   child: Container(
-                    color:
-                        widget.backgroundColor ?? Colors.black.withOpacity(0.5),
+                    color: widget.backgroundColor ?? Colors.black.withOpacity(0.5),
                   ),
                 ))),
         AnimatedPositioned(
@@ -262,9 +254,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
     final style = TextStyle(
       fontWeight: theme.font.bodyLarge.fontWeight,
       fontSize: theme.font.bodyLarge.fontSize,
-      color: theme.color.isDark
-          ? theme.color.neutralColor7
-          : theme.color.neutralColor5,
+      color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor5,
     );
     if (statusType == ChatUIKitVoiceBarStatusType.none) {
       return Text(
@@ -275,8 +265,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
       );
     } else if (statusType == ChatUIKitVoiceBarStatusType.recording) {
       return Text(
-        widget.recordText ??
-            ChatUIKitLocal.recordBarRecording.localString(context),
+        widget.recordText ?? ChatUIKitLocal.recordBarRecording.localString(context),
         textScaler: TextScaler.noScaling,
         overflow: TextOverflow.ellipsis,
         style: widget.recordTextStyle ?? style,
@@ -290,8 +279,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
       );
     } else if (statusType == ChatUIKitVoiceBarStatusType.playing) {
       return Text(
-        widget.playingText ??
-            ChatUIKitLocal.recordBarPlaying.localString(context),
+        widget.playingText ?? ChatUIKitLocal.recordBarPlaying.localString(context),
         textScaler: TextScaler.noScaling,
         overflow: TextOverflow.ellipsis,
         style: widget.playingTextStyle ?? style,
@@ -303,20 +291,15 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
 
   Widget _remainingLabel(ChatUIKitTheme theme) {
     Widget content;
-    if (widget.maxDuration - recordCounter <= 10 &&
-        statusType == ChatUIKitVoiceBarStatusType.recording) {
+    if (widget.maxDuration - recordCounter <= 10 && statusType == ChatUIKitVoiceBarStatusType.recording) {
       ChatUIKitLocal.recordBarAutoStop.localString(context);
-      content = Text(
-          context.formatString(ChatUIKitLocal.recordBarAutoStop,
-              ['${widget.maxDuration - recordCounter}']),
+      content = Text(context.formatString(ChatUIKitLocal.recordBarAutoStop, ['${widget.maxDuration - recordCounter}']),
           overflow: TextOverflow.ellipsis,
           textScaler: TextScaler.noScaling,
           style: TextStyle(
             fontWeight: theme.font.bodySmall.fontWeight,
             fontSize: theme.font.bodySmall.fontSize,
-            color: theme.color.isDark
-                ? theme.color.neutralColor7
-                : theme.color.neutralColor5,
+            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor5,
           ));
     } else {
       content = const SizedBox();
@@ -346,9 +329,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
           width: 72,
           height: 48,
           decoration: BoxDecoration(
-            color: theme.color.isDark
-                ? theme.color.primaryColor6
-                : theme.color.primaryColor5,
+            color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
             borderRadius: BorderRadius.circular(24),
           ),
           child: Center(
@@ -362,9 +343,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
                   textScaler: TextScaler.noScaling,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      color: theme.color.isDark
-                          ? theme.color.neutralColor98
-                          : theme.color.neutralColor98,
+                      color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor98,
                       fontWeight: theme.font.headlineSmall.fontWeight,
                       fontSize: theme.font.headlineSmall.fontSize),
                 );
@@ -374,9 +353,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
                   textScaler: TextScaler.noScaling,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      color: theme.color.isDark
-                          ? theme.color.neutralColor98
-                          : theme.color.neutralColor98,
+                      color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor98,
                       fontWeight: theme.font.headlineSmall.fontWeight,
                       fontSize: theme.font.headlineSmall.fontSize),
                 );
@@ -387,9 +364,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
     );
 
     content = ChatUIKitWaterRipper(
-      color: theme.color.isDark
-          ? theme.color.primaryColor6
-          : theme.color.primaryColor5,
+      color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
       duration: const Duration(milliseconds: 1500),
       count: 7,
       enable: ChatUIKitVoiceBarStatusType.recording == statusType,
@@ -429,16 +404,12 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor2
-                      : theme.color.neutralColor9,
+                  color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9,
                   borderRadius: BorderRadius.circular(18),
                 ),
                 child: Center(
                     child: ChatUIKitImageLoader.voiceDelete(
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor7
-                      : theme.color.neutralColor5,
+                  color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor5,
                 )),
               ),
             )
@@ -461,22 +432,17 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
                   recordPath = await _audioRecorder.stop();
                 }
                 statusType = ChatUIKitVoiceBarStatusType.ready;
-                widget.statusChangeCallback
-                    ?.call(statusType, recordCounter, recordPath!);
+                widget.statusChangeCallback?.call(statusType, recordCounter, recordPath!);
                 sendVoice();
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: theme.color.isDark
-                      ? theme.color.primaryColor6
-                      : theme.color.primaryColor5,
+                  color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                   borderRadius: BorderRadius.circular(18),
                 ),
                 child: Center(
                     child: ChatUIKitImageLoader.voiceSend(
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor98
-                      : theme.color.neutralColor98,
+                  color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor98,
                 )),
               ),
             )
@@ -491,8 +457,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
 
   Future<void> startRecord() async {
     if (await _audioRecorder.hasPermission()) {
-      fileName =
-          "${DateTime.now().millisecondsSinceEpoch.toString()}.${extensionName()}";
+      fileName = "${DateTime.now().millisecondsSinceEpoch.toString()}.${extensionName()}";
       await _audioRecorder.start(
         path: "${_directory.path}/$fileName",
         encoder: widget.recordConfig.encoder,
@@ -506,7 +471,7 @@ class _ChatUIKitRecordBarState extends State<ChatUIKitRecordBar> {
         widget.statusChangeCallback?.call(statusType, 0, null);
       });
     } else {
-      ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.noRecordPermission);
+      ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.noMicrophonePermission);
     }
   }
 

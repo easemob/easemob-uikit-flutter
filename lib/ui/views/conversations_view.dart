@@ -360,7 +360,9 @@ class _ConversationsViewState extends State<ConversationsView> {
       context,
       ChatUIKitRouteNames.selectContactsView,
       SelectContactViewArguments(
-          title: ChatUIKitLocal.conversationsViewMenuCreateNewChat.localString(context), attributes: widget.attributes),
+        title: ChatUIKitLocal.conversationsViewMenuCreateNewChat.localString(context),
+        attributes: widget.attributes,
+      ),
     ).then((profile) {
       if (profile != null && profile is ChatUIKitProfile) {
         pushNewConversation(profile);
@@ -419,7 +421,10 @@ class _ConversationsViewState extends State<ConversationsView> {
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.messagesView,
-      MessagesViewArguments(profile: profile, attributes: widget.attributes),
+      MessagesViewArguments(
+        profile: profile,
+        attributes: widget.attributes,
+      ),
     ).then((value) {
       if (mounted && value != null) {
         controller.reload();

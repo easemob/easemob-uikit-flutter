@@ -255,7 +255,6 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
   void dispose() {
     ChatUIKit.instance.removeObserver(this);
     editBarTextEditingController?.dispose();
-    controller.dispose();
     widget.viewObserver?.dispose();
     super.dispose();
   }
@@ -1263,64 +1262,21 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
     );
   }
 
-  // 处理不是当前聊天对象的好友
-  void pushNewContactDetail(ChatUIKitProfile profile) {
+// 处理好友信息
+  void pushContactDetail(ChatUIKitProfile profile) {
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.contactDetailsView,
       ContactDetailsViewArguments(
-          profile: profile,
-          attributes: widget.attributes,
-          actionsBuilder: (context) {
-            return [
-              ChatUIKitModelAction(
-                title: ChatUIKitLocal.contactDetailViewSend.localString(context),
-                icon: 'assets/images/chat.png',
-                packageName: ChatUIKitImageLoader.packageName,
-                onTap: (ctx) {
-                  Navigator.of(context).pushNamed(
-                    ChatUIKitRouteNames.messagesView,
-                    arguments: MessagesViewArguments(
-                      profile: profile,
-                      attributes: widget.attributes,
-                    ),
-                  );
-                },
-              ),
-              ChatUIKitModelAction(
-                title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
-                icon: 'assets/images/search_history.png',
-                packageName: ChatUIKitImageLoader.packageName,
-                iconSize: const Size(32, 32),
-                onTap: (context) {
-                  ChatUIKitRoute.pushOrPushNamed(
-                    context,
-                    ChatUIKitRouteNames.searchHistoryView,
-                    SearchHistoryViewArguments(
-                      profile: profile,
-                      attributes: widget.attributes,
-                    ),
-                  ).then((value) {
-                    if (value != null && value is Message) {
-                      ChatUIKitRoute.pushOrPushNamed(
-                        context,
-                        ChatUIKitRouteNames.messagesView,
-                        MessagesViewArguments(
-                          profile: profile,
-                          attributes: widget.attributes,
-                          controller: MessageListViewController(
-                            profile: profile,
-                            searchedMsg: value,
-                          ),
-                        ),
-                      );
-                    }
-                  });
-                },
-              ),
-            ];
-          }),
-    );
+        profile: profile,
+        attributes: widget.attributes,
+        onContactDeleted: () {
+          ChatUIKitRoute.pop(context);
+        },
+      ),
+    ).then((value) {
+      controller.refresh();
+    });
   }
 
   // 处理名片信息非好友
@@ -1676,7 +1632,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
       String name = (model.message.body as CustomMessageBody).params?[cardNicknameKey] ?? '';
       if (userId?.isNotEmpty == true) {
         ChatUIKitProfile profile = ChatUIKitProfile.contact(id: userId!, avatarUrl: avatar, nickname: name);
-        pushNextPage(profile);
+        pushNextPage(profile, isCard: true);
       }
     }
   }
@@ -1693,11 +1649,10 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
     BuildContext context,
     MessageModel model,
   ) {
+    Widget? content = widget.alertItemBuilder?.call(context, model);
+    if (content != null) return content;
+
     if (model.message.isTimeMessageAlert) {
-      Widget? content = widget.alertItemBuilder?.call(
-        context,
-        model,
-      );
       content ??= ChatUIKitMessageListViewAlertItem(
         infos: [
           MessageAlertAction(
@@ -1712,12 +1667,8 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
 
     if (model.message.isCreateThreadAlert) {
       Map<String, String>? map = (model.message.body as CustomMessageBody).params;
-      Widget? content = widget.alertItemBuilder?.call(
-        context,
-        model,
-      );
 
-      String? operator = map![alertOperatorKey]!;
+      String? operator = map![alertOperatorIdKey]!;
       String showName;
       if (ChatUIKit.instance.currentUserId == operator) {
         showName = ChatUIKitLocal.alertYou.localString(context);
@@ -1734,7 +1685,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
             onTap: () {
               ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
                 ChatUIKitProfile.contact(
-                  id: map[alertOperatorKey]!,
+                  id: map[alertOperatorIdKey]!,
                 ),
               );
               pushNextPage(profile);
@@ -1749,20 +1700,18 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
     return const SizedBox();
   }
 
-  void pushNextPage(ChatUIKitProfile profile) async {
+  void pushNextPage(ChatUIKitProfile profile, {bool isCard = false}) async {
     clearAllType();
 
-    // 如果是自己
+    // 如果点击的是自己头像
     if (profile.id == ChatUIKit.instance.currentUserId) {
       pushToCurrentUser(profile);
-    }
-
-    // 以上都不是时，检查通讯录
-    else {
+    } else {
       List<String> contacts = await ChatUIKit.instance.getAllContactIds();
       // 是好友，不是当前聊天对象，跳转到好友页面，并可以发消息
       if (contacts.contains(profile.id)) {
-        pushNewContactDetail(profile);
+        ChatUIKitProfile? tmpProfile = ChatUIKitProvider.instance.profilesCache[profile.id];
+        pushContactDetail(tmpProfile ?? profile);
       }
       // 不是好友，跳转到添加好友页面
       else {

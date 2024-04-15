@@ -140,59 +140,9 @@ class _GroupsViewState extends State<GroupsView> {
       context,
       ChatUIKitRouteNames.groupDetailsView,
       GroupDetailsViewArguments(
-          attributes: widget.attributes,
-          profile: model.profile,
-          actionsBuilder: (context) {
-            return [
-              ChatUIKitModelAction(
-                title: ChatUIKitLocal.groupDetailViewSend.localString(context),
-                icon: 'assets/images/chat.png',
-                iconSize: const Size(32, 32),
-                packageName: ChatUIKitImageLoader.packageName,
-                onTap: (context) {
-                  ChatUIKitRoute.pushOrPushNamed(
-                    context,
-                    ChatUIKitRouteNames.messagesView,
-                    MessagesViewArguments(
-                      profile: model.profile,
-                      attributes: widget.attributes,
-                    ),
-                  );
-                },
-              ),
-              ChatUIKitModelAction(
-                title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
-                icon: 'assets/images/search_history.png',
-                packageName: ChatUIKitImageLoader.packageName,
-                iconSize: const Size(32, 32),
-                onTap: (context) {
-                  ChatUIKitRoute.pushOrPushNamed(
-                    context,
-                    ChatUIKitRouteNames.searchHistoryView,
-                    SearchHistoryViewArguments(
-                      profile: model.profile,
-                      attributes: widget.attributes,
-                    ),
-                  ).then((value) {
-                    if (value != null && value is Message) {
-                      ChatUIKitRoute.pushOrPushNamed(
-                        context,
-                        ChatUIKitRouteNames.messagesView,
-                        MessagesViewArguments(
-                          profile: model.profile,
-                          attributes: widget.attributes,
-                          controller: MessageListViewController(
-                            profile: model.profile,
-                            searchedMsg: value,
-                          ),
-                        ),
-                      );
-                    }
-                  });
-                },
-              ),
-            ];
-          }),
+        attributes: widget.attributes,
+        profile: model.profile,
+      ),
     ).then((value) {
       ChatUIKitRouteBackModel? model = ChatUIKitRoute.lastModel;
       if (model != null) {

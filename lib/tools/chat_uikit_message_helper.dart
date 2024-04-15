@@ -315,7 +315,7 @@ extension MessageHelper on Message {
           if (isRecallAlert) {
             Map<String, String>? map = (body as CustomMessageBody).params;
 
-            String? from = map?[alertRecallMessageFromKey];
+            String? from = map?[alertOperatorIdKey];
             String? showName;
             if (ChatUIKit.instance.currentUserId == from) {
               showName = ChatUIKitLocal.alertYou.localString(context);
@@ -329,7 +329,7 @@ extension MessageHelper on Message {
           }
           if (isCreateGroupAlert) {
             Map<String, String>? map = (body as CustomMessageBody).params;
-            String? operator = map![alertOperatorKey]!;
+            String? operator = map![alertOperatorIdKey]!;
             String? showName;
             if (ChatUIKit.instance.currentUserId == operator) {
               showName = ChatUIKitLocal.alertYou.localString(context);
@@ -343,7 +343,7 @@ extension MessageHelper on Message {
           }
           if (isCreateThreadAlert) {
             Map<String, String>? map = (body as CustomMessageBody).params;
-            String? operator = map![alertOperatorKey]!;
+            String? operator = map![alertOperatorIdKey]!;
             String? showName;
             if (ChatUIKit.instance.currentUserId == operator) {
               showName = ChatUIKitLocal.alertYou.localString(context);
@@ -498,46 +498,6 @@ extension MessageHelper on Message {
       }
     }
     return false;
-  }
-
-  MessageType? get recalledMessageType {
-    if (bodyType == MessageType.CUSTOM) {
-      if ((body as CustomMessageBody).event == alertRecalledKey) {
-        String? type = (body as CustomMessageBody).params?[alertRecallMessageTypeKey];
-        if (type == null) return null;
-        return MessageType.values[int.parse(type)];
-      }
-    }
-    return null;
-  }
-
-  String? get recallMessageInfo {
-    if (bodyType == MessageType.CUSTOM) {
-      if ((body as CustomMessageBody).event == alertRecalledKey) {
-        return (body as CustomMessageBody).params?[alertRecallInfoKey];
-      }
-    }
-    return null;
-  }
-
-  String? get recallMessageFrom {
-    if (bodyType == MessageType.CUSTOM) {
-      if ((body as CustomMessageBody).event == alertRecalledKey) {
-        return (body as CustomMessageBody).params?[alertRecallMessageFromKey];
-      }
-    }
-    return null;
-  }
-
-  MessageDirection? get recallMessageDirection {
-    if (bodyType == MessageType.CUSTOM) {
-      if ((body as CustomMessageBody).event == alertRecalledKey) {
-        String? directionStr = (body as CustomMessageBody).params?[alertRecallMessageDirectionKey];
-        if (directionStr == null) return null;
-        return MessageDirection.values[int.parse(directionStr)];
-      }
-    }
-    return null;
   }
 
   void addQuote(Message message) {

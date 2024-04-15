@@ -11,12 +11,7 @@ class SDKWrapperTools {
       event: alertRecalledKey,
       chatType: recalledMessage.chatType,
       params: {
-        if (recalledMessage.bodyType == MessageType.TXT)
-          alertRecallInfoKey: recalledMessage.textContent,
-        alertRecallMessageTypeKey: recalledMessage.bodyType.index.toString(),
-        alertRecallMessageDirectionKey:
-            recalledMessage.direction.index.toString(),
-        alertRecallMessageFromKey: recalledMessage.from!,
+        alertOperatorIdKey: recalledMessage.from!,
       },
     );
     alertMsg.conversationId = recalledMessage.conversationId;
@@ -100,16 +95,17 @@ class SDKWrapperTools {
     timeMsg.localTime = time;
     timeMsg.status = MessageStatus.SUCCESS;
 
-    await ChatUIKit.instance.insertMessage(
-      message: timeMsg,
-    );
+    await ChatUIKit.instance.insertMessage(message: timeMsg);
+
     Message alertMsg = Message.createCustomSendMessage(
       targetId: group.groupId,
       event: alertGroupCreateKey,
       chatType: ChatType.GroupChat,
       params: {
-        alertOperatorKey: creator?.showName ?? group.owner ?? '',
-        alertOperatorInfoKey: group.name ?? group.groupId,
+        alertOperatorIdKey: group.owner ?? creator?.id ?? '',
+        alertOperatorNameKey: creator?.showName ?? creator?.id ?? group.owner ?? '',
+        alertTargetIdKey: group.groupId,
+        alertTargetNameKey: group.name ?? '',
       },
     );
 
@@ -123,27 +119,12 @@ class SDKWrapperTools {
     ChatUIKit.instance.onMessagesReceived([alertMsg]);
   }
 
-  static insertThreadEventMessage({
+  static insertCreateThreadEventMessage({
     required ChatThreadEvent event,
     ChatUIKitProfile? creator,
     int? timestamp,
   }) {
     ChatThread thread = event.chatThread!;
-
-    String eventKey = '';
-    String operator = '';
-    String operatorInfo = '';
-    switch (event.type) {
-      case ChatThreadOperation.Create:
-        eventKey = alertCreateThreadKey;
-        operator = creator?.showName ?? event.from;
-        operatorInfo = thread.threadName ?? thread.threadId;
-        break;
-      case ChatThreadOperation.Delete:
-      case ChatThreadOperation.Update:
-      default:
-        return;
-    }
 
     int time = timestamp ?? DateTime.now().millisecondsSinceEpoch - 1;
     Message timeMsg = Message.createCustomSendMessage(
@@ -161,13 +142,13 @@ class SDKWrapperTools {
 
     Message alertMsg = Message.createCustomSendMessage(
       targetId: thread.parentId,
-      event: eventKey,
+      event: alertCreateThreadKey,
       chatType: ChatType.GroupChat,
       params: {
-        alertOperatorKey: operator,
-        alertOperatorInfoKey: operatorInfo,
-        alertThreadId: thread.threadId,
-        alertThreadInMsgId: thread.messageId,
+        alertOperatorIdKey: event.from,
+        alertTargetIdKey: thread.threadId,
+        alertTargetNameKey: thread.threadName ?? '',
+        alertTargetParentIdKey: thread.messageId,
       },
     );
 

@@ -149,9 +149,13 @@ class _UserProviderWidgetState extends State<UserProviderWidget> with GroupObser
     List<ChatUIKitProfile> list = [];
     try {
       for (var groupId in groupIds) {
+        debugPrint('updateGroupsProfile: $groupId');
         Group group = await ChatUIKit.instance.fetchGroupInfo(groupId: groupId);
-        ChatUIKitProfile profile =
-            ChatUIKitProfile.group(id: group.groupId, groupName: group.name, avatarUrl: group.extension);
+        ChatUIKitProfile profile = ChatUIKitProfile.group(
+          id: group.groupId,
+          groupName: group.name,
+          avatarUrl: group.extension,
+        );
         list.add(profile);
       }
       UserDataStore().saveUserDatas(list);

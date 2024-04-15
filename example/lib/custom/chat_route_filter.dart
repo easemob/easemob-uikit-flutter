@@ -30,6 +30,7 @@ class ChatRouteFilter {
       viewObserver: viewObserver,
     );
     Future(() async {
+      debugPrint('groupDetail: ${arguments.profile.id}');
       Group group = await ChatUIKit.instance.fetchGroupInfo(groupId: arguments.profile.id);
       ChatUIKitProfile profile = arguments.profile.copyWith(name: group.name, avatarUrl: group.extension);
       ChatUIKitProvider.instance.addProfiles([profile]);
@@ -50,7 +51,27 @@ class ChatRouteFilter {
 
     arguments = arguments.copyWith(
       viewObserver: viewObserver,
+      actionsBuilder: (context, defaultList) {
+        List<ChatUIKitModelAction> moreActions = List.from(defaultList ?? []);
+        moreActions.add(
+          ChatUIKitModelAction(
+            title: '1',
+            icon: 'assets/images/voice_call.png',
+            iconSize: const Size(32, 32),
+            onTap: (context) {},
+          ),
+        );
 
+        moreActions.add(
+          ChatUIKitModelAction(
+            title: '2',
+            icon: 'assets/images/video_call.png',
+            iconSize: const Size(32, 32),
+            onTap: (context) {},
+          ),
+        );
+        return moreActions;
+      },
       // 添加 remark 实现
       contentWidgetBuilder: (context) {
         return InkWell(
@@ -76,8 +97,6 @@ class ChatRouteFilter {
                 // 更新数据，并设置到provider中
                 UserDataStore().saveUserData(profile);
                 ChatUIKitProvider.instance.addProfiles([profile]);
-                // 刷新当前页面
-                viewObserver.refresh();
               }).catchError((e) {
                 EasyLoading.showError(DemoLocalizations.contactRemarkFailed.localString(context));
               });

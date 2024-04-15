@@ -19,16 +19,16 @@ const String alertRecalledKey = 'alertRecalledKey';
 const String alertCreateThreadKey = 'createThreadKey';
 const String alertUpdateThreadKey = 'updateThreadKey';
 const String alertDeleteThreadKey = 'deleteThreadKey';
-
-const String alertOperatorKey = 'alertOperatorKey';
-const String alertOperatorInfoKey = 'alertOperatorInfoKey';
-const String alertThreadId = 'alertThreadId';
-const String alertThreadInMsgId = 'alertThreadInMsgId';
-
-const String alertRecallInfoKey = 'alertRecallInfoKey';
-const String alertRecallMessageTypeKey = 'alertRecallMessageTypeKey';
-const String alertRecallMessageFromKey = 'alertRecallMessageFromKey';
-const String alertRecallMessageDirectionKey = 'alertRecallMessageDirectionKey';
+// 操作人id
+const String alertOperatorIdKey = 'alertOperatorIdKey';
+// 操作人名称
+const String alertOperatorNameKey = 'alertOperatorNameKey';
+// 被操作id
+const String alertTargetIdKey = 'alertTargetIdKey';
+// 被操作名称
+const String alertTargetNameKey = 'alertTargetNameKey';
+// 被操作所属，主要用于thread的所属msgId
+const String alertTargetParentIdKey = 'alertTargetParentIdKey';
 
 const String alertGroupCreateKey = 'createGroupKey';
 const String alertGroupDestroyKey = 'alertGroupDestroyKey';

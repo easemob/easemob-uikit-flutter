@@ -12,8 +12,8 @@ enum ChatUIKitEvent {
   /// Voice type not supported
   voiceTypeNotSupported,
 
-  /// No record permission
-  noRecordPermission,
+  /// No microphone permission
+  noMicrophonePermission,
 
   /// No camera permission
   noCameraPermission,

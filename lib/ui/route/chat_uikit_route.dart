@@ -57,7 +57,7 @@ class ChatUIKitRoute {
     hasInit = true;
   }
 
-  final Map<String, ChatUIKitWidgetBuilder> _uikitRoutes = <String, ChatUIKitWidgetBuilder>{
+  final Map<String, ChatUIKitWidgetBuilder> uikitRoutes = <String, ChatUIKitWidgetBuilder>{
     ChatUIKitRouteNames.changeInfoView: (context, arguments) {
       return ChangeInfoView.arguments(
         arguments as ChangeInfoViewArguments,
@@ -206,6 +206,13 @@ class ChatUIKitRoute {
     return ret;
   }
 
+  static pop(BuildContext context, {int sceneCount = 1}) {
+    int popScene = sceneCount;
+    Navigator.popUntil(context, (route) {
+      return popScene-- <= 0;
+    });
+  }
+
   /// 返回到根页面
   static popToRoot(
     BuildContext context, {
@@ -264,7 +271,7 @@ class ChatUIKitRoute {
   /// ```
   Route? generateRoute<T extends Object>(RouteSettings settings) {
     if (settings.arguments is ChatUIKitViewArguments) {
-      ChatUIKitWidgetBuilder? builder = _uikitRoutes[settings.name];
+      ChatUIKitWidgetBuilder? builder = uikitRoutes[settings.name];
       if (builder != null) {
         final route = MaterialPageRoute(
           builder: (context) {

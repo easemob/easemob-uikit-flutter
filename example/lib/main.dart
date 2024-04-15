@@ -9,7 +9,7 @@ import 'package:em_chat_uikit_example/pages/me/personal/personal_info_page.dart'
 import 'package:em_chat_uikit_example/pages/me/settings/general_page.dart';
 import 'package:em_chat_uikit_example/pages/me/settings/language_page.dart';
 import 'package:em_chat_uikit_example/pages/me/settings/translate_page.dart';
-import 'package:em_chat_uikit_example/tool/chat_route_filter.dart';
+import 'package:em_chat_uikit_example/custom/chat_route_filter.dart';
 import 'package:em_chat_uikit_example/tool/settings_data_store.dart';
 import 'package:em_chat_uikit_example/welcome_page.dart';
 

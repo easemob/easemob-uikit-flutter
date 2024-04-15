@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/universal/chat_uikit_log.dart';
 
 import 'package:flutter/material.dart';
 
@@ -91,6 +92,9 @@ class _ChatUIKitAvatarState extends State<ChatUIKitAvatar> with ChatUIKitProvide
         child: avatarUrl?.isNotEmpty == true
             ? CachedNetworkImage(
                 imageUrl: avatarUrl!,
+                errorListener: (value) {
+                  chatPrint('avatarUrl: $avatarUrl, error: $value');
+                },
                 width: widget.size,
                 height: widget.size,
                 fit: BoxFit.fill,

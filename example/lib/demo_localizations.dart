@@ -237,10 +237,10 @@ mixin DemoLocalizations {
     loginPleaseInputSms: 'Please enter the verification code',
     loginResendSms: 'Resend',
     loggingIn: 'Logging in...',
-    loginCheck: 'By joining, you agree to the',
-    loginTermsOfService: ' Terms of Service',
-    loginAnd: ' and',
-    loginPrivacyPolicy: ' Privacy Policy',
+    loginCheck: 'Agree to',
+    loginTermsOfService: ' Easemob Terms',
+    loginAnd: ' & ',
+    loginPrivacyPolicy: 'Privacy',
     loginPleaseAgreeTermsOfServicePrivacyPolicy: 'Please agree to the Terms of Service and Privacy Policy',
 
     // home

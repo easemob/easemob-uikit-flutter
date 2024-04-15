@@ -90,6 +90,7 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView> {
   @override
   void dispose() {
     _scrollController.dispose();
+    controller.dispose();
     super.dispose();
   }
 

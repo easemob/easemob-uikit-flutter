@@ -21,7 +21,7 @@ class GroupDetailsView extends StatefulWidget {
 
   const GroupDetailsView({
     required this.profile,
-    required this.actionsBuilder,
+    this.actionsBuilder,
     this.appBar,
     this.enableAppBar = true,
     this.attributes,
@@ -31,7 +31,7 @@ class GroupDetailsView extends StatefulWidget {
     this.appBarTrailingActionsBuilder,
     super.key,
   });
-  final ChatUIKitModelActionsBuilder actionsBuilder;
+  final ChatUIKitModelActionsBuilder? actionsBuilder;
   final ChatUIKitProfile profile;
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
@@ -267,7 +267,57 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
 
     List<Widget> items = [];
 
-    List<ChatUIKitModelAction> actions = widget.actionsBuilder.call(context);
+    List<ChatUIKitModelAction> defaultList = [
+      ChatUIKitModelAction(
+        title: ChatUIKitLocal.groupDetailViewSend.localString(context),
+        icon: 'assets/images/chat.png',
+        iconSize: const Size(32, 32),
+        packageName: ChatUIKitImageLoader.packageName,
+        onTap: (context) {
+          ChatUIKitRoute.pushOrPushNamed(
+            context,
+            ChatUIKitRouteNames.messagesView,
+            MessagesViewArguments(
+              profile: widget.profile,
+              attributes: widget.attributes,
+            ),
+          );
+        },
+      ),
+      ChatUIKitModelAction(
+        title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
+        icon: 'assets/images/search_history.png',
+        packageName: ChatUIKitImageLoader.packageName,
+        iconSize: const Size(32, 32),
+        onTap: (context) {
+          ChatUIKitRoute.pushOrPushNamed(
+            context,
+            ChatUIKitRouteNames.searchHistoryView,
+            SearchHistoryViewArguments(
+              profile: widget.profile,
+              attributes: widget.attributes,
+            ),
+          ).then((value) {
+            if (value != null && value is Message) {
+              ChatUIKitRoute.pushOrPushNamed(
+                context,
+                ChatUIKitRouteNames.messagesView,
+                MessagesViewArguments(
+                  profile: widget.profile,
+                  attributes: widget.attributes,
+                  controller: MessageListViewController(
+                    profile: widget.profile,
+                    searchedMsg: value,
+                  ),
+                ),
+              );
+            }
+          });
+        },
+      ),
+    ];
+
+    List<ChatUIKitModelAction> actions = widget.actionsBuilder?.call(context, defaultList) ?? defaultList;
     assert(actions.length <= 5, 'The maximum number of actions is 5');
 
     Widget content = Column(

@@ -12,25 +12,28 @@ class ContactDetailsView extends StatefulWidget {
         contentWidgetBuilder = arguments.contentWidgetBuilder,
         viewObserver = arguments.viewObserver,
         enableAppBar = arguments.enableAppBar,
+        onContactDeleted = arguments.onContactDeleted,
         appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
   const ContactDetailsView({
     required this.profile,
-    required this.actionsBuilder,
+    this.actionsBuilder,
     this.onMessageDidClear,
     this.appBar,
     this.attributes,
     this.contentWidgetBuilder,
     this.viewObserver,
     this.appBarTrailingActionsBuilder,
+    this.onContactDeleted,
     this.enableAppBar = true,
     super.key,
   });
 
   final ChatUIKitProfile profile;
-  final ChatUIKitModelActionsBuilder actionsBuilder;
+  final ChatUIKitModelActionsBuilder? actionsBuilder;
   final VoidCallback? onMessageDidClear;
+  final VoidCallback? onContactDeleted;
   final ChatUIKitAppBar? appBar;
   final String? attributes;
   final WidgetBuilder? contentWidgetBuilder;
@@ -174,7 +177,57 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
 
     List<Widget> items = [];
 
-    List<ChatUIKitModelAction> actions = widget.actionsBuilder.call(context);
+    List<ChatUIKitModelAction> defaultActions = [
+      ChatUIKitModelAction(
+        title: ChatUIKitLocal.contactDetailViewSend.localString(context),
+        icon: 'assets/images/chat.png',
+        iconSize: const Size(32, 32),
+        packageName: ChatUIKitImageLoader.packageName,
+        onTap: (context) {
+          ChatUIKitRoute.pushOrPushNamed(
+            context,
+            ChatUIKitRouteNames.messagesView,
+            MessagesViewArguments(
+              profile: widget.profile,
+              attributes: widget.attributes,
+            ),
+          );
+        },
+      ),
+      ChatUIKitModelAction(
+        title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
+        icon: 'assets/images/search_history.png',
+        packageName: ChatUIKitImageLoader.packageName,
+        iconSize: const Size(32, 32),
+        onTap: (context) {
+          ChatUIKitRoute.pushOrPushNamed(
+            context,
+            ChatUIKitRouteNames.searchHistoryView,
+            SearchHistoryViewArguments(
+              profile: widget.profile,
+              attributes: widget.attributes,
+            ),
+          ).then((value) {
+            if (value != null && value is Message) {
+              ChatUIKitRoute.pushOrPushNamed(
+                context,
+                ChatUIKitRouteNames.messagesView,
+                MessagesViewArguments(
+                  profile: widget.profile,
+                  attributes: widget.attributes,
+                  controller: MessageListViewController(
+                    profile: widget.profile,
+                    searchedMsg: value,
+                  ),
+                ),
+              );
+            }
+          });
+        },
+      ),
+    ];
+
+    List<ChatUIKitModelAction> actions = widget.actionsBuilder?.call(context, defaultActions) ?? defaultActions;
     assert(actions.length <= 5, 'The maximum number of actions is 5');
 
     Widget content = Column(
@@ -375,7 +428,8 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
     );
     if (ret == true) {
       ChatUIKit.instance.deleteContact(userId: profile!.id).then((value) {
-        ChatUIKitRoute.popToRoot(context);
+        widget.onContactDeleted?.call();
+        ChatUIKitRoute.pop(context);
       }).catchError((e) {});
     }
   }

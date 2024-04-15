@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
 
 import 'package:flutter/material.dart';
 
@@ -209,8 +210,8 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
   void ensureDelete() async {
     showChatUIKitDialog(
       context: context,
-      title: ChatUIKitLocal.groupDeleteMembersViewAlertTitle.localString(context),
-      content: ChatUIKitLocal.groupDeleteMembersViewAlertSubTitle.localString(context),
+      title: Strings.format(
+          ChatUIKitLocal.groupDeleteMembersViewAlertTitle.localString(context), [selectedProfiles.length]),
       items: [
         ChatUIKitDialogItem.cancel(label: ChatUIKitLocal.groupDeleteMembersViewAlertButtonCancel.localString(context)),
         ChatUIKitDialogItem.confirm(

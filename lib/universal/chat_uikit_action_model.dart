@@ -8,6 +8,7 @@ class ChatUIKitModelAction {
     required this.icon,
     this.iconSize,
     this.packageName,
+    this.singleLine = false,
     this.onTap,
   });
 
@@ -16,6 +17,8 @@ class ChatUIKitModelAction {
   final String icon;
   final Size? iconSize;
   final String? packageName;
+  // 表示是唯一的按钮，不允许其他按钮存在
+  final bool singleLine;
 }
 
 class ChatUIKitAppBarTrailingAction {
@@ -30,6 +33,9 @@ class ChatUIKitAppBarTrailingAction {
   ChatUIKitAppBarTrailingAction copyWith({
     Widget? child,
   }) {
-    return ChatUIKitAppBarTrailingAction(child: child ?? this.child, onTap: onTap);
+    return ChatUIKitAppBarTrailingAction(
+      child: child ?? this.child,
+      onTap: onTap,
+    );
   }
 }

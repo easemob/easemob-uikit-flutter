@@ -499,7 +499,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 centerTitle: false,
                 leading: ChatUIKitAvatar(
                   onTap: () {
-                    pushNextPage(widget.profile);
+                    pushNextPage(controller.profile);
                   },
                   avatarUrl: controller.profile.avatarUrl,
                 ),
@@ -526,10 +526,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                               ),
                             )
                           : controller.conversationType == ConversationType.GroupChat && ChatUIKitSettings.enableThread
-                              ? Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                                  child: ChatUIKitImageLoader.messageLongPressThread(),
-                                )
+                              ? ChatUIKitImageLoader.messageLongPressThread()
                               : const SizedBox(),
                     )
                   ];
@@ -696,12 +693,13 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     BuildContext context,
     MessageModel model,
   ) {
+    Widget? content = widget.alertItemBuilder?.call(context, model);
+    if (content != null) {
+      return content;
+    }
+
     if (model.message.isTimeMessageAlert) {
-      Widget? content = widget.alertItemBuilder?.call(
-        context,
-        model,
-      );
-      content ??= ChatUIKitMessageListViewAlertItem(
+      content = ChatUIKitMessageListViewAlertItem(
         infos: [
           MessageAlertAction(
             text: ChatUIKitTimeFormatter.instance.formatterHandler
@@ -713,13 +711,11 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       return content;
     }
 
+    // 如果是撤回消息提醒
     if (model.message.isRecallAlert) {
       Map<String, String>? map = (model.message.body as CustomMessageBody).params;
-      Widget? content = widget.alertItemBuilder?.call(
-        context,
-        model,
-      );
-      String? from = map?[alertRecallMessageFromKey];
+
+      String? from = map?[alertOperatorIdKey];
       String? showName;
       if (ChatUIKit.instance.currentUserId == from) {
         showName = ChatUIKitLocal.alertYou.localString(context);
@@ -733,56 +729,53 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       content ??= ChatUIKitMessageListViewAlertItem(
         infos: [
           MessageAlertAction(
-            text: '$showName${ChatUIKitLocal.alertRecallInfo.localString(context)}',
+            text: '${showName ?? ""}${ChatUIKitLocal.alertRecallInfo.localString(context)}',
           ),
         ],
       );
       return content;
     }
 
-    if (model.message.isCreateGroupAlert) {
-      Map<String, String>? map = (model.message.body as CustomMessageBody).params;
-      Widget? content = widget.alertItemBuilder?.call(
-        context,
-        model,
+    Map<String, String>? map = (model.message.body as CustomMessageBody).params;
+    String? operator = map?[alertOperatorIdKey];
+    String? targetId = map?[alertTargetIdKey];
+    ChatUIKitProfile? operatorProfile;
+    if (operator != null) {
+      operatorProfile = ChatUIKitProvider.instance.getProfile(
+        ChatUIKitProfile.contact(id: operator),
       );
-      String? operator = map![alertOperatorKey]!;
-      String showName;
-      if (ChatUIKit.instance.currentUserId == operator) {
-        showName = ChatUIKitLocal.alertYou.localString(context);
-      } else {
-        ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
-          ChatUIKitProfile.contact(id: operator),
-        );
-        showName = profile.showName;
+    }
+    String showName;
+    if (ChatUIKit.instance.currentUserId == operator) {
+      showName = ChatUIKitLocal.alertYou.localString(context);
+    } else {
+      showName = operatorProfile?.showName ?? '';
+    }
+
+    // 如果是创建群组消息提醒
+    if (model.message.isCreateGroupAlert) {
+      ChatUIKitProfile? targetProfile;
+      if (targetId != null) {
+        targetProfile = ChatUIKitProvider.instance.getProfile(ChatUIKitProfile.group(id: targetId));
       }
+
       content ??= ChatUIKitMessageListViewAlertItem(
         infos: [
           MessageAlertAction(
             text: showName,
             onTap: () {
-              ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
-                ChatUIKitProfile.contact(
-                  id: map[alertOperatorKey]!,
-                ),
-              );
-              pushNextPage(profile);
+              if (operatorProfile != null) {
+                pushNextPage(operatorProfile);
+              }
             },
           ),
           MessageAlertAction(text: ChatUIKitLocal.messagesViewAlertGroupInfoTitle.localString(context)),
           MessageAlertAction(
-            text: () {
-              String? groupId = map[alertOperatorInfoKey];
-              if (groupId?.isNotEmpty == true) {
-                ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
-                  ChatUIKitProfile.group(id: groupId!),
-                );
-                return profile.showName;
-              }
-              return '';
-            }(),
+            text: targetProfile?.showName ?? "",
             onTap: () {
-              pushNextPage(profile!);
+              if (targetProfile != null) {
+                pushNextPage(targetProfile);
+              }
             },
           ),
         ],
@@ -791,57 +784,43 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     }
 
     if (model.message.isCreateThreadAlert) {
-      Map<String, String>? map = (model.message.body as CustomMessageBody).params;
-      Widget? content = widget.alertItemBuilder?.call(
-        context,
-        model,
-      );
-
-      String? operator = map![alertOperatorKey]!;
-      String showName;
-      if (ChatUIKit.instance.currentUserId == operator) {
-        showName = ChatUIKitLocal.alertYou.localString(context);
-      } else {
-        ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
-          ChatUIKitProfile.contact(id: operator),
-        );
-        showName = profile.showName;
-      }
       content ??= ChatUIKitMessageListViewAlertItem(
         infos: [
           MessageAlertAction(
             text: showName,
             onTap: () {
-              ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
-                ChatUIKitProfile.contact(
-                  id: map[alertOperatorKey]!,
-                ),
-              );
-              pushNextPage(profile);
+              if (operatorProfile != null) {
+                pushNextPage(operatorProfile);
+              }
             },
           ),
           MessageAlertAction(text: ChatUIKitLocal.messagesViewAlertThreadInfoTitle.localString(context)),
           MessageAlertAction(
-            text: map[alertOperatorInfoKey] ?? '',
+            text: map?[alertTargetNameKey] ?? map?[alertTargetIdKey] ?? '',
             onTap: () async {
-              String msgId = map[alertThreadInMsgId]!;
-
+              String? msgId = map?[alertTargetParentIdKey]!;
+              if (msgId == null) return;
               ChatUIKit.instance.loadMessage(messageId: msgId).then((value) {
                 if (value != null) {
                   value.chatThread().then((thread) {
+                    if (thread == null) return;
                     MessageModel model = MessageModel(message: value, thread: thread);
                     ChatUIKitRoute.pushOrPushNamed(
                       context,
                       ChatUIKitRouteNames.threadMessagesView,
                       ThreadMessagesViewArguments(
                         subtitle: controller.profile.showName,
-                        controller: ThreadMessagesViewController(
-                          model: model,
-                        ),
+                        controller: ThreadMessagesViewController(model: model),
                         attributes: widget.attributes,
                       ),
                     );
                   });
+                } else {
+                  String? threadId = map?[alertTargetIdKey];
+                  if (threadId != null) {
+                    // ChatThread? thread = ChatThread(threadId: threadId);
+                    // ChatUIKit.instance.fetchChatThread(chatThreadId: map[alertTargetIdKey])
+                  }
                 }
               });
             },
@@ -1500,7 +1479,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
             onTap: (context, model) {
               showChatUIKitDialog(
                 title: ChatUIKitLocal.messagesViewShareContactAlertTitle.localString(context),
-                content: ChatUIKitLocal.messagesViewShareContactAlertSubTitle.localString(context),
+                content: Strings.format(
+                    '${ChatUIKitLocal.messagesViewShareContactAlertSubTitle.localString(context)}"%a"${ChatUIKitLocal.messagesViewShareContactAlertSubTitleTo.localString(context)}"%a"?',
+                    [model.profile.showName, controller.profile.showName]),
                 context: context,
                 items: [
                   ChatUIKitDialogItem.cancel(
@@ -1617,25 +1598,13 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
   void pushNextPage(ChatUIKitProfile profile) async {
     clearAllType();
 
-    // 如果是自己
+    // 如果点击的是自己头像
     if (profile.id == ChatUIKit.instance.currentUserId) {
       pushToCurrentUser(profile);
-    }
-    // 如果是当前聊天对象
-    else if (controller.profile.id == profile.id) {
-      // 当前聊天对象是群聊
-      if (controller.conversationType == ConversationType.GroupChat) {
-        // 跳转下一页，此时需要先从缓存中取得最新的，之后再push
-        ChatUIKitProfile? tmpProfile = ChatUIKitProvider.instance.profilesCache[profile.id];
-        pushToGroupInfo(tmpProfile ?? profile);
-      }
-      // 当前聊天对象，是单聊
-      else {
-        pushCurrentChatter(profile);
-      }
-    }
-    // 以上都不是时，检查通讯录
-    else {
+    } else if (profile.type == ChatUIKitProfileType.group) {
+      // 点击的是群聊头像
+      pushToGroupInfo(profile);
+    } else {
       List<String> contacts = await ChatUIKit.instance.getAllContactIds();
       // 是好友，不是当前聊天对象，跳转到好友页面，并可以发消息
       if (contacts.contains(profile.id)) {
@@ -1661,62 +1630,6 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     );
   }
 
-  // 处理当前聊天对象，点击appBar头像，点击对方消息头像，点击名片
-  void pushCurrentChatter(ChatUIKitProfile profile) {
-    ChatUIKitRoute.pushOrPushNamed(
-      context,
-      ChatUIKitRouteNames.contactDetailsView,
-      ContactDetailsViewArguments(
-          attributes: widget.attributes,
-          onMessageDidClear: () {
-            replyMessage = null;
-            controller.clearMessages();
-          },
-          profile: profile,
-          actionsBuilder: (context) {
-            return [
-              ChatUIKitModelAction(
-                title: ChatUIKitLocal.contactDetailViewSend.localString(context),
-                icon: 'assets/images/chat.png',
-                iconSize: const Size(32, 32),
-                packageName: ChatUIKitImageLoader.packageName,
-                onTap: (context) {
-                  Navigator.of(context).pop();
-                },
-              ),
-              ChatUIKitModelAction(
-                title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
-                icon: 'assets/images/search_history.png',
-                packageName: ChatUIKitImageLoader.packageName,
-                iconSize: const Size(32, 32),
-                onTap: (context) {
-                  ChatUIKitRoute.pushOrPushNamed(
-                    context,
-                    ChatUIKitRouteNames.searchHistoryView,
-                    SearchHistoryViewArguments(
-                      profile: profile,
-                      attributes: widget.attributes,
-                    ),
-                  ).then((value) {
-                    if (value != null && value is Message) {
-                      int count = 0;
-                      Navigator.of(context).popUntil((route) {
-                        count++;
-                        if (count == 2) return true;
-                        return route.settings.name == ChatUIKitRouteNames.messagesView || route.isFirst;
-                      });
-                      controller.jumpToSearchedMessage(value);
-                    }
-                  });
-                },
-              ),
-            ];
-          }),
-    ).then((value) {
-      controller.refresh();
-    });
-  }
-
   // 处理当前聊天对象是群时
   void pushToGroupInfo(ChatUIKitProfile profile) {
     ChatUIKitRoute.pushOrPushNamed(
@@ -1729,7 +1642,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
             replyMessage = null;
             controller.clearMessages();
           },
-          actionsBuilder: (context) {
+          actionsBuilder: (context, defaultList) {
             return [
               ChatUIKitModelAction(
                 title: ChatUIKitLocal.groupDetailViewSend.localString(context),
@@ -1746,6 +1659,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 packageName: ChatUIKitImageLoader.packageName,
                 iconSize: const Size(32, 32),
                 onTap: (context) {
+                  debugPrint('message default search');
                   ChatUIKitRoute.pushOrPushNamed(
                     context,
                     ChatUIKitRouteNames.searchHistoryView,
@@ -1773,7 +1687,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     });
   }
 
-  // 处理不是当前聊天对象的好友
+  // 处理好友信息
   void pushContactDetail(ChatUIKitProfile profile) {
     ChatUIKitRoute.pushOrPushNamed(
       context,
@@ -1781,20 +1695,19 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       ContactDetailsViewArguments(
           profile: profile,
           attributes: widget.attributes,
-          actionsBuilder: (context) {
+          onContactDeleted: () {
+            ChatUIKitRoute.pop(context);
+          },
+          actionsBuilder: (context, defaultList) {
+            debugPrint('message defaultList');
             return [
               ChatUIKitModelAction(
                 title: ChatUIKitLocal.contactDetailViewSend.localString(context),
                 icon: 'assets/images/chat.png',
+                iconSize: const Size(32, 32),
                 packageName: ChatUIKitImageLoader.packageName,
                 onTap: (ctx) {
-                  Navigator.of(context).pushNamed(
-                    ChatUIKitRouteNames.messagesView,
-                    arguments: MessagesViewArguments(
-                      profile: profile,
-                      attributes: widget.attributes,
-                    ),
-                  );
+                  ChatUIKitRoute.pop(context);
                 },
               ),
               ChatUIKitModelAction(
@@ -1803,6 +1716,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 packageName: ChatUIKitImageLoader.packageName,
                 iconSize: const Size(32, 32),
                 onTap: (context) {
+                  debugPrint('message default search');
                   ChatUIKitRoute.pushOrPushNamed(
                     context,
                     ChatUIKitRouteNames.searchHistoryView,
@@ -1830,7 +1744,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     });
   }
 
-  // 处理名片信息非好友
+  // 处理非好友信息
   void pushRequestDetail(ChatUIKitProfile profile) {
     ChatUIKitRoute.pushOrPushNamed(
       context,

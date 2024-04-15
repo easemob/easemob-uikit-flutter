@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
 
 import 'package:flutter/material.dart';
 
@@ -138,7 +139,8 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
 
   void showConfirmDialog(BuildContext context, ContactItemModel model) async {
     bool? ret = await showChatUIKitDialog(
-      title: ChatUIKitLocal.groupChangeOwnerViewAlertTitle.localString(context),
+      title: Strings.format(
+          '${ChatUIKitLocal.groupChangeOwnerViewAlertTitle.localString(context)}"%a"?', [model.profile.nickname]),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(

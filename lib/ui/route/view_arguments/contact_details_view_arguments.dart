@@ -5,21 +5,23 @@ import 'package:flutter/widgets.dart';
 class ContactDetailsViewArguments implements ChatUIKitViewArguments {
   ContactDetailsViewArguments({
     required this.profile,
-    required this.actionsBuilder,
+    this.actionsBuilder,
     this.onMessageDidClear,
     this.appBar,
     this.viewObserver,
     this.contentWidgetBuilder,
     this.attributes,
     this.appBarTrailingActionsBuilder,
+    this.onContactDeleted,
     this.enableAppBar = true,
   });
 
   final ChatUIKitProfile profile;
-  final ChatUIKitModelActionsBuilder actionsBuilder;
+  final ChatUIKitModelActionsBuilder? actionsBuilder;
   final VoidCallback? onMessageDidClear;
   final ChatUIKitAppBar? appBar;
   final WidgetBuilder? contentWidgetBuilder;
+  final VoidCallback? onContactDeleted;
   @override
   String? attributes;
   @override
@@ -33,6 +35,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
     VoidCallback? onMessageDidClear,
     ChatUIKitAppBar? appBar,
     ChatUIKitViewObserver? viewObserver,
+    VoidCallback? onContactDeleted,
     String? attributes,
     WidgetBuilder? contentWidgetBuilder,
     ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder,
@@ -48,6 +51,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
       contentWidgetBuilder: contentWidgetBuilder ?? this.contentWidgetBuilder,
       appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
       enableAppBar: enableAppBar ?? this.enableAppBar,
+      onContactDeleted: onContactDeleted ?? this.onContactDeleted,
     );
   }
 }

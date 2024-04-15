@@ -37,7 +37,7 @@ class _ToastPageState extends State<ToastPage>
     } else if (event == ChatUIKitEvent.messageDownloading) {
       EasyLoading.showInfo('下载中');
     } else if (event == ChatUIKitEvent.noCameraPermission ||
-        event == ChatUIKitEvent.noRecordPermission ||
+        event == ChatUIKitEvent.noMicrophonePermission ||
         event == ChatUIKitEvent.noStoragePermission) {
       EasyLoading.showError('权限不足');
     } else if (event == ChatUIKitEvent.voiceTypeNotSupported) {

@@ -210,7 +210,6 @@ class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
         ChatUIKitRouteNames.threadMessagesView,
         ThreadMessagesViewArguments(
           controller: ThreadMessagesViewController(
-            thread: thread,
             model: value,
           ),
           attributes: widget.attributes,

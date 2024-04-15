@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObserver, ThreadObserver {
   MessageModel? model;
   ChatThread? thread;
+
   bool loadFinished = false;
   String? cursor;
   final int pageSize;
@@ -23,7 +24,6 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
 
   ThreadMessagesViewController({
     this.model,
-    this.thread,
     this.willSendHandler,
     this.pageSize = 10,
   }) {
@@ -151,7 +151,7 @@ class ThreadMessagesViewController with ChangeNotifier, ChatObserver, MessageObs
       thread = createdThread;
       loadFinished = true;
       hasPermission = true;
-      refresh();
+      insertCreateMessage();
       return true;
     } catch (e) {
       chatPrint('create thread error: $e');

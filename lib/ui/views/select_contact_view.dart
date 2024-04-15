@@ -85,6 +85,7 @@ class _SelectContactViewState extends State<SelectContactView> {
           : widget.appBar ??
               ChatUIKitAppBar(
                 title: widget.title,
+                centerTitle: false,
                 showBackButton: true,
                 trailingActions: () {
                   List<ChatUIKitAppBarTrailingAction> actions = [

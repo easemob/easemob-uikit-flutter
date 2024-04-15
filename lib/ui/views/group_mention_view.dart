@@ -89,7 +89,7 @@ class _GroupMentionViewState extends State<GroupMentionView> {
               ChatUIKitAppBar(
                 showBackButton: true,
                 centerTitle: false,
-                title: widget.title ?? '@${ChatUIKitLocal.groupMembersViewTitle.localString(context)}',
+                title: widget.title ?? '@${ChatUIKitLocal.groupMembersMentionViewTitle.localString(context)}',
                 trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
               ),
       body: ValueListenableBuilder(
