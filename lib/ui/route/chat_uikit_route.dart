@@ -250,7 +250,6 @@ class ChatUIKitRoute {
     ChatUIKitRouteBackModel? model,
   }) {
     _lastBackModel = model;
-    // Navigator.of(context).popAndPushNamed(ChatUIKitRouteNames.messagesView);
     Navigator.of(context).popUntil((route) {
       chatPrint('route.settings.name: ${route.settings.toString()}');
       return route.settings.name == ChatUIKitRouteNames.messagesView || route.isFirst;
@@ -291,12 +290,13 @@ class ChatUIKitRoute {
   /// 路由跳转，如果没有初始化，则使用 [MaterialPageRoute] 进行跳转。
   static Future<T?> pushOrPushNamed<T extends Object?>(
     BuildContext context,
-    String pushNamed,
+    String pushName,
     ChatUIKitViewArguments arguments,
   ) {
+    addPushName(pushName);
     if (hasInit) {
       return Navigator.of(context).pushNamed(
-        pushNamed,
+        pushName,
         arguments: arguments,
       );
     } else {
@@ -304,7 +304,7 @@ class ChatUIKitRoute {
         MaterialPageRoute(
           builder: (context) {
             return ChatUIKitRouteNames.getWidgetFromName(
-              pushNamed,
+              pushName,
               arguments,
             );
           },
@@ -312,4 +312,11 @@ class ChatUIKitRoute {
       );
     }
   }
+
+  static void addPushName(String pushName) {
+    pushedName.add(pushName);
+    chatPrint('pushedName: $pushedName');
+  }
+
+  static List<String> pushedName = [];
 }

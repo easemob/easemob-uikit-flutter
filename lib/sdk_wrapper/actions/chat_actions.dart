@@ -216,6 +216,7 @@ mixin ChatActions on ChatWrapper {
     int pageSize = 20,
   }) {
     return checkResult(ChatSDKEvent.fetchConversations, () {
+      // ignore: deprecated_member_use
       return Client.getInstance.chatManager.fetchConversation(
         cursor: cursor,
         pageSize: pageSize,
@@ -271,6 +272,7 @@ mixin ChatActions on ChatWrapper {
     String startMsgId = '',
   }) {
     return checkResult(ChatSDKEvent.fetchHistoryMessages, () {
+      // ignore: deprecated_member_use
       return Client.getInstance.chatManager.fetchHistoryMessages(
         conversationId: conversationId,
         type: type,
@@ -326,6 +328,7 @@ mixin ChatActions on ChatWrapper {
     SearchDirection direction = SearchDirection.Up,
   }) {
     return checkResult(ChatSDKEvent.searchLocalMessage, () {
+      // ignore: deprecated_member_use
       return Client.getInstance.chatManager.searchMsgFromDB(
         keywords,
         timestamp: timestamp,
@@ -465,6 +468,7 @@ mixin ChatActions on ChatWrapper {
     int pageSize = 20,
   }) {
     return checkResult(ChatSDKEvent.fetchPinnedConversations, () {
+      // ignore: deprecated_member_use
       return Client.getInstance.chatManager.fetchPinnedConversations(
         cursor: cursor,
         pageSize: pageSize,

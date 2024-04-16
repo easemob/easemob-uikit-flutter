@@ -51,27 +51,7 @@ class ChatRouteFilter {
 
     arguments = arguments.copyWith(
       viewObserver: viewObserver,
-      actionsBuilder: (context, defaultList) {
-        List<ChatUIKitModelAction> moreActions = List.from(defaultList ?? []);
-        moreActions.add(
-          ChatUIKitModelAction(
-            title: '1',
-            icon: 'assets/images/voice_call.png',
-            iconSize: const Size(32, 32),
-            onTap: (context) {},
-          ),
-        );
 
-        moreActions.add(
-          ChatUIKitModelAction(
-            title: '2',
-            icon: 'assets/images/video_call.png',
-            iconSize: const Size(32, 32),
-            onTap: (context) {},
-          ),
-        );
-        return moreActions;
-      },
       // 添加 remark 实现
       contentWidgetBuilder: (context) {
         return InkWell(

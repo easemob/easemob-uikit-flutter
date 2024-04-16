@@ -82,7 +82,3 @@ typedef ChatUIKitAppBarTrailingActionsBuilder = List<ChatUIKitAppBarTrailingActi
   List<ChatUIKitAppBarTrailingAction>? defaultList,
 );
 
-typedef ChatUIKitRouteBuilder = Route Function({
-  required WidgetBuilder builder,
-  required RouteSettings? settings,
-});
