@@ -16,7 +16,7 @@ class ChatUIKitAlphabeticalWidget extends StatefulWidget {
     this.selectionHeight = 32,
     this.selectionBackgroundColor,
     this.special = '#',
-    this.targets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#',
+    this.sortAlphabetical = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#',
     this.rightPadding = 2,
     this.onTap,
     this.onTapCancel,
@@ -27,7 +27,7 @@ class ChatUIKitAlphabeticalWidget extends StatefulWidget {
     super.key,
   });
 
-  final String targets;
+  final String sortAlphabetical;
   final TextStyle? selectionTextStyle;
   final double selectionHeight;
   final Color? selectionBackgroundColor;
@@ -262,7 +262,9 @@ class _ChatUIKitAlphabeticalWidgetState extends State<ChatUIKitAlphabeticalWidge
 
   List<ChatUIKitListItemModelBase> sortList() {
     targets.clear();
-    List<String> targetList = widget.targets.toLowerCase().split('');
+    List<String> targetList = ChatUIKitSettings.sortAlphabetical.isNotEmpty
+        ? ChatUIKitSettings.sortAlphabetical.toLowerCase().split('')
+        : widget.sortAlphabetical.toLowerCase().split('');
 
     List<ChatUIKitListItemModelBase> ret = [];
     List<NeedAlphabetical> tmp = [];
