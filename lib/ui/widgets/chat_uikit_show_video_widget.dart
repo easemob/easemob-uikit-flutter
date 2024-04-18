@@ -16,7 +16,7 @@ class ChatUIKitShowVideoWidget extends StatefulWidget {
     super.key,
   });
 
-  final void Function(Message message)? onLongPressed;
+  final void Function(BuildContext context, Message message)? onLongPressed;
 
   final Message message;
 
@@ -244,7 +244,7 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
 
   void onLongPressed() {
     _controller?.pause();
-    widget.onLongPressed?.call(message!);
+    widget.onLongPressed?.call(context, message!);
   }
 
   void safeSetState(VoidCallback fn) {

@@ -187,6 +187,16 @@ mixin ChatUIKitLocal {
   static const reportMessageViewConfirm = 'report_message_view_confirm';
   static const reportMessageViewCancel = 'report_message_view_cancel';
 
+  static const reportTarget1 = 'tag1';
+  static const reportTarget2 = 'tag2';
+  static const reportTarget3 = 'tag3';
+  static const reportTarget4 = 'tag4';
+  static const reportTarget5 = 'tag5';
+  static const reportTarget6 = 'tag6';
+  static const reportTarget7 = 'tag7';
+  static const reportTarget8 = 'tag8';
+  static const reportTarget9 = 'tag9';
+
   static const selectContactViewSearchHint = 'select_contact_view_search_hint';
 
   static const nonSupportMessage = 'non_support_message';
@@ -398,6 +408,16 @@ mixin ChatUIKitLocal {
     reportMessageViewReportReasons: '举报原因',
     reportMessageViewConfirm: '举报',
     reportMessageViewCancel: '取消',
+    // report reason
+    reportTarget1: '不受欢迎的商业内容或垃圾内容',
+    reportTarget2: '色情或露骨内容',
+    reportTarget3: '虐待儿童',
+    reportTarget4: '仇恨言论或过于写实的暴力内容',
+    reportTarget5: '宣扬恐怖主义',
+    reportTarget6: '骚扰或欺凌',
+    reportTarget7: '自杀或自残',
+    reportTarget8: '虚假信息',
+    reportTarget9: '其他',
     selectContactViewSearchHint: '搜索联系人',
     nonSupportMessage: '不支持的消息类型',
     conversationListItemMention: '有人@我',
@@ -494,7 +514,7 @@ mixin ChatUIKitLocal {
         'After clearing the chat history, you will not be able to view the chat history with this contact.',
     contactDetailViewClearChatHistoryAlertButtonConfirm: 'Confirm',
     contactDetailViewClearChatHistoryAlertButtonCancel: 'Cancel',
-    contactDetailViewDelete: 'Delete contact',
+    contactDetailViewDelete: 'Delete Contact',
     contactDetailViewCancel: 'Cancel',
     contactDetailViewDeleteAlertTitle: 'Delete this contact?',
     contactDetailViewDeleteAlertSubTitle: 'Deleting the contact will clear the chat history.',
@@ -504,9 +524,9 @@ mixin ChatUIKitLocal {
     forwardMessage: 'Forward',
     forwardedMessage: 'Forwarded',
     forwardedMessageDownloadError: 'Download failed',
-    groupDetailViewSend: 'Send message',
+    groupDetailViewSend: 'Chat',
     groupDetailViewDoNotDisturb: 'Mute Notifications',
-    groupDetailViewClearChatHistory: 'Clear chat history',
+    groupDetailViewClearChatHistory: 'Clear Chat History',
     groupDetailViewClearChatHistoryAlertButtonConfirm: 'Confirm',
     groupDetailViewClearChatHistoryAlertButtonCancel: 'Cancel',
     groupDetailViewCancel: 'Cancel',
@@ -520,8 +540,8 @@ mixin ChatUIKitLocal {
     groupDetailViewDisbandAlertSubTitle: 'Disbanding the group will clear the chat history.',
     groupDetailViewDisbandAlertButtonConfirm: 'Confirm',
     groupDetailViewDisbandAlertButtonCancel: 'Cancel',
-    groupDetailViewLeaveGroup: 'Leave group',
-    groupDetailViewLeaveAlertTitle: 'Leave group',
+    groupDetailViewLeaveGroup: 'Leave Group',
+    groupDetailViewLeaveAlertTitle: 'Leave Group',
     groupDetailViewLeaveAlertSubTitle: 'Leaving a group will also delete the chat history.',
     groupDetailViewLeaveAlertButtonConfirm: 'Confirm',
     groupDetailViewLeaveAlertButtonCancel: 'Cancel',
@@ -581,9 +601,9 @@ mixin ChatUIKitLocal {
     messagesViewRecallMessageAlertSubTitle: 'After the recall, the message will be deleted.',
     messagesViewRecallMessageAlertButtonConfirm: 'Recall',
     messagesViewRecallMessageAlertButtonCancel: 'Cancel',
-    messagesViewSelectContactTitle: 'Select contact',
+    messagesViewSelectContactTitle: 'Select Contact',
     messagesViewSelectContactCancel: 'Cancel',
-    messagesViewShareContactAlertTitle: 'Share contact',
+    messagesViewShareContactAlertTitle: 'Share Contact',
     messagesViewShareContactAlertSubTitle: 'Share Contact ',
     messagesViewShareContactAlertSubTitleTo: ' to ',
     messagesViewShareContactAlertButtonConfirm: 'Share',
@@ -597,16 +617,27 @@ mixin ChatUIKitLocal {
     messageCellCombineContact: 'Card',
     messageCellCombineLocation: 'Location',
     messageCellCombineCombine: 'Chat History',
-    newRequestDetailsViewAddContact: 'Add contact',
+    newRequestDetailsViewAddContact: 'Add Contact',
     newRequestsViewTitle: 'New Requests',
-    reportMessageViewTitle: 'Report message',
-    reportMessageViewReportReasons: 'Report reasons',
+    reportMessageViewTitle: 'Report Message',
+    reportMessageViewReportReasons: 'Report Reasons',
     reportMessageViewConfirm: 'Report',
     reportMessageViewCancel: 'Cancel',
-    selectContactViewSearchHint: 'Search contacts',
+    // report reason
+    reportTarget1: 'Unwelcome commercial content or spam',
+    reportTarget2: 'Pornographic or explicit content',
+    reportTarget3: 'Child abuse',
+    reportTarget4: 'Hate speech or graphic violence',
+    reportTarget5: 'Promote terrorism',
+    reportTarget6: 'Harassment or bullying',
+    reportTarget7: 'Suicide or self harm',
+    reportTarget8: 'False information',
+    reportTarget9: 'Others',
+
+    selectContactViewSearchHint: 'Search Contacts',
     nonSupportMessage: 'Unsupported message type',
     conversationListItemMention: 'Mentioned',
-    listViewLoadFailed: 'Load failed',
+    listViewLoadFailed: 'Load Failed',
     listViewReload: 'Reload',
     quoteWidgetTitleImage: 'Image',
     quoteWidgetTitleVideo: 'Video',
@@ -632,13 +663,13 @@ mixin ChatUIKitLocal {
     bottomSheetCancel: 'Cancel',
     threadsViewTitle: 'All topics',
     threadNoLastMessage: 'No message',
-    threadsMessageLeave: 'Leave topic',
-    threadsMessageMembers: 'Topic members',
-    threadsMessageEdit: 'Edit topic',
-    threadsMessageDestroy: 'Delete topic',
-    threadEditName: 'Topic name',
-    threadNewName: 'New topic name',
-    searchHistory: 'Search history',
+    threadsMessageLeave: 'Leave Topic',
+    threadsMessageMembers: 'Topic Members',
+    threadsMessageEdit: 'Edit Topic',
+    threadsMessageDestroy: 'Delete Topic',
+    threadEditName: 'Topic Name',
+    threadNewName: 'New Topic Name',
+    searchHistory: 'Search History',
   };
 }
 

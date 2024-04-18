@@ -385,6 +385,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
       context: context,
       items: [
         ChatUIKitBottomSheetItem.destructive(
+          actionType: MessageLongPressActionType.delete,
           label: ChatUIKitLocal.contactDetailViewDelete.localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);

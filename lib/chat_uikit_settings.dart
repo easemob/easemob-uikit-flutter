@@ -29,23 +29,35 @@ class ChatUIKitSettings {
   /// 撤回消息的时间限制，单位秒
   static int recallExpandTime = 120;
 
-  static Map<String, String> reportMessageReason = {
-    'tag1': '不受欢迎的商业内容或垃圾内容',
-    'tag2': '色情或露骨内容',
-    'tag3': '虐待儿童',
-    'tag4': '仇恨言论或过于写实的暴力内容',
-    'tag5': '宣扬恐怖主义',
-    'tag6': '骚扰或欺凌',
-    'tag7': '自杀或自残',
-    'tag8': '虚假信息',
-    'tag9': '其他',
-  };
+  /// 消息举报tag, 可以用于自定义，举报的 reason 需要写在国际化文件中，国际化文件的key 好和tag 一致。如 [ChatUIKitLocal.reportTarget1]
+  static List<String> reportMessageReason = [
+    'tag1',
+    'tag2',
+    'tag3',
+    'tag4',
+    'tag5',
+    'tag6',
+    'tag7',
+    'tag8',
+    'tag9',
+  ];
 
-  // v2
-  static String translateTargetLanguage = 'zh-Hans';
+  // static Map<String, String> reportMessageReason = {
+  //   'tag1': '不受欢迎的商业内容或垃圾内容',
+  //   'tag2': '色情或露骨内容',
+  //   'tag3': '虐待儿童',
+  //   'tag4': '仇恨言论或过于写实的暴力内容',
+  //   'tag5': '宣扬恐怖主义',
+  //   'tag6': '骚扰或欺凌',
+  //   'tag7': '自杀或自残',
+  //   'tag8': '虚假信息',
+  //   'tag9': '其他',
+  // };
 
+  /// 输入状态(暂时只有flutter版本支持)
   static bool enableInputStatus = false;
 
+  /// 消息表情回复 bottom sheet title 展示内容, 该内容需要包含在表情列表 [ChatUIKitEmojiData.emojiList] 中。
   static List<String> favoriteReaction = [
     '\u{1F44D}',
     '\u{2764}',
@@ -55,6 +67,7 @@ class ChatUIKitSettings {
     '\u{1F389}',
   ];
 
+  /// 消息长按菜单
   static List<MessageLongPressActionType> msgItemLongPressActions = [
     MessageLongPressActionType.reaction,
     MessageLongPressActionType.copy, // only text message
@@ -69,9 +82,41 @@ class ChatUIKitSettings {
     MessageLongPressActionType.delete,
   ];
 
-  static bool enableThread = true;
-  static bool enableTranslation = true;
-  static bool enableReaction = true;
+  /// 消息翻译目标语言
+  static String translateTargetLanguage = 'zh-Hans';
 
+  /// 是否开启 thread 功能
+  static bool enableMessageThread = false;
+
+  /// 是否开启消息翻译功能
+  static bool enableMessageTranslation = false;
+
+  /// 是否开启消息表情回复功能
+  static bool enableMessageReaction = false;
+
+  /// 是否开启消息引用功能
+  static bool enableMessageReply = true;
+
+  /// 是否开启消息撤回功能
+  static bool enableMessageRecall = true;
+
+  /// 是否开启消息编辑功能
+  static bool enableMessageEdit = true;
+
+  /// 是否开启消息举报功能
+  static bool enableMessageReport = true;
+
+  /// 是否开启消息多选转发功能
+  static bool enableMessageMultiSelect = true;
+
+  /// 是否开启消息转发功能
+  static bool enableMessageForward = true;
+
+  /// 联系人字母排序, 如果有中文，可以用过 [ChatUIKitAlphabetSortHelper] 首字母重新定义, 如:
+  /// ```dart
+  /// ChatUIKitAlphabetSortHelper.instance.sortHandler = (showName) {
+  ///   /// 获取中文首字母
+  ///   return PinyinHelper.getPinyinE(showName, defPinyin: '#', format: PinyinFormat.WITHOUT_TONE).substring(0, 1);
+  /// }
   static String sortAlphabetical = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#';
 }

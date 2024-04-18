@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:flutter/material.dart';
 
 class ShowImageViewArguments implements ChatUIKitViewArguments {
   ShowImageViewArguments({
@@ -13,8 +14,8 @@ class ShowImageViewArguments implements ChatUIKitViewArguments {
   });
 
   final Message message;
-  final void Function(Message message)? onLongPressed;
-  final void Function(Message message)? onTap;
+  final void Function(BuildContext context, Message message)? onLongPressed;
+  final void Function(BuildContext context, Message message)? onTap;
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
   @override
@@ -25,8 +26,8 @@ class ShowImageViewArguments implements ChatUIKitViewArguments {
 
   ShowImageViewArguments copyWith(
       {Message? message,
-      void Function(Message message)? onLongPressed,
-      void Function(Message message)? onTap,
+      void Function(BuildContext context, Message message)? onLongPressed,
+      void Function(BuildContext context, Message message)? onTap,
       ChatUIKitAppBar? appBar,
       bool? enableAppBar,
       ChatUIKitViewObserver? viewObserver,

@@ -14,8 +14,8 @@ class ChatUIKitShowImageWidget extends StatefulWidget {
     super.key,
   });
 
-  final void Function(Message message)? onLongPressed;
-  final void Function(Message message)? onTap;
+  final void Function(BuildContext context, Message message)? onLongPressed;
+  final void Function(BuildContext context, Message message)? onTap;
   final void Function(ChatError error)? onError;
   final void Function(int progress)? onProgress;
   final VoidCallback? onSuccess;
@@ -23,12 +23,10 @@ class ChatUIKitShowImageWidget extends StatefulWidget {
   final Message message;
 
   @override
-  State<ChatUIKitShowImageWidget> createState() =>
-      _ChatUIKitShowImageWidgetState();
+  State<ChatUIKitShowImageWidget> createState() => _ChatUIKitShowImageWidgetState();
 }
 
-class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget>
-    with MessageObserver {
+class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget> with MessageObserver {
   Message? message;
 
   String? localPath;
@@ -148,12 +146,12 @@ class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget>
       splashColor: Colors.transparent,
       onTap: () {
         if (widget.onTap != null) {
-          widget.onTap!(message!);
+          widget.onTap!(context, message!);
         }
       },
       onLongPress: () {
         if (widget.onLongPressed != null) {
-          widget.onLongPressed!(message!);
+          widget.onLongPressed!(context, message!);
         }
       },
       child: content,

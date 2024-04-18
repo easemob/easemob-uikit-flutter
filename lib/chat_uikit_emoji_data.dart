@@ -1,8 +1,10 @@
 class ChatUIKitEmojiData {
   static int get listSize => emojiList.length;
 
+  /// 图片所在包名
   static String packageName = 'em_chat_uikit';
 
+  /// 图片资源文件, 需要与emoji表情列表[emojiList]一一对应。
   static final emojiImagePaths = [
     'assets/images/emojis/U+1F600.png',
     'assets/images/emojis/U+1F604.png',
@@ -66,6 +68,7 @@ class ChatUIKitEmojiData {
     return emojiMap[emojiImagePath];
   }
 
+  /// 表情列表, 需要与[emojiImagePaths]一一对应。
   static List<String> emojiList = [
     "\u{1F600}",
     "\u{1F604}",

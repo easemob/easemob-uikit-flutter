@@ -246,6 +246,7 @@ class _ConversationsViewState extends State<ConversationsView> {
   List<ChatUIKitBottomSheetItem> defaultLongPressActions(ConversationItemModel info) {
     return [
       ChatUIKitBottomSheetItem.normal(
+        actionType: MessageLongPressActionType.mute,
         label: info.noDisturb
             ? ChatUIKitLocal.conversationListLongPressMenuUnmute.localString(context)
             : ChatUIKitLocal.conversationListLongPressMenuMute.localString(context),
@@ -273,6 +274,7 @@ class _ConversationsViewState extends State<ConversationsView> {
         },
       ),
       ChatUIKitBottomSheetItem.normal(
+        actionType: MessageLongPressActionType.pin,
         label: info.pinned
             ? ChatUIKitLocal.conversationListLongPressMenuUnPin.localString(context)
             : ChatUIKitLocal.conversationListLongPressMenuPin.localString(context),
@@ -286,6 +288,7 @@ class _ConversationsViewState extends State<ConversationsView> {
       ),
       if (info.unreadCount > 0)
         ChatUIKitBottomSheetItem.normal(
+          actionType: MessageLongPressActionType.read,
           label: ChatUIKitLocal.conversationListLongPressMenuRead.localString(context),
           onTap: () async {
             ChatUIKit.instance.markConversationAsRead(
@@ -295,6 +298,7 @@ class _ConversationsViewState extends State<ConversationsView> {
           },
         ),
       ChatUIKitBottomSheetItem.destructive(
+        actionType: MessageLongPressActionType.delete,
         label: ChatUIKitLocal.conversationListLongPressMenuDelete.localString(context),
         onTap: () async {
           ChatUIKit.instance.deleteLocalConversation(
@@ -320,6 +324,7 @@ class _ConversationsViewState extends State<ConversationsView> {
     final theme = ChatUIKitTheme.of(context);
     return [
       ChatUIKitBottomSheetItem.normal(
+        actionType: MessageLongPressActionType.newChat,
         label: ChatUIKitLocal.conversationsViewMenuCreateNewChat.localString(context),
         icon: Icon(
           Icons.message,
@@ -331,6 +336,7 @@ class _ConversationsViewState extends State<ConversationsView> {
         },
       ),
       ChatUIKitBottomSheetItem.normal(
+        actionType: MessageLongPressActionType.addContact,
         label: ChatUIKitLocal.conversationsViewMenuAddContact.localString(context),
         icon: Icon(
           Icons.person_add_alt_1,
@@ -342,6 +348,7 @@ class _ConversationsViewState extends State<ConversationsView> {
         },
       ),
       ChatUIKitBottomSheetItem.normal(
+        actionType: MessageLongPressActionType.create,
         label: ChatUIKitLocal.conversationsViewMenuCreateGroup.localString(context),
         icon: Icon(
           Icons.group,

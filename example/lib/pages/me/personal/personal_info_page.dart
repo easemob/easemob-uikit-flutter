@@ -82,6 +82,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> with ChatUIKitProvi
   void changeAvatar() {
     List<ChatUIKitBottomSheetItem> items = [
       ChatUIKitBottomSheetItem.normal(
+        actionType: MessageLongPressActionType.custom,
         label: DemoLocalizations.changeAvatarCamera.localString(context),
         onTap: () async {
           Navigator.of(context).pop();
@@ -89,6 +90,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> with ChatUIKitProvi
         },
       ),
       ChatUIKitBottomSheetItem.normal(
+        actionType: MessageLongPressActionType.custom,
         label: DemoLocalizations.changeAvatarGallery.localString(context),
         onTap: () async {
           Navigator.of(context).pop();

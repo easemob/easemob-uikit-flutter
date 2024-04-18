@@ -26,9 +26,9 @@ class SettingsDataStore {
     WidgetsFlutterBinding.ensureInitialized();
     _sharedPreferences ??= await SharedPreferences.getInstance();
     ChatUIKitLocalizations().translate(currentLanguage);
-    ChatUIKitSettings.enableThread = enableThread;
-    ChatUIKitSettings.enableTranslation = enableTranslation;
-    ChatUIKitSettings.enableReaction = enableReaction;
+    ChatUIKitSettings.enableMessageThread = enableThread;
+    ChatUIKitSettings.enableMessageTranslation = enableTranslation;
+    ChatUIKitSettings.enableMessageReaction = enableReaction;
     ChatUIKitSettings.translateTargetLanguage = translateTargetLanguage;
   }
 
@@ -53,35 +53,32 @@ class SettingsDataStore {
   }
 
   bool get enableThread {
-    return _sharedPreferences?.getBool(threadKey) ??
-        ChatUIKitSettings.enableThread;
+    return _sharedPreferences?.getBool(threadKey) ?? ChatUIKitSettings.enableMessageThread;
   }
 
   Future<void> saveThread(bool enable) async {
     _sharedPreferences ??= await SharedPreferences.getInstance();
     _sharedPreferences?.setBool(threadKey, enable);
-    ChatUIKitSettings.enableThread = enable;
+    ChatUIKitSettings.enableMessageThread = enable;
   }
 
   bool get enableTranslation {
-    return _sharedPreferences?.getBool(translationKey) ??
-        ChatUIKitSettings.enableTranslation;
+    return _sharedPreferences?.getBool(translationKey) ?? ChatUIKitSettings.enableMessageTranslation;
   }
 
   Future<void> saveTranslation(bool enable) async {
     _sharedPreferences ??= await SharedPreferences.getInstance();
     _sharedPreferences?.setBool(translationKey, enable);
-    ChatUIKitSettings.enableTranslation = enable;
+    ChatUIKitSettings.enableMessageTranslation = enable;
   }
 
   bool get enableReaction {
-    return _sharedPreferences?.getBool(reactionKey) ??
-        ChatUIKitSettings.enableReaction;
+    return _sharedPreferences?.getBool(reactionKey) ?? ChatUIKitSettings.enableMessageReaction;
   }
 
   Future<void> saveReaction(bool enable) async {
     _sharedPreferences ??= await SharedPreferences.getInstance();
     _sharedPreferences?.setBool(reactionKey, enable);
-    ChatUIKitSettings.enableReaction = enable;
+    ChatUIKitSettings.enableMessageReaction = enable;
   }
 }

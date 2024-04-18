@@ -14,7 +14,7 @@ class ShowVideoViewArguments implements ChatUIKitViewArguments {
   });
 
   final Message message;
-  final void Function(Message message)? onLongPressed;
+  final void Function(BuildContext context, Message message)? onLongPressed;
   final Widget? playIcon;
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
@@ -26,7 +26,7 @@ class ShowVideoViewArguments implements ChatUIKitViewArguments {
 
   ShowVideoViewArguments copyWith(
       {Message? message,
-      void Function(Message message)? onLongPressed,
+      void Function(BuildContext context, Message message)? onLongPressed,
       Widget? playIcon,
       ChatUIKitAppBar? appBar,
       bool? enableAppBar,

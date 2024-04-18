@@ -599,6 +599,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     if (group?.permissionType == GroupPermissionType.Owner) {
       list.add(
         ChatUIKitBottomSheetItem.normal(
+          actionType: MessageLongPressActionType.transferOwner,
           label: ChatUIKitLocal.groupDetailViewTransferGroup.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
@@ -608,6 +609,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       );
       list.add(
         ChatUIKitBottomSheetItem.destructive(
+          actionType: MessageLongPressActionType.disbandGroup,
           label: ChatUIKitLocal.groupDetailViewDisbandGroup.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
@@ -618,6 +620,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     } else {
       list.add(
         ChatUIKitBottomSheetItem.destructive(
+          actionType: MessageLongPressActionType.leave,
           label: ChatUIKitLocal.groupDetailViewLeaveGroup.localString(context),
           onTap: () async {
             Navigator.of(context).pop();

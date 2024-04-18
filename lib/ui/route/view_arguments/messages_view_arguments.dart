@@ -153,21 +153,52 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   ChatUIKitViewObserver? viewObserver;
 
   MessagesViewArguments copyWith({
+    /// 用户信息对象，用于设置对方信息。详细参考 [ChatUIKitProfile]。
     ChatUIKitProfile? profile,
+
+    /// 消息列表控制器，用于控制消息列表和收发消息等，如果不设置将会自动创建。详细参考 [MessageListViewController]。
     MessageListViewController? controller,
+
+    /// 自定义AppBar, 如果设置后将会替换默认的AppBar。详细参考 [ChatUIKitAppBar]。
     ChatUIKitAppBar? appBar,
+
+    /// 自定义输入框, 如果设置后将会替换默认的输入框。详细参考 [ChatUIKitInputBar]。
     Widget? inputBar,
+
+    /// 自定义标题, 如果不设置将会显示 [profile] 的 [ChatUIKitProfile.showName], 详细参考 [ChatUIKitProfile.showName]。
     String? title,
+
+    /// 是否显示头像, 默认为 `true`。 如果设置为 `false` 将不会显示头像。 默认为 `true`。
     MessageItemShowHandler? showMessageItemAvatar,
+
+    /// 是否显示昵称, 默认为 `true`。如果设置为 `false` 将不会显示昵称。 默认为 `true`。
     MessageItemShowHandler? showMessageItemNickname,
+
+    /// 消息点击事件, 如果设置后消息点击事件将直接回调，如果不处理可以返回 `false`。
     MessageItemTapHandler? onItemTap,
+
+    /// 消息长按事件, 如果设置后消息长按事件将直接回调，返回 `true` 表示处理你需要处理，返回 `false` 则会执行默认的长按事件。
     MessageItemTapHandler? onItemLongPress,
+
+    /// 消息双击事件,如果设置后消息双击事件将直接回调，如果不处理可以返回 `false`。
     MessageItemTapHandler? onDoubleTap,
+
+    /// 头像点击事件，如果设置后头像点击事件将直接回调，如果不处理可以返回 `false`。
     MessageItemTapHandler? onAvatarTap,
+
+    /// 头像长按事件，如果设置后头像长按事件将直接回调，如果不处理可以返回 `false`。
     MessageItemTapHandler? onAvatarLongPress,
+
+    /// 昵称点击事件， 如果设置后昵称点击事件将直接回调，如果不处理可以返回 `false`。
     MessageItemTapHandler? onNicknameTap,
+
+    /// 气泡样式，默认为 [ChatUIKitMessageListViewBubbleStyle.arrow]。
     ChatUIKitMessageListViewBubbleStyle? bubbleStyle,
+
+    /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitBottomSheetItem]。
     List<ChatUIKitBottomSheetItem>? morePressActions,
+
+    /// 消息长按事件列表，如果设置后将会替换默认的消息长按事件列表。详细参考 [ChatUIKitBottomSheetItem]。
     List<ChatUIKitBottomSheetItem>? longPressActions,
     MessageItemBuilder? itemBuilder,
     MessageItemBuilder? alertItemBuilder,
