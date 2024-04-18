@@ -29,7 +29,7 @@ class ChatUIKitSettings {
   /// 撤回消息的时间限制，单位秒
   static int recallExpandTime = 120;
 
-  /// 消息举报tag, 可以用于自定义，举报的 reason 需要写在国际化文件中，国际化文件的key 好和tag 一致。如 [ChatUIKitLocal.reportTarget1]
+  /// 消息举报tag, 可以用于自定义，举报的 reason 需要写在国际化文件中，国际化文件中的reason的key要和tag一致。如 [ChatUIKitLocal.reportTarget1]
   static List<String> reportMessageReason = [
     'tag1',
     'tag2',
