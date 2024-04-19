@@ -293,7 +293,7 @@ class ChatUIKitRoute {
     String pushName,
     ChatUIKitViewArguments arguments,
   ) {
-    addPushName(pushName);
+    // addPushName(pushName);
     if (hasInit) {
       return Navigator.of(context).pushNamed(
         pushName,
@@ -313,10 +313,10 @@ class ChatUIKitRoute {
     }
   }
 
-  static void addPushName(String pushName) {
-    pushedName.add(pushName);
-    chatPrint('pushedName: $pushedName');
-  }
+  // static void addPushName(String pushName) {
+  //   pushedName.add(pushName);
+  //   chatPrint('pushedName: $pushedName');
+  // }
 
-  static List<String> pushedName = [];
+  // static List<String> pushedName = [];
 }

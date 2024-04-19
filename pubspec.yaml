@@ -12,17 +12,16 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # im_flutter_sdk: ^4.2.0
   im_flutter_sdk:
-    path: ../../../im_flutter_sdk
+    git:
+      url: https://github.com/easemob/im_flutter_sdk
+      ref: 0139d1d
 
   flutter_sound_record: ^3.3.2
 
   shared_preferences: ^2.2.2
 
   chat_uikit_theme: ^0.0.4
-  # chat_uikit_theme:
-  #   path: ../chat_uikit_theme
 
   path_provider: ^2.1.1
 

@@ -100,7 +100,7 @@ class ChatUIKitSettings {
   /// 是否开启消息转发功能
   static bool enableMessageForward = true;
 
-  /// 联系人字母排序, 如果有中文，可以用过 [ChatUIKitAlphabetSortHelper] 首字母重新定义, 如:
+  /// 联系人字母排序顺序, 如果有中文，可以用过 [ChatUIKitAlphabetSortHelper] 首字母重新定义, 如:
   /// ```dart
   /// ChatUIKitAlphabetSortHelper.instance.sortHandler = (showName) {
   ///   /// 获取中文首字母

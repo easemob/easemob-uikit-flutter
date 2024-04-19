@@ -342,8 +342,13 @@ mixin ChatActions on ChatWrapper {
         conversationId: conversationId,
         type: type,
       );
-      return await conversation.loadMessagesWithKeyword(keywords,
-          count: maxCount, timestamp: timestamp, sender: sender, direction: direction);
+      return await conversation.loadMessagesWithKeyword(
+        keywords,
+        count: maxCount,
+        timestamp: timestamp,
+        sender: sender,
+        direction: direction,
+      );
     });
   }
 

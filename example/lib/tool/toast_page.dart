@@ -9,8 +9,7 @@ class ToastPage extends StatefulWidget {
   State<ToastPage> createState() => _ToastPageState();
 }
 
-class _ToastPageState extends State<ToastPage>
-    with ChatSDKEventsObserver, ChatUIKitEventsObservers {
+class _ToastPageState extends State<ToastPage> with ChatSDKEventsObserver, ChatUIKitEventsObservers {
   @override
   void initState() {
     super.initState();
@@ -55,6 +54,8 @@ class _ToastPageState extends State<ToastPage>
         event == ChatSDKEvent.declineContactRequest ||
         event == ChatSDKEvent.setSilentMode ||
         event == ChatSDKEvent.createGroup ||
+        event == ChatSDKEvent.fetchChatThreadMembers ||
+        event == ChatSDKEvent.reportMessage ||
         event == ChatSDKEvent.clearSilentMode) {
       EasyLoading.show();
     }
@@ -64,11 +65,13 @@ class _ToastPageState extends State<ToastPage>
   void onChatSDKEventEnd(ChatSDKEvent event, ChatError? error) {
     if (event == ChatSDKEvent.acceptContactRequest ||
         event == ChatSDKEvent.fetchGroupMemberAttributes ||
+        event == ChatSDKEvent.fetchChatThreadMembers ||
         event == ChatSDKEvent.setGroupMemberAttributes ||
         event == ChatSDKEvent.sendContactRequest ||
         event == ChatSDKEvent.changeGroupOwner ||
         event == ChatSDKEvent.declineContactRequest ||
         event == ChatSDKEvent.setSilentMode ||
+        event == ChatSDKEvent.reportMessage ||
         event == ChatSDKEvent.createGroup ||
         event == ChatSDKEvent.clearSilentMode) {
       EasyLoading.dismiss();

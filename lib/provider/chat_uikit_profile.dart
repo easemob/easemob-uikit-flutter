@@ -31,7 +31,7 @@ class ChatUIKitProfile {
 
   /// 用于展示的名称，如果 name 为空，则展示 id
   String get showName {
-    if (remark != null && remark!.isNotEmpty) {
+    if (remark != null && remark!.isNotEmpty && type == ChatUIKitProfileType.contact) {
       return remark!;
     }
 

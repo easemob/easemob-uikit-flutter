@@ -479,6 +479,11 @@ extension MessageHelper on Message {
     return attributes?[hasTranslatedKey] == true;
   }
 
+  void setHasTranslate(bool hasTranslate) {
+    attributes ??= {};
+    attributes![hasTranslatedKey] = hasTranslate;
+  }
+
   String get translateText {
     if (hasTranslate) {
       Map<String, String>? map = (body as TextMessageBody).translations;

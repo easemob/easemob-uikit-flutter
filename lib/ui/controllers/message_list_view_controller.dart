@@ -397,11 +397,11 @@ class MessageListViewController extends ChangeNotifier
     Map<String, dynamic>? map = msg.attributes;
     map ??= {};
     if (showTranslate) {
-      map[hasTranslatedKey] = true;
+      msg.setHasTranslate(true);
     } else {
-      map.remove(hasTranslatedKey);
+      msg.setHasTranslate(false);
     }
-    msg.attributes = map;
+
     await ChatUIKit.instance.updateMessage(message: msg);
     _replaceMessage(msg);
   }
@@ -477,6 +477,9 @@ class MessageListViewController extends ChangeNotifier
         messageId: message.msgId,
         msgBody: msgBody,
       );
+      msg.setHasTranslate(false);
+      ChatUIKit.instance.updateMessage(message: msg);
+
       final index = msgModelList.indexWhere((element) => msg.msgId == element.message.msgId);
       if (index != -1) {
         msgModelList[index] = msgModelList[index].copyWith(message: msg);

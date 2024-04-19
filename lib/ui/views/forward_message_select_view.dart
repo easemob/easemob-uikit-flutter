@@ -163,9 +163,9 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView> wit
             labelColor: (ChatUIKitTheme.of(context).color.isDark
                 ? ChatUIKitTheme.of(context).color.neutralColor98
                 : ChatUIKitTheme.of(context).color.neutralColor1),
-            tabs: const [
-              Tab(text: '联系人'),
-              Tab(text: '群组'),
+            tabs: [
+              Tab(text: ChatUIKitLocal.forwardSelectContacts.localString(context)),
+              Tab(text: ChatUIKitLocal.forwardSelectGroups.localString(context)),
             ],
           ),
           Expanded(
@@ -206,8 +206,8 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView> wit
                         child: ChatUIKitGroupListViewItem(model),
                       ),
                       SizedBox(
-                        width: 60,
-                        height: 28,
+                        width: 80,
+                        height: 40,
                         child: forwardButton(theme, model.profile.id, true),
                       ),
                     ],
