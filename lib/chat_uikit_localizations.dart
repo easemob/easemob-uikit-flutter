@@ -246,7 +246,7 @@ mixin ChatUIKitLocal {
 
   static const searchHistory = 'search_history';
 
-  static const Map<String, dynamic> zh = {
+  static const Map<String, String> zh = {
     conversationsViewMenuAddContact: '添加联系人',
     conversationsViewMenuCreateGroup: '创建群组',
     conversationsViewMenuSelectContacts: '选择联系人',
@@ -461,7 +461,7 @@ mixin ChatUIKitLocal {
     searchHistory: '搜索历史',
   };
 
-  static const Map<String, dynamic> en = {
+  static const Map<String, String> en = {
     conversationsViewMenuAddContact: 'Add Contacts',
     conversationsViewMenuCreateGroup: 'New Group',
     conversationsViewMenuSelectContacts: 'Select Contacts',
@@ -695,7 +695,7 @@ class ChatLocal {
   final String languageCode;
 
   /// This is the map of data that will use for localization.
-  final Map<String, dynamic> mapData;
+  final Map<String, String> mapData;
 
   /// Country code is the region sub tag for the locale.
   final String? countryCode;

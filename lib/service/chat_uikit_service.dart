@@ -78,6 +78,6 @@ class ChatUIKit extends ChatSDKWrapper
   }
 
   int contactRequestCount() {
-    return ChatUIKitContext.instance.requestList().length;
+    return ChatUIKitContext.instance.newRequestCount();
   }
 }

@@ -107,7 +107,7 @@ mixin DemoLocalizations {
   static String logoutConfirm = 'logoutConfirm';
   static String logoutCancel = 'logoutCancel';
 
-  static Map<String, dynamic> zh = {
+  static Map<String, String> zh = {
     confirm: '确认',
 
     // welcome
@@ -217,7 +217,7 @@ mixin DemoLocalizations {
     logoutConfirm: '退出',
     logoutCancel: '取消',
   };
-  static Map<String, dynamic> en = {
+  static Map<String, String> en = {
     confirm: 'Confirm',
 
     // welcome

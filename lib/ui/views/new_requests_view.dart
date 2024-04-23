@@ -58,7 +58,6 @@ class NewRequestsView extends StatefulWidget {
 
 class _NewRequestsViewState extends State<NewRequestsView> with ContactObserver, ChatSDKEventsObserver {
   late final NewRequestListViewController controller;
-  int? joinedCount;
   @override
   void initState() {
     super.initState();
@@ -78,6 +77,7 @@ class _NewRequestsViewState extends State<NewRequestsView> with ContactObserver,
 
   @override
   Widget build(BuildContext context) {
+    Future(() => {ChatUIKitContext.instance.markAllRequestsAsRead()});
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
         resizeToAvoidBottomInset: false,

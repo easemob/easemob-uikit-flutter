@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/universal/inner_headers.dart';
 
 const String convLoadFinishedKey = 'EaseChatUIKit_conversation_load_more_finished';
@@ -52,6 +53,33 @@ extension Request on ChatUIKitContext {
     return cachedMap[requestsKey] ?? [];
   }
 
+  int newRequestCount() {
+    int count = 0;
+    cachedMap[requestsKey]?.forEach((element) {
+      if (!element['isRead']) {
+        count++;
+      }
+    });
+    return count;
+  }
+
+  void markAllRequestsAsRead() {
+    List requestList = cachedMap[requestsKey] ?? [];
+    bool hasUnread = false;
+    for (var element in requestList) {
+      if (element['isRead'] == false) {
+        hasUnread = true;
+      }
+      element['isRead'] = true;
+    }
+    cachedMap[requestsKey] = requestList;
+    if (hasUnread) {
+      ChatUIKit.instance.onFriendRequestCountChanged(newRequestCount());
+    }
+
+    _updateStore();
+  }
+
   bool addRequest(String userId, String? reason, [bool isGroup = false]) {
     List requestList = cachedMap[requestsKey] ?? [];
     if (requestList.any((element) => element['id'] == userId && element['isGroup'] == isGroup)) {
@@ -61,8 +89,10 @@ extension Request on ChatUIKitContext {
       'id': userId,
       'reason': reason,
       'isGroup': isGroup,
+      'isRead': false,
     });
     cachedMap[requestsKey] = requestList;
+    ChatUIKit.instance.onFriendRequestCountChanged(newRequestCount());
     _updateStore();
     return true;
   }
@@ -71,7 +101,10 @@ extension Request on ChatUIKitContext {
     List requestList = cachedMap[requestsKey] ?? [];
     int index = requestList.indexWhere((element) => element['id'] == userId && element['isGroup'] == isGroup);
     if (index != -1) {
-      requestList.removeAt(index);
+      Map ret = requestList.removeAt(index);
+      if (ret.containsKey('isRead') && !ret['isRead']) {
+        ChatUIKit.instance.onFriendRequestCountChanged(newRequestCount());
+      }
       cachedMap[requestsKey] = requestList;
       _updateStore();
     }
@@ -82,9 +115,17 @@ extension Request on ChatUIKitContext {
     bool needUpdate = false;
     for (var userId in userIds) {
       int index = requestList.indexWhere((element) => element['id'] == userId && element['isGroup'] == isGroup);
+      bool hasUnread = false;
       if (index != -1) {
         needUpdate = true;
         requestList.removeAt(index);
+        Map ret = requestList.removeAt(index);
+        if (ret.containsKey('isRead') && !ret['isRead']) {
+          hasUnread = true;
+        }
+      }
+      if (hasUnread) {
+        ChatUIKit.instance.onFriendRequestCountChanged(newRequestCount());
       }
     }
     if (needUpdate) {

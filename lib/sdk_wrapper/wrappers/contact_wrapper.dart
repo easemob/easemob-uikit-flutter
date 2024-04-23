@@ -68,4 +68,12 @@ mixin ContactWrapper on ChatUIKitWrapperBase {
       }
     }
   }
+
+  void onFriendRequestCountChanged(int count) {
+    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
+      if (observer is ContactObserver) {
+        observer.onFriendRequestCountChanged(count);
+      }
+    }
+  }
 }

@@ -143,15 +143,10 @@ class _HomePageState extends State<HomePage>
     });
   }
 
+  // 用于更新好友请求未读数
   @override
-  // 用于刷新好友申请未读数
-  void onContactRequestReceived(String username, String? reason) {
-    contactRequestCount.value = ChatUIKit.instance.contactRequestCount();
-  }
-
-  @override
-  void onContactAdded(String username) {
-    contactRequestCount.value = ChatUIKit.instance.contactRequestCount();
+  void onFriendRequestCountChanged(int count) {
+    contactRequestCount.value = count;
   }
 
   @override

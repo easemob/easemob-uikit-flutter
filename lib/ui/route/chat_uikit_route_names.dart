@@ -8,29 +8,29 @@ class ChatUIKitRouteNames {
   static const String contactsView = '/ContactsView';
   static const String conversationsView = '/ConversationsView';
   static const String createGroupView = '/CreateGroupView';
+  static const String currentUserInfoView = '/CurrentUserInfoView';
   static const String forwardMessageSelectView = '/forwardMessageSelectView';
   static const String forwardMessagesView = '/forwardMessagesView';
   static const String groupChangeOwnerView = '/GroupChangeOwnerView';
   static const String groupDetailsView = '/GroupDetailsView';
   static const String groupsView = '/GroupsView';
   static const String groupMembersView = '/GroupMembersView';
-  static const String selectContactsView = '/SelectContactsView';
-  static const String newRequestDetailsView = '/NewRequestDetailsView';
-  static const String newRequestsView = '/NewRequestsView';
-  static const String searchUsersView = '/SearchUsersView';
-  static const String searchGroupMembersView = '/SearchGroupMembersView';
+  static const String groupMentionView = '/GroupMentionView';
   static const String groupDeleteMembersView = '/GroupDeleteMembersView';
   static const String groupAddMembersView = '/GroupAddMembersView';
   static const String messagesView = '/MessagesView';
+  static const String newRequestDetailsView = '/NewRequestDetailsView';
+  static const String newRequestsView = '/NewRequestsView';
+  static const String reportMessageView = '/ReportMessageView';
+  static const String searchUsersView = '/SearchUsersView';
+  static const String searchGroupMembersView = '/SearchGroupMembersView';
+  static const String selectContactsView = '/SelectContactsView';
   static const String showImageView = '/ShowImageView';
   static const String showVideoView = '/ShowVideoView';
-  static const String currentUserInfoView = '/CurrentUserInfoView';
-  static const String groupMentionView = '/GroupMentionView';
-  static const String reportMessageView = '/ReportMessageView';
+  static const String searchHistoryView = '/SearchHistoryView';
   static const String threadMessagesView = '/ThreadMessagesView';
   static const String threadMembersView = '/ThreadMembersView';
   static const String threadsView = '/ThreadsView';
-  static const String searchHistoryView = '/SearchHistoryView';
 
   static Widget getWidgetFromName(String name, ChatUIKitViewArguments arguments) {
     switch (name) {

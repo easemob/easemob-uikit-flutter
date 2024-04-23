@@ -102,6 +102,7 @@ class ContactsView extends StatefulWidget {
 class _ContactsViewState extends State<ContactsView> with ContactObserver {
   late final ContactListViewController controller;
 
+  ValueNotifier<int> contactRequestCount = ValueNotifier(0);
   @override
   void initState() {
     super.initState();
@@ -163,7 +164,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
         child: ContactListView(
           controller: controller,
           itemBuilder: widget.listViewItemBuilder,
-          beforeWidgets: widget.beforeItems ?? beforeWidgets,
+          beforeWidgets: widget.beforeItems ?? beforeWidgets(),
           afterWidgets: widget.afterItems,
           searchHideText: widget.searchHideText,
           background: widget.listViewBackground,
@@ -182,20 +183,26 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
     return content;
   }
 
-  List<ChatUIKitListViewMoreItem> get beforeWidgets {
+  List<ChatUIKitListViewMoreItem> beforeWidgets() {
     return [
       ChatUIKitListViewMoreItem(
         title: ChatUIKitLocal.contactsViewNewRequests.localString(context),
         onTap: () {
           ChatUIKitRoute.pushOrPushNamed(
-                  context, ChatUIKitRouteNames.newRequestsView, NewRequestsViewArguments(attributes: widget.attributes))
-              .then((value) {
-            controller.refresh();
-          });
+            context,
+            ChatUIKitRouteNames.newRequestsView,
+            NewRequestsViewArguments(
+              attributes: widget.attributes,
+            ),
+          );
         },
         trailing: Padding(
           padding: const EdgeInsets.only(right: 5),
-          child: ChatUIKitBadge(ChatUIKitContext.instance.requestList().length),
+          child: ValueListenableBuilder(
+              valueListenable: contactRequestCount,
+              builder: (ctx, value, widget) {
+                return ChatUIKitBadge(value);
+              }),
         ),
       ),
       ChatUIKitListViewMoreItem(
@@ -273,17 +280,14 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
 
   @override
   // 用于更新好友请求未读数
-  void onContactRequestReceived(String userId, String? reason) {
-    setState(() {});
+  void onFriendRequestCountChanged(int count) {
+    contactRequestCount.value = count;
   }
 
   // 用户更新好友请求未读数
   @override
   void onContactAdded(String userId) {
     if (mounted) {
-      // 用户更新好友请求未读数
-      setState(() {});
-      // 刷新好友列表
       controller.reload();
     }
   }

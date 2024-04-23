@@ -1,6 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit_example/demo_localizations.dart';
-import 'package:em_chat_uikit_example/main.dart';
+
 import 'package:flutter/material.dart';
 
 const String appKey = 'easemob#easeim';
@@ -24,11 +24,7 @@ class _WelcomePageState extends State<WelcomePage> {
       if (ChatUIKit.instance.isLogged()) {
         Navigator.of(context).pushReplacementNamed('/home');
       } else {
-        if (appDebug) {
-          Navigator.of(context).pushReplacementNamed('/debug_login');
-        } else {
-          Navigator.of(context).pushReplacementNamed('/login');
-        }
+        Navigator.of(context).pushReplacementNamed('/login');
       }
     });
   }
