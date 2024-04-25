@@ -3,33 +3,6 @@ import 'package:em_chat_uikit/sdk_wrapper/chat_sdk_wrapper.dart';
 
 mixin ChatActions on ChatWrapper {
   Future<Message> sendMessage({required Message message}) {
-    message.attributes = {
-      "userId": "emp002",
-      "traceId": "004ea397-422c-475c-bb62-6562be6e61a4",
-      "skillType": "3",
-      "imSource": "AI_ASSISTANT",
-      "business_user_project_id": "99208af74a6a4215a3a57b6530e1f08b",
-      "assistantCode": "ADMINISTRATIVE",
-      "appName": "ania",
-      "ania_test_tw": true,
-      "type": "quote",
-      "messageType": 6,
-      "messageBusinessCode": "TASK_URGING_REMINDER",
-      "executeContext": {
-        "asa_taskId": "96f942f5c5fd4cecb28938654b653002",
-        "asa_taskUid": "tenantId_[oeeDemo]_7da3b404420f4b56a4e574ed45530244",
-        "assistantCode": "ADMINISTRATIVE",
-        "cardType": "collect",
-        "id": "661f30978ac5dc396568dde9",
-        "messageBusinessCode": "TASK_URGING_REMINDER",
-        "projectId": "99208af74a6a4215a3a57b6530e1f08b",
-        "userId": "emp002",
-        "workitemId": "1690131902712778752"
-      },
-      "data": {"originalText": "嗨，小采bWF小倉b，你發起了一個協商下個月的會議。 現在需要你提供一下會議主題哦？謝謝！", "sendMessage": "已经过去1小时啦~请您尽快回复结果"},
-      "owner": "other"
-    };
-
     return checkResult(ChatSDKEvent.sendMessage, () async {
       return Client.getInstance.chatManager.sendMessage(message);
     });
