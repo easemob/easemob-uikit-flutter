@@ -161,7 +161,11 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          message.nickname ?? message.from ?? '',
+          () {
+            return ChatUIKitProvider.instance.profilesCache[message.from!]?.showName ??
+                message.nickname ??
+                message.from!;
+          }(),
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
@@ -305,7 +309,11 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          message.nickname ?? message.from ?? '',
+          () {
+            return ChatUIKitProvider.instance.profilesCache[message.from!]?.showName ??
+                message.nickname ??
+                message.from!;
+          }(),
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
@@ -465,7 +473,11 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          message.nickname ?? message.from ?? '',
+          () {
+            return ChatUIKitProvider.instance.profilesCache[message.from!]?.showName ??
+                message.nickname ??
+                message.from!;
+          }(),
           overflow: TextOverflow.ellipsis,
           textScaler: TextScaler.noScaling,
           maxLines: 1,
@@ -525,7 +537,11 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          message.nickname ?? message.from ?? '',
+          () {
+            return ChatUIKitProvider.instance.profilesCache[message.from!]?.showName ??
+                message.nickname ??
+                message.from!;
+          }(),
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
@@ -648,7 +664,11 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            message.nickname ?? message.from ?? '',
+            () {
+              return ChatUIKitProvider.instance.profilesCache[message.from!]?.showName ??
+                  message.nickname ??
+                  message.from!;
+            }(),
             textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(

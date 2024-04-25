@@ -171,6 +171,8 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObse
         content = const SizedBox();
     }
 
+    ChatUIKitProfile? profile = ChatUIKitProvider.instance.profilesCache[model.message.from!];
+
     Widget titleRow = Row(
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,7 +180,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObse
       children: [
         Expanded(
           child: Text(
-            model.message.nickname ?? model.message.from!,
+            profile?.showName ?? model.message.nickname ?? model.message.from!,
             textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
@@ -209,7 +211,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObse
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: [
-        ChatUIKitAvatar(avatarUrl: model.message.avatarUrl),
+        ChatUIKitAvatar(avatarUrl: profile?.avatarUrl ?? model.message.avatarUrl),
         const SizedBox(width: 10),
         Expanded(
           child: Column(

@@ -175,7 +175,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "1.0.0"
+    version: "2.0.0"
   fake_async:
     dependency: transitive
     description:
@@ -377,10 +377,12 @@ packages:
   im_flutter_sdk:
     dependency: transitive
     description:
-      path: "../../../../im_flutter_sdk"
-      relative: true
-    source: path
-    version: "4.2.0"
+      path: "."
+      ref: "dev_4.5.0"
+      resolved-ref: "97d84a2bba1a2561fa91cd91f2ea3a8dfe4e6860"
+      url: "https://github.com/easemob/im_flutter_sdk"
+    source: git
+    version: "4.5.0"
   image_cropper:
     dependency: "direct main"
     description:

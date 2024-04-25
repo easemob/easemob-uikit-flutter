@@ -229,9 +229,10 @@ class ChatUIKitSearchHistoryViewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ChatUIKitProfile? profile = ChatUIKitProvider.instance.profilesCache[message.from!];
     final theme = ChatUIKitTheme.of(context);
     Widget title = Text(
-      message.fromProfile.showName,
+      profile?.showName ?? message.nickname ?? message.from!,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: theme.titleMedium(color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1),
@@ -257,7 +258,7 @@ class ChatUIKitSearchHistoryViewItem extends StatelessWidget {
     );
 
     Widget avatar = ChatUIKitAvatar(
-      avatarUrl: message.fromProfile.avatarUrl,
+      avatarUrl: profile?.avatarUrl ?? message.fromProfile.avatarUrl,
       size: 40,
     );
 

@@ -320,6 +320,7 @@ mixin ChatActions on ChatWrapper {
         count: maxCount,
         timestamp: timestamp,
         sender: sender,
+        searchScope: MessageSearchScope.Content,
         direction: direction,
       );
     });

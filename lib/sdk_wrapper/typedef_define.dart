@@ -56,4 +56,5 @@ typedef ChatThreadEventHandler = chat.EMChatThreadEventHandler;
 typedef ChatThreadEvent = chat.EMChatThreadEvent;
 typedef ChatThreadOperation = chat.EMChatThreadOperation;
 typedef ChatThread = chat.EMChatThread;
+typedef MessageSearchScope = chat.MessageSearchScope;
 typedef UserInfo = chat.EMUserInfo;
