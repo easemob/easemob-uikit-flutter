@@ -185,9 +185,9 @@ class _MessageListViewState extends State<MessageListView> {
       },
       bubbleStyle: widget.bubbleStyle,
       showAvatar: widget.showAvatar,
-      quoteBuilder: (context, model) {
-        Widget? content = widget.quoteBuilder?.call(context, model);
-        content ??= quoteWidget(model);
+      quoteBuilder: (context, quoteModel) {
+        Widget? content = widget.quoteBuilder?.call(context, quoteModel);
+        content ??= quoteWidget(quoteModel, widget.forceLeft ?? model.message.direction == MessageDirection.RECEIVE);
         return content;
       },
       showNickname: widget.showNickname,
@@ -289,7 +289,7 @@ class _MessageListViewState extends State<MessageListView> {
     return content;
   }
 
-  Widget quoteWidget(QuoteModel model) {
+  Widget quoteWidget(QuoteModel model, bool left) {
     return InkWell(
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
@@ -298,6 +298,7 @@ class _MessageListViewState extends State<MessageListView> {
       },
       child: ChatUIKitQuoteWidget(
         model: model,
+        isLeft: left,
         bubbleStyle: widget.bubbleStyle,
       ),
     );
