@@ -82,7 +82,7 @@ class ChatUIKitSettings {
   static bool enableMessageReport = true;
 
   /// 消息举报tag, 可以用于自定义，举报的 reason 需要写在国际化文件中，国际化文件中的reason的key要和tag一致。如 [ChatUIKitLocal.reportTarget1]
-  static List<String> reportMessageReason = [
+  static List<String> reportMessageTags = [
     'tag1',
     'tag2',
     'tag3',

@@ -1229,7 +1229,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
   }
 
   void reportMessage(MessageModel model) async {
-    List<String> reasonKeys = ChatUIKitSettings.reportMessageReason;
+    List<String> reasonKeys = ChatUIKitSettings.reportMessageTags;
     List<String> reasons = reasonKeys.map((e) => e.localString(context)).toList();
 
     final reportReason = await ChatUIKitRoute.pushOrPushNamed(
