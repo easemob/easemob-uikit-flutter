@@ -289,6 +289,9 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView> wit
         ),
       ),
       onPressed: () {
+        if(forwardedList.contains(profileId)){
+          return;
+        }
         forwardedList.add(profileId);
         forwardMessage(profileId, isGroup);
         setState(() {});
