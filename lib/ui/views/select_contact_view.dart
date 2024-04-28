@@ -90,6 +90,7 @@ class _SelectContactViewState extends State<SelectContactView> {
                 trailingActions: () {
                   List<ChatUIKitAppBarTrailingAction> actions = [
                     ChatUIKitAppBarTrailingAction(
+                      actionType: ChatUIKitActionType.cancel,
                       onTap: (context) {
                         Navigator.of(context).pop();
                       },

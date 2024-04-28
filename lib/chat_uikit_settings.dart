@@ -26,25 +26,22 @@ class ChatUIKitSettings {
   // 会话列表显示的静音图标
   static ImageProvider? conversationListMuteImage;
 
-  /// 撤回消息的时间限制，单位秒
-  static int recallExpandTime = 120;
-
   /// 输入状态(暂时只有flutter版本支持)
   static bool enableInputStatus = false;
 
   /// 消息长按菜单
-  static List<MessageLongPressActionType> msgItemLongPressActions = [
-    MessageLongPressActionType.reaction,
-    MessageLongPressActionType.copy, // only text message
-    MessageLongPressActionType.reply,
-    MessageLongPressActionType.forward,
-    MessageLongPressActionType.multiSelect,
-    MessageLongPressActionType.translate, // only text message
-    MessageLongPressActionType.thread, // only group message
-    MessageLongPressActionType.edit, // only text message
-    MessageLongPressActionType.report,
-    MessageLongPressActionType.recall,
-    MessageLongPressActionType.delete,
+  static List<ChatUIKitActionType> msgItemLongPressActions = [
+    ChatUIKitActionType.reaction,
+    ChatUIKitActionType.copy, // only text message
+    ChatUIKitActionType.reply,
+    ChatUIKitActionType.forward,
+    ChatUIKitActionType.multiSelect,
+    ChatUIKitActionType.translate, // only text message
+    ChatUIKitActionType.thread, // only group message
+    ChatUIKitActionType.edit, // only text message
+    ChatUIKitActionType.report,
+    ChatUIKitActionType.recall,
+    ChatUIKitActionType.delete,
   ];
 
   /// 是否开启 thread 功能
@@ -74,6 +71,9 @@ class ChatUIKitSettings {
 
   /// 是否开启消息撤回功能
   static bool enableMessageRecall = true;
+
+  /// 撤回消息的时间限制，单位秒
+  static int recallExpandTime = 120;
 
   /// 是否开启消息编辑功能
   static bool enableMessageEdit = true;

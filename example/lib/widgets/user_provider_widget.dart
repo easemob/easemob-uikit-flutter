@@ -147,9 +147,8 @@ class _UserProviderWidgetState extends State<UserProviderWidget> with GroupObser
 
   Future<void> updateGroupsProfile(List<String> groupIds) async {
     List<ChatUIKitProfile> list = [];
-    try {
-      for (var groupId in groupIds) {
-        debugPrint('updateGroupsProfile: $groupId');
+    for (var groupId in groupIds) {
+      try {
         Group group = await ChatUIKit.instance.fetchGroupInfo(groupId: groupId);
         ChatUIKitProfile profile = ChatUIKitProfile.group(
           id: group.groupId,
@@ -157,12 +156,17 @@ class _UserProviderWidgetState extends State<UserProviderWidget> with GroupObser
           avatarUrl: group.extension,
         );
         list.add(profile);
+      } on ChatError catch (e) {
+        if (e.code == 600) {
+          // 600 为群组不存在，无法获取到数据，提供默认数据
+          ChatUIKitProfile profile = ChatUIKitProfile.group(id: groupId);
+          list.add(profile);
+        }
+        debugPrint('loadGroupInfo error: $e');
       }
-      UserDataStore().saveUserDatas(list);
-      ChatUIKitProvider.instance.addProfiles(list);
-    } catch (e) {
-      debugPrint('loadGroupInfo error: $e');
     }
+    UserDataStore().saveUserDatas(list);
+    ChatUIKitProvider.instance.addProfiles(list);
   }
 
   Future<void> loadUserInfos() async {

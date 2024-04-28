@@ -96,6 +96,7 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
                 trailingActions: () {
                   List<ChatUIKitAppBarTrailingAction> actions = [
                     ChatUIKitAppBarTrailingAction(
+                      actionType: ChatUIKitActionType.add,
                       onTap: (context) {
                         if (selectedProfiles.isEmpty) {
                           return;

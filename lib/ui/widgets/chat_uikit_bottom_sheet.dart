@@ -60,7 +60,7 @@ enum ChatUIKitBottomSheetItemType {
 class ChatUIKitBottomSheetItem<T> {
   ChatUIKitBottomSheetItem.normal({
     required this.label,
-    this.actionType = MessageLongPressActionType.custom,
+    this.actionType = ChatUIKitActionType.custom,
     this.style,
     this.onTap,
     this.icon,
@@ -68,7 +68,7 @@ class ChatUIKitBottomSheetItem<T> {
 
   ChatUIKitBottomSheetItem.destructive({
     required this.label,
-    this.actionType = MessageLongPressActionType.custom,
+    this.actionType = ChatUIKitActionType.custom,
     this.style,
     this.onTap,
     this.icon,
@@ -88,7 +88,7 @@ class ChatUIKitBottomSheetItem<T> {
   final TextStyle? style;
   final Widget? icon;
   final Future<T?> Function()? onTap;
-  final MessageLongPressActionType actionType;
+  final ChatUIKitActionType actionType;
 
   ChatUIKitBottomSheetItem copyWith({
     ChatUIKitBottomSheetItemType? type,

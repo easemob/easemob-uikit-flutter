@@ -99,6 +99,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                 trailingActions: () {
                   List<ChatUIKitAppBarTrailingAction> actions = [
                     ChatUIKitAppBarTrailingAction(
+                      actionType: ChatUIKitActionType.create,
                       onTap: (context) {
                         if (selectedProfiles.isEmpty) {
                           return;

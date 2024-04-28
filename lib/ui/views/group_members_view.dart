@@ -101,8 +101,8 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
     try {
       group = await ChatUIKit.instance.getGroup(groupId: widget.profile.id);
       group ??= await ChatUIKit.instance.fetchGroupInfo(groupId: widget.profile.id);
-
       memberCount.value = group?.memberCount ?? 0;
+      setState(() {});
       // ignore: empty_catches
     } catch (e) {}
   }
@@ -119,18 +119,24 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
               ChatUIKitAppBar(
                 showBackButton: true,
                 trailingActions: () {
-                  List<ChatUIKitAppBarTrailingAction> actions = [
-                    ChatUIKitAppBarTrailingAction(
-                      onTap: (context) {
-                        pushToAddMember();
-                      },
-                      child: Icon(
-                        Icons.person_add_alt_1_outlined,
-                        color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
-                        size: 24,
+                  List<ChatUIKitAppBarTrailingAction> actions = [];
+
+                  if (group?.permissionType == GroupPermissionType.Owner) {
+                    actions.add(
+                      ChatUIKitAppBarTrailingAction(
+                        actionType: ChatUIKitActionType.add,
+                        onTap: (context) {
+                          pushToAddMember();
+                        },
+                        child: Icon(
+                          Icons.person_add_alt_1_outlined,
+                          color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
+                          size: 24,
+                        ),
                       ),
-                    ),
-                    ChatUIKitAppBarTrailingAction(
+                    );
+                    actions.add(ChatUIKitAppBarTrailingAction(
+                      actionType: ChatUIKitActionType.remove,
                       onTap: (context) {
                         pushToRemoveMember();
                       },
@@ -139,9 +145,10 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
                         color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
                         size: 24,
                       ),
-                    )
-                  ];
-                  return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                    ));
+                    actions = widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                  }
+                  return actions;
                 }(),
                 centerTitle: false,
                 titleWidget: ValueListenableBuilder(

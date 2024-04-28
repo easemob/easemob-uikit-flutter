@@ -1,3 +1,4 @@
+import 'package:em_chat_uikit/universal/defines.dart';
 import 'package:flutter/widgets.dart';
 
 typedef ChatUIKitActionItemOnTap = void Function(BuildContext context);
@@ -24,17 +25,22 @@ class ChatUIKitModelAction {
 class ChatUIKitAppBarTrailingAction {
   final Widget child;
   final ChatUIKitActionItemOnTap? onTap;
+  final ChatUIKitActionType actionType;
 
   ChatUIKitAppBarTrailingAction({
     required this.child,
+    this.actionType = ChatUIKitActionType.custom,
     this.onTap,
   });
 
   ChatUIKitAppBarTrailingAction copyWith({
     Widget? child,
+    ChatUIKitActionItemOnTap? onTap,
+    ChatUIKitActionType? actionType,
   }) {
     return ChatUIKitAppBarTrailingAction(
       child: child ?? this.child,
+      actionType: actionType ?? this.actionType,
       onTap: onTap,
     );
   }

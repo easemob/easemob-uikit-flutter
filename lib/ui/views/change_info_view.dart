@@ -131,6 +131,7 @@ class _ChangeInfoViewState extends State<ChangeInfoView> with ChatUIKitRouteHelp
                 trailingActions: () {
                   List<ChatUIKitAppBarTrailingAction> actions = [
                     ChatUIKitAppBarTrailingAction(
+                      actionType: ChatUIKitActionType.save,
                       onTap: (context) {
                         if (isChanged.value) {
                           Navigator.of(context).pop(controller.text);

@@ -108,6 +108,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
                   trailingActions: () {
                     List<ChatUIKitAppBarTrailingAction> actions = [
                       ChatUIKitAppBarTrailingAction(
+                        actionType: ChatUIKitActionType.more,
                         onTap: (context) {
                           showBottom();
                         },
@@ -385,7 +386,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
       context: context,
       items: [
         ChatUIKitBottomSheetItem.destructive(
-          actionType: MessageLongPressActionType.delete,
+          actionType: ChatUIKitActionType.delete,
           label: ChatUIKitLocal.contactDetailViewDelete.localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
@@ -430,6 +431,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
     if (ret == true) {
       ChatUIKit.instance.deleteContact(userId: profile!.id).then((value) {
         widget.onContactDeleted?.call();
+        ChatUIKit.instance.deleteLocalConversation(conversationId: profile!.id);
         ChatUIKitRoute.pop(context);
       }).catchError((e) {});
     }

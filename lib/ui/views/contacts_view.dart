@@ -148,6 +148,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
                   trailingActions: () {
                     List<ChatUIKitAppBarTrailingAction> actions = [
                       ChatUIKitAppBarTrailingAction(
+                        actionType: ChatUIKitActionType.add,
                         onTap: (context) {
                           addContact();
                         },

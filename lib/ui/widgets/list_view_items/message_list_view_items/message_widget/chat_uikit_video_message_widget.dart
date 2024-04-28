@@ -10,19 +10,19 @@ class ChatUIKitVideoMessageWidget extends StatefulWidget {
     this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     this.progressIndicatorColor,
     this.forceLeft,
+    this.isCombine = false,
     super.key,
   });
   final MessageModel model;
   final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
   final Color? progressIndicatorColor;
   final bool? forceLeft;
+  final bool isCombine;
   @override
-  State<ChatUIKitVideoMessageWidget> createState() =>
-      _ChatUIKitVideoMessageWidgetState();
+  State<ChatUIKitVideoMessageWidget> createState() => _ChatUIKitVideoMessageWidgetState();
 }
 
-class _ChatUIKitVideoMessageWidgetState
-    extends State<ChatUIKitVideoMessageWidget> with MessageObserver {
+class _ChatUIKitVideoMessageWidgetState extends State<ChatUIKitVideoMessageWidget> with MessageObserver {
   late MessageModel model;
   bool downloading = false;
   bool downloadError = false;
@@ -158,9 +158,7 @@ class _ChatUIKitVideoMessageWidgetState
               child: Icon(
                 Icons.play_circle_outline,
                 size: 64,
-                color: theme.color.isDark
-                    ? theme.color.neutralColor1
-                    : theme.color.neutralColor98,
+                color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
               ),
             ),
           ),
@@ -171,10 +169,7 @@ class _ChatUIKitVideoMessageWidgetState
     content = Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-            widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow
-                ? 4
-                : 16),
+        borderRadius: BorderRadius.circular(widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow ? 4 : 16),
         border: Border.all(
           width: 1,
           color: theme.color.isDark
@@ -187,10 +182,7 @@ class _ChatUIKitVideoMessageWidgetState
         ),
       ),
       foregroundDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-            widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow
-                ? 4
-                : 16),
+        borderRadius: BorderRadius.circular(widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow ? 4 : 16),
         border: Border.all(
           width: 1,
           color: theme.color.isDark
@@ -213,7 +205,11 @@ class _ChatUIKitVideoMessageWidgetState
 
     safeSetState(() {
       downloading = true;
-      ChatUIKit.instance.downloadThumbnail(message: model.message);
+      if (widget.isCombine) {
+        ChatUIKit.instance.downloadMessageAttachmentInCombine(message: model.message);
+      } else {
+        ChatUIKit.instance.downloadThumbnail(message: model.message);
+      }
     });
   }
 
@@ -223,17 +219,13 @@ class _ChatUIKitVideoMessageWidgetState
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: theme.color.isDark
-            ? theme.color.neutralColor2
-            : theme.color.neutralColor9,
+        color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9,
       ),
       child: Center(
         child: ChatUIKitImageLoader.videoDefault(
           width: 64,
           height: 64,
-          color: theme.color.isDark
-              ? theme.color.neutralColor5
-              : theme.color.neutralColor7,
+          color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
         ),
       ),
     );

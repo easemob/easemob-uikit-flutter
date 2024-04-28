@@ -183,6 +183,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                   trailingActions: () {
                     List<ChatUIKitAppBarTrailingAction> actions = [
                       ChatUIKitAppBarTrailingAction(
+                        actionType: ChatUIKitActionType.more,
                         onTap: (context) {
                           showBottom();
                         },
@@ -599,7 +600,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     if (group?.permissionType == GroupPermissionType.Owner) {
       list.add(
         ChatUIKitBottomSheetItem.normal(
-          actionType: MessageLongPressActionType.transferOwner,
+          actionType: ChatUIKitActionType.transferOwner,
           label: ChatUIKitLocal.groupDetailViewTransferGroup.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
@@ -609,7 +610,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       );
       list.add(
         ChatUIKitBottomSheetItem.destructive(
-          actionType: MessageLongPressActionType.disbandGroup,
+          actionType: ChatUIKitActionType.disbandGroup,
           label: ChatUIKitLocal.groupDetailViewDisbandGroup.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
@@ -620,7 +621,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     } else {
       list.add(
         ChatUIKitBottomSheetItem.destructive(
-          actionType: MessageLongPressActionType.leave,
+          actionType: ChatUIKitActionType.leave,
           label: ChatUIKitLocal.groupDetailViewLeaveGroup.localString(context),
           onTap: () async {
             Navigator.of(context).pop();

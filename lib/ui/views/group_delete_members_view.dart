@@ -98,6 +98,7 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
                 trailingActions: () {
                   List<ChatUIKitAppBarTrailingAction> actions = [
                     ChatUIKitAppBarTrailingAction(
+                      actionType: ChatUIKitActionType.remove,
                       onTap: (context) {
                         if (selectedProfiles.isEmpty) {
                           return;

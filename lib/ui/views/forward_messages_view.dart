@@ -253,7 +253,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObse
         ChatUIKitRoute.pushOrPushNamed(context, ChatUIKitRouteNames.showImageView,
             ShowImageViewArguments(message: model.message, attributes: widget.attributes));
       },
-      child: ChatUIKitImageMessageWidget(model: model),
+      child: ChatUIKitImageMessageWidget(model: model, isCombine: true),
     );
   }
 

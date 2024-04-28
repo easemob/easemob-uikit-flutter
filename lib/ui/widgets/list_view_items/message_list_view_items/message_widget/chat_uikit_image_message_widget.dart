@@ -12,6 +12,7 @@ class ChatUIKitImageMessageWidget extends StatefulWidget {
     required this.model,
     this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     this.progressIndicatorColor,
+    this.isCombine = false,
     this.isLeft,
     super.key,
   });
@@ -19,14 +20,13 @@ class ChatUIKitImageMessageWidget extends StatefulWidget {
   final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
   final Color? progressIndicatorColor;
   final bool? isLeft;
+  final bool isCombine;
 
   @override
-  State<ChatUIKitImageMessageWidget> createState() =>
-      _ChatUIKitImageMessageWidgetState();
+  State<ChatUIKitImageMessageWidget> createState() => _ChatUIKitImageMessageWidgetState();
 }
 
-class _ChatUIKitImageMessageWidgetState
-    extends State<ChatUIKitImageMessageWidget> with MessageObserver {
+class _ChatUIKitImageMessageWidgetState extends State<ChatUIKitImageMessageWidget> with MessageObserver {
   late MessageModel model;
   bool downloading = false;
   bool downloadError = false;
@@ -51,6 +51,7 @@ class _ChatUIKitImageMessageWidgetState
 
   @override
   void onSuccess(String msgId, Message msg) {
+    debugPrint('onSuccess: $msgId');
     if (msgId == model.message.msgId) {
       model = model.copyWith(message: msg);
       safeSetState(() {
@@ -61,9 +62,9 @@ class _ChatUIKitImageMessageWidgetState
 
   @override
   void onError(String msgId, Message msg, ChatError error) {
+    debugPrint('onSuccess: $msgId');
     if (msgId == model.message.msgId && msg.bodyType == MessageType.IMAGE) {
-      (msg.body as ImageMessageBody).fileStatus !=
-          (model.message.body as ImageMessageBody).fileStatus;
+      (msg.body as ImageMessageBody).fileStatus != (model.message.body as ImageMessageBody).fileStatus;
       safeSetState(() {
         downloading = false;
         downloadError = true;
@@ -75,8 +76,7 @@ class _ChatUIKitImageMessageWidgetState
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
 
-    bool left =
-        widget.isLeft ?? model.message.direction == MessageDirection.RECEIVE;
+    bool left = widget.isLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     String? localPath = model.message.localPath;
     String? thumbnailLocalPath = model.message.thumbnailLocalPath;
@@ -188,10 +188,7 @@ class _ChatUIKitImageMessageWidgetState
     content = Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-            widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow
-                ? 4
-                : 16),
+        borderRadius: BorderRadius.circular(widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow ? 4 : 16),
         border: Border.all(
           width: 1,
           color: theme.color.isDark
@@ -204,10 +201,7 @@ class _ChatUIKitImageMessageWidgetState
         ),
       ),
       foregroundDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-            widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow
-                ? 4
-                : 16),
+        borderRadius: BorderRadius.circular(widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow ? 4 : 16),
         border: Border.all(
           width: 1,
           color: theme.color.isDark
@@ -229,9 +223,18 @@ class _ChatUIKitImageMessageWidgetState
     if (downloading) return;
     downloading = true;
     if (model.message.thumbnailLocalPath?.isNotEmpty == true) {
-      ChatUIKit.instance.downloadThumbnail(message: model.message);
+      debugPrint('downloadThumbnail: ${model.message.thumbnailLocalPath}');
+      if (widget.isCombine) {
+        ChatUIKit.instance.downloadMessageThumbnailInCombine(message: model.message);
+      } else {
+        ChatUIKit.instance.downloadThumbnail(message: model.message);
+      }
     } else {
-      ChatUIKit.instance.downloadAttachment(message: model.message);
+      if (widget.isCombine) {
+        ChatUIKit.instance.downloadMessageAttachmentInCombine(message: model.message);
+      } else {
+        ChatUIKit.instance.downloadAttachment(message: model.message);
+      }
     }
   }
 
@@ -241,17 +244,13 @@ class _ChatUIKitImageMessageWidgetState
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: theme.color.isDark
-            ? theme.color.neutralColor2
-            : theme.color.neutralColor9,
+        color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9,
       ),
       child: Center(
         child: ChatUIKitImageLoader.imageDefault(
           width: 64,
           height: 64,
-          color: theme.color.isDark
-              ? theme.color.neutralColor5
-              : theme.color.neutralColor7,
+          color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
         ),
       ),
     );

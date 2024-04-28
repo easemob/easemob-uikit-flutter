@@ -43,7 +43,7 @@ const String hasMentionValue = 'mention';
 const String voiceHasReadKey = 'voiceHasRead';
 const String hasTranslatedKey = 'hasTranslatedKey';
 
-enum MessageLongPressActionType {
+enum ChatUIKitActionType {
   reaction,
   copy, // only text message
   reply,
@@ -71,5 +71,10 @@ enum MessageLongPressActionType {
   read,
   addContact,
   newChat,
+  cancel,
+  add,
+  remove,
+  more,
+  save,
   custom,
 }

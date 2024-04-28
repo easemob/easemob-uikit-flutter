@@ -549,18 +549,22 @@ class MessageListViewController extends ChangeNotifier
     }
 
     File file = File(path);
-    Image.file(file).image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((info, synchronousCall) {
-      Message message = Message.createImageSendMessage(
-        targetId: profile.id,
-        chatType: chatType,
-        filePath: path,
-        width: info.image.width.toDouble(),
-        height: info.image.height.toDouble(),
-        fileSize: file.lengthSync(),
-        displayName: name,
-      );
-      sendMessage(message);
-    }));
+    Image.file(file).image.resolve(const ImageConfiguration()).addListener(
+      ImageStreamListener(
+        (info, synchronousCall) {
+          Message message = Message.createImageSendMessage(
+            targetId: profile.id,
+            chatType: chatType,
+            filePath: path,
+            width: info.image.width.toDouble(),
+            height: info.image.height.toDouble(),
+            fileSize: file.lengthSync(),
+            displayName: name,
+          );
+          sendMessage(message);
+        },
+      ),
+    );
   }
 
   Future<void> sendVideoMessage(

@@ -50,14 +50,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _localization.defaultLocale = [
-      ChatLocal(
-        'zh',
-        Map.from(ChatUIKitLocal.zh)..addAll(DemoLocalizations.zh),
-      ),
-      ChatLocal(
-        'en',
-        Map.from(ChatUIKitLocal.en)..addAll(DemoLocalizations.en),
-      )
+      ChatLocal('zh', Map.from(ChatUIKitLocal.zh)..addAll(DemoLocalizations.zh)),
+      ChatLocal('en', Map.from(ChatUIKitLocal.en)..addAll(DemoLocalizations.en))
     ];
     // 添加语言后需要进行resetLocales操作
     _localization.resetLocales();
