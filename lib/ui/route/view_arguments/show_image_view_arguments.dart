@@ -10,6 +10,7 @@ class ShowImageViewArguments implements ChatUIKitViewArguments {
     this.enableAppBar = true,
     this.viewObserver,
     this.attributes,
+    this.isCombine = false,
     this.appBarTrailingActionsBuilder,
   });
 
@@ -18,6 +19,7 @@ class ShowImageViewArguments implements ChatUIKitViewArguments {
   final void Function(BuildContext context, Message message)? onTap;
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
+  final bool isCombine;
   @override
   String? attributes;
   @override

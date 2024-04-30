@@ -206,7 +206,7 @@ class _ChatUIKitVideoMessageWidgetState extends State<ChatUIKitVideoMessageWidge
     safeSetState(() {
       downloading = true;
       if (widget.isCombine) {
-        ChatUIKit.instance.downloadMessageAttachmentInCombine(message: model.message);
+        ChatUIKit.instance.downloadMessageThumbnailInCombine(message: model.message);
       } else {
         ChatUIKit.instance.downloadThumbnail(message: model.message);
       }

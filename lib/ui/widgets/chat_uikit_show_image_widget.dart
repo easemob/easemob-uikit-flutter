@@ -11,6 +11,7 @@ class ChatUIKitShowImageWidget extends StatefulWidget {
     this.onError,
     this.onProgress,
     this.onSuccess,
+    this.isCombine = false,
     super.key,
   });
 
@@ -19,7 +20,7 @@ class ChatUIKitShowImageWidget extends StatefulWidget {
   final void Function(ChatError error)? onError;
   final void Function(int progress)? onProgress;
   final VoidCallback? onSuccess;
-
+  final bool isCombine;
   final Message message;
 
   @override
@@ -38,8 +39,8 @@ class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget> wit
   @override
   void initState() {
     super.initState();
-    message = widget.message;
     ChatUIKit.instance.addObserver(this);
+    message = widget.message;
     checkFile();
   }
 
@@ -50,7 +51,11 @@ class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget> wit
         localPath = message!.localPath;
       } else {
         Future.delayed(const Duration(milliseconds: 100)).then((value) {
-          ChatUIKit.instance.downloadAttachment(message: message!);
+          if (widget.isCombine) {
+            ChatUIKit.instance.downloadMessageAttachmentInCombine(message: message!);
+          } else {
+            ChatUIKit.instance.downloadAttachment(message: message!);
+          }
         });
       }
     }

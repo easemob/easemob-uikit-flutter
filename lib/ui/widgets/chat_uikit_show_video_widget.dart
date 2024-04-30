@@ -13,6 +13,7 @@ class ChatUIKitShowVideoWidget extends StatefulWidget {
     this.onProgress,
     this.onSuccess,
     this.playIcon,
+    this.isCombine = false,
     super.key,
   });
 
@@ -22,16 +23,15 @@ class ChatUIKitShowVideoWidget extends StatefulWidget {
 
   final void Function(ChatError error)? onError;
   final void Function(int progress)? onProgress;
+  final bool isCombine;
   final Widget? playIcon;
   final VoidCallback? onSuccess;
 
   @override
-  State<ChatUIKitShowVideoWidget> createState() =>
-      _ChatUIKitShowVideoWidgetState();
+  State<ChatUIKitShowVideoWidget> createState() => _ChatUIKitShowVideoWidgetState();
 }
 
-class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
-    with MessageObserver {
+class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> with MessageObserver {
   Message? message;
   VideoPlayerController? _controller;
 
@@ -46,18 +46,9 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
   void initState() {
     super.initState();
     ChatUIKit.instance.addObserver(this);
-    ChatUIKit.instance
-        .loadMessage(
-      messageId: widget.message.msgId,
-    )
-        .then(
-      (value) {
-        if (value != null) {
-          message = value;
-          checkVideoFile();
-        }
-      },
-    );
+    message = widget.message;
+    checkVideoFile();
+    debugPrint('initState');
   }
 
   void checkVideoFile() async {
@@ -67,7 +58,12 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
       if (file.existsSync()) {
         await updateController(file);
       } else {
-        ChatUIKit.instance.downloadAttachment(message: message!);
+        if (widget.isCombine) {
+          debugPrint('isCombine');
+          ChatUIKit.instance.downloadMessageAttachmentInCombine(message: message!);
+        } else {
+          ChatUIKit.instance.downloadAttachment(message: message!);
+        }
         downloading = true;
       }
     }
@@ -78,7 +74,11 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
         localThumbPath = message!.thumbnailLocalPath;
       }
     } else {
-      ChatUIKit.instance.downloadThumbnail(message: message!);
+      if (widget.isCombine) {
+        ChatUIKit.instance.downloadMessageThumbnailInCombine(message: message!);
+      } else {
+        ChatUIKit.instance.downloadThumbnail(message: message!);
+      }
     }
     safeSetState(() {});
   }
@@ -94,6 +94,7 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
 
   @override
   void onProgress(String msgId, int progress) {
+    debugPrint('onProgress: $msgId, $progress');
     if (widget.message.msgId == msgId) {
       if (downloading) {
         _progress.value = progress;
@@ -114,8 +115,7 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
   void onSuccess(String msgId, Message msg) {
     if (widget.message.msgId == msgId) {
       if (downloading) {
-        if ((msg.body as VideoMessageBody).fileStatus ==
-            DownloadStatus.SUCCESS) {
+        if ((msg.body as VideoMessageBody).fileStatus == DownloadStatus.SUCCESS) {
           downloading = false;
         }
       }
@@ -151,10 +151,7 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
         if (_progress.value == 100) {
           return const SizedBox();
         }
-        return SizedBox(
-            width: 40,
-            height: 40,
-            child: CircularProgressIndicator(value: value / 100));
+        return SizedBox(width: 40, height: 40, child: CircularProgressIndicator(value: value / 100));
       },
     );
   }
@@ -180,9 +177,8 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
         children: [
           () {
             if (_controller?.value.isInitialized == true) {
-              Widget content = AspectRatio(
-                  aspectRatio: _controller!.value.aspectRatio,
-                  child: VideoPlayer(_controller!));
+              Widget content =
+                  AspectRatio(aspectRatio: _controller!.value.aspectRatio, child: VideoPlayer(_controller!));
 
               return content;
             } else {
@@ -209,9 +205,7 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
                           Icon(
                             Icons.play_circle_outline,
                             size: 70,
-                            color: theme.color.isDark
-                                ? theme.color.neutralColor2
-                                : theme.color.neutralColor95,
+                            color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor95,
                           ),
                     ),
             ),

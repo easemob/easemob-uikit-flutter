@@ -11,6 +11,7 @@ class ShowVideoView extends StatefulWidget {
         playIcon = arguments.playIcon,
         viewObserver = arguments.viewObserver,
         appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
+        isCombine = arguments.isCombine,
         attributes = arguments.attributes;
 
   const ShowVideoView({
@@ -22,6 +23,7 @@ class ShowVideoView extends StatefulWidget {
     this.attributes,
     this.viewObserver,
     this.appBarTrailingActionsBuilder,
+    this.isCombine = false,
     super.key,
   });
 
@@ -31,6 +33,7 @@ class ShowVideoView extends StatefulWidget {
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
   final String? attributes;
+  final bool isCombine;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
@@ -61,6 +64,7 @@ class _ShowVideoViewState extends State<ShowVideoView> {
       message: widget.message,
       onLongPressed: widget.onLongPressed,
       playIcon: widget.playIcon,
+      isCombine: widget.isCombine,
     );
 
     content = Scaffold(

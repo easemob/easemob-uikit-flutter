@@ -118,7 +118,6 @@ extension Request on ChatUIKitContext {
       bool hasUnread = false;
       if (index != -1) {
         needUpdate = true;
-        requestList.removeAt(index);
         Map ret = requestList.removeAt(index);
         if (ret.containsKey('isRead') && !ret['isRead']) {
           hasUnread = true;

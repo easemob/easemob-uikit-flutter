@@ -11,6 +11,7 @@ class ShowVideoViewArguments implements ChatUIKitViewArguments {
     this.enableAppBar = true,
     this.viewObserver,
     this.appBarTrailingActionsBuilder,
+    this.isCombine = false,
   });
 
   final Message message;
@@ -18,6 +19,7 @@ class ShowVideoViewArguments implements ChatUIKitViewArguments {
   final Widget? playIcon;
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
+  final bool isCombine;
   @override
   String? attributes;
   @override

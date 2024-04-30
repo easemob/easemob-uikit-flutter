@@ -42,7 +42,8 @@ class ForwardMessagesView extends StatefulWidget {
 }
 
 class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObserver {
-  late Message message;
+  late final Message message;
+  bool downloading = false;
   List<MessageModel> models = [];
   @override
   void initState() {
@@ -62,27 +63,24 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObse
 
   void fetchCombineList() async {
     try {
+      downloading = true;
       List<Message> fetchedMsgs = await ChatUIKit.instance.fetchCombineMessageDetail(message: message);
-
       models.addAll(fetchedMsgs.map((e) => MessageModel(message: e)));
-    } catch (e) {
+    } on ChatError catch (e) {
       chatPrint('download error: $e');
     } finally {
-      ChatUIKit.instance.loadMessage(messageId: widget.message.msgId).then((value) {
-        if (value != null) {
-          message = value;
-        }
+      downloading = false;
+      if (mounted) {
         setState(() {});
-      });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    CombineMessageBody body = message.body as CombineMessageBody;
     Widget? content;
-    if (body.fileStatus == DownloadStatus.DOWNLOADING) {
+    if (downloading == true) {
       content = Center(
         child: SizedBox(
           width: 30,
@@ -93,7 +91,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObse
           ),
         ),
       );
-    } else if (body.fileStatus == DownloadStatus.SUCCESS) {
+    } else if (models.isNotEmpty) {
       content = historyWidget(theme);
     } else {
       content = Center(
@@ -250,8 +248,14 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObse
   Widget imageWidget(MessageModel model, ChatUIKitTheme theme) {
     return InkWell(
       onTap: () {
-        ChatUIKitRoute.pushOrPushNamed(context, ChatUIKitRouteNames.showImageView,
-            ShowImageViewArguments(message: model.message, attributes: widget.attributes));
+        ChatUIKitRoute.pushOrPushNamed(
+            context,
+            ChatUIKitRouteNames.showImageView,
+            ShowImageViewArguments(
+              message: model.message,
+              attributes: widget.attributes,
+              isCombine: true,
+            ));
       },
       child: ChatUIKitImageMessageWidget(model: model, isCombine: true),
     );
@@ -288,10 +292,16 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObse
   Widget videoWidget(MessageModel model, ChatUIKitTheme theme) {
     return InkWell(
       onTap: () {
-        ChatUIKitRoute.pushOrPushNamed(context, ChatUIKitRouteNames.showVideoView,
-            ShowVideoViewArguments(message: message, attributes: widget.attributes));
+        ChatUIKitRoute.pushOrPushNamed(
+            context,
+            ChatUIKitRouteNames.showVideoView,
+            ShowVideoViewArguments(
+              message: model.message,
+              attributes: widget.attributes,
+              isCombine: true,
+            ));
       },
-      child: ChatUIKitVideoMessageWidget(model: model),
+      child: ChatUIKitVideoMessageWidget(model: model, isCombine: true),
     );
   }
 
