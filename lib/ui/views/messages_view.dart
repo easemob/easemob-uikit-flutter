@@ -1661,7 +1661,6 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 packageName: ChatUIKitImageLoader.packageName,
                 iconSize: const Size(32, 32),
                 onTap: (context) {
-                  debugPrint('message default search');
                   ChatUIKitRoute.pushOrPushNamed(
                     context,
                     ChatUIKitRouteNames.searchHistoryView,
@@ -1705,7 +1704,6 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
             controller.clearMessages();
           },
           actionsBuilder: (context, defaultList) {
-            debugPrint('message defaultList');
             return [
               ChatUIKitModelAction(
                 title: ChatUIKitLocal.contactDetailViewSend.localString(context),
@@ -1722,7 +1720,6 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 packageName: ChatUIKitImageLoader.packageName,
                 iconSize: const Size(32, 32),
                 onTap: (context) {
-                  debugPrint('message default search');
                   ChatUIKitRoute.pushOrPushNamed(
                     context,
                     ChatUIKitRouteNames.searchHistoryView,

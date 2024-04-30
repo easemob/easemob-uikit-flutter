@@ -15,7 +15,7 @@ dependencies:
   im_flutter_sdk:
     git:
       url: https://github.com/easemob/im_flutter_sdk
-      ref: '280f23c'
+      ref: 'c513b94'
 
   flutter_sound_record: ^3.3.2
 

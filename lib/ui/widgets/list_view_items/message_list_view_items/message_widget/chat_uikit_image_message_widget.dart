@@ -51,7 +51,6 @@ class _ChatUIKitImageMessageWidgetState extends State<ChatUIKitImageMessageWidge
 
   @override
   void onSuccess(String msgId, Message msg) {
-    debugPrint('onSuccess: $msgId');
     if (msgId == model.message.msgId) {
       model = model.copyWith(message: msg);
       safeSetState(() {
@@ -62,7 +61,6 @@ class _ChatUIKitImageMessageWidgetState extends State<ChatUIKitImageMessageWidge
 
   @override
   void onError(String msgId, Message msg, ChatError error) {
-    debugPrint('onSuccess: $msgId');
     if (msgId == model.message.msgId && msg.bodyType == MessageType.IMAGE) {
       (msg.body as ImageMessageBody).fileStatus != (model.message.body as ImageMessageBody).fileStatus;
       safeSetState(() {
@@ -223,7 +221,6 @@ class _ChatUIKitImageMessageWidgetState extends State<ChatUIKitImageMessageWidge
     if (downloading) return;
     downloading = true;
     if (model.message.thumbnailLocalPath?.isNotEmpty == true) {
-      debugPrint('downloadThumbnail: ${model.message.thumbnailLocalPath}');
       if (widget.isCombine) {
         ChatUIKit.instance.downloadMessageThumbnailInCombine(message: model.message);
       } else {

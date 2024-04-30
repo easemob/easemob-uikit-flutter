@@ -48,7 +48,6 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> wit
     ChatUIKit.instance.addObserver(this);
     message = widget.message;
     checkVideoFile();
-    debugPrint('initState');
   }
 
   void checkVideoFile() async {
@@ -59,7 +58,6 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> wit
         await updateController(file);
       } else {
         if (widget.isCombine) {
-          debugPrint('isCombine');
           ChatUIKit.instance.downloadMessageAttachmentInCombine(message: message!);
         } else {
           ChatUIKit.instance.downloadAttachment(message: message!);
@@ -94,7 +92,6 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> wit
 
   @override
   void onProgress(String msgId, int progress) {
-    debugPrint('onProgress: $msgId, $progress');
     if (widget.message.msgId == msgId) {
       if (downloading) {
         _progress.value = progress;
