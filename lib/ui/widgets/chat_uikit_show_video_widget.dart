@@ -154,14 +154,19 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> wit
   }
 
   Widget thumbWidget() {
+    if (_controller?.value.isPlaying ?? false) {
+      return const SizedBox();
+    }
     Widget? content;
     if (localThumbPath?.isNotEmpty == true) {
+      debugPrint('localThumbPath: $localThumbPath');
       content = Image.file(
         File(localThumbPath!),
         fit: BoxFit.contain,
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
       );
+      content = Center(child: content);
     }
     content ??= const SizedBox();
     return content;
@@ -182,6 +187,7 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> wit
               return const SizedBox();
             }
           }(),
+          Positioned.fill(child: thumbWidget()),
           Positioned.fill(
             child: InkWell(
               highlightColor: Colors.transparent,
@@ -216,16 +222,14 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> wit
   Widget build(BuildContext context) {
     Widget content = Stack(
       children: [
-        Positioned.fill(child: thumbWidget()),
-        if (_controller?.value.isInitialized == true)
-          Positioned.fill(
-            child: InkWell(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onLongPress: onLongPressed,
-              child: playerWidget(),
-            ),
+        Positioned.fill(
+          child: InkWell(
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            onLongPress: onLongPressed,
+            child: playerWidget(),
           ),
+        ),
         Positioned.fill(child: Center(child: loadingWidget())),
       ],
     );

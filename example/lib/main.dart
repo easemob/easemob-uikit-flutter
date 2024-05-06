@@ -20,7 +20,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'pages/me/settings/advanced_page.dart';
 
-const appKey = 'easemob#easeim';
+const appKey = '';
 
 const bool appDebug = false;
 
@@ -32,7 +32,6 @@ void main() async {
     ),
   );
   SettingsDataStore().init();
-  // return runApp(const MyApp());
   return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) => runApp(const MyApp()));
 }
 
