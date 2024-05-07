@@ -3,7 +3,8 @@ import 'package:em_chat_uikit/universal/inner_headers.dart';
 
 import 'package:flutter/foundation.dart';
 
-class ThreadMembersViewController extends ChangeNotifier with ChatUIKitProviderObserver {
+class ThreadMembersViewController extends ChangeNotifier
+    with ChatUIKitProviderObserver {
   final ChatThread thread;
   bool loadFinished = false;
   bool fetching = false;
@@ -31,13 +32,15 @@ class ThreadMembersViewController extends ChangeNotifier with ChatUIKitProviderO
     }
     fetching = true;
     try {
-      CursorResult<String> result = await ChatUIKit.instance.fetchChatThreadMembers(
+      CursorResult<String> result =
+          await ChatUIKit.instance.fetchChatThreadMembers(
         chatThreadId: thread.threadId,
         cursor: cursor,
         limit: pageSize,
       );
 
-      Map<String, ChatUIKitProfile> map = ChatUIKitProvider.instance.getProfiles(
+      Map<String, ChatUIKitProfile> map =
+          ChatUIKitProvider.instance.getProfiles(
         result.data.map((e) => ChatUIKitProfile.contact(id: e)).toList(),
       );
 

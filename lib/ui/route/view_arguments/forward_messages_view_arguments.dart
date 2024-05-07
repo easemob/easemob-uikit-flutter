@@ -43,7 +43,8 @@ class ForwardMessagesViewArguments implements ChatUIKitViewArguments {
       summaryBuilder: summaryBuilder ?? this.summaryBuilder,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      appBarTrailingActionsBuilder:
+          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

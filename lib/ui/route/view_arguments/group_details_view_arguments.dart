@@ -44,7 +44,8 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
       viewObserver: viewObserver ?? this.viewObserver,
       contentWidgetBuilder: contentWidgetBuilder ?? this.contentWidgetBuilder,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      appBarTrailingActionsBuilder:
+          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

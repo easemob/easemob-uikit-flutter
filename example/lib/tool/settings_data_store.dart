@@ -53,7 +53,8 @@ class SettingsDataStore {
   }
 
   bool get enableThread {
-    return _sharedPreferences?.getBool(threadKey) ?? ChatUIKitSettings.enableMessageThread;
+    return _sharedPreferences?.getBool(threadKey) ??
+        ChatUIKitSettings.enableMessageThread;
   }
 
   Future<void> saveThread(bool enable) async {
@@ -63,7 +64,8 @@ class SettingsDataStore {
   }
 
   bool get enableTranslation {
-    return _sharedPreferences?.getBool(translationKey) ?? ChatUIKitSettings.enableMessageTranslation;
+    return _sharedPreferences?.getBool(translationKey) ??
+        ChatUIKitSettings.enableMessageTranslation;
   }
 
   Future<void> saveTranslation(bool enable) async {
@@ -73,7 +75,8 @@ class SettingsDataStore {
   }
 
   bool get enableReaction {
-    return _sharedPreferences?.getBool(reactionKey) ?? ChatUIKitSettings.enableMessageReaction;
+    return _sharedPreferences?.getBool(reactionKey) ??
+        ChatUIKitSettings.enableMessageReaction;
   }
 
   Future<void> saveReaction(bool enable) async {

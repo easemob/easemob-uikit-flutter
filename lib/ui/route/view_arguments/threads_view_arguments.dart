@@ -34,7 +34,8 @@ class ThreadsViewArguments implements ChatUIKitViewArguments {
       appBar: appBar ?? this.appBar,
       attributes: attributes ?? this.attributes,
       viewObserver: viewObserver ?? this.viewObserver,
-      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      appBarTrailingActionsBuilder:
+          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

@@ -9,7 +9,8 @@ class ToastPage extends StatefulWidget {
   State<ToastPage> createState() => _ToastPageState();
 }
 
-class _ToastPageState extends State<ToastPage> with ChatSDKEventsObserver, ChatUIKitEventsObservers {
+class _ToastPageState extends State<ToastPage>
+    with ChatSDKEventsObserver, ChatUIKitEventsObservers {
   @override
   void initState() {
     super.initState();

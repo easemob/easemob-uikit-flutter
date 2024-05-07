@@ -89,13 +89,16 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: !widget.enableAppBar
           ? null
           : widget.appBar ??
               ChatUIKitAppBar(
                 centerTitle: false,
-                title: widget.title ?? ChatUIKitLocal.createGroupViewTitle.localString(context),
+                title: widget.title ??
+                    ChatUIKitLocal.createGroupViewTitle.localString(context),
                 trailingActions: () {
                   List<ChatUIKitAppBarTrailingAction> actions = [
                     ChatUIKitAppBarTrailingAction(
@@ -108,19 +111,24 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                       },
                       child: Text(
                         selectedProfiles.isEmpty
-                            ? ChatUIKitLocal.createGroupViewCreate.localString(context)
+                            ? ChatUIKitLocal.createGroupViewCreate
+                                .localString(context)
                             : '${ChatUIKitLocal.createGroupViewCreate.localString(context)}(${selectedProfiles.length})',
                         textScaler: TextScaler.noScaling,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                          color: theme.color.isDark
+                              ? theme.color.primaryColor6
+                              : theme.color.primaryColor5,
                           fontWeight: theme.font.labelMedium.fontWeight,
                           fontSize: theme.font.labelMedium.fontSize,
                         ),
                       ),
                     ),
                   ];
-                  return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                  return widget.appBarTrailingActionsBuilder
+                          ?.call(context, actions) ??
+                      actions;
                 }(),
               ),
       body: ContactListView(
@@ -141,12 +149,16 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                           ? Icon(
                               Icons.check_box,
                               size: 28,
-                              color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                              color: theme.color.isDark
+                                  ? theme.color.primaryColor6
+                                  : theme.color.primaryColor5,
                             )
                           : Icon(
                               Icons.check_box_outline_blank,
                               size: 28,
-                              color: theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor7,
+                              color: theme.color.isDark
+                                  ? theme.color.neutralColor4
+                                  : theme.color.neutralColor7,
                             ),
                       Expanded(child: ChatUIKitContactListViewItem(model))
                     ],
@@ -177,7 +189,8 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                   Navigator.of(ctx).pop(profile);
                 },
                 canChangeSelected: selectedProfiles,
-                searchHideText: ChatUIKitLocal.createGroupViewSearchContact.localString(context),
+                searchHideText: ChatUIKitLocal.createGroupViewSearchContact
+                    .localString(context),
                 searchData: list,
                 enableMulti: true,
                 attributes: widget.attributes))
@@ -220,7 +233,8 @@ class _CreateGroupViewState extends State<CreateGroupView> {
       groupName: info?.groupName ??
           widget.createGroupInfo?.groupName ??
           [
-            ...selectedProfiles + [ChatUIKitProvider.instance.currentUserProfile!]
+            ...selectedProfiles +
+                [ChatUIKitProvider.instance.currentUserProfile!]
           ].map((e) => e.showName).join(','),
       desc: info?.groupDesc ?? widget.createGroupInfo?.groupDesc,
       options: GroupOptions(

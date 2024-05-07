@@ -110,16 +110,19 @@ mixin GroupWrapper on ChatUIKitWrapperBase {
   }
 
   @protected
-  void onAutoAcceptInvitationFromGroup(String groupId, String inviter, String? inviteMessage) {
+  void onAutoAcceptInvitationFromGroup(
+      String groupId, String inviter, String? inviteMessage) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is GroupObserver) {
-        observer.onAutoAcceptInvitationFromGroup(groupId, inviter, inviteMessage);
+        observer.onAutoAcceptInvitationFromGroup(
+            groupId, inviter, inviteMessage);
       }
     }
   }
 
   @protected
-  void onInvitationAcceptedFromGroup(String groupId, String invitee, String? reason) {
+  void onInvitationAcceptedFromGroup(
+      String groupId, String invitee, String? reason) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is GroupObserver) {
         observer.onInvitationAcceptedFromGroup(groupId, invitee, reason);
@@ -128,7 +131,8 @@ mixin GroupWrapper on ChatUIKitWrapperBase {
   }
 
   @protected
-  void onInvitationDeclinedFromGroup(String groupId, String invitee, String? reason) {
+  void onInvitationDeclinedFromGroup(
+      String groupId, String invitee, String? reason) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is GroupObserver) {
         observer.onInvitationDeclinedFromGroup(groupId, invitee, reason);
@@ -137,10 +141,12 @@ mixin GroupWrapper on ChatUIKitWrapperBase {
   }
 
   @protected
-  void onInvitationReceivedFromGroup(String groupId, String? groupName, String inviter, String? reason) {
+  void onInvitationReceivedFromGroup(
+      String groupId, String? groupName, String inviter, String? reason) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is GroupObserver) {
-        observer.onInvitationReceivedFromGroup(groupId, groupName, inviter, reason);
+        observer.onInvitationReceivedFromGroup(
+            groupId, groupName, inviter, reason);
       }
     }
   }
@@ -164,7 +170,8 @@ mixin GroupWrapper on ChatUIKitWrapperBase {
   }
 
   @protected
-  void onMuteListAddedFromGroup(String groupId, List<String> mutes, int? muteExpire) {
+  void onMuteListAddedFromGroup(
+      String groupId, List<String> mutes, int? muteExpire) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is GroupObserver) {
         observer.onMuteListAddedFromGroup(groupId, mutes, muteExpire);
@@ -182,7 +189,8 @@ mixin GroupWrapper on ChatUIKitWrapperBase {
   }
 
   @protected
-  void onOwnerChangedFromGroup(String groupId, String newOwner, String oldOwner) {
+  void onOwnerChangedFromGroup(
+      String groupId, String newOwner, String oldOwner) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is GroupObserver) {
         observer.onOwnerChangedFromGroup(groupId, newOwner, oldOwner);
@@ -191,7 +199,8 @@ mixin GroupWrapper on ChatUIKitWrapperBase {
   }
 
   @protected
-  void onRequestToJoinAcceptedFromGroup(String groupId, String? groupName, String accepter) {
+  void onRequestToJoinAcceptedFromGroup(
+      String groupId, String? groupName, String accepter) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is GroupObserver) {
         observer.onRequestToJoinAcceptedFromGroup(groupId, groupName, accepter);
@@ -209,16 +218,19 @@ mixin GroupWrapper on ChatUIKitWrapperBase {
   ) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is GroupObserver) {
-        observer.onRequestToJoinDeclinedFromGroup(groupId, groupName, decliner, reason, applicant);
+        observer.onRequestToJoinDeclinedFromGroup(
+            groupId, groupName, decliner, reason, applicant);
       }
     }
   }
 
   @protected
-  void onRequestToJoinReceivedFromGroup(String groupId, String? groupName, String applicant, String? reason) {
+  void onRequestToJoinReceivedFromGroup(
+      String groupId, String? groupName, String applicant, String? reason) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is GroupObserver) {
-        observer.onRequestToJoinReceivedFromGroup(groupId, groupName, applicant, reason);
+        observer.onRequestToJoinReceivedFromGroup(
+            groupId, groupName, applicant, reason);
       }
     }
   }
@@ -270,11 +282,12 @@ mixin GroupWrapper on ChatUIKitWrapperBase {
   }
 
   @protected
-  void onAttributesChangedOfGroupMember(
-      String groupId, String userId, Map<String, String>? attributes, String? operatorId) {
+  void onAttributesChangedOfGroupMember(String groupId, String userId,
+      Map<String, String>? attributes, String? operatorId) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is GroupObserver) {
-        observer.onAttributesChangedOfGroupMember(groupId, userId, attributes, operatorId);
+        observer.onAttributesChangedOfGroupMember(
+            groupId, userId, attributes, operatorId);
       }
     }
   }

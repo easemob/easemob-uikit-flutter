@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CurrentUserInfoView extends StatefulWidget {
-  CurrentUserInfoView.arguments(CurrentUserInfoViewArguments arguments, {super.key})
+  CurrentUserInfoView.arguments(CurrentUserInfoViewArguments arguments,
+      {super.key})
       : profile = arguments.profile,
         appBar = arguments.appBar,
         viewObserver = arguments.viewObserver,
@@ -34,7 +35,8 @@ class CurrentUserInfoView extends StatefulWidget {
   State<CurrentUserInfoView> createState() => _CurrentUserInfoViewState();
 }
 
-class _CurrentUserInfoViewState extends State<CurrentUserInfoView> with ChatUIKitProviderObserver {
+class _CurrentUserInfoViewState extends State<CurrentUserInfoView>
+    with ChatUIKitProviderObserver {
   ChatUIKitProfile? profile;
   @override
   void initState() {
@@ -70,12 +72,15 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> with ChatUIKi
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+        backgroundColor: theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98,
         appBar: !widget.enableAppBar
             ? null
             : widget.appBar ??
                 ChatUIKitAppBar(
-                  trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
+                  trailingActions:
+                      widget.appBarTrailingActionsBuilder?.call(context, null),
                 ),
         body: _buildContent());
 
@@ -90,14 +95,18 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> with ChatUIKi
     );
 
     Widget name = Text(
-      ChatUIKitProvider.instance.currentUserProfile?.showName ?? ChatUIKit.instance.currentUserId ?? '',
+      ChatUIKitProvider.instance.currentUserProfile?.showName ??
+          ChatUIKit.instance.currentUserId ??
+          '',
       overflow: TextOverflow.ellipsis,
       textScaler: TextScaler.noScaling,
       maxLines: 1,
       style: TextStyle(
         fontSize: theme.font.headlineLarge.fontSize,
         fontWeight: theme.font.headlineLarge.fontWeight,
-        color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
+        color: theme.color.isDark
+            ? theme.color.neutralColor100
+            : theme.color.neutralColor1,
       ),
     );
 
@@ -109,7 +118,9 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> with ChatUIKi
       style: TextStyle(
         fontSize: theme.font.bodySmall.fontSize,
         fontWeight: theme.font.bodySmall.fontWeight,
-        color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
+        color: theme.color.isDark
+            ? theme.color.neutralColor5
+            : theme.color.neutralColor7,
       ),
     );
 
@@ -128,7 +139,9 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> with ChatUIKi
           child: Icon(
             Icons.file_copy_sharp,
             size: 16,
-            color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
+            color: theme.color.isDark
+                ? theme.color.neutralColor5
+                : theme.color.neutralColor7,
           ),
         ),
       ],

@@ -70,17 +70,22 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
             child: Icon(
               Icons.cancel,
               size: 20,
-              color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
+              color: theme.color.isDark
+                  ? theme.color.neutralColor95
+                  : theme.color.neutralColor3,
             ),
           ),
         ),
       );
     }
 
-    content = Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: children);
+    content = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween, children: children);
     content = Container(
       padding: const EdgeInsets.fromLTRB(12, 8, 0, 8),
-      color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9,
+      color: theme.color.isDark
+          ? theme.color.neutralColor2
+          : theme.color.neutralColor9,
       child: content,
     );
 
@@ -99,20 +104,24 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
                 style: TextStyle(
                   fontWeight: theme.font.bodySmall.fontWeight,
                   fontSize: theme.font.bodySmall.fontSize,
-                  color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
+                  color: theme.color.isDark
+                      ? theme.color.neutralSpecialColor6
+                      : theme.color.neutralSpecialColor5,
                 ),
               ),
               TextSpan(
                 text: () {
-                  ChatUIKitProfile? profile =
-                      ChatUIKitProvider.instance.profilesCache[widget.messageModel.message.from!];
+                  ChatUIKitProfile? profile = ChatUIKitProvider.instance
+                      .profilesCache[widget.messageModel.message.from!];
                   profile ??= widget.messageModel.message.fromProfile;
                   return profile.showName;
                 }(),
                 style: TextStyle(
                   fontWeight: theme.font.labelSmall.fontWeight,
                   fontSize: theme.font.labelSmall.fontSize,
-                  color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
+                  color: theme.color.isDark
+                      ? theme.color.neutralSpecialColor6
+                      : theme.color.neutralSpecialColor5,
                 ),
               ),
             ],
@@ -154,7 +163,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
       style: TextStyle(
         fontWeight: theme.font.bodySmall.fontWeight,
         fontSize: theme.font.bodySmall.fontSize,
-        color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
+        color: theme.color.isDark
+            ? theme.color.neutralColor6
+            : theme.color.neutralColor5,
       ),
     );
   }
@@ -176,7 +187,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
             style: TextStyle(
               fontWeight: theme.font.labelSmall.fontWeight,
               fontSize: theme.font.labelSmall.fontSize,
-              color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
+              color: theme.color.isDark
+                  ? theme.color.neutralColor6
+                  : theme.color.neutralColor5,
             ),
           ),
         )
@@ -201,7 +214,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
             style: TextStyle(
               fontWeight: theme.font.labelSmall.fontWeight,
               fontSize: theme.font.labelSmall.fontSize,
-              color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor6,
+              color: theme.color.isDark
+                  ? theme.color.neutralColor5
+                  : theme.color.neutralColor6,
             ),
           ),
         )
@@ -216,7 +231,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
           width: 16,
           height: 16,
           child: ChatUIKitImageLoader.bubbleVoice(2,
-              color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5),
+              color: theme.color.isDark
+                  ? theme.color.neutralColor6
+                  : theme.color.neutralColor5),
         ),
         const SizedBox(width: 4),
         Expanded(
@@ -230,7 +247,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
                   style: TextStyle(
                     fontWeight: theme.font.bodySmall.fontWeight,
                     fontSize: theme.font.bodySmall.fontSize,
-                    color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
+                    color: theme.color.isDark
+                        ? theme.color.neutralSpecialColor6
+                        : theme.color.neutralSpecialColor5,
                   ),
                 ),
                 TextSpan(
@@ -238,7 +257,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
                   style: TextStyle(
                     fontWeight: theme.font.labelSmall.fontWeight,
                     fontSize: theme.font.labelSmall.fontSize,
-                    color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
+                    color: theme.color.isDark
+                        ? theme.color.neutralSpecialColor6
+                        : theme.color.neutralSpecialColor5,
                   ),
                 ),
               ],
@@ -256,7 +277,11 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
           width: 16,
           height: 16,
           child: ChatUIKitImageLoader.file(
-              width: 32, height: 32, color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor7),
+              width: 32,
+              height: 32,
+              color: theme.color.isDark
+                  ? theme.color.neutralColor6
+                  : theme.color.neutralColor7),
         ),
         const SizedBox(width: 4),
         Expanded(
@@ -270,7 +295,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
                 style: TextStyle(
                   fontWeight: theme.font.labelSmall.fontWeight,
                   fontSize: theme.font.labelSmall.fontSize,
-                  color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
+                  color: theme.color.isDark
+                      ? theme.color.neutralSpecialColor6
+                      : theme.color.neutralSpecialColor5,
                 ),
               ),
               TextSpan(
@@ -278,7 +305,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
                 style: TextStyle(
                   fontWeight: theme.font.bodySmall.fontWeight,
                   fontSize: theme.font.bodySmall.fontSize,
-                  color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
+                  color: theme.color.isDark
+                      ? theme.color.neutralSpecialColor6
+                      : theme.color.neutralSpecialColor5,
                 ),
               ),
             ],
@@ -295,7 +324,11 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
           width: 16,
           height: 16,
           child: ChatUIKitImageLoader.messageHistory(
-              width: 32, height: 32, color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor7),
+              width: 32,
+              height: 32,
+              color: theme.color.isDark
+                  ? theme.color.neutralColor6
+                  : theme.color.neutralColor7),
         ),
         const SizedBox(width: 4),
         Expanded(
@@ -309,7 +342,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
                 style: TextStyle(
                   fontWeight: theme.font.labelSmall.fontWeight,
                   fontSize: theme.font.labelSmall.fontSize,
-                  color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
+                  color: theme.color.isDark
+                      ? theme.color.neutralSpecialColor6
+                      : theme.color.neutralSpecialColor5,
                 ),
               ),
               TextSpan(
@@ -317,7 +352,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
                 style: TextStyle(
                   fontWeight: theme.font.bodySmall.fontWeight,
                   fontSize: theme.font.bodySmall.fontSize,
-                  color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
+                  color: theme.color.isDark
+                      ? theme.color.neutralSpecialColor6
+                      : theme.color.neutralSpecialColor5,
                 ),
               ),
             ],
@@ -333,7 +370,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
         children: [
           Icon(
             Icons.person_sharp,
-            color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
+            color: theme.color.isDark
+                ? theme.color.neutralColor95
+                : theme.color.neutralColor3,
             size: 16,
           ),
           const SizedBox(width: 4),
@@ -344,19 +383,25 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: ChatUIKitLocal.replayBarTitleContact.localString(context),
+                    text: ChatUIKitLocal.replayBarTitleContact
+                        .localString(context),
                     style: TextStyle(
                       fontWeight: theme.font.labelMedium.fontWeight,
                       fontSize: theme.font.labelMedium.fontSize,
-                      color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
+                      color: theme.color.isDark
+                          ? theme.color.neutralColor6
+                          : theme.color.neutralColor5,
                     ),
                   ),
                   TextSpan(
-                    text: widget.messageModel.message.cardUserNickname ?? widget.messageModel.message.cardUserId,
+                    text: widget.messageModel.message.cardUserNickname ??
+                        widget.messageModel.message.cardUserId,
                     style: TextStyle(
                       fontWeight: theme.font.bodyMedium.fontWeight,
                       fontSize: theme.font.bodyMedium.fontSize,
-                      color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
+                      color: theme.color.isDark
+                          ? theme.color.neutralSpecialColor6
+                          : theme.color.neutralSpecialColor5,
                     ),
                   ),
                 ],
@@ -388,7 +433,8 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
         }
       }
 
-      if (widget.messageModel.message.thumbnailRemotePath?.isNotEmpty == true && content == null) {
+      if (widget.messageModel.message.thumbnailRemotePath?.isNotEmpty == true &&
+          content == null) {
         content = Image(
           image: ResizeImage(
             NetworkImage(widget.messageModel.message.thumbnailRemotePath!),
@@ -401,7 +447,8 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
         );
       }
 
-      if (widget.messageModel.message.localPath?.isNotEmpty == true && content == null) {
+      if (widget.messageModel.message.localPath?.isNotEmpty == true &&
+          content == null) {
         File file = File(widget.messageModel.message.localPath!);
         if (file.existsSync()) {
           content = Image(
@@ -422,7 +469,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
         child: ChatUIKitImageLoader.imageDefault(
           width: 24,
           height: 24,
-          color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
+          color: theme.color.isDark
+              ? theme.color.neutralColor5
+              : theme.color.neutralColor7,
         ),
       );
 
@@ -430,18 +479,24 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
         width: 36,
         height: 36,
         decoration: BoxDecoration(
-          color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+          color: theme.color.isDark
+              ? theme.color.neutralColor1
+              : theme.color.neutralColor98,
           borderRadius: BorderRadius.circular(4),
           border: Border.all(
             width: 1,
-            color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor8,
+            color: theme.color.isDark
+                ? theme.color.neutralColor3
+                : theme.color.neutralColor8,
           ),
         ),
         foregroundDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           border: Border.all(
             width: 1,
-            color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor8,
+            color: theme.color.isDark
+                ? theme.color.neutralColor3
+                : theme.color.neutralColor8,
           ),
         ),
         child: content,
@@ -471,7 +526,8 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
         }
       }
 
-      if (widget.messageModel.message.thumbnailRemotePath?.isNotEmpty == true && content == null) {
+      if (widget.messageModel.message.thumbnailRemotePath?.isNotEmpty == true &&
+          content == null) {
         content = Image(
           image: ResizeImage(
             NetworkImage(widget.messageModel.message.thumbnailRemotePath!),
@@ -492,7 +548,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
               child: Icon(
                 Icons.play_circle_outline,
                 size: 20,
-                color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+                color: theme.color.isDark
+                    ? theme.color.neutralColor1
+                    : theme.color.neutralColor98,
               ),
             ),
           ],
@@ -503,7 +561,9 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
         child: ChatUIKitImageLoader.videoDefault(
           width: 24,
           height: 24,
-          color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
+          color: theme.color.isDark
+              ? theme.color.neutralColor5
+              : theme.color.neutralColor7,
         ),
       );
 
@@ -511,18 +571,24 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar> {
         width: 36,
         height: 36,
         decoration: BoxDecoration(
-          color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+          color: theme.color.isDark
+              ? theme.color.neutralColor1
+              : theme.color.neutralColor98,
           borderRadius: BorderRadius.circular(4),
           border: Border.all(
             width: 1,
-            color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor8,
+            color: theme.color.isDark
+                ? theme.color.neutralColor3
+                : theme.color.neutralColor8,
           ),
         ),
         foregroundDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           border: Border.all(
             width: 1,
-            color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor8,
+            color: theme.color.isDark
+                ? theme.color.neutralColor3
+                : theme.color.neutralColor8,
           ),
         ),
         child: content,

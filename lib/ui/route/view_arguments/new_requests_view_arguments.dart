@@ -24,7 +24,8 @@ class NewRequestsViewArguments implements ChatUIKitViewArguments {
   final void Function(List<NewRequestItemModel> data)? onSearchTap;
   final ChatUIKitNewRequestItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, NewRequestItemModel model)? onTap;
-  final void Function(BuildContext context, NewRequestItemModel model)? onLongPress;
+  final void Function(BuildContext context, NewRequestItemModel model)?
+      onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final String? loadErrorMessage;
@@ -42,7 +43,8 @@ class NewRequestsViewArguments implements ChatUIKitViewArguments {
       void Function(List<NewRequestItemModel> data)? onSearchTap,
       ChatUIKitNewRequestItemBuilder? listViewItemBuilder,
       void Function(BuildContext context, NewRequestItemModel model)? onTap,
-      void Function(BuildContext context, NewRequestItemModel model)? onLongPress,
+      void Function(BuildContext context, NewRequestItemModel model)?
+          onLongPress,
       String? searchBarHideText,
       Widget? listViewBackground,
       String? loadErrorMessage,
@@ -65,7 +67,8 @@ class NewRequestsViewArguments implements ChatUIKitViewArguments {
       title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      appBarTrailingActionsBuilder:
+          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

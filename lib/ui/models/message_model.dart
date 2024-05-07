@@ -43,6 +43,7 @@ class MessageModel {
   }
 
   static String randomId(Message message) {
-    return Random().nextInt(999999999).toString() + message.localTime.toString();
+    return Random().nextInt(999999999).toString() +
+        message.localTime.toString();
   }
 }

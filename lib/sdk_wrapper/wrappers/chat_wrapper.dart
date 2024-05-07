@@ -130,7 +130,8 @@ mixin ChatWrapper on ChatUIKitWrapperBase {
   }
 
   @protected
-  void onMessageContentChanged(Message message, String operatorId, int operationTime) {
+  void onMessageContentChanged(
+      Message message, String operatorId, int operationTime) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
         observer.onMessageContentChanged(message, operatorId, operationTime);

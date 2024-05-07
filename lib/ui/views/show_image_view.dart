@@ -83,7 +83,8 @@ class _ShowImageViewState extends State<ShowImageView> {
           : widget.appBar ??
               ChatUIKitAppBar(
                 backgroundColor: Colors.black,
-                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
+                trailingActions:
+                    widget.appBarTrailingActionsBuilder?.call(context, null),
               ),
       body: content,
     );

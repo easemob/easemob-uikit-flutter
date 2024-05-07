@@ -34,7 +34,8 @@ class ChatUIKitAvatar extends StatefulWidget {
   State<ChatUIKitAvatar> createState() => _ChatUIKitAvatarState();
 }
 
-class _ChatUIKitAvatarState extends State<ChatUIKitAvatar> with ChatUIKitProviderObserver {
+class _ChatUIKitAvatarState extends State<ChatUIKitAvatar>
+    with ChatUIKitProviderObserver {
   String? avatarUrl;
 
   @override
@@ -67,7 +68,8 @@ class _ChatUIKitAvatarState extends State<ChatUIKitAvatar> with ChatUIKitProvide
   void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
     if (map.keys.contains(ChatUIKit.instance.currentUserId)) {
       ChatUIKitProfile userData = map[ChatUIKit.instance.currentUserId]!;
-      if (userData.avatarUrl?.isNotEmpty == true && avatarUrl != userData.avatarUrl) {
+      if (userData.avatarUrl?.isNotEmpty == true &&
+          avatarUrl != userData.avatarUrl) {
         setState(() {
           avatarUrl = userData.avatarUrl;
         });

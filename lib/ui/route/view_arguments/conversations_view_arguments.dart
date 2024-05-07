@@ -108,12 +108,14 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
       searchBarHideText: searchBarHideText ?? this.searchBarHideText,
       listViewBackground: listViewBackground ?? this.listViewBackground,
       enableAppBar: enableAppBar ?? this.enableAppBar,
-      appBarMoreActionsBuilder: appBarMoreActionsBuilder ?? this.appBarMoreActionsBuilder,
+      appBarMoreActionsBuilder:
+          appBarMoreActionsBuilder ?? this.appBarMoreActionsBuilder,
       title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,
       avatarItemBuilder: avatarItemBuilder ?? this.avatarItemBuilder,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      appBarTrailingActionsBuilder:
+          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

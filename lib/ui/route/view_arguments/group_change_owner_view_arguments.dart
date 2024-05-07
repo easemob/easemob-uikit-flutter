@@ -28,7 +28,8 @@ class GroupChangeOwnerViewArguments implements ChatUIKitViewArguments {
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onItemTap;
-  final void Function(BuildContext context, ContactItemModel model)? onItemLongPress;
+  final void Function(BuildContext context, ContactItemModel model)?
+      onItemLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final String? loadErrorMessage;
@@ -47,7 +48,8 @@ class GroupChangeOwnerViewArguments implements ChatUIKitViewArguments {
       void Function(List<ContactItemModel> data)? onSearchTap,
       ChatUIKitContactItemBuilder? listViewItemBuilder,
       void Function(BuildContext context, ContactItemModel model)? onItemTap,
-      void Function(BuildContext context, ContactItemModel model)? onItemLongPress,
+      void Function(BuildContext context, ContactItemModel model)?
+          onItemLongPress,
       String? searchBarHideText,
       Widget? listViewBackground,
       String? loadErrorMessage,
@@ -71,6 +73,7 @@ class GroupChangeOwnerViewArguments implements ChatUIKitViewArguments {
         title: title ?? this.title,
         viewObserver: viewObserver ?? this.viewObserver,
         attributes: attributes ?? this.attributes,
-        appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder);
+        appBarTrailingActionsBuilder:
+            appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder);
   }
 }

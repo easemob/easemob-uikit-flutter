@@ -32,7 +32,8 @@ class ChatUIKitRouteNames {
   static const String threadMembersView = '/ThreadMembersView';
   static const String threadsView = '/ThreadsView';
 
-  static Widget getWidgetFromName(String name, ChatUIKitViewArguments arguments) {
+  static Widget getWidgetFromName(
+      String name, ChatUIKitViewArguments arguments) {
     switch (name) {
       case ChatUIKitRouteNames.changeInfoView:
         return ChangeInfoView.arguments(

@@ -23,7 +23,8 @@ class NewRequestsListView extends StatefulWidget {
   final List<Widget>? afterWidgets;
   final ChatUIKitNewRequestItemBuilder? itemBuilder;
   final void Function(BuildContext context, NewRequestItemModel model)? onTap;
-  final void Function(BuildContext context, NewRequestItemModel model)? onLongPress;
+  final void Function(BuildContext context, NewRequestItemModel model)?
+      onLongPress;
   final String? searchHideText;
   final Widget? background;
   final String? errorMessage;
@@ -34,7 +35,8 @@ class NewRequestsListView extends StatefulWidget {
   State<NewRequestsListView> createState() => _NewRequestsListViewState();
 }
 
-class _NewRequestsListViewState extends State<NewRequestsListView> with ContactObserver {
+class _NewRequestsListViewState extends State<NewRequestsListView>
+    with ContactObserver {
   late final NewRequestListViewController controller;
 
   @override

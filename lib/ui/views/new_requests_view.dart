@@ -42,7 +42,8 @@ class NewRequestsView extends StatefulWidget {
   final void Function(List<NewRequestItemModel> data)? onSearchTap;
   final ChatUIKitNewRequestItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, NewRequestItemModel model)? onTap;
-  final void Function(BuildContext context, NewRequestItemModel model)? onLongPress;
+  final void Function(BuildContext context, NewRequestItemModel model)?
+      onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final String? loadErrorMessage;
@@ -56,7 +57,8 @@ class NewRequestsView extends StatefulWidget {
   State<NewRequestsView> createState() => _NewRequestsViewState();
 }
 
-class _NewRequestsViewState extends State<NewRequestsView> with ContactObserver, ChatSDKEventsObserver {
+class _NewRequestsViewState extends State<NewRequestsView>
+    with ContactObserver, ChatSDKEventsObserver {
   late final NewRequestListViewController controller;
   @override
   void initState() {
@@ -81,15 +83,19 @@ class _NewRequestsViewState extends State<NewRequestsView> with ContactObserver,
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+        backgroundColor: theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98,
         appBar: !widget.enableAppBar
             ? null
             : widget.appBar ??
                 ChatUIKitAppBar(
                   showBackButton: true,
                   centerTitle: false,
-                  title: widget.title ?? ChatUIKitLocal.newRequestsViewTitle.localString(context),
-                  trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
+                  title: widget.title ??
+                      ChatUIKitLocal.newRequestsViewTitle.localString(context),
+                  trailingActions:
+                      widget.appBarTrailingActionsBuilder?.call(context, null),
                 ),
         body: SafeArea(
           child: NewRequestsListView(

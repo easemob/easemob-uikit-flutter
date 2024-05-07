@@ -29,10 +29,13 @@ class AppServerHelper {
     );
   }
 
-  static Future<String> uploadAvatar(String currentUserId, String avatarPath) async {
+  static Future<String> uploadAvatar(
+      String currentUserId, String avatarPath) async {
     debugPrint('uploadAvatar: $currentUserId, $avatarPath');
     String url = '$serverUrl/inside/app/user/$currentUserId/avatar/upload';
-    Map<String, dynamic> entry = {'file': await MultipartFile.fromFile(avatarPath)};
+    Map<String, dynamic> entry = {
+      'file': await MultipartFile.fromFile(avatarPath)
+    };
     Response response = await Dio().post(url, data: FormData.fromMap(entry));
     if (response.statusCode != 200) {
       throw Exception('Failed to uploadAvatar: ${response.statusCode}');
@@ -53,7 +56,8 @@ class AppServerHelper {
 
   static Future<void> autoDestroyGroup(String groupId) async {
     String url = '$serverUrl/inside/app/group/$groupId';
-    Response response = await Dio().post(url, queryParameters: {'appkey': appKey});
+    Response response =
+        await Dio().post(url, queryParameters: {'appkey': appKey});
     if (response.statusCode != 200) {
       throw Exception('Failed to auto destroy: ${response.statusCode}');
     }

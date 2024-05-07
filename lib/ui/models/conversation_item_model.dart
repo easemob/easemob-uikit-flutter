@@ -27,7 +27,8 @@ class ConversationItemModel with ChatUIKitListItemModelBase, NeedSearch {
     int unreadCount = await conversation.unreadCount();
     Message? lastMessage = await conversation.latestMessage();
 
-    bool noDisturb = ChatUIKitContext.instance.conversationIsMute(conversation.id);
+    bool noDisturb =
+        ChatUIKitContext.instance.conversationIsMute(conversation.id);
 
     ConversationItemModel info = ConversationItemModel(
       profile: profile,

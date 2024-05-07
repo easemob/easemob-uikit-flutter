@@ -206,7 +206,8 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     Widget? emojiWidget,
     Widget? Function(BuildContext context, MessageModel model)? replyBarBuilder,
     Widget Function(BuildContext context, QuoteModel model)? quoteBuilder,
-    bool Function(BuildContext context, MessageModel message)? onErrorBtnTapHandler,
+    bool Function(BuildContext context, MessageModel message)?
+        onErrorBtnTapHandler,
     MessageItemBubbleBuilder? bubbleBuilder,
     MessageItemBuilder? bubbleContentBuilder,
     MessagesViewMorePressHandler? onMoreActionsItemsHandler,
@@ -230,8 +231,10 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       appBar: appBar ?? this.appBar,
       title: title ?? this.title,
       inputBar: inputBar ?? this.inputBar,
-      showMessageItemAvatar: showMessageItemAvatar ?? this.showMessageItemAvatar,
-      showMessageItemNickname: showMessageItemNickname ?? this.showMessageItemNickname,
+      showMessageItemAvatar:
+          showMessageItemAvatar ?? this.showMessageItemAvatar,
+      showMessageItemNickname:
+          showMessageItemNickname ?? this.showMessageItemNickname,
       onItemTap: onItemTap ?? this.onItemTap,
       onItemLongPress: onItemLongPress ?? this.onItemLongPress,
       onDoubleTap: onDoubleTap ?? this.onDoubleTap,
@@ -249,10 +252,13 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       onErrorBtnTapHandler: onErrorBtnTapHandler ?? this.onErrorBtnTapHandler,
       bubbleBuilder: bubbleBuilder ?? this.bubbleBuilder,
       bubbleContentBuilder: bubbleContentBuilder ?? this.bubbleContentBuilder,
-      onMoreActionsItemsHandler: onMoreActionsItemsHandler ?? this.onMoreActionsItemsHandler,
-      onItemLongPressHandler: onItemLongPressHandler ?? this.onItemLongPressHandler,
+      onMoreActionsItemsHandler:
+          onMoreActionsItemsHandler ?? this.onMoreActionsItemsHandler,
+      onItemLongPressHandler:
+          onItemLongPressHandler ?? this.onItemLongPressHandler,
       enableAppBar: enableAppBar ?? this.enableAppBar,
-      inputBarTextEditingController: inputBarTextEditingController ?? this.inputBarTextEditingController,
+      inputBarTextEditingController:
+          inputBarTextEditingController ?? this.inputBarTextEditingController,
       forceLeft: forceLeft ?? this.forceLeft,
       multiSelectBottomBar: multiSelectBottomBar ?? this.multiSelectBottomBar,
       viewObserver: viewObserver ?? this.viewObserver,
@@ -262,7 +268,8 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       reactionItemsBuilder: reactionItemsBuilder ?? this.reactionItemsBuilder,
       onThreadItemTap: onThreadItemTap ?? this.onThreadItemTap,
       threadItemBuilder: threadItemBuilder ?? this.threadItemBuilder,
-      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      appBarTrailingActionsBuilder:
+          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

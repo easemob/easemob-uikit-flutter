@@ -50,7 +50,9 @@ class _SearchHistoryViewState extends State<SearchHistoryView> {
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
     return Scaffold(
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       body: SafeArea(
         child: Column(
           children: [
@@ -125,8 +127,11 @@ class _SearchHistoryViewState extends State<SearchHistoryView> {
                 padding: const EdgeInsets.fromLTRB(6, 7, 0, 7),
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(CornerRadiusHelper.searchBarRadius(36)),
-                  color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor95,
+                  borderRadius: BorderRadius.circular(
+                      CornerRadiusHelper.searchBarRadius(36)),
+                  color: theme.color.isDark
+                      ? theme.color.neutralColor2
+                      : theme.color.neutralColor95,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -142,22 +147,30 @@ class _SearchHistoryViewState extends State<SearchHistoryView> {
                       child: TextField(
                         focusNode: searchFocusNode,
                         keyboardAppearance:
-                            ChatUIKitTheme.of(context).color.isDark ? Brightness.dark : Brightness.light,
+                            ChatUIKitTheme.of(context).color.isDark
+                                ? Brightness.dark
+                                : Brightness.light,
                         autofocus: true,
                         style: TextStyle(
                             fontWeight: theme.font.bodyLarge.fontWeight,
                             fontSize: theme.font.bodyLarge.fontSize,
-                            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1),
+                            color: theme.color.isDark
+                                ? theme.color.neutralColor98
+                                : theme.color.neutralColor1),
                         controller: searchController,
                         scrollPadding: EdgeInsets.zero,
                         decoration: InputDecoration(
-                          hintText: ChatUIKitLocal.searchHistory.localString(context),
+                          hintText:
+                              ChatUIKitLocal.searchHistory.localString(context),
                           contentPadding: EdgeInsets.zero,
                           isDense: true,
                           hintStyle: TextStyle(
-                            color: theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor6,
+                            color: theme.color.isDark
+                                ? theme.color.neutralColor4
+                                : theme.color.neutralColor6,
                           ),
-                          border: const OutlineInputBorder(borderSide: BorderSide.none),
+                          border: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
                         ),
                       ),
                     ),
@@ -178,7 +191,9 @@ class _SearchHistoryViewState extends State<SearchHistoryView> {
                               child: Icon(
                                 Icons.cancel,
                                 size: 22,
-                                color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+                                color: theme.color.isDark
+                                    ? theme.color.neutralColor7
+                                    : theme.color.neutralColor3,
                               ),
                             ),
                           );
@@ -203,7 +218,9 @@ class _SearchHistoryViewState extends State<SearchHistoryView> {
                   overflow: TextOverflow.ellipsis,
                   textScaler: TextScaler.noScaling,
                   style: TextStyle(
-                    color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                    color: theme.color.isDark
+                        ? theme.color.primaryColor6
+                        : theme.color.primaryColor5,
                     fontWeight: theme.font.bodyLarge.fontWeight,
                     fontSize: theme.font.bodyLarge.fontSize,
                   ),
@@ -229,22 +246,31 @@ class ChatUIKitSearchHistoryViewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ChatUIKitProfile? profile = ChatUIKitProvider.instance.profilesCache[message.from!];
+    ChatUIKitProfile? profile =
+        ChatUIKitProvider.instance.profilesCache[message.from!];
     final theme = ChatUIKitTheme.of(context);
     Widget title = Text(
       profile?.showName ?? message.nickname ?? message.from!,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style: theme.titleMedium(color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1),
+      style: theme.titleMedium(
+          color: theme.color.isDark
+              ? theme.color.neutralColor98
+              : theme.color.neutralColor1),
     );
 
     Widget subtitle = HighlightTool.highlightWidget(
       context,
       message.showInfo(),
       searchKey: highlightWord,
-      textStyle: theme.titleMedium(color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5),
+      textStyle: theme.titleMedium(
+          color: theme.color.isDark
+              ? theme.color.neutralColor6
+              : theme.color.neutralColor5),
       highlightStyle: theme.titleMedium(
-        color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+        color: theme.color.isDark
+            ? theme.color.primaryColor6
+            : theme.color.primaryColor5,
       ),
     );
 
@@ -287,7 +313,9 @@ class ChatUIKitSearchHistoryViewItem extends StatelessWidget {
           child: Divider(
             height: borderHeight,
             thickness: borderHeight,
-            color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9,
+            color: theme.color.isDark
+                ? theme.color.neutralColor2
+                : theme.color.neutralColor9,
           ),
         )
       ],

@@ -14,7 +14,8 @@ class PersonalInfoPage extends StatefulWidget {
   State<PersonalInfoPage> createState() => _PersonalInfoPageState();
 }
 
-class _PersonalInfoPageState extends State<PersonalInfoPage> with ChatUIKitProviderObserver {
+class _PersonalInfoPageState extends State<PersonalInfoPage>
+    with ChatUIKitProviderObserver {
   ChatUIKitProfile? _userData;
 
   @override
@@ -47,7 +48,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> with ChatUIKitProvi
     final theme = ChatUIKitTheme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: ChatUIKitAppBar(
         title: DemoLocalizations.personalInfo.localString(context),
         titleTextStyle: TextStyle(
@@ -69,7 +72,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> with ChatUIKitProvi
             ),
             PersonalInfoItem(
               title: DemoLocalizations.nickname.localString(context),
-              trailing: _userData?.showName ?? ChatUIKit.instance.currentUserId ?? '',
+              trailing:
+                  _userData?.showName ?? ChatUIKit.instance.currentUserId ?? '',
               onTap: pushChangeNicknamePage,
               enableArrow: true,
             ),
@@ -165,10 +169,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> with ChatUIKitProvi
   void uploadAvatar(String path) async {
     try {
       EasyLoading.show(status: 'Updating...');
-      String url = await AppServerHelper.uploadAvatar(ChatUIKit.instance.currentUserId!, path);
+      String url = await AppServerHelper.uploadAvatar(
+          ChatUIKit.instance.currentUserId!, path);
       ChatUIKitProfile? data = ChatUIKitProvider.instance.currentUserProfile;
       if (data == null) {
-        data = ChatUIKitProfile.contact(id: ChatUIKit.instance.currentUserId!, avatarUrl: url);
+        data = ChatUIKitProfile.contact(
+            id: ChatUIKit.instance.currentUserId!, avatarUrl: url);
       } else {
         data = data.copyWith(avatarUrl: url);
       }
@@ -188,7 +194,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> with ChatUIKitProvi
         inputTextCallback: () {
           return Future(
             () {
-              return ChatUIKitProvider.instance.currentUserProfile?.showName ?? ChatUIKit.instance.currentUserId ?? '';
+              return ChatUIKitProvider.instance.currentUserProfile?.showName ??
+                  ChatUIKit.instance.currentUserId ??
+                  '';
             },
           );
         },
@@ -196,9 +204,11 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> with ChatUIKitProvi
     ).then(
       (value) {
         if (value is String) {
-          ChatUIKitProfile? data = ChatUIKitProvider.instance.currentUserProfile;
+          ChatUIKitProfile? data =
+              ChatUIKitProvider.instance.currentUserProfile;
           if (data == null) {
-            data = ChatUIKitProfile.contact(id: ChatUIKit.instance.currentUserId!, nickname: value);
+            data = ChatUIKitProfile.contact(
+                id: ChatUIKit.instance.currentUserId!, nickname: value);
           } else {
             data = data.copyWith(name: value);
           }
@@ -220,7 +230,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> with ChatUIKitProvi
   Future<void> updateUserInfo(ChatUIKitProfile data) async {
     EasyLoading.show(status: 'Updating...');
     try {
-      await ChatUIKit.instance.updateUserInfo(nickname: data.name, avatarUrl: data.avatarUrl);
+      await ChatUIKit.instance
+          .updateUserInfo(nickname: data.name, avatarUrl: data.avatarUrl);
       UserDataStore().saveUserData(data);
       ChatUIKitProvider.instance.addProfiles([data]);
     } catch (e) {
@@ -233,7 +244,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> with ChatUIKitProvi
 
 class PersonalInfoItem extends StatelessWidget {
   const PersonalInfoItem(
-      {required this.title, this.trailing, this.imageWidget, this.enableArrow = false, this.onTap, super.key});
+      {required this.title,
+      this.trailing,
+      this.imageWidget,
+      this.enableArrow = false,
+      this.onTap,
+      super.key});
 
   final String title;
   final String? trailing;
@@ -254,7 +270,9 @@ class PersonalInfoItem extends StatelessWidget {
             style: TextStyle(
               fontSize: theme.font.titleMedium.fontSize,
               fontWeight: theme.font.titleMedium.fontWeight,
-              color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
+              color: theme.color.isDark
+                  ? theme.color.neutralColor100
+                  : theme.color.neutralColor1,
             ),
           ),
           Expanded(
@@ -266,7 +284,9 @@ class PersonalInfoItem extends StatelessWidget {
               style: TextStyle(
                 fontSize: theme.font.labelLarge.fontSize,
                 fontWeight: theme.font.labelLarge.fontWeight,
-                color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor5,
+                color: theme.color.isDark
+                    ? theme.color.neutralColor7
+                    : theme.color.neutralColor5,
               ),
             ),
           ),
@@ -282,7 +302,8 @@ class PersonalInfoItem extends StatelessWidget {
       ),
     );
 
-    content = Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: content);
+    content = Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16), child: content);
 
     content = Column(
       children: [
@@ -290,7 +311,9 @@ class PersonalInfoItem extends StatelessWidget {
         Divider(
           height: 0.5,
           indent: 16,
-          color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9,
+          color: theme.color.isDark
+              ? theme.color.neutralColor2
+              : theme.color.neutralColor9,
         )
       ],
     );

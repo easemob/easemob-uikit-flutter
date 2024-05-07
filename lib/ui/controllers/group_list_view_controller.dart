@@ -1,7 +1,8 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 // import 'package:username/username.dart';
 
-class GroupListViewController with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver {
+class GroupListViewController
+    with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver {
   GroupListViewController({
     this.pageSize = 20,
   }) {
@@ -19,11 +20,14 @@ class GroupListViewController with ChatUIKitListViewControllerBase, ChatUIKitPro
 
   @override
   void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
-    if (list.any((element) => map.keys.contains((element as GroupItemModel).profile.id))) {
+    if (list.any((element) =>
+        map.keys.contains((element as GroupItemModel).profile.id))) {
       for (var element in map.keys) {
-        int index = list.indexWhere((e) => (e as GroupItemModel).profile.id == element);
+        int index =
+            list.indexWhere((e) => (e as GroupItemModel).profile.id == element);
         if (index != -1) {
-          list[index] = (list[index] as GroupItemModel).copyWith(profile: map[element]!);
+          list[index] =
+              (list[index] as GroupItemModel).copyWith(profile: map[element]!);
         }
       }
       refresh();
@@ -83,7 +87,8 @@ class GroupListViewController with ChatUIKitListViewControllerBase, ChatUIKitPro
 
   List<GroupItemModel> mappers(List<Group> groups) {
     List<GroupItemModel> list = [];
-    Map<String, ChatUIKitProfile> map = ChatUIKitProvider.instance.getProfiles(() {
+    Map<String, ChatUIKitProfile> map =
+        ChatUIKitProvider.instance.getProfiles(() {
       List<ChatUIKitProfile> list = [];
       for (var item in groups) {
         list.add(ChatUIKitProfile.group(

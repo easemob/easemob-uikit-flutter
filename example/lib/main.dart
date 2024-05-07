@@ -20,7 +20,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'pages/me/settings/advanced_page.dart';
 
-const appKey = '';
+const appKey = 'easemob#easeim';
 
 const bool appDebug = false;
 
@@ -32,7 +32,8 @@ void main() async {
     ),
   );
   SettingsDataStore().init();
-  return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) => runApp(const MyApp()));
+  return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -49,7 +50,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _localization.defaultLocale = [
-      ChatLocal('zh', Map.from(ChatUIKitLocal.zh)..addAll(DemoLocalizations.zh)),
+      ChatLocal(
+          'zh', Map.from(ChatUIKitLocal.zh)..addAll(DemoLocalizations.zh)),
       ChatLocal('en', Map.from(ChatUIKitLocal.en)..addAll(DemoLocalizations.en))
     ];
     // 添加语言后需要进行resetLocales操作
@@ -79,7 +81,9 @@ class _MyAppState extends State<MyApp> {
         builder: EasyLoading.init(
           builder: (context, child) {
             return ChatUIKitTheme(
-              color: AppSettingsNotification.isLight ? ChatUIKitColor.light() : ChatUIKitColor.dark(),
+              color: AppSettingsNotification.isLight
+                  ? ChatUIKitColor.light()
+                  : ChatUIKitColor.dark(),
               child: child!,
             );
           },

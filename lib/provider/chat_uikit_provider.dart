@@ -55,7 +55,8 @@ class ChatUIKitProvider {
   }
 
   /// 获取用户信息，如果缓存中存在，则直接返回，如果不存在，则调用 [profilesHandler] 获取用户信息。
-  Map<String, ChatUIKitProfile> getProfiles(List<ChatUIKitProfile> profiles, {bool force = false}) {
+  Map<String, ChatUIKitProfile> getProfiles(List<ChatUIKitProfile> profiles,
+      {bool force = false}) {
     List<ChatUIKitProfile> ret = [];
     List<ChatUIKitProfile> needProviders = [];
 
@@ -76,7 +77,8 @@ class ChatUIKitProvider {
         // 将 tmp 添加到需要返回的数据中
         ret.addAll(tmp!);
         // 将已经添加的数据从 need Providers中移出
-        needProviders.removeWhere((element) => tmp.map((e) => e.id).contains(element.id));
+        needProviders.removeWhere(
+            (element) => tmp.map((e) => e.id).contains(element.id));
       }
       // 将 needProviders 添加到返回的数据中
       ret.addAll(needProviders);

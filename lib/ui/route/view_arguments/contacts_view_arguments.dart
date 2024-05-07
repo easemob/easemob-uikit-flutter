@@ -53,7 +53,8 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
   final void Function(BuildContext context, ContactItemModel model)? onTap;
 
   /// 长按联系人列表的回调，长按后会把当前的联系人数据传递过来。具体参考 [ContactItemModel]。
-  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)?
+      onLongPress;
 
   /// 联系人搜索框的隐藏文字。
   final String? searchHideText;
@@ -102,7 +103,8 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
       title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      appBarTrailingActionsBuilder:
+          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

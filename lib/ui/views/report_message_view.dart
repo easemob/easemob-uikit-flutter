@@ -71,14 +71,17 @@ class _ReportMessageViewState extends State<ReportMessageView> {
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
               return Text(
-                ChatUIKitLocal.reportMessageViewReportReasons.localString(context),
+                ChatUIKitLocal.reportMessageViewReportReasons
+                    .localString(context),
                 overflow: TextOverflow.ellipsis,
                 textScaler: TextScaler.noScaling,
                 maxLines: 1,
                 style: TextStyle(
                     fontWeight: theme.font.titleSmall.fontWeight,
                     fontSize: theme.font.titleSmall.fontSize,
-                    color: (theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5)),
+                    color: (theme.color.isDark
+                        ? theme.color.neutralColor6
+                        : theme.color.neutralColor5)),
               );
             },
             childCount: 1,
@@ -95,7 +98,8 @@ class _ReportMessageViewState extends State<ReportMessageView> {
                     selectedIndex = index;
                   });
                 },
-                child: tile(widget.reportReasons[index], selectedIndex == index),
+                child:
+                    tile(widget.reportReasons[index], selectedIndex == index),
               );
             },
             childCount: widget.reportReasons.length,
@@ -136,7 +140,8 @@ class _ReportMessageViewState extends State<ReportMessageView> {
                     if (selectedIndex == -1) {
                       Navigator.of(context).pop();
                     } else {
-                      Navigator.of(context).pop(widget.reportReasons[selectedIndex]);
+                      Navigator.of(context)
+                          .pop(widget.reportReasons[selectedIndex]);
                     }
                   },
                 ),
@@ -154,14 +159,18 @@ class _ReportMessageViewState extends State<ReportMessageView> {
 
     content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: !widget.enableAppBar
           ? null
           : widget.appBar ??
               ChatUIKitAppBar(
                 centerTitle: false,
-                title: widget.title ?? ChatUIKitLocal.reportMessageViewTitle.localString(context),
-                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
+                title: widget.title ??
+                    ChatUIKitLocal.reportMessageViewTitle.localString(context),
+                trailingActions:
+                    widget.appBarTrailingActionsBuilder?.call(context, null),
               ),
       body: SafeArea(child: content),
     );
@@ -182,14 +191,22 @@ class _ReportMessageViewState extends State<ReportMessageView> {
             style: TextStyle(
                 fontWeight: theme.font.titleMedium.fontWeight,
                 fontSize: theme.font.titleMedium.fontSize,
-                color: (theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1)),
+                color: (theme.color.isDark
+                    ? theme.color.neutralColor98
+                    : theme.color.neutralColor1)),
           ),
           Expanded(child: Container()),
           selected
               ? Icon(Icons.radio_button_checked,
-                  size: 21.33, color: (theme.color.isDark ? theme.color.neutralColor6 : theme.color.primaryColor5))
+                  size: 21.33,
+                  color: (theme.color.isDark
+                      ? theme.color.neutralColor6
+                      : theme.color.primaryColor5))
               : Icon(Icons.radio_button_unchecked,
-                  size: 21.33, color: (theme.color.isDark ? theme.color.neutralColor8 : theme.color.neutralColor7))
+                  size: 21.33,
+                  color: (theme.color.isDark
+                      ? theme.color.neutralColor8
+                      : theme.color.neutralColor7))
         ],
       ),
     );

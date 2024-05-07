@@ -101,7 +101,8 @@ class UserDataStore {
   }
 
   Future<List<ChatUIKitProfile>> loadAllProfiles() async {
-    List<Map<String, dynamic>>? maps = await _db?.query(ChatUIKit.instance.currentUserId!);
+    List<Map<String, dynamic>>? maps =
+        await _db?.query(ChatUIKit.instance.currentUserId!);
     return List.generate(maps?.length ?? 0, (i) {
       final info = maps?[i];
       return ChatUIKitProfile(

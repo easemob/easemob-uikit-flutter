@@ -15,7 +15,8 @@ class ChatUIKitSettings {
   static ImageProvider? avatarPlaceholder;
 
   // Dialog 圆角
-  static ChatUIKitDialogRectangleType dialogRectangleType = ChatUIKitDialogRectangleType.filletCorner;
+  static ChatUIKitDialogRectangleType dialogRectangleType =
+      ChatUIKitDialogRectangleType.filletCorner;
 
   // 会话列表是否显示头像
   static bool showConversationListAvatar = true;

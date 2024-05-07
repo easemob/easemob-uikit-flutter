@@ -94,14 +94,17 @@ class _GroupsViewState extends State<GroupsView> {
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: !widget.enableAppBar
           ? null
           : widget.appBar ??
               ChatUIKitAppBar(
                 showBackButton: true,
                 centerTitle: false,
-                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
+                trailingActions:
+                    widget.appBarTrailingActionsBuilder?.call(context, null),
                 titleWidget: ValueListenableBuilder<int>(
                   valueListenable: joinedCount,
                   builder: (context, value, child) {
@@ -113,7 +116,9 @@ class _GroupsViewState extends State<GroupsView> {
                       style: TextStyle(
                         fontWeight: theme.font.titleMedium.fontWeight,
                         fontSize: theme.font.titleMedium.fontSize,
-                        color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                        color: theme.color.isDark
+                            ? theme.color.neutralColor98
+                            : theme.color.neutralColor1,
                       ),
                     );
                   },
@@ -148,7 +153,8 @@ class _GroupsViewState extends State<GroupsView> {
       if (model != null) {
         if (model.type == ChatUIKitRouteBackType.remove) {
           controller.list.removeWhere((element) {
-            return element is GroupItemModel && element.profile.id == model.profileId;
+            return element is GroupItemModel &&
+                element.profile.id == model.profileId;
           });
           controller.refresh();
         }

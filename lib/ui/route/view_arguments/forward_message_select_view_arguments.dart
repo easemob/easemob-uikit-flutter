@@ -48,7 +48,8 @@ class ForwardMessageSelectViewArguments implements ChatUIKitViewArguments {
       viewObserver: viewObserver ?? this.viewObserver,
       isMulti: isMulti ?? this.isMulti,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      appBarTrailingActionsBuilder:
+          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

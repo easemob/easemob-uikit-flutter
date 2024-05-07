@@ -3,7 +3,8 @@ import 'package:em_chat_uikit/sdk_wrapper/chat_sdk_wrapper.dart';
 mixin ContactActions on ContactWrapper {
   Future<void> updateContactRemark(String userId, String remark) async {
     return checkResult(ChatSDKEvent.updateContactRemark, () {
-      return Client.getInstance.contactManager.setContactRemark(userId: userId, remark: remark);
+      return Client.getInstance.contactManager
+          .setContactRemark(userId: userId, remark: remark);
     });
   }
 
@@ -27,7 +28,8 @@ mixin ContactActions on ContactWrapper {
 
   Future<void> sendContactRequest({required String userId, String? reason}) {
     return checkResult(ChatSDKEvent.sendContactRequest, () {
-      return Client.getInstance.contactManager.addContact(userId, reason: reason);
+      return Client.getInstance.contactManager
+          .addContact(userId, reason: reason);
     });
   }
 

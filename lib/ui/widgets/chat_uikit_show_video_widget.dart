@@ -28,10 +28,12 @@ class ChatUIKitShowVideoWidget extends StatefulWidget {
   final VoidCallback? onSuccess;
 
   @override
-  State<ChatUIKitShowVideoWidget> createState() => _ChatUIKitShowVideoWidgetState();
+  State<ChatUIKitShowVideoWidget> createState() =>
+      _ChatUIKitShowVideoWidgetState();
 }
 
-class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> with MessageObserver {
+class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
+    with MessageObserver {
   Message? message;
   VideoPlayerController? _controller;
 
@@ -58,7 +60,8 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> wit
         await updateController(file);
       } else {
         if (widget.isCombine) {
-          ChatUIKit.instance.downloadMessageAttachmentInCombine(message: message!);
+          ChatUIKit.instance
+              .downloadMessageAttachmentInCombine(message: message!);
         } else {
           ChatUIKit.instance.downloadAttachment(message: message!);
         }
@@ -112,7 +115,8 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> wit
   void onSuccess(String msgId, Message msg) {
     if (widget.message.msgId == msgId) {
       if (downloading) {
-        if ((msg.body as VideoMessageBody).fileStatus == DownloadStatus.SUCCESS) {
+        if ((msg.body as VideoMessageBody).fileStatus ==
+            DownloadStatus.SUCCESS) {
           downloading = false;
         }
       }
@@ -151,7 +155,10 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> wit
         if (_progress.value == 100) {
           return const SizedBox();
         }
-        return SizedBox(width: 40, height: 40, child: CircularProgressIndicator(value: value / 100));
+        return SizedBox(
+            width: 40,
+            height: 40,
+            child: CircularProgressIndicator(value: value / 100));
       },
     );
   }
@@ -181,8 +188,9 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> wit
         children: [
           () {
             if (_controller?.value.isInitialized == true) {
-              Widget content =
-                  AspectRatio(aspectRatio: _controller!.value.aspectRatio, child: VideoPlayer(_controller!));
+              Widget content = AspectRatio(
+                  aspectRatio: _controller!.value.aspectRatio,
+                  child: VideoPlayer(_controller!));
 
               return content;
             } else {
@@ -210,7 +218,9 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> wit
                           Icon(
                             Icons.play_circle_outline,
                             size: 70,
-                            color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor95,
+                            color: theme.color.isDark
+                                ? theme.color.neutralColor2
+                                : theme.color.neutralColor95,
                           ),
                     ),
             ),

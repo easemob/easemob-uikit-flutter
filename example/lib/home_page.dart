@@ -16,7 +16,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage>
-    with AutomaticKeepAliveClientMixin, ChatObserver, ContactObserver, ChatUIKitEventsObservers, ChatSDKEventsObserver {
+    with
+        AutomaticKeepAliveClientMixin,
+        ChatObserver,
+        ContactObserver,
+        ChatUIKitEventsObservers,
+        ChatSDKEventsObserver {
   int _currentIndex = 0;
 
   ValueNotifier<int> unreadMessageCount = ValueNotifier(0);
@@ -61,9 +66,15 @@ class _HomePageState extends State<HomePage>
           fontSize: theme.font.labelExtraSmall.fontSize,
           fontWeight: theme.font.labelExtraSmall.fontWeight,
         ),
-        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
-        selectedItemColor: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
-        unselectedItemColor: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor5,
+        backgroundColor: theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98,
+        selectedItemColor: theme.color.isDark
+            ? theme.color.primaryColor6
+            : theme.color.primaryColor5,
+        unselectedItemColor: theme.color.isDark
+            ? theme.color.neutralColor3
+            : theme.color.neutralColor5,
         onTap: (value) {
           setState(() {
             _currentIndex = value;
@@ -80,11 +91,15 @@ class _HomePageState extends State<HomePage>
                 return ChatUIKitBadge(
                   value,
                   textColor: theme.color.neutralColor98,
-                  backgroundColor: theme.color.isDark ? theme.color.errorColor6 : theme.color.errorColor5,
+                  backgroundColor: theme.color.isDark
+                      ? theme.color.errorColor6
+                      : theme.color.errorColor5,
                 );
               },
             ),
-            borderColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+            borderColor: theme.color.isDark
+                ? theme.color.neutralColor1
+                : theme.color.neutralColor98,
             isSelect: _currentIndex == 0,
             imageSelectColor: theme.color.primaryColor5,
             imageUnSelectColor: theme.color.neutralColor5,
@@ -98,12 +113,16 @@ class _HomePageState extends State<HomePage>
                 return ChatUIKitBadge(
                   value,
                   textColor: theme.color.neutralColor98,
-                  backgroundColor: theme.color.isDark ? theme.color.errorColor6 : theme.color.errorColor5,
+                  backgroundColor: theme.color.isDark
+                      ? theme.color.errorColor6
+                      : theme.color.errorColor5,
                 );
               },
             ),
             isSelect: _currentIndex == 1,
-            borderColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+            borderColor: theme.color.isDark
+                ? theme.color.neutralColor1
+                : theme.color.neutralColor98,
             imageSelectColor: theme.color.primaryColor5,
             imageUnSelectColor: theme.color.neutralColor5,
           ),

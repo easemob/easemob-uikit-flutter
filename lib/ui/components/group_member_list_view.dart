@@ -25,7 +25,8 @@ class GroupMemberListView extends StatefulWidget {
   final List<Widget>? afterWidgets;
   final ChatUIKitContactItemBuilder? itemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
-  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)?
+      onLongPress;
   final String? searchHideText;
   final Widget? background;
   final String? errorMessage;

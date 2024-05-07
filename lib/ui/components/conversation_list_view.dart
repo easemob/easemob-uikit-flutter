@@ -23,7 +23,8 @@ class ConversationListView extends StatefulWidget {
   final void Function(List<ConversationItemModel> data)? onSearchTap;
   final ConversationItemBuilder? itemBuilder;
   final void Function(BuildContext context, ConversationItemModel info)? onTap;
-  final void Function(BuildContext context, ConversationItemModel info)? onLongPress;
+  final void Function(BuildContext context, ConversationItemModel info)?
+      onLongPress;
   final List<Widget>? beforeWidgets;
   final List<Widget>? afterWidgets;
 

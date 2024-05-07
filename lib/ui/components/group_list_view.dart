@@ -33,7 +33,8 @@ class GroupListView extends StatefulWidget {
   State<GroupListView> createState() => _GroupListViewState();
 }
 
-class _GroupListViewState extends State<GroupListView> with MultiObserver, GroupObserver {
+class _GroupListViewState extends State<GroupListView>
+    with MultiObserver, GroupObserver {
   late final GroupListViewController controller;
 
   @override

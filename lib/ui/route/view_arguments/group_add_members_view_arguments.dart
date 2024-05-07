@@ -28,7 +28,8 @@ class GroupAddMembersViewArguments implements ChatUIKitViewArguments {
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
-  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)?
+      onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final bool enableAppBar;
@@ -69,6 +70,7 @@ class GroupAddMembersViewArguments implements ChatUIKitViewArguments {
         title: title ?? this.title,
         viewObserver: viewObserver ?? this.viewObserver,
         attributes: attributes ?? this.attributes,
-        appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder);
+        appBarTrailingActionsBuilder:
+            appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder);
   }
 }

@@ -6,7 +6,9 @@ abstract mixin class ChatUIKitTimeTool {
   static String getEnTime(int time, {bool needTime = false}) {
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(time);
     DateTime now = DateTime.now();
-    if (dateTime.year == now.year && dateTime.month == now.month && dateTime.day == now.day) {
+    if (dateTime.year == now.year &&
+        dateTime.month == now.month &&
+        dateTime.day == now.day) {
       return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
     } else {
       if (needTime) {

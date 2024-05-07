@@ -3,7 +3,11 @@ import 'package:em_chat_uikit/universal/inner_headers.dart';
 
 /// 会话列表控制器
 class ConversationListViewController
-    with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver, ChatObserver, MultiObserver {
+    with
+        ChatUIKitListViewControllerBase,
+        ChatUIKitProviderObserver,
+        ChatObserver,
+        MultiObserver {
   ConversationListViewController({
     this.willShowHandler,
   }) {
@@ -32,15 +36,17 @@ class ConversationListViewController
   }
 
   @override
-  void onMessageContentChanged(Message message, String operatorId, int operationTime) {
+  void onMessageContentChanged(
+      Message message, String operatorId, int operationTime) {
     int index = list.cast<ConversationItemModel>().indexWhere((element) {
       return element.lastMessage?.msgId == message.msgId;
     });
 
     if (index != -1) {
-      list.cast<ConversationItemModel>()[index] = list.cast<ConversationItemModel>()[index].copyWith(
-            lastMessage: message,
-          );
+      list.cast<ConversationItemModel>()[index] =
+          list.cast<ConversationItemModel>()[index].copyWith(
+                lastMessage: message,
+              );
     }
 
     refresh();
@@ -63,7 +69,8 @@ class ConversationListViewController
   }
 
   @override
-  void onConversationEvent(MultiDevicesEvent event, String conversationId, ConversationType type) {
+  void onConversationEvent(
+      MultiDevicesEvent event, String conversationId, ConversationType type) {
     if (event == MultiDevicesEvent.CONVERSATION_DELETE ||
         event == MultiDevicesEvent.CONVERSATION_PINNED ||
         event == MultiDevicesEvent.CONVERSATION_UNPINNED) {
@@ -73,11 +80,14 @@ class ConversationListViewController
 
   @override
   void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
-    if (list.any((element) => map.keys.contains((element as ConversationItemModel).profile.id))) {
+    if (list.any((element) =>
+        map.keys.contains((element as ConversationItemModel).profile.id))) {
       for (var element in map.keys) {
-        int index = list.indexWhere((e) => (e as ConversationItemModel).profile.id == element);
+        int index = list.indexWhere(
+            (e) => (e as ConversationItemModel).profile.id == element);
         if (index != -1) {
-          list[index] = (list[index] as ConversationItemModel).copyWith(profile: map[element]!);
+          list[index] = (list[index] as ConversationItemModel)
+              .copyWith(profile: map[element]!);
         }
       }
       refresh();
@@ -91,7 +101,9 @@ class ConversationListViewController
     loadingType.value = ChatUIKitListViewType.loading;
     List<Conversation> items = await ChatUIKit.instance.getAllConversations();
     try {
-      if ((items.isEmpty && !ChatUIKitContext.instance.isConversationLoadFinished()) || force == true) {
+      if ((items.isEmpty &&
+              !ChatUIKitContext.instance.isConversationLoadFinished()) ||
+          force == true) {
         await fetchConversations();
         items = await ChatUIKit.instance.getAllConversations();
       }
@@ -151,14 +163,16 @@ class ConversationListViewController
   Future<List<Conversation>> fetchConversations() async {
     List<Conversation> items = [];
     if (!hasFetchPinned) {
-      CursorResult<Conversation> result = await ChatUIKit.instance.fetchPinnedConversations(
+      CursorResult<Conversation> result =
+          await ChatUIKit.instance.fetchPinnedConversations(
         pageSize: 50,
       );
       items.addAll(result.data);
       hasFetchPinned = true;
     }
     try {
-      CursorResult<Conversation> result = await ChatUIKit.instance.fetchConversations(
+      CursorResult<Conversation> result =
+          await ChatUIKit.instance.fetchConversations(
         pageSize: pageSize,
         cursor: cursor,
       );
@@ -188,7 +202,8 @@ class ConversationListViewController
     } catch (e) {}
   }
 
-  Future<List<ConversationItemModel>> _mappers(List<Conversation> conversations) async {
+  Future<List<ConversationItemModel>> _mappers(
+      List<Conversation> conversations) async {
     List<ChatUIKitProfile> tmp = () {
       List<ChatUIKitProfile> ret = [];
       for (var item in conversations) {
@@ -201,7 +216,8 @@ class ConversationListViewController
       return ret;
     }();
 
-    Map<String, ChatUIKitProfile> profilesMap = ChatUIKitProvider.instance.getProfiles(tmp);
+    Map<String, ChatUIKitProfile> profilesMap =
+        ChatUIKitProvider.instance.getProfiles(tmp);
     List<ConversationItemModel> list = [];
     for (var item in conversations) {
       ConversationItemModel info = await ConversationItemModel.fromConversation(

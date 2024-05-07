@@ -68,7 +68,9 @@ class _ThreadMembersViewState extends State<ThreadMembersView> {
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
     return Scaffold(
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: !widget.enableAppBar
           ? null
           : widget.appBar ??
@@ -76,17 +78,22 @@ class _ThreadMembersViewState extends State<ThreadMembersView> {
                 centerTitle: false,
                 title: '话题成员',
                 titleTextStyle: TextStyle(
-                  color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                  color: theme.color.isDark
+                      ? theme.color.neutralColor98
+                      : theme.color.neutralColor1,
                   fontWeight: theme.font.titleMedium.fontWeight,
                   fontSize: theme.font.titleMedium.fontSize,
                 ),
-                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
+                trailingActions:
+                    widget.appBarTrailingActionsBuilder?.call(context, null),
               ),
       body: SafeArea(
         child: NotificationListener(
           onNotification: (notification) {
             if (notification is ScrollEndNotification) {
-              if (_scrollController.position.pixels - _scrollController.position.maxScrollExtent > -1500) {
+              if (_scrollController.position.pixels -
+                      _scrollController.position.maxScrollExtent >
+                  -1500) {
                 controller.fetchMembers();
               }
             }

@@ -103,7 +103,8 @@ class SDKWrapperTools {
       chatType: ChatType.GroupChat,
       params: {
         alertOperatorIdKey: group.owner ?? creator?.id ?? '',
-        alertOperatorNameKey: creator?.showName ?? creator?.id ?? group.owner ?? '',
+        alertOperatorNameKey:
+            creator?.showName ?? creator?.id ?? group.owner ?? '',
         alertTargetIdKey: group.groupId,
         alertTargetNameKey: group.name ?? '',
       },

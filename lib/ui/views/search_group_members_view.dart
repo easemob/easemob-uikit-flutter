@@ -32,7 +32,8 @@ class SearchGroupMembersView extends StatefulWidget {
   final List<NeedSearch> searchData;
   final String searchHideText;
   final void Function(BuildContext context, ChatUIKitProfile profile)? onTap;
-  final Widget Function(BuildContext context, ChatUIKitProfile profile, String? searchKeyword)? itemBuilder;
+  final Widget Function(BuildContext context, ChatUIKitProfile profile,
+      String? searchKeyword)? itemBuilder;
   final ChatUIKitAppBar? appBar;
   final bool enableAppBar;
   final String? attributes;
@@ -70,12 +71,15 @@ class _SearchGroupMembersViewState extends State<SearchGroupMembersView> {
       builder: (context, searchKeyword, list) {
         return ChatUIKitListView(
           list: list,
-          type: list.isEmpty ? ChatUIKitListViewType.empty : ChatUIKitListViewType.normal,
+          type: list.isEmpty
+              ? ChatUIKitListViewType.empty
+              : ChatUIKitListViewType.normal,
           enableSearchBar: false,
           itemBuilder: (context, model) {
             if (model is NeedSearch) {
               if (widget.itemBuilder != null) {
-                return widget.itemBuilder!.call(context, model.profile, searchKeyword);
+                return widget.itemBuilder!
+                    .call(context, model.profile, searchKeyword);
               }
 
               return InkWell(
@@ -109,13 +113,16 @@ class _SearchGroupMembersViewState extends State<SearchGroupMembersView> {
     );
 
     content = Scaffold(
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: !widget.enableAppBar
           ? null
           : widget.appBar ??
               ChatUIKitAppBar(
                 showBackButton: false,
-                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
+                trailingActions:
+                    widget.appBarTrailingActionsBuilder?.call(context, null),
               ),
       body: SafeArea(child: content),
     );

@@ -37,7 +37,8 @@ class ThreadMembersViewArguments implements ChatUIKitViewArguments {
       controller: controller ?? this.controller,
       attributes: attributes ?? this.attributes,
       viewObserver: viewObserver ?? this.viewObserver,
-      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      appBarTrailingActionsBuilder:
+          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

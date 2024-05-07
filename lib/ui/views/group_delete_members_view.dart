@@ -4,7 +4,8 @@ import 'package:em_chat_uikit/universal/inner_headers.dart';
 import 'package:flutter/material.dart';
 
 class GroupDeleteMembersView extends StatefulWidget {
-  GroupDeleteMembersView.arguments(GroupDeleteMembersViewArguments arguments, {super.key})
+  GroupDeleteMembersView.arguments(GroupDeleteMembersViewArguments arguments,
+      {super.key})
       : listViewItemBuilder = arguments.listViewItemBuilder,
         onSearchTap = arguments.onSearchTap,
         searchBarHideText = arguments.searchBarHideText,
@@ -45,7 +46,8 @@ class GroupDeleteMembersView extends StatefulWidget {
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
-  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)?
+      onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final bool enableAppBar;
@@ -87,14 +89,18 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: !widget.enableAppBar
           ? null
           : widget.appBar ??
               ChatUIKitAppBar(
                 showBackButton: true,
                 centerTitle: false,
-                title: widget.title ?? ChatUIKitLocal.groupDeleteMembersViewTitle.localString(context),
+                title: widget.title ??
+                    ChatUIKitLocal.groupDeleteMembersViewTitle
+                        .localString(context),
                 trailingActions: () {
                   List<ChatUIKitAppBarTrailingAction> actions = [
                     ChatUIKitAppBarTrailingAction(
@@ -107,7 +113,8 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
                       },
                       child: Text(
                         selectedProfiles.isEmpty
-                            ? ChatUIKitLocal.groupDeleteMembersViewDelete.localString(context)
+                            ? ChatUIKitLocal.groupDeleteMembersViewDelete
+                                .localString(context)
                             : '${ChatUIKitLocal.groupDeleteMembersViewDelete.localString(context)}(${selectedProfiles.length})',
                         textScaler: TextScaler.noScaling,
                         overflow: TextOverflow.ellipsis,
@@ -126,7 +133,9 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
                       ),
                     )
                   ];
-                  return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                  return widget.appBarTrailingActionsBuilder
+                          ?.call(context, actions) ??
+                      actions;
                 }(),
               ),
       body: GroupMemberListView(
@@ -148,12 +157,16 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
                           ? Icon(
                               Icons.check_box,
                               size: 28,
-                              color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                              color: theme.color.isDark
+                                  ? theme.color.primaryColor6
+                                  : theme.color.primaryColor5,
                             )
                           : Icon(
                               Icons.check_box_outline_blank,
                               size: 28,
-                              color: theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor7,
+                              color: theme.color.isDark
+                                  ? theme.color.neutralColor4
+                                  : theme.color.neutralColor7,
                             ),
                       Expanded(child: ChatUIKitContactListViewItem(model))
                     ],
@@ -183,7 +196,8 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
             Navigator.of(ctx).pop(profile);
           },
           canChangeSelected: selectedProfiles,
-          searchHideText: ChatUIKitLocal.createGroupViewSearchContact.localString(context),
+          searchHideText:
+              ChatUIKitLocal.createGroupViewSearchContact.localString(context),
           searchData: list,
           enableMulti: true,
           attributes: widget.attributes,
@@ -212,11 +226,15 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
     showChatUIKitDialog(
       context: context,
       title: Strings.format(
-          ChatUIKitLocal.groupDeleteMembersViewAlertTitle.localString(context), [selectedProfiles.length]),
+          ChatUIKitLocal.groupDeleteMembersViewAlertTitle.localString(context),
+          [selectedProfiles.length]),
       items: [
-        ChatUIKitDialogItem.cancel(label: ChatUIKitLocal.groupDeleteMembersViewAlertButtonCancel.localString(context)),
+        ChatUIKitDialogItem.cancel(
+            label: ChatUIKitLocal.groupDeleteMembersViewAlertButtonCancel
+                .localString(context)),
         ChatUIKitDialogItem.confirm(
-            label: ChatUIKitLocal.groupDeleteMembersViewAlertButtonConfirm.localString(context),
+            label: ChatUIKitLocal.groupDeleteMembersViewAlertButtonConfirm
+                .localString(context),
             onTap: () async => Navigator.of(context).pop(true))
       ],
     ).then((value) {

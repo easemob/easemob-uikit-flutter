@@ -34,7 +34,8 @@ class SearchView extends StatefulWidget {
   final bool enableMulti;
   final String searchHideText;
   final void Function(BuildContext context, ChatUIKitProfile profile)? onTap;
-  final Widget Function(BuildContext context, ChatUIKitProfile profile, String? searchKeyword)? itemBuilder;
+  final Widget Function(BuildContext context, ChatUIKitProfile profile,
+      String? searchKeyword)? itemBuilder;
 
   final List<ChatUIKitProfile>? cantChangeSelected;
   final List<ChatUIKitProfile>? canChangeSelected;
@@ -82,7 +83,9 @@ class _SearchViewState extends State<SearchView> {
             builder: (context, searchKeyword, list) {
               return ChatUIKitListView(
                 list: list,
-                type: list.isEmpty ? ChatUIKitListViewType.empty : ChatUIKitListViewType.normal,
+                type: list.isEmpty
+                    ? ChatUIKitListViewType.empty
+                    : ChatUIKitListViewType.normal,
                 enableSearchBar: false,
                 itemBuilder: (context, model) {
                   if (model is NeedSearch) {
@@ -99,13 +102,17 @@ class _SearchViewState extends State<SearchView> {
                             Row(
                               children: [
                                 widget.cantChangeSelected != null &&
-                                        widget.cantChangeSelected!.any((element) => element.id == model.profile.id) ==
+                                        widget.cantChangeSelected!.any(
+                                                (element) =>
+                                                    element.id ==
+                                                    model.profile.id) ==
                                             true
                                     ? Icon(
                                         Icons.check_box,
                                         size: 28,
-                                        color:
-                                            theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                                        color: theme.color.isDark
+                                            ? theme.color.primaryColor6
+                                            : theme.color.primaryColor5,
                                       )
                                     : value.contains(model.profile)
                                         ? Icon(
@@ -127,11 +134,15 @@ class _SearchViewState extends State<SearchView> {
                                 ),
                               ],
                             ),
-                            if (widget.cantChangeSelected?.any((element) => element.id == model.profile.id) == true)
+                            if (widget.cantChangeSelected?.any((element) =>
+                                    element.id == model.profile.id) ==
+                                true)
                               Opacity(
                                 opacity: 0.6,
                                 child: Container(
-                                  color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+                                  color: theme.color.isDark
+                                      ? theme.color.neutralColor1
+                                      : theme.color.neutralColor98,
                                 ),
                               ),
                           ],
@@ -155,12 +166,15 @@ class _SearchViewState extends State<SearchView> {
         builder: (context, searchKeyword, list) {
           return ChatUIKitListView(
             list: list,
-            type: list.isEmpty ? ChatUIKitListViewType.empty : ChatUIKitListViewType.normal,
+            type: list.isEmpty
+                ? ChatUIKitListViewType.empty
+                : ChatUIKitListViewType.normal,
             enableSearchBar: false,
             itemBuilder: (context, model) {
               if (model is NeedSearch) {
                 if (widget.itemBuilder != null) {
-                  return widget.itemBuilder!.call(context, model.profile, searchKeyword);
+                  return widget.itemBuilder!
+                      .call(context, model.profile, searchKeyword);
                 }
 
                 return InkWell(
@@ -201,7 +215,9 @@ class _SearchViewState extends State<SearchView> {
     );
 
     content = Scaffold(
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       body: SafeArea(child: content),
     );
 
@@ -209,7 +225,10 @@ class _SearchViewState extends State<SearchView> {
   }
 
   void tapContactInfo(ChatUIKitProfile profile) {
-    if (widget.cantChangeSelected?.where((element) => element.id == profile.id).isNotEmpty == true) {
+    if (widget.cantChangeSelected
+            ?.where((element) => element.id == profile.id)
+            .isNotEmpty ==
+        true) {
       return;
     }
     List<ChatUIKitProfile> list = selectedProfiles.value;

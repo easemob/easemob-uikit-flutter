@@ -78,10 +78,13 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 16),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 13, horizontal: 16),
                   child: TextField(
                     controller: phoneController,
-                    keyboardAppearance: ChatUIKitTheme.of(context).color.isDark ? Brightness.dark : Brightness.light,
+                    keyboardAppearance: ChatUIKitTheme.of(context).color.isDark
+                        ? Brightness.dark
+                        : Brightness.light,
                     autofocus: true,
                     style: TextStyle(
                         fontWeight: theme.font.bodyLarge.fontWeight,
@@ -90,13 +93,15 @@ class _LoginPageState extends State<LoginPage> {
                     scrollPadding: EdgeInsets.zero,
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
-                      hintText: DemoLocalizations.loginInputPhoneHint.localString(context),
+                      hintText: DemoLocalizations.loginInputPhoneHint
+                          .localString(context),
                       contentPadding: EdgeInsets.zero,
                       isDense: true,
                       hintStyle: TextStyle(
                         color: theme.color.neutralColor6,
                       ),
-                      border: const OutlineInputBorder(borderSide: BorderSide.none),
+                      border:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
                     ),
                   ),
                 ),
@@ -106,10 +111,13 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 16),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 13, horizontal: 16),
                   child: TextField(
                     controller: codeController,
-                    keyboardAppearance: ChatUIKitTheme.of(context).color.isDark ? Brightness.dark : Brightness.light,
+                    keyboardAppearance: ChatUIKitTheme.of(context).color.isDark
+                        ? Brightness.dark
+                        : Brightness.light,
                     autofocus: true,
                     style: TextStyle(
                         fontWeight: theme.font.bodyLarge.fontWeight,
@@ -118,13 +126,15 @@ class _LoginPageState extends State<LoginPage> {
                     // controller: searchController,
                     scrollPadding: EdgeInsets.zero,
                     decoration: InputDecoration(
-                      hintText: DemoLocalizations.loginInputSmsHint.localString(context),
+                      hintText: DemoLocalizations.loginInputSmsHint
+                          .localString(context),
                       contentPadding: EdgeInsets.zero,
                       isDense: true,
                       hintStyle: TextStyle(
                         color: theme.color.neutralColor6,
                       ),
-                      suffixIconConstraints: BoxConstraints.loose(const Size(100, 40)),
+                      suffixIconConstraints:
+                          BoxConstraints.loose(const Size(100, 40)),
                       suffixIcon: InkWell(
                         onTap: () {
                           fetchSmsCode();
@@ -132,10 +142,13 @@ class _LoginPageState extends State<LoginPage> {
                         enableFeedback: false,
                         child: Text(
                           timer == 0
-                              ? DemoLocalizations.loginSendSms.localString(context)
+                              ? DemoLocalizations.loginSendSms
+                                  .localString(context)
                               : '${DemoLocalizations.loginResendSms.localString(context)}(${timer}s)',
                           style: TextStyle(
-                            color: timer == 0 ? theme.color.primaryColor5 : theme.color.neutralColor7,
+                            color: timer == 0
+                                ? theme.color.primaryColor5
+                                : theme.color.neutralColor7,
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
                           ),
@@ -195,16 +208,24 @@ class _LoginPageState extends State<LoginPage> {
                           }(),
                         ),
                       ),
-                      TextSpan(text: DemoLocalizations.loginCheck.localString(context)),
                       TextSpan(
-                          text: DemoLocalizations.loginTermsOfService.localString(context),
-                          style: linkStyle,
-                          recognizer: TapGestureRecognizer()..onTap = serviceAgreement),
-                      TextSpan(text: DemoLocalizations.loginAnd.localString(context)),
+                          text: DemoLocalizations.loginCheck
+                              .localString(context)),
                       TextSpan(
-                          text: DemoLocalizations.loginPrivacyPolicy.localString(context),
+                          text: DemoLocalizations.loginTermsOfService
+                              .localString(context),
                           style: linkStyle,
-                          recognizer: TapGestureRecognizer()..onTap = privacyPolicy),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = serviceAgreement),
+                      TextSpan(
+                          text:
+                              DemoLocalizations.loginAnd.localString(context)),
+                      TextSpan(
+                          text: DemoLocalizations.loginPrivacyPolicy
+                              .localString(context),
+                          style: linkStyle,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = privacyPolicy),
                     ],
                   ),
                   textAlign: TextAlign.center,
@@ -219,12 +240,15 @@ class _LoginPageState extends State<LoginPage> {
 
   bool checkout() {
     if (agreeServiceAgreement == false) {
-      EasyLoading.showInfo(DemoLocalizations.loginPleaseAgreeTermsOfServicePrivacyPolicy.localString(context));
+      EasyLoading.showInfo(DemoLocalizations
+          .loginPleaseAgreeTermsOfServicePrivacyPolicy
+          .localString(context));
       return false;
     }
 
     if (phoneController.text.isEmpty) {
-      EasyLoading.showInfo(DemoLocalizations.loginPleaseInputSms.localString(context));
+      EasyLoading.showInfo(
+          DemoLocalizations.loginPleaseInputSms.localString(context));
       return false;
     }
 
@@ -236,7 +260,8 @@ class _LoginPageState extends State<LoginPage> {
 
     EasyLoading.show();
     AppServerHelper.sendSmsCodeRequest(phoneController.text).then((value) {
-      EasyLoading.showSuccess(DemoLocalizations.loginSendSmsSuccess.localString(context));
+      EasyLoading.showSuccess(
+          DemoLocalizations.loginSendSmsSuccess.localString(context));
       timer = 60;
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         setState(() {
@@ -247,7 +272,8 @@ class _LoginPageState extends State<LoginPage> {
         });
       });
     }).catchError((e) {
-      EasyLoading.showError(DemoLocalizations.loginSendSmsFailed.localString(context));
+      EasyLoading.showError(
+          DemoLocalizations.loginSendSmsFailed.localString(context));
     }).whenComplete(() {
       EasyLoading.dismiss();
     });
@@ -257,7 +283,8 @@ class _LoginPageState extends State<LoginPage> {
     if (!checkout()) return;
 
     if (codeController.text.isEmpty) {
-      EasyLoading.showInfo(DemoLocalizations.loginPleaseInputSms.localString(context));
+      EasyLoading.showInfo(
+          DemoLocalizations.loginPleaseInputSms.localString(context));
       return;
     }
 

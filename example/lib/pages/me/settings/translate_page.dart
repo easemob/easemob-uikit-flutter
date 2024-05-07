@@ -26,17 +26,22 @@ class _TranslatePageState extends State<TranslatePage> {
     Widget content = ListView(
       children: [
         ListItem(
-          title: DemoLocalizations.translateTargetLanguageChinese.localString(context),
+          title: DemoLocalizations.translateTargetLanguageChinese
+              .localString(context),
           trailingWidget: translate == 'zh-Hans'
               ? Icon(
                   Icons.check_box,
                   size: 28,
-                  color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                  color: theme.color.isDark
+                      ? theme.color.primaryColor6
+                      : theme.color.primaryColor5,
                 )
               : Icon(
                   Icons.check_box_outline_blank,
                   size: 28,
-                  color: theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor7,
+                  color: theme.color.isDark
+                      ? theme.color.neutralColor4
+                      : theme.color.neutralColor7,
                 ),
           onTap: () async {
             await SettingsDataStore().saveTranslateTargetLanguage('zh-Hans');
@@ -45,17 +50,22 @@ class _TranslatePageState extends State<TranslatePage> {
           },
         ),
         ListItem(
-          title: DemoLocalizations.translateTargetLanguageEnglish.localString(context),
+          title: DemoLocalizations.translateTargetLanguageEnglish
+              .localString(context),
           trailingWidget: translate == 'en'
               ? Icon(
                   Icons.check_box,
                   size: 28,
-                  color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                  color: theme.color.isDark
+                      ? theme.color.primaryColor6
+                      : theme.color.primaryColor5,
                 )
               : Icon(
                   Icons.check_box_outline_blank,
                   size: 28,
-                  color: theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor7,
+                  color: theme.color.isDark
+                      ? theme.color.neutralColor4
+                      : theme.color.neutralColor7,
                 ),
           onTap: () async {
             await SettingsDataStore().saveTranslateTargetLanguage('en');
@@ -67,9 +77,13 @@ class _TranslatePageState extends State<TranslatePage> {
     );
 
     content = Scaffold(
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: ChatUIKitAppBar(
-        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+        backgroundColor: theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98,
         title: DemoLocalizations.translateTargetLanguage.localString(context),
         centerTitle: false,
       ),

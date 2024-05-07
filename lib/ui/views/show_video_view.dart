@@ -75,7 +75,8 @@ class _ShowVideoViewState extends State<ShowVideoView> {
           : widget.appBar ??
               ChatUIKitAppBar(
                 backgroundColor: Colors.black,
-                trailingActions: widget.appBarTrailingActionsBuilder?.call(context, null),
+                trailingActions:
+                    widget.appBarTrailingActionsBuilder?.call(context, null),
               ),
       body: content,
     );

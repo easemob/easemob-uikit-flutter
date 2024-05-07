@@ -48,7 +48,8 @@ class GroupMembersView extends StatefulWidget {
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
-  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)?
+      onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final String? loadErrorMessage;
@@ -63,7 +64,8 @@ class GroupMembersView extends StatefulWidget {
   State<GroupMembersView> createState() => _GroupMembersViewState();
 }
 
-class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver {
+class _GroupMembersViewState extends State<GroupMembersView>
+    with GroupObserver {
   late final GroupMemberListViewController controller;
   List<ContactItemModel>? addedBuffers;
   List<ContactItemModel>? deleteBuffer;
@@ -73,7 +75,8 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
   void initState() {
     super.initState();
     ChatUIKit.instance.addObserver(this);
-    controller = widget.controller ?? GroupMemberListViewController(groupId: widget.profile.id);
+    controller = widget.controller ??
+        GroupMemberListViewController(groupId: widget.profile.id);
     widget.viewObserver?.addListener(() {
       setState(() {});
     });
@@ -100,7 +103,8 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
   void fetchGroup() async {
     try {
       group = await ChatUIKit.instance.getGroup(groupId: widget.profile.id);
-      group ??= await ChatUIKit.instance.fetchGroupInfo(groupId: widget.profile.id);
+      group ??=
+          await ChatUIKit.instance.fetchGroupInfo(groupId: widget.profile.id);
       memberCount.value = group?.memberCount ?? 0;
       setState(() {});
       // ignore: empty_catches
@@ -112,7 +116,9 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: !widget.enableAppBar
           ? null
           : widget.appBar ??
@@ -130,7 +136,9 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
                         },
                         child: Icon(
                           Icons.person_add_alt_1_outlined,
-                          color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
+                          color: theme.color.isDark
+                              ? theme.color.neutralColor9
+                              : theme.color.neutralColor3,
                           size: 24,
                         ),
                       ),
@@ -142,11 +150,15 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
                       },
                       child: Icon(
                         Icons.person_remove_alt_1_outlined,
-                        color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
+                        color: theme.color.isDark
+                            ? theme.color.neutralColor9
+                            : theme.color.neutralColor3,
                         size: 24,
                       ),
                     ));
-                    actions = widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
+                    actions = widget.appBarTrailingActionsBuilder
+                            ?.call(context, actions) ??
+                        actions;
                   }
                   return actions;
                 }(),
@@ -156,11 +168,15 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
                   builder: (context, value, child) {
                     if (memberCount.value == 0) {
                       return Text(
-                        widget.title ?? ChatUIKitLocal.groupMembersViewTitle.localString(context),
+                        widget.title ??
+                            ChatUIKitLocal.groupMembersViewTitle
+                                .localString(context),
                         textScaler: TextScaler.noScaling,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                          color: theme.color.isDark
+                              ? theme.color.neutralColor98
+                              : theme.color.neutralColor1,
                           fontWeight: theme.font.titleMedium.fontWeight,
                           fontSize: theme.font.titleMedium.fontSize,
                         ),
@@ -171,7 +187,9 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
                         textScaler: TextScaler.noScaling,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                          color: theme.color.isDark
+                              ? theme.color.neutralColor98
+                              : theme.color.neutralColor1,
                           fontWeight: theme.font.titleMedium.fontWeight,
                           fontSize: theme.font.titleMedium.fontSize,
                         ),
@@ -210,7 +228,9 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
           onTap: pushToAddMember,
           child: Icon(
             Icons.person_add_alt_1_outlined,
-            color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
+            color: theme.color.isDark
+                ? theme.color.neutralColor9
+                : theme.color.neutralColor3,
             size: 24,
           ),
         ),
@@ -220,7 +240,9 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
           onTap: pushToRemoveMember,
           child: Icon(
             Icons.person_remove_alt_1_outlined,
-            color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
+            color: theme.color.isDark
+                ? theme.color.neutralColor9
+                : theme.color.neutralColor3,
             size: 24,
           ),
         )
@@ -342,7 +364,8 @@ class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver 
 
         for (var userId in userIds) {
           controller.list.removeWhere((element) {
-            return (element is ContactItemModel && element.profile.id == userId);
+            return (element is ContactItemModel &&
+                element.profile.id == userId);
           });
         }
         controller.refresh();

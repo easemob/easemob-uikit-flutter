@@ -47,10 +47,12 @@ class ChatUIKitAlphabeticalWidget extends StatefulWidget {
   final List<ChatUIKitListItemModelBase> list;
 
   @override
-  State<ChatUIKitAlphabeticalWidget> createState() => _ChatUIKitAlphabeticalWidgetState();
+  State<ChatUIKitAlphabeticalWidget> createState() =>
+      _ChatUIKitAlphabeticalWidgetState();
 }
 
-class _ChatUIKitAlphabeticalWidgetState extends State<ChatUIKitAlphabeticalWidget> {
+class _ChatUIKitAlphabeticalWidgetState
+    extends State<ChatUIKitAlphabeticalWidget> {
   List<String> targets = [];
   String? latestSelected;
   ValueNotifier<int> selectIndex = ValueNotifier(-1);
@@ -160,7 +162,9 @@ class _ChatUIKitAlphabeticalWidgetState extends State<ChatUIKitAlphabeticalWidge
               decoration: BoxDecoration(
                 color: selected
                     ? widget.highlightColor ??
-                        (theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5)
+                        (theme.color.isDark
+                            ? theme.color.primaryColor6
+                            : theme.color.primaryColor5)
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(letterHeight / 2),
               ),
@@ -172,8 +176,12 @@ class _ChatUIKitAlphabeticalWidgetState extends State<ChatUIKitAlphabeticalWidge
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: selected
-                        ? (theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor98)
-                        : (theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5),
+                        ? (theme.color.isDark
+                            ? theme.color.neutralColor98
+                            : theme.color.neutralColor98)
+                        : (theme.color.isDark
+                            ? theme.color.neutralColor6
+                            : theme.color.neutralColor5),
                     fontSize: theme.font.labelExtraSmall.fontSize,
                     fontWeight: theme.font.labelExtraSmall.fontWeight,
                   ),
@@ -285,7 +293,9 @@ class _ChatUIKitAlphabeticalWidgetState extends State<ChatUIKitAlphabeticalWidge
         map[widget.special]?.add(item);
       }
 
-      String? letter = ChatUIKitAlphabetSortHelper.instance.sortHandler?.call(item.showName).toLowerCase();
+      String? letter = ChatUIKitAlphabetSortHelper.instance.sortHandler
+          ?.call(item.showName)
+          .toLowerCase();
       letter ??= item.firstLetter.toLowerCase();
       if (!targetList.contains(letter)) {
         map[widget.special]?.add(item);

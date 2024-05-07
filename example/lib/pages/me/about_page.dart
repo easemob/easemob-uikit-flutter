@@ -23,9 +23,13 @@ class _AboutPageState extends State<AboutPage> {
     final theme = ChatUIKitTheme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: ChatUIKitAppBar(
-        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+        backgroundColor: theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98,
         centerTitle: false,
         title: DemoLocalizations.about.localString(context),
       ),
