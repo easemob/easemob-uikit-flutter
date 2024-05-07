@@ -12,10 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  im_flutter_sdk:
-    git:
-      url: https://github.com/easemob/im_flutter_sdk
-      ref: 'c513b94'
+  im_flutter_sdk: ^4.5.0
 
   flutter_sound_record: ^3.3.2
 
@@ -33,7 +30,7 @@ dependencies:
 
   video_thumbnail: ^0.5.3
 
-  video_player: ^2.7.2
+  video_player: ^2.8.6
 
   flutter_localization: ^0.2.0
 

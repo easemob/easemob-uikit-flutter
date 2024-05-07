@@ -603,6 +603,7 @@ class MessageListViewController extends ChangeNotifier
           width: info.image.width.toDouble(),
           height: info.image.height.toDouble(),
           fileSize: videoFile.lengthSync(),
+          displayName: videoFile.path.split('/').last,
         );
         sendMessage(msg);
       }));

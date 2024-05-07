@@ -124,6 +124,7 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> wit
   Future<void> updateController(File file) async {
     if (_controller != null) return;
     try {
+      debugPrint('updateController: $file');
       _controller = VideoPlayerController.file(file);
       await _controller?.initialize();
       _controller?.addListener(() {
@@ -135,7 +136,9 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> wit
         }
       });
       // ignore: empty_catches
-    } catch (e) {}
+    } catch (e) {
+      debugPrint('updateController error: $e');
+    }
   }
 
   Widget loadingWidget() {
@@ -159,7 +162,6 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget> wit
     }
     Widget? content;
     if (localThumbPath?.isNotEmpty == true) {
-      debugPrint('localThumbPath: $localThumbPath');
       content = Image.file(
         File(localThumbPath!),
         fit: BoxFit.contain,
