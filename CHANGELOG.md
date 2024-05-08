@@ -1,3 +1,9 @@
+## 2.0.1
+
+### fix
+
+- add broken image when thumbnail not found.
+
 ## 2.0.0
 
 #### New features
