@@ -24,12 +24,10 @@ class ChatUIKitShowImageWidget extends StatefulWidget {
   final Message message;
 
   @override
-  State<ChatUIKitShowImageWidget> createState() =>
-      _ChatUIKitShowImageWidgetState();
+  State<ChatUIKitShowImageWidget> createState() => _ChatUIKitShowImageWidgetState();
 }
 
-class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget>
-    with MessageObserver {
+class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget> with MessageObserver {
   Message? message;
 
   String? localPath;
@@ -54,8 +52,7 @@ class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget>
       } else {
         Future.delayed(const Duration(milliseconds: 100)).then((value) {
           if (widget.isCombine) {
-            ChatUIKit.instance
-                .downloadMessageAttachmentInCombine(message: message!);
+            ChatUIKit.instance.downloadMessageAttachmentInCombine(message: message!);
           } else {
             ChatUIKit.instance.downloadAttachment(message: message!);
           }
@@ -135,6 +132,9 @@ class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget>
       content = Image.network(
         remoteThumbPath!,
         gaplessPlayback: true,
+        errorBuilder: (context, error, stackTrace) {
+          return const Icon(Icons.broken_image, size: 58, color: Colors.white);
+        },
       );
     }
 
