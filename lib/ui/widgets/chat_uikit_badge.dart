@@ -25,7 +25,7 @@ class ChatUIKitBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(4, 1, 4, 2),
       constraints:
-          const BoxConstraints(minWidth: 20, maxHeight: 20, minHeight: 20),
+          const BoxConstraints(minWidth: 20, maxHeight: 20, ),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: backgroundColor ??

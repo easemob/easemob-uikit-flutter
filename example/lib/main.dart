@@ -77,6 +77,7 @@ class _MyAppState extends State<MyApp> {
         builder: EasyLoading.init(
           builder: (context, child) {
             return ChatUIKitTheme(
+              font: ChatUIKitFont(fontSize: ChatUIKitFontSize.superLarge),
               color: AppSettingsNotification.isLight ? ChatUIKitColor.light() : ChatUIKitColor.dark(),
               child: child!,
             );

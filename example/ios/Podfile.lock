@@ -46,9 +46,6 @@ PODS:
   - im_flutter_sdk (0.0.1):
     - Flutter
     - HyphenateChat (= 4.5.0)
-  - image_cropper (0.0.4):
-    - Flutter
-    - TOCropViewController (~> 2.6.1)
   - image_picker_ios (0.0.1):
     - Flutter
   - integration_test (0.0.1):
@@ -78,7 +75,6 @@ PODS:
     - Flutter
     - FlutterMacOS
   - SwiftyGif (5.4.5)
-  - TOCropViewController (2.6.1)
   - url_launcher_ios (0.0.1):
     - Flutter
   - video_player_avfoundation (0.0.1):
@@ -96,7 +92,6 @@ DEPENDENCIES:
   - flutter_localization (from `.symlinks/plugins/flutter_localization/ios`)
   - flutter_sound_record (from `.symlinks/plugins/flutter_sound_record/ios`)
   - im_flutter_sdk (from `.symlinks/plugins/im_flutter_sdk/ios`)
-  - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -114,7 +109,6 @@ SPEC REPOS:
     - libwebp
     - SDWebImage
     - SwiftyGif
-    - TOCropViewController
 
 EXTERNAL SOURCES:
   audioplayers_darwin:
@@ -131,8 +125,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_sound_record/ios"
   im_flutter_sdk:
     :path: ".symlinks/plugins/im_flutter_sdk/ios"
-  image_cropper:
-    :path: ".symlinks/plugins/image_cropper/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   integration_test:
@@ -161,7 +153,6 @@ SPEC CHECKSUMS:
   flutter_sound_record: fa9800029599bccfaa8be22cc372550a5fa505ac
   HyphenateChat: bf4cfa65a83ffa210803fdc91263b4891fb510ee
   im_flutter_sdk: 843b5d02d6a557a8a2facabe283534c7550112be
-  image_cropper: a3291c624a953049bc6a02e1f8c8ceb162a24b25
   image_picker_ios: b545a5f16c0fa88e3ecbbce3ed4de45567a8ec18
   integration_test: 13825b8a9334a850581300559b8839134b124670
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
@@ -170,7 +161,6 @@ SPEC CHECKSUMS:
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
   sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
   SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
-  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   url_launcher_ios: 6116280ddcfe98ab8820085d8d76ae7449447586
   video_player_avfoundation: 02011213dab73ae3687df27ce441fbbcc82b5579
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
