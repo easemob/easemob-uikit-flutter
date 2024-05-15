@@ -2,10 +2,8 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit_example/debug_login_page.dart';
 import 'package:em_chat_uikit_example/demo_localizations.dart';
 import 'package:em_chat_uikit_example/home_page.dart';
-import 'package:em_chat_uikit_example/login_page.dart';
 import 'package:em_chat_uikit_example/notifications/app_settings_notification.dart';
 import 'package:em_chat_uikit_example/pages/me/about_page.dart';
-import 'package:em_chat_uikit_example/pages/me/personal/personal_info_page.dart';
 import 'package:em_chat_uikit_example/pages/me/settings/general_page.dart';
 import 'package:em_chat_uikit_example/pages/me/settings/language_page.dart';
 import 'package:em_chat_uikit_example/pages/me/settings/translate_page.dart';
@@ -32,8 +30,7 @@ void main() async {
     ),
   );
   SettingsDataStore().init();
-  return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(const MyApp()));
+  return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) => runApp(const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -50,8 +47,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _localization.defaultLocale = [
-      ChatLocal(
-          'zh', Map.from(ChatUIKitLocal.zh)..addAll(DemoLocalizations.zh)),
+      ChatLocal('zh', Map.from(ChatUIKitLocal.zh)..addAll(DemoLocalizations.zh)),
       ChatLocal('en', Map.from(ChatUIKitLocal.en)..addAll(DemoLocalizations.en))
     ];
     // 添加语言后需要进行resetLocales操作
@@ -81,9 +77,7 @@ class _MyAppState extends State<MyApp> {
         builder: EasyLoading.init(
           builder: (context, child) {
             return ChatUIKitTheme(
-              color: AppSettingsNotification.isLight
-                  ? ChatUIKitColor.light()
-                  : ChatUIKitColor.dark(),
+              color: AppSettingsNotification.isLight ? ChatUIKitColor.light() : ChatUIKitColor.dark(),
               child: child!,
             );
           },
@@ -97,11 +91,9 @@ class _MyAppState extends State<MyApp> {
               if (settings.name == '/home') {
                 return const HomePage();
               } else if (settings.name == '/login') {
-                return const LoginPage();
+                return const DebugLoginPage();
               } else if (settings.name == '/debug_login') {
                 return const DebugLoginPage();
-              } else if (settings.name == '/personal_info') {
-                return const PersonalInfoPage();
               } else if (settings.name == '/general_page') {
                 return const GeneralPage();
               } else if (settings.name == '/language_page') {

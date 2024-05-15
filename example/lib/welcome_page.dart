@@ -3,7 +3,6 @@ import 'package:em_chat_uikit_example/demo_localizations.dart';
 
 import 'package:flutter/material.dart';
 
-const String appKey = 'easemob#easeim';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});

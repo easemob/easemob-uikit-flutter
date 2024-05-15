@@ -21,10 +21,6 @@ dependencies:
 
   shared_preferences: ^2.2.2
 
-  image_cropper: ^5.0.1
-
-  image_picker: ^1.0.5
-
   url_launcher: ^6.2.5
 
   sqflite: ^2.3.2

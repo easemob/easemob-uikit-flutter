@@ -2,7 +2,6 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit_example/demo_localizations.dart';
 
 import 'package:em_chat_uikit_example/pages/help/download_page.dart';
-import 'package:em_chat_uikit_example/tool/app_server_helper.dart';
 import 'package:em_chat_uikit_example/tool/user_data_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -207,7 +206,6 @@ class ChatRouteFilter {
                 Navigator.of(context).pop();
 
                 if (group != null) {
-                  AppServerHelper.autoDestroyGroup(group.groupId);
                   ChatUIKitRoute.pushOrPushNamed(
                     context,
                     ChatUIKitRouteNames.messagesView,
