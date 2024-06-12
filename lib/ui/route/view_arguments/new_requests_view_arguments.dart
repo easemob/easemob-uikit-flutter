@@ -20,7 +20,7 @@ class NewRequestsViewArguments implements ChatUIKitViewArguments {
   });
 
   final NewRequestListViewController? controller;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final void Function(List<NewRequestItemModel> data)? onSearchTap;
   final ChatUIKitNewRequestItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, NewRequestItemModel model)? onTap;

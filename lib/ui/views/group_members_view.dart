@@ -43,7 +43,7 @@ class GroupMembersView extends StatefulWidget {
   final ChatUIKitProfile profile;
 
   final GroupMemberListViewController? controller;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final void Function(List<ContactItemModel> data)? onSearchTap;
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;

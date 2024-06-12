@@ -29,7 +29,7 @@ class ThreadsView extends StatefulWidget {
   final ChatUIKitViewObserver? viewObserver;
   final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
   final bool enableAppBar;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
 
   final ChatUIKitProfile profile;
 

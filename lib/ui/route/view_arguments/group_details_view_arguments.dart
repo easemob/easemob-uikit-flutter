@@ -15,7 +15,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
   });
   final ChatUIKitProfile profile;
   final ChatUIKitModelActionsBuilder? actionsBuilder;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final bool enableAppBar;
   final VoidCallback? onMessageDidClear;
   final WidgetBuilder? contentWidgetBuilder;

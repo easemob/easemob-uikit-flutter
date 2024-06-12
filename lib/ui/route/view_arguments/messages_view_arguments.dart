@@ -11,7 +11,6 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     this.showMessageItemAvatar,
     this.showMessageItemNickname,
     this.onItemTap,
-    this.onItemLongPress,
     this.onDoubleTap,
     this.onAvatarTap,
     this.onAvatarLongPress,
@@ -20,7 +19,6 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     this.itemBuilder,
     this.alertItemBuilder,
     this.morePressActions,
-    this.longPressActions,
     this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     this.replyBarBuilder,
     this.quoteBuilder,
@@ -50,7 +48,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   final MessageListViewController? controller;
 
   /// 自定义AppBar, 如果设置后将会替换默认的AppBar。详细参考 [ChatUIKitAppBar]。
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
 
   /// 是否显示AppBar, 默认为 `true`。 当为 `false` 时将不会显示AppBar。同时也会影响到是否显示标题。
   final bool enableAppBar;
@@ -69,9 +67,6 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
 
   /// 消息点击事件, 如果设置后消息点击事件将直接回调，如果不处理可以返回 `false`。
   final MessageItemTapHandler? onItemTap;
-
-  /// 消息长按事件, 如果设置后消息长按事件将直接回调，返回 `true` 表示处理你需要处理，返回 `false` 则会执行默认的长按事件。
-  final MessageItemTapHandler? onItemLongPress;
 
   /// 消息双击事件,如果设置后消息双击事件将直接回调，如果不处理可以返回 `false`。
   final MessageItemTapHandler? onDoubleTap;
@@ -100,10 +95,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   /// 更多按钮点击事件， 如果设置后将会替换默认的更多按钮点击事件。详细参考 [ChatUIKitBottomSheetItem]。
   final MessagesViewMorePressHandler? onMoreActionsItemsHandler;
 
-  /// 消息长按事件列表，如果设置后将会替换默认的消息长按事件列表。详细参考 [ChatUIKitBottomSheetItem]。
-  final List<ChatUIKitBottomSheetItem>? longPressActions;
-
-  /// 消息长按事件回调， 如果设置后将会替换默认的消息长按事件回调。当长按时会回调 [longPressActions] 中设置的事件，需要返回一个列表用于替换，如果不返回则不会显示长按。
+  /// 消息长按事件回调， 如果设置后将会替换默认的消息长按事件回调。
   final MessagesViewItemLongPressHandler? onItemLongPressHandler;
 
   /// 强制消息靠左，默认为 `false`， 设置后自己发的消息也会在左侧显示。
@@ -177,9 +169,6 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     /// 消息点击事件, 如果设置后消息点击事件将直接回调，如果不处理可以返回 `false`。
     MessageItemTapHandler? onItemTap,
 
-    /// 消息长按事件, 如果设置后消息长按事件将直接回调，返回 `true` 表示处理你需要处理，返回 `false` 则会执行默认的长按事件。
-    MessageItemTapHandler? onItemLongPress,
-
     /// 消息双击事件,如果设置后消息双击事件将直接回调，如果不处理可以返回 `false`。
     MessageItemTapHandler? onDoubleTap,
 
@@ -197,9 +186,6 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
 
     /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitBottomSheetItem]。
     List<ChatUIKitBottomSheetItem>? morePressActions,
-
-    /// 消息长按事件列表，如果设置后将会替换默认的消息长按事件列表。详细参考 [ChatUIKitBottomSheetItem]。
-    List<ChatUIKitBottomSheetItem>? longPressActions,
     MessageItemBuilder? itemBuilder,
     MessageItemBuilder? alertItemBuilder,
     FocusNode? focusNode,
@@ -236,14 +222,12 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       showMessageItemNickname:
           showMessageItemNickname ?? this.showMessageItemNickname,
       onItemTap: onItemTap ?? this.onItemTap,
-      onItemLongPress: onItemLongPress ?? this.onItemLongPress,
       onDoubleTap: onDoubleTap ?? this.onDoubleTap,
       onAvatarTap: onAvatarTap ?? this.onAvatarTap,
       onAvatarLongPress: onAvatarLongPress ?? this.onAvatarLongPress,
       onNicknameTap: onNicknameTap ?? this.onNicknameTap,
       bubbleStyle: bubbleStyle ?? this.bubbleStyle,
       morePressActions: morePressActions ?? this.morePressActions,
-      longPressActions: longPressActions ?? this.longPressActions,
       itemBuilder: itemBuilder ?? this.itemBuilder,
       alertItemBuilder: alertItemBuilder ?? this.alertItemBuilder,
       emojiWidget: emojiWidget ?? this.emojiWidget,

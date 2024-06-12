@@ -18,7 +18,7 @@ class SelectContactViewArguments implements ChatUIKitViewArguments {
     this.appBarTrailingActionsBuilder,
   });
   final ContactListViewController? controller;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final void Function(List<ContactItemModel> data)? onSearchTap;
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;

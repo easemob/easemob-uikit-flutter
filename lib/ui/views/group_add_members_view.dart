@@ -42,7 +42,7 @@ class GroupAddMembersView extends StatefulWidget {
 
   final String groupId;
   final ContactListViewController? controller;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final void Function(List<ContactItemModel> data)? onSearchTap;
   final List<ChatUIKitProfile>? inGroupMembers;
   final ChatUIKitContactItemBuilder? listViewItemBuilder;

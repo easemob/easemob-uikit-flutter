@@ -32,7 +32,7 @@ class ThreadMembersView extends StatefulWidget {
   final ChatThread thread;
   final ThreadMembersViewController? controller;
   final bool enableAppBar;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
 
   @override
   State<ThreadMembersView> createState() => _ThreadMembersViewState();

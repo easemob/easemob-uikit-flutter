@@ -31,7 +31,8 @@ class UserDataStore {
   // 打开db
   Future<void> openDemoDB() async {
     String databasesPath = await getDatabasesPath();
-    dbName = '${appKey.replaceAll('#', '_')}_${ChatUIKit.instance.currentUserId!}.db';
+    dbName =
+        '${appKey.replaceAll('#', '_')}_${ChatUIKit.instance.currentUserId!}.db';
     String path = '$databasesPath/$dbName';
     debugPrint('path: $path');
     await openDatabase(
@@ -53,7 +54,13 @@ class UserDataStore {
   Future<void> saveUserData(ChatUIKitProfile profile) async {
     await _db?.rawInsert(
       'INSERT OR REPLACE INTO "${ChatUIKit.instance.currentUserId!}" (id, nickname, avatar, remark, type) VALUES (?, ?, ?, ?, ?)',
-      [profile.id, profile.name, profile.avatarUrl, profile.remark, profile.type.index],
+      [
+        profile.id,
+        profile.name,
+        profile.avatarUrl,
+        profile.remark,
+        profile.type.index
+      ],
     );
   }
 
@@ -97,7 +104,8 @@ class UserDataStore {
 
   Future<List<ChatUIKitProfile>> loadAllProfiles() async {
     debugPrint('${ChatUIKit.instance.currentUserId}');
-    List<Map<String, dynamic>>? maps = await _db?.rawQuery('SELECT * FROM "${ChatUIKit.instance.currentUserId}"');
+    List<Map<String, dynamic>>? maps = await _db
+        ?.rawQuery('SELECT * FROM "${ChatUIKit.instance.currentUserId}"');
     return List.generate(maps?.length ?? 0, (i) {
       final info = maps?[i];
       return ChatUIKitProfile(

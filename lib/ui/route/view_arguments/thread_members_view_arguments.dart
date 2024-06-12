@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:flutter/material.dart';
 
 class ThreadMembersViewArguments implements ChatUIKitViewArguments {
   ThreadMembersViewArguments({
@@ -19,7 +20,7 @@ class ThreadMembersViewArguments implements ChatUIKitViewArguments {
   ChatUIKitViewObserver? viewObserver;
   final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
   final bool enableAppBar;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
 
   ThreadMembersViewArguments copyWith({
     ChatThread? thread,

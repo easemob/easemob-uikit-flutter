@@ -17,7 +17,7 @@ class ShowVideoViewArguments implements ChatUIKitViewArguments {
   final Message message;
   final void Function(BuildContext context, Message message)? onLongPressed;
   final Widget? playIcon;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final bool enableAppBar;
   final bool isCombine;
   @override

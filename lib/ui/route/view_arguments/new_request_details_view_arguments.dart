@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:flutter/material.dart';
 
 class NewRequestDetailsViewArguments implements ChatUIKitViewArguments {
   NewRequestDetailsViewArguments({
@@ -15,7 +16,7 @@ class NewRequestDetailsViewArguments implements ChatUIKitViewArguments {
   final ChatUIKitProfile profile;
   final bool isReceivedRequest;
   final String? btnText;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final bool enableAppBar;
   final String? title;
   @override

@@ -41,10 +41,14 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: ChatUIKitAppBar(
         showBackButton: false,
-        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+        backgroundColor: theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98,
       ),
       body: SafeArea(
         top: false,
@@ -67,7 +71,9 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
       style: TextStyle(
         fontSize: theme.font.headlineLarge.fontSize,
         fontWeight: theme.font.headlineLarge.fontWeight,
-        color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
+        color: theme.color.isDark
+            ? theme.color.neutralColor100
+            : theme.color.neutralColor1,
       ),
     );
 
@@ -79,7 +85,9 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
       style: TextStyle(
         fontSize: theme.font.bodySmall.fontSize,
         fontWeight: theme.font.bodySmall.fontWeight,
-        color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
+        color: theme.color.isDark
+            ? theme.color.neutralColor5
+            : theme.color.neutralColor7,
       ),
     );
 
@@ -90,7 +98,8 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
         const SizedBox(width: 2),
         InkWell(
           onTap: () {
-            Clipboard.setData(ClipboardData(text: ChatUIKit.instance.currentUserId ?? ''));
+            Clipboard.setData(
+                ClipboardData(text: ChatUIKit.instance.currentUserId ?? ''));
             ChatUIKit.instance.sendChatUIKitEvent(
               ChatUIKitEvent.userIdCopied,
             );
@@ -98,7 +107,9 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
           child: Icon(
             Icons.file_copy_sharp,
             size: 16,
-            color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
+            color: theme.color.isDark
+                ? theme.color.neutralColor5
+                : theme.color.neutralColor7,
           ),
         ),
       ],
@@ -119,7 +130,8 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
         const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.only(left: 16, right: 16),
-          child: Text(DemoLocalizations.settings.localString(context), textScaler: TextScaler.noScaling),
+          child: Text(DemoLocalizations.settings.localString(context),
+              textScaler: TextScaler.noScaling),
         ),
         ListItem(
           imageWidget: Image.asset('assets/images/settings.png'),
@@ -151,7 +163,9 @@ class _MyPageState extends State<MyPage> with ChatUIKitProviderObserver {
               style: TextStyle(
                 fontWeight: theme.font.titleMedium.fontWeight,
                 fontSize: theme.font.titleMedium.fontSize,
-                color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                color: theme.color.isDark
+                    ? theme.color.primaryColor6
+                    : theme.color.primaryColor5,
               ),
             ),
           ),

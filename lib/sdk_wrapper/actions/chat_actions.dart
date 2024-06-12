@@ -15,7 +15,7 @@ mixin ChatActions on ChatWrapper {
     return checkResult(ChatSDKEvent.sendTypingMessage, () async {
       Message msg = Message.createCmdSendMessage(
         targetId: userId,
-        action: 'chat_uikit_message_typing',
+        action: 'TypingBegin',
         deliverOnlineOnly: true,
       );
       await Client.getInstance.chatManager.sendMessage(msg);

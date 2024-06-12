@@ -37,7 +37,7 @@ class SelectContactView extends StatefulWidget {
 
   final String? title;
   final ContactListViewController? controller;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final void Function(List<ContactItemModel> data)? onSearchTap;
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;

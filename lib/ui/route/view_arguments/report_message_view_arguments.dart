@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:flutter/material.dart';
 
 class ReportMessageViewArguments implements ChatUIKitViewArguments {
   ReportMessageViewArguments({
@@ -13,7 +14,7 @@ class ReportMessageViewArguments implements ChatUIKitViewArguments {
   });
   final String messageId;
   final List<String> reportReasons;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final bool enableAppBar;
   final String? title;
   @override

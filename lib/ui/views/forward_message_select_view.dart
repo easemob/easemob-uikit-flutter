@@ -32,7 +32,7 @@ class ForwardMessageSelectView extends StatefulWidget {
 
   final List<Message> messages;
   final bool enableAppBar;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final String? title;
   final String? attributes;
   final bool isMulti;

@@ -79,6 +79,7 @@ export 'ui/controllers/group_member_list_view_controller.dart';
 export 'ui/controllers/message_list_view_controller.dart';
 export 'ui/controllers/thread_messages_view_controller.dart';
 export 'ui/controllers/thread_members_view_controller.dart';
+export 'ui/controllers/block_list_view_controller.dart';
 
 export 'ui/models/chat_uikit_list_item_model_base.dart';
 export 'ui/models/conversation_item_model.dart';
@@ -89,6 +90,7 @@ export 'ui/models/quote_mode.dart';
 export 'ui/models/alphabetical_item_model.dart';
 export 'ui/models/message_model.dart';
 
+export 'ui/components/block_list_view.dart';
 export 'ui/components/conversation_list_view.dart';
 export 'ui/components/contact_list_view.dart';
 export 'ui/components/group_list_view.dart';

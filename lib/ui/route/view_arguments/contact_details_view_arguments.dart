@@ -9,7 +9,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
     this.onMessageDidClear,
     this.appBar,
     this.viewObserver,
-    this.contentWidgetBuilder,
+    this.detailsListViewItemsBuilder,
     this.attributes,
     this.appBarTrailingActionsBuilder,
     this.onContactDeleted,
@@ -19,8 +19,10 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
   final ChatUIKitProfile profile;
   final ChatUIKitModelActionsBuilder? actionsBuilder;
   final VoidCallback? onMessageDidClear;
-  final ChatUIKitAppBar? appBar;
-  final WidgetBuilder? contentWidgetBuilder;
+  final PreferredSizeWidget? appBar;
+  final List<ChatUIKitDetailsListViewItemModel> Function(BuildContext context,
+          String userId, List<ChatUIKitDetailsListViewItemModel> defaultItems)?
+      detailsListViewItemsBuilder;
   final VoidCallback? onContactDeleted;
   @override
   String? attributes;
@@ -37,7 +39,11 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
     ChatUIKitViewObserver? viewObserver,
     VoidCallback? onContactDeleted,
     String? attributes,
-    WidgetBuilder? contentWidgetBuilder,
+    List<ChatUIKitDetailsListViewItemModel> Function(
+            BuildContext context,
+            String userId,
+            List<ChatUIKitDetailsListViewItemModel> defaultItems)?
+        detailsListViewItemsBuilder,
     ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder,
     bool? enableAppBar,
   }) {
@@ -48,7 +54,8 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
       appBar: appBar ?? this.appBar,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
-      contentWidgetBuilder: contentWidgetBuilder ?? this.contentWidgetBuilder,
+      detailsListViewItemsBuilder:
+          detailsListViewItemsBuilder ?? this.detailsListViewItemsBuilder,
       appBarTrailingActionsBuilder:
           appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
       enableAppBar: enableAppBar ?? this.enableAppBar,

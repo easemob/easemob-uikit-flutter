@@ -7,4 +7,6 @@ abstract mixin class ContactObserver implements ChatUIKitObserverBase {
   void onFriendRequestAccepted(String userId) {}
   void onFriendRequestDeclined(String userId) {}
   void onFriendRequestCountChanged(int count) {}
+  void onBlockedContactAdded(String userId) {}
+  void onBlockedContactDeleted(String userId) {}
 }

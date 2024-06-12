@@ -1,6 +1,18 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
+class ChatUIKitDetailsListViewItemModel {
+  ChatUIKitDetailsListViewItemModel({
+    required this.title,
+    this.trailing,
+    this.onTap,
+  });
+
+  final String title;
+  final Widget? trailing;
+  final VoidCallback? onTap;
+}
+
 class ChatUIKitDetailsListViewItem extends StatelessWidget {
   const ChatUIKitDetailsListViewItem(
       {required this.title, this.trailing, super.key});

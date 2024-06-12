@@ -1,14 +1,16 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-// import 'package:username/username.dart';
 
-/// 联系人列表控制器
-class ContactListViewController
-    with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver {
-  ContactListViewController({
+class BlockListViewController
+    with
+        ChatUIKitListViewControllerBase,
+        ChatUIKitProviderObserver,
+        ContactObserver {
+  BlockListViewController({
     this.willShowHandler,
     this.enableRefresh = true,
   }) {
     ChatUIKitProvider.instance.addObserver(this);
+    ChatUIKit.instance.addObserver(this);
   }
 
   /// 是否开启下来刷新
@@ -17,13 +19,14 @@ class ContactListViewController
   /// 会话列表显示前的回调，你可以在这里对会话列表进行处理，比如排序或者加减等。如果不设置将会直接显示。
   final ContactListViewShowHandler? willShowHandler;
 
+  bool hasFetched = false;
+
   @override
   void dispose() {
     ChatUIKitProvider.instance.removeObserver(this);
+    ChatUIKit.instance.removeObserver(this);
     super.dispose();
   }
-
-  String? cursor;
 
   @override
   void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
@@ -41,6 +44,27 @@ class ContactListViewController
     }
   }
 
+  @override
+  void onBlockedContactAdded(String userId) {
+    if (list
+        .any((element) => (element as ContactItemModel).profile.id == userId)) {
+      return;
+    }
+    List<ContactItemModel> tmp = _mappers([userId]);
+    list.addAll(tmp);
+    refresh();
+  }
+
+  @override
+  void onBlockedContactDeleted(String userId) {
+    if (list
+        .any((element) => (element as ContactItemModel).profile.id == userId)) {
+      list.removeWhere(
+          (element) => (element as ContactItemModel).profile.id == userId);
+      refresh();
+    }
+  }
+
   /// 获取联系人列表，会优先从本地获取，如果本地没有，并且没有从服务器获取过，则从服务器获取。
   /// `force` (bool) 是否强制从服务器获取，默认为 `false`。
   @override
@@ -54,14 +78,16 @@ class ContactListViewController
       loadingType.value = ChatUIKitListViewType.loading;
     }
 
-    List<String> items = await ChatUIKit.instance.getAllContactIds();
+    List<String>? items;
+
     try {
-      if ((items.isEmpty &&
-              !ChatUIKitContext.instance.isContactLoadFinished()) ||
-          force == true) {
-        items = await _fetchContacts();
+      if (force == true || hasFetched == false) {
+        items = await _fetchBlocks();
+        hasFetched = true;
+      } else {
+        items = await ChatUIKit.instance.getAllBlockedContactIds();
       }
-      ChatUIKitContext.instance.removeRequests(items);
+
       List<ContactItemModel> tmp = _mappers(items);
       list.clear();
       list.addAll(tmp);
@@ -71,16 +97,13 @@ class ContactListViewController
         loadingType.value = ChatUIKitListViewType.normal;
       }
     } catch (e) {
-      if (items.isEmpty) {
-        loadingType.value = ChatUIKitListViewType.error;
-      } else {
-        loadingType.value = ChatUIKitListViewType.normal;
-      }
+      items ??= await ChatUIKit.instance.getAllBlockedContactIds();
+      loadingType.value = ChatUIKitListViewType.normal;
     }
   }
 
-  Future<List<String>> _fetchContacts() async {
-    List<String> result = await ChatUIKit.instance.fetchAllContactIds();
+  Future<List<String>> _fetchBlocks() async {
+    List<String> result = await ChatUIKit.instance.fetchAllBlockedContactIds();
     ChatUIKitContext.instance.setContactLoadFinished();
     return result;
   }
@@ -122,7 +145,7 @@ class ContactListViewController
   @override
   Future<void> reload() async {
     loadingType.value = ChatUIKitListViewType.refresh;
-    List<String> items = await ChatUIKit.instance.getAllContactIds();
+    List<String> items = await ChatUIKit.instance.getAllBlockedContactIds();
     ChatUIKitContext.instance.removeRequests(items);
     List<ContactItemModel> tmp = _mappers(items);
     list.clear();

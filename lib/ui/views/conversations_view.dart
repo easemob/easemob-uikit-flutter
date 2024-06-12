@@ -18,9 +18,9 @@ class ConversationsView extends StatefulWidget {
         appBarMoreActionsBuilder = arguments.appBarMoreActionsBuilder,
         enableAppBar = arguments.enableAppBar,
         title = arguments.title,
+        appBarLeading = arguments.appBarLeading,
         enableSearchBar = arguments.enableSearchBar,
         viewObserver = arguments.viewObserver,
-        avatarItemBuilder = arguments.avatarItemBuilder,
         appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
@@ -40,8 +40,8 @@ class ConversationsView extends StatefulWidget {
     this.enableSearchBar = true,
     this.appBarMoreActionsBuilder,
     this.title,
+    this.appBarLeading,
     this.attributes,
-    this.avatarItemBuilder,
     this.viewObserver,
     this.appBarTrailingActionsBuilder,
     super.key,
@@ -51,7 +51,7 @@ class ConversationsView extends StatefulWidget {
   final ConversationListViewController? controller;
 
   /// 自定义AppBar, 如果设置后将会替换默认的AppBar。详细参考 [ChatUIKitAppBar]。
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
 
   /// 点击搜索按钮的回调，点击后会把当前的会话列表数据传递过来。如果不设置默认会跳转到搜索页面。具体参考 [SearchView]。
   final void Function(List<ConversationItemModel> data)? onSearchTap;
@@ -64,9 +64,6 @@ class ConversationsView extends StatefulWidget {
 
   /// 会话列表的 `item` 构建器，如果设置后需要显示会话时会直接回调，如果不处理可以返回 `null`。
   final ConversationItemBuilder? listViewItemBuilder;
-
-  /// 会话列表的 `头像` 构建器，如果设置后需要显示会话头像，如果不处理可以返回 `null`。
-  final ConversationItemBuilder? avatarItemBuilder;
 
   /// 点击会话列表的回调，点击后会把当前的会话数据传递过来。具体参考 [ConversationItemModel]。 如果不是设置默认会跳转到消息页面。具体参考 [MessagesView]。
   final void Function(BuildContext context, ConversationItemModel info)? onTap;
@@ -92,12 +89,16 @@ class ConversationsView extends StatefulWidget {
   /// 自定义标题。
   final String? title;
 
+  /// 自定义AppBar的左侧内容。
+  final Widget? appBarLeading;
+
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   final String? attributes;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
 
+  /// 自定义AppBar右侧控件。
   final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
@@ -142,14 +143,15 @@ class _ConversationsViewState extends State<ConversationsView> {
                   fontSize: theme.font.titleLarge.fontSize,
                   fontWeight: FontWeight.w900,
                 ),
-                leading: Container(
-                  margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
-                  child: ChatUIKitAvatar.current(
-                    size: 32,
-                    avatarUrl: ChatUIKitProvider
-                        .instance.currentUserProfile?.avatarUrl,
-                  ),
-                ),
+                leading: widget.appBarLeading ??
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
+                      child: ChatUIKitAvatar.current(
+                        size: 32,
+                        avatarUrl: ChatUIKitProvider
+                            .instance.currentUserProfile?.avatarUrl,
+                      ),
+                    ),
                 trailingActions: () {
                   List<ChatUIKitAppBarTrailingAction> actions = [
                     ChatUIKitAppBarTrailingAction(

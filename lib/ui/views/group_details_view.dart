@@ -33,7 +33,7 @@ class GroupDetailsView extends StatefulWidget {
   });
   final ChatUIKitModelActionsBuilder? actionsBuilder;
   final ChatUIKitProfile profile;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final bool enableAppBar;
   final String? attributes;
   final VoidCallback? onMessageDidClear;

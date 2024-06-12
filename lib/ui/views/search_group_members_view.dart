@@ -34,7 +34,7 @@ class SearchGroupMembersView extends StatefulWidget {
   final void Function(BuildContext context, ChatUIKitProfile profile)? onTap;
   final Widget Function(BuildContext context, ChatUIKitProfile profile,
       String? searchKeyword)? itemBuilder;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final bool enableAppBar;
   final String? attributes;
 

@@ -21,7 +21,7 @@ class GroupDeleteMembersViewArguments implements ChatUIKitViewArguments {
 
   final String groupId;
   final GroupMemberListViewController? controller;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final void Function(List<ContactItemModel> data)? onSearchTap;
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;

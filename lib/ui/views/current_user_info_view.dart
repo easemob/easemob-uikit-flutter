@@ -22,7 +22,7 @@ class CurrentUserInfoView extends StatefulWidget {
     super.key,
   });
   final ChatUIKitProfile profile;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final String? attributes;
   final bool enableAppBar;
 

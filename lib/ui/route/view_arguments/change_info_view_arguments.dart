@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:flutter/widgets.dart';
 
 class ChangeInfoViewArguments implements ChatUIKitViewArguments {
   ChangeInfoViewArguments({
@@ -18,7 +19,7 @@ class ChangeInfoViewArguments implements ChatUIKitViewArguments {
   final String? hint;
   final String? saveButtonTitle;
   final Future<String?> Function()? inputTextCallback;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final int maxLength;
   final bool enableAppBar;
 

@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:flutter/material.dart';
 
 class CurrentUserInfoViewArguments implements ChatUIKitViewArguments {
   CurrentUserInfoViewArguments({
@@ -11,7 +12,7 @@ class CurrentUserInfoViewArguments implements ChatUIKitViewArguments {
   });
 
   final ChatUIKitProfile profile;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final bool enableAppBar;
   @override
   String? attributes;

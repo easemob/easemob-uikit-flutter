@@ -1,8 +1,10 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit_example/custom/demo_helper.dart';
 import 'package:em_chat_uikit_example/demo_localizations.dart';
 
 import 'package:em_chat_uikit_example/pages/help/download_page.dart';
 import 'package:em_chat_uikit_example/tool/user_data_store.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -56,52 +58,71 @@ class ChatRouteFilter {
       viewObserver: viewObserver,
 
       // 添加 remark 实现
-      contentWidgetBuilder: (context) {
-        return InkWell(
-          onTap: () async {
-            String? remark = await showChatUIKitDialog(
-              context: context,
-              title: DemoLocalizations.contactRemark.localString(context),
-              hintsText: [
-                DemoLocalizations.contactRemarkDesc.localString(context)
-              ],
-              items: [
-                ChatUIKitDialogItem.inputsConfirm(
-                  label: DemoLocalizations.contactRemarkConfirm
-                      .localString(context),
-                  onInputsTap: (inputs) async {
-                    Navigator.of(context).pop(inputs.first);
-                  },
-                ),
-                ChatUIKitDialogItem.cancel(
-                    label: DemoLocalizations.contactRemarkCancel
-                        .localString(context)),
-              ],
-            );
-
-            if (remark?.isNotEmpty == true) {
-              ChatUIKit.instance
-                  .updateContactRemark(arguments.profile.id, remark!)
-                  .then((value) {
-                ChatUIKitProfile profile =
-                    arguments.profile.copyWith(remark: remark);
-                // 更新数据，并设置到provider中
-                UserDataStore().saveUserData(profile);
-                ChatUIKitProvider.instance.addProfiles([profile]);
-              }).catchError((e) {
-                EasyLoading.showError(
-                    DemoLocalizations.contactRemarkFailed.localString(context));
-              });
-            }
-          },
-          child: ChatUIKitDetailsListViewItem(
+      detailsListViewItemsBuilder: (context, userId, models) {
+        return [
+          ChatUIKitDetailsListViewItemModel(
             title: DemoLocalizations.contactRemark.localString(context),
             trailing: Text(ChatUIKitProvider.instance
                     .getProfile(arguments.profile)
                     .remark ??
                 ''),
+            onTap: () async {
+              String? remark = await showChatUIKitDialog(
+                context: context,
+                title: DemoLocalizations.contactRemark.localString(context),
+                hintsText: [
+                  DemoLocalizations.contactRemarkDesc.localString(context)
+                ],
+                items: [
+                  ChatUIKitDialogItem.inputsConfirm(
+                    label: DemoLocalizations.contactRemarkConfirm
+                        .localString(context),
+                    onInputsTap: (inputs) async {
+                      Navigator.of(context).pop(inputs.first);
+                    },
+                  ),
+                  ChatUIKitDialogItem.cancel(
+                      label: DemoLocalizations.contactRemarkCancel
+                          .localString(context)),
+                ],
+              );
+
+              if (remark?.isNotEmpty == true) {
+                ChatUIKit.instance
+                    .updateContactRemark(arguments.profile.id, remark!)
+                    .then((value) {
+                  ChatUIKitProfile profile =
+                      arguments.profile.copyWith(remark: remark);
+                  // 更新数据，并设置到provider中
+                  UserDataStore().saveUserData(profile);
+                  ChatUIKitProvider.instance.addProfiles([profile]);
+                }).catchError((e) {
+                  EasyLoading.showError(DemoLocalizations.contactRemarkFailed
+                      .localString(context));
+                });
+              }
+            },
           ),
-        );
+          ...() {
+            bool isBlocked = DemoHelper.blockList.contains(userId);
+            List<ChatUIKitDetailsListViewItemModel> list = [];
+            list.add(models.first);
+            list.add(
+              ChatUIKitDetailsListViewItemModel(
+                title: '拉黑',
+                trailing: CupertinoSwitch(
+                  value: isBlocked,
+                  onChanged: (value) async {
+                    await DemoHelper.blockUsers(userId, !isBlocked);
+                    viewObserver.refresh();
+                  },
+                ),
+              ),
+            );
+            list.addAll(models.sublist(1));
+            return list;
+          }(),
+        ];
       },
     );
 

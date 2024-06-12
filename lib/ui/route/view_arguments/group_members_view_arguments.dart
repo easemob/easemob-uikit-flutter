@@ -22,7 +22,7 @@ class GroupMembersViewArguments implements ChatUIKitViewArguments {
 
   final ChatUIKitProfile profile;
   final GroupMemberListViewController? controller;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final void Function(List<ContactItemModel> data)? onSearchTap;
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;

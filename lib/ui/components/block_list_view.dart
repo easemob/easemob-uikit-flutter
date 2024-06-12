@@ -1,23 +1,23 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-
 import 'package:flutter/material.dart';
 
-class ContactListView extends StatefulWidget {
-  const ContactListView({
-    this.controller,
-    this.itemBuilder,
+class BlockListView extends StatefulWidget {
+  const BlockListView({
+    super.key,
+    this.enableSearchBar = true,
+    this.onSearchTap,
     this.beforeWidgets,
     this.afterWidgets,
-    this.onSearchTap,
+    this.itemBuilder,
+    this.onTap,
+    this.onLongPress,
     this.searchHideText,
     this.background,
     this.errorMessage,
     this.reloadMessage,
-    this.enableSearchBar = true,
-    this.onTap,
-    this.onLongPress,
-    super.key,
+    this.controller,
   });
+
   final bool enableSearchBar;
   final void Function(List<ContactItemModel> data)? onSearchTap;
   final List<Widget>? beforeWidgets;
@@ -30,20 +30,21 @@ class ContactListView extends StatefulWidget {
   final Widget? background;
   final String? errorMessage;
   final String? reloadMessage;
-  final ContactListViewController? controller;
+  final BlockListViewController? controller;
 
   @override
-  State<ContactListView> createState() => _ContactListViewState();
+  State<BlockListView> createState() => _BlockListViewState();
 }
 
-class _ContactListViewState extends State<ContactListView> {
+class _BlockListViewState extends State<BlockListView>
+    with ChatUIKitProviderObserver {
   ScrollController scrollController = ScrollController();
-  late final ContactListViewController controller;
+  late final BlockListViewController controller;
 
   @override
   void initState() {
     super.initState();
-    controller = widget.controller ?? ContactListViewController();
+    controller = widget.controller ?? BlockListViewController();
     controller.fetchItemList();
     controller.loadingType.addListener(() {
       setState(() {});

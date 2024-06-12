@@ -23,7 +23,7 @@ class GroupAddMembersViewArguments implements ChatUIKitViewArguments {
   final String groupId;
   final List<ChatUIKitProfile>? inGroupMembers;
   final ContactListViewController? controller;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final void Function(List<ContactItemModel> data)? onSearchTap;
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;

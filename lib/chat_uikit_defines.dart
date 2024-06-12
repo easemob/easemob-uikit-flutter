@@ -62,7 +62,7 @@ typedef ContactListViewShowHandler = List<ContactItemModel> Function(
 typedef ConversationsViewItemLongPressHandler = List<ChatUIKitBottomSheetItem>?
     Function(
   BuildContext context,
-  ConversationItemModel info,
+  ConversationItemModel model,
   List<ChatUIKitBottomSheetItem> defaultActions,
 );
 

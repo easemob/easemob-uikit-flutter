@@ -19,7 +19,6 @@ class MessagesView extends StatefulWidget {
         showMessageItemAvatar = arguments.showMessageItemAvatar,
         showMessageItemNickname = arguments.showMessageItemNickname,
         onItemTap = arguments.onItemTap,
-        onItemLongPress = arguments.onItemLongPress,
         onDoubleTap = arguments.onDoubleTap,
         onAvatarTap = arguments.onAvatarTap,
         onNicknameTap = arguments.onNicknameTap,
@@ -29,7 +28,6 @@ class MessagesView extends StatefulWidget {
         alertItemBuilder = arguments.alertItemBuilder,
         onAvatarLongPress = arguments.onAvatarLongPress,
         morePressActions = arguments.morePressActions,
-        longPressActions = arguments.longPressActions,
         replyBarBuilder = arguments.replyBarBuilder,
         quoteBuilder = arguments.quoteBuilder,
         onErrorBtnTapHandler = arguments.onErrorBtnTapHandler,
@@ -61,7 +59,7 @@ class MessagesView extends StatefulWidget {
     this.showMessageItemAvatar,
     this.showMessageItemNickname,
     this.onItemTap,
-    this.onItemLongPress,
+    this.onItemLongPressHandler,
     this.onDoubleTap,
     this.onAvatarTap,
     this.onAvatarLongPress,
@@ -70,15 +68,13 @@ class MessagesView extends StatefulWidget {
     this.itemBuilder,
     this.alertItemBuilder,
     this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
-    this.longPressActions,
     this.morePressActions,
+    this.onMoreActionsItemsHandler,
     this.replyBarBuilder,
     this.quoteBuilder,
     this.onErrorBtnTapHandler,
     this.bubbleBuilder,
     this.bubbleContentBuilder,
-    this.onMoreActionsItemsHandler,
-    this.onItemLongPressHandler,
     this.forceLeft,
     this.inputBarTextEditingController,
     this.multiSelectBottomBar,
@@ -100,7 +96,7 @@ class MessagesView extends StatefulWidget {
   final MessageListViewController? controller;
 
   /// 自定义AppBar, 如果设置后将会替换默认的AppBar。详细参考 [ChatUIKitAppBar]。
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
 
   /// 是否显示AppBar, 默认为 `true`。 当为 `false` 时将不会显示AppBar。同时也会影响到是否显示标题。
   final bool enableAppBar;
@@ -119,9 +115,6 @@ class MessagesView extends StatefulWidget {
 
   /// 消息点击事件, 如果设置后消息点击事件将直接回调，如果不处理可以返回 `false`。
   final MessageItemTapHandler? onItemTap;
-
-  /// 消息长按事件, 如果设置后消息长按事件将直接回调，返回 `true` 表示处理你需要处理，返回 `false` 则会执行默认的长按事件。
-  final MessageItemTapHandler? onItemLongPress;
 
   /// 消息双击事件,如果设置后消息双击事件将直接回调，如果不处理可以返回 `false`。
   final MessageItemTapHandler? onDoubleTap;
@@ -150,10 +143,7 @@ class MessagesView extends StatefulWidget {
   /// 更多按钮点击事件， 如果设置后将会替换默认的更多按钮点击事件。详细参考 [ChatUIKitBottomSheetItem]。
   final MessagesViewMorePressHandler? onMoreActionsItemsHandler;
 
-  /// 消息长按事件列表，如果设置后将会替换默认的消息长按事件列表。详细参考 [ChatUIKitBottomSheetItem]。
-  final List<ChatUIKitBottomSheetItem>? longPressActions;
-
-  /// 消息长按事件回调， 如果设置后将会替换默认的消息长按事件回调。当长按时会回调 [longPressActions] 中设置的事件，需要返回一个列表用于替换，如果不返回则不会显示长按。
+  /// 消息长按事件回调， 如果设置后将会替换默认的消息长按事件回调。
   final MessagesViewItemLongPressHandler? onItemLongPressHandler;
 
   /// 强制消息靠左，默认为 `false`， 设置后自己发的消息也会在左侧显示。
@@ -373,12 +363,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         return ret;
       },
       onItemLongPress: (context, model) {
-        bool? ret = widget.onItemLongPress?.call(context, model);
-        stopVoice();
-        if (ret != true) {
-          onItemLongPress(model);
-        }
-        return ret;
+        onItemLongPress(model);
+        return true;
       },
       onItemDoubleTap: (context, model) {
         bool? ret = widget.onDoubleTap?.call(context, model);
@@ -463,7 +449,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       list.add(multiSelectBar(theme));
     } else {
       list.add(replyMessageBar(theme));
-      widget.inputBar ?? list.add(inputBar(theme));
+      list.add(widget.inputBar ?? inputBar(theme));
       list.add(
         AnimatedContainer(
           curve: Curves.linearToEaseOut,
@@ -678,10 +664,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         widget.onDoubleTap?.call(context, model);
       },
       onBubbleLongPressed: () {
-        bool? ret = widget.onItemLongPress?.call(context, model);
-        if (ret != true) {
-          onItemLongPress(model);
-        }
+        onItemLongPress(model);
       },
       onBubbleTap: () {
         bool? ret = widget.onItemTap?.call(context, model);
@@ -1351,8 +1334,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
   void onItemLongPress(MessageModel model) async {
     final theme = ChatUIKitTheme.of(context);
     clearAllType();
-    List<ChatUIKitBottomSheetItem>? items = widget.longPressActions;
-    items ??= defaultItemLongPressed(model, theme);
+    List<ChatUIKitBottomSheetItem>? items =
+        defaultItemLongPressed(model, theme);
     if (items.isEmpty) return;
     if (widget.onItemLongPressHandler != null) {
       items = widget.onItemLongPressHandler!.call(
@@ -2163,13 +2146,13 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     controller.attemptSendInputType();
   }
 
-  void forwardMessage(List<Message> message, {bool isMultiSelect = false}) {
+  void forwardMessage(List<Message> messages, {bool isMultiSelect = false}) {
     clearAllType();
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.forwardMessageSelectView,
       ForwardMessageSelectViewArguments(
-        messages: message,
+        messages: messages,
         isMulti: isMultiSelect,
         attributes: widget.attributes,
       ),

@@ -26,7 +26,7 @@ class ReportMessageView extends StatefulWidget {
     this.appBarTrailingActionsBuilder,
     super.key,
   });
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final String messageId;
   final List<String> reportReasons;
   final bool enableAppBar;

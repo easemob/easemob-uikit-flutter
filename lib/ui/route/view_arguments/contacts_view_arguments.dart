@@ -20,13 +20,14 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
     this.viewObserver,
     this.attributes,
     this.appBarTrailingActionsBuilder,
+    this.appBarLeading,
   });
 
   /// 联系人列表控制器，用于控制联系人列表数据，如果不设置将会自动创建。详细参考 [ContactListViewController]。
   final ContactListViewController? controller;
 
   /// 自定义AppBar, 如果设置后将会替换默认的AppBar。详细参考 [ChatUIKitAppBar]。
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
 
   /// 是否显示AppBar, 默认为 `true`。 当为 `false` 时将不会显示AppBar。同时也会影响到是否显示标题。
   final bool enableAppBar;
@@ -70,7 +71,12 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
+
+  /// 自定义AppBar右侧控件。
   final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+
+  /// 自定义AppBar的左侧内容。
+  final Widget? appBarLeading;
 
   ContactsViewArguments copyWith(
       {ContactListViewController? controller,
@@ -87,6 +93,7 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
       String? title,
       ChatUIKitViewObserver? viewObserver,
       String? attributes,
+      Widget? appBarLeading,
       ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
     return ContactsViewArguments(
       controller: controller ?? this.controller,
@@ -105,6 +112,7 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
       attributes: attributes ?? this.attributes,
       appBarTrailingActionsBuilder:
           appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      appBarLeading: appBarLeading ?? this.appBarLeading,
     );
   }
 }

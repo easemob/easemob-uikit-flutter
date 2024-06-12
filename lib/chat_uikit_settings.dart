@@ -27,8 +27,8 @@ class ChatUIKitSettings {
   // 会话列表显示的静音图标
   static ImageProvider? conversationListMuteImage;
 
-  /// 输入状态(暂时只有flutter版本支持)
-  static bool enableInputStatus = false;
+  // 消息输入状态
+  static bool enableTypingIndicator = true;
 
   /// 消息长按菜单
   static List<ChatUIKitActionType> msgItemLongPressActions = [

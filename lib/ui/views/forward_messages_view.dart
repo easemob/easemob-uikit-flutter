@@ -30,7 +30,7 @@ class ForwardMessagesView extends StatefulWidget {
 
   final Message message;
   final bool enableAppBar;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final String? title;
   final String? attributes;
   final String? Function(BuildContext context, Message message)? summaryBuilder;

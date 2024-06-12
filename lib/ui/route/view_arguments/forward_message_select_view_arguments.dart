@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 class ForwardMessageSelectViewArguments implements ChatUIKitViewArguments {
   final List<Message> messages;
   final bool enableAppBar;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final String? title;
   final String? Function(BuildContext context, Message message)? summaryBuilder;
 

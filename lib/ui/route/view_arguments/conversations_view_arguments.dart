@@ -15,10 +15,10 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
     this.searchBarHideText,
     this.listViewBackground,
     this.enableAppBar = true,
-    this.avatarItemBuilder,
     this.appBarMoreActionsBuilder,
     this.enableSearchBar = true,
     this.title,
+    this.appBarLeading,
     this.viewObserver,
     this.attributes,
     this.appBarTrailingActionsBuilder,
@@ -28,7 +28,7 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
   final ConversationListViewController? controller;
 
   /// 自定义AppBar, 如果设置后将会替换默认的AppBar。详细参考 [ChatUIKitAppBar]。
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
 
   /// 点击搜索按钮的回调，点击后会把当前的会话列表数据传递过来。如果不设置默认会跳转到搜索页面。具体参考 [SearchView]。
   final void Function(List<ConversationItemModel> data)? onSearchTap;
@@ -41,9 +41,6 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
 
   /// 会话列表的 `item` 构建器，如果设置后需要显示会话时会直接回调，如果不处理可以返回 `null`。
   final ConversationItemBuilder? listViewItemBuilder;
-
-  /// 会话列表的 `头像` 构建器，如果设置后需要显示会话头像，如果不处理可以返回 `null`。
-  final ConversationItemBuilder? avatarItemBuilder;
 
   /// 点击会话列表的回调，点击后会把当前的会话数据传递过来。具体参考 [ConversationItemModel]。 如果不是设置默认会跳转到消息页面。具体参考 [MessagesView]。
   final void Function(BuildContext context, ConversationItemModel info)? onTap;
@@ -69,11 +66,16 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
   /// 自定义标题。
   final String? title;
 
+  /// 自定义标题栏左侧控件。
+  final Widget? appBarLeading;
+
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   @override
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
+
+  /// 自定义AppBar右侧控件。
   final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   ConversationsViewArguments copyWith(
@@ -83,7 +85,6 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
       List<NeedAlphabeticalWidget>? beforeWidgets,
       List<NeedAlphabeticalWidget>? afterWidgets,
       ChatUIKitListItemBuilder? listViewItemBuilder,
-      ChatUIKitListItemBuilder? avatarItemBuilder,
       void Function(BuildContext context, ConversationItemModel model)? onTap,
       ConversationsViewItemLongPressHandler? onLongPressHandler,
       String? searchBarHideText,
@@ -92,6 +93,7 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
       bool? enableSearchBar,
       AppBarMoreActionsBuilder? appBarMoreActionsBuilder,
       String? title,
+      Widget? appBarLeading,
       ChatUIKitViewObserver? viewObserver,
       String? attributes,
       ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
@@ -111,8 +113,8 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
       appBarMoreActionsBuilder:
           appBarMoreActionsBuilder ?? this.appBarMoreActionsBuilder,
       title: title ?? this.title,
+      appBarLeading: appBarLeading ?? this.appBarLeading,
       viewObserver: viewObserver ?? this.viewObserver,
-      avatarItemBuilder: avatarItemBuilder ?? this.avatarItemBuilder,
       attributes: attributes ?? this.attributes,
       appBarTrailingActionsBuilder:
           appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,

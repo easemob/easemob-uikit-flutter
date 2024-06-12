@@ -42,7 +42,7 @@ class CreateGroupView extends StatefulWidget {
   });
 
   final ContactListViewController? controller;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final void Function(List<ContactItemModel> data)? onSearchTap;
   final CreateGroupInfo? createGroupInfo;
 

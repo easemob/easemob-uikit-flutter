@@ -769,7 +769,7 @@ class MessageListViewController extends ChangeNotifier
 
   void attemptSendInputType() {
     if (profile.type == ChatUIKitProfileType.contact) {
-      if (_typing || ChatUIKitSettings.enableInputStatus == false) {
+      if (_typing || ChatUIKitSettings.enableTypingIndicator == false) {
         return;
       }
       ChatUIKit.instance.sendTyping(userId: profile.id);

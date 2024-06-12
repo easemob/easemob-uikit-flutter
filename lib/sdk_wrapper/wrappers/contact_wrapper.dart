@@ -76,4 +76,20 @@ mixin ContactWrapper on ChatUIKitWrapperBase {
       }
     }
   }
+
+  void onBlockedContactAdded(String userId) {
+    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
+      if (observer is ContactObserver) {
+        observer.onBlockedContactAdded(userId);
+      }
+    }
+  }
+
+  void onBlockedContactDeleted(String userId) {
+    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
+      if (observer is ContactObserver) {
+        observer.onBlockedContactDeleted(userId);
+      }
+    }
+  }
 }

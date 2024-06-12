@@ -32,7 +32,7 @@ class NewRequestDetailsView extends StatefulWidget {
   final ChatUIKitProfile profile;
   final String? btnText;
   final bool isReceivedRequest;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final bool enableAppBar;
   final String? title;
 

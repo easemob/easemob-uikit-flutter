@@ -30,7 +30,7 @@ class ChangeInfoView extends StatefulWidget {
   final String? hint;
   final String? saveButtonTitle;
   final int maxLength;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final Future<String?> Function()? inputTextCallback;
   final bool enableAppBar;
   final String? attributes;

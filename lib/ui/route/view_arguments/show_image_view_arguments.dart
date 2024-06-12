@@ -17,7 +17,7 @@ class ShowImageViewArguments implements ChatUIKitViewArguments {
   final Message message;
   final void Function(BuildContext context, Message message)? onLongPressed;
   final void Function(BuildContext context, Message message)? onTap;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final bool enableAppBar;
   final bool isCombine;
   @override

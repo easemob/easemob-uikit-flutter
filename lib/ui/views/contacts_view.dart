@@ -22,6 +22,7 @@ class ContactsView extends StatefulWidget {
         enableSearchBar = arguments.enableSearchBar,
         viewObserver = arguments.viewObserver,
         appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
+        appBarLeading = arguments.appBarLeading,
         attributes = arguments.attributes;
 
   const ContactsView({
@@ -42,6 +43,7 @@ class ContactsView extends StatefulWidget {
     this.attributes,
     this.viewObserver,
     this.appBarTrailingActionsBuilder,
+    this.appBarLeading,
     super.key,
   });
 
@@ -49,7 +51,7 @@ class ContactsView extends StatefulWidget {
   final ContactListViewController? controller;
 
   /// 自定义AppBar, 如果设置后将会替换默认的AppBar。详细参考 [ChatUIKitAppBar]。
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
 
   /// 是否显示AppBar, 默认为 `true`。 当为 `false` 时将不会显示AppBar。同时也会影响到是否显示标题。
   final bool enableAppBar;
@@ -94,7 +96,11 @@ class ContactsView extends StatefulWidget {
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
 
+  /// 自定义AppBar右侧控件。
   final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+
+  /// 自定义AppBar的左侧内容。
+  final Widget? appBarLeading;
 
   @override
   State<ContactsView> createState() => _ContactsViewState();
@@ -143,14 +149,15 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
                     fontWeight: FontWeight.w900,
                   ),
                   showBackButton: false,
-                  leading: Container(
-                    margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
-                    child: ChatUIKitAvatar.current(
-                      size: 32,
-                      avatarUrl: ChatUIKitProvider
-                          .instance.currentUserProfile?.avatarUrl,
-                    ),
-                  ),
+                  leading: widget.appBarLeading ??
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
+                        child: ChatUIKitAvatar.current(
+                          size: 32,
+                          avatarUrl: ChatUIKitProvider
+                              .instance.currentUserProfile?.avatarUrl,
+                        ),
+                      ),
                   trailingActions: () {
                     List<ChatUIKitAppBarTrailingAction> actions = [
                       ChatUIKitAppBarTrailingAction(

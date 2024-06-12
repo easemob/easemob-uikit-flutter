@@ -7,7 +7,7 @@ import 'package:em_chat_uikit_example/pages/me/about_page.dart';
 import 'package:em_chat_uikit_example/pages/me/settings/general_page.dart';
 import 'package:em_chat_uikit_example/pages/me/settings/language_page.dart';
 import 'package:em_chat_uikit_example/pages/me/settings/translate_page.dart';
-// import 'package:em_chat_uikit_example/custom/chat_route_filter.dart';
+import 'package:em_chat_uikit_example/custom/chat_route_filter.dart';
 import 'package:em_chat_uikit_example/tool/settings_data_store.dart';
 import 'package:em_chat_uikit_example/welcome_page.dart';
 
@@ -18,7 +18,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'pages/me/settings/advanced_page.dart';
 
-const appKey = 'easemob#easeim';
+const appKey = '';
 
 const bool appDebug = false;
 
@@ -77,7 +77,6 @@ class _MyAppState extends State<MyApp> {
         builder: EasyLoading.init(
           builder: (context, child) {
             return ChatUIKitTheme(
-              font: ChatUIKitFont(fontSize: ChatUIKitFontSize.superLarge),
               color: AppSettingsNotification.isLight ? ChatUIKitColor.light() : ChatUIKitColor.dark(),
               child: child!,
             );
@@ -85,31 +84,31 @@ class _MyAppState extends State<MyApp> {
         ),
         home: const WelcomePage(),
         onGenerateRoute: (settings) {
-          // RouteSettings newSettings = ChatRouteFilter.chatRouteSettings(settings);
-          // return ChatUIKitRoute().generateRoute(newSettings) ??
-          return MaterialPageRoute(
-            builder: (context) {
-              if (settings.name == '/home') {
-                return const HomePage();
-              } else if (settings.name == '/login') {
-                return const DebugLoginPage();
-              } else if (settings.name == '/debug_login') {
-                return const DebugLoginPage();
-              } else if (settings.name == '/general_page') {
-                return const GeneralPage();
-              } else if (settings.name == '/language_page') {
-                return const LanguagePage();
-              } else if (settings.name == '/translate_page') {
-                return const TranslatePage();
-              } else if (settings.name == '/advanced_page') {
-                return const AdvancedPage();
-              } else if (settings.name == '/about_page') {
-                return const AboutPage();
-              } else {
-                return const SizedBox();
-              }
-            },
-          );
+          RouteSettings newSettings = ChatRouteFilter.chatRouteSettings(settings);
+          return ChatUIKitRoute().generateRoute(newSettings) ??
+              MaterialPageRoute(
+                builder: (context) {
+                  if (settings.name == '/home') {
+                    return const HomePage();
+                  } else if (settings.name == '/login') {
+                    return const DebugLoginPage();
+                  } else if (settings.name == '/debug_login') {
+                    return const DebugLoginPage();
+                  } else if (settings.name == '/general_page') {
+                    return const GeneralPage();
+                  } else if (settings.name == '/language_page') {
+                    return const LanguagePage();
+                  } else if (settings.name == '/translate_page') {
+                    return const TranslatePage();
+                  } else if (settings.name == '/advanced_page') {
+                    return const AdvancedPage();
+                  } else if (settings.name == '/about_page') {
+                    return const AboutPage();
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+              );
         },
       ),
     );

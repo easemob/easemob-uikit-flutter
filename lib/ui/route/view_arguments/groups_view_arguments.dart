@@ -19,7 +19,7 @@ class GroupsViewArguments implements ChatUIKitViewArguments {
     this.appBarTrailingActionsBuilder,
   });
   final GroupListViewController? controller;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final void Function(List<GroupItemModel> data)? onSearchTap;
   final ChatUIKitGroupItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, GroupItemModel model)? onTap;

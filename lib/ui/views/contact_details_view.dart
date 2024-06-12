@@ -10,7 +10,7 @@ class ContactDetailsView extends StatefulWidget {
         profile = arguments.profile,
         onMessageDidClear = arguments.onMessageDidClear,
         appBar = arguments.appBar,
-        contentWidgetBuilder = arguments.contentWidgetBuilder,
+        detailsListViewItemsBuilder = arguments.detailsListViewItemsBuilder,
         viewObserver = arguments.viewObserver,
         enableAppBar = arguments.enableAppBar,
         onContactDeleted = arguments.onContactDeleted,
@@ -23,10 +23,10 @@ class ContactDetailsView extends StatefulWidget {
     this.onMessageDidClear,
     this.appBar,
     this.attributes,
-    this.contentWidgetBuilder,
     this.viewObserver,
     this.appBarTrailingActionsBuilder,
     this.onContactDeleted,
+    this.detailsListViewItemsBuilder,
     this.enableAppBar = true,
     super.key,
   });
@@ -35,9 +35,11 @@ class ContactDetailsView extends StatefulWidget {
   final ChatUIKitModelActionsBuilder? actionsBuilder;
   final VoidCallback? onMessageDidClear;
   final VoidCallback? onContactDeleted;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final String? attributes;
-  final WidgetBuilder? contentWidgetBuilder;
+  final List<ChatUIKitDetailsListViewItemModel> Function(BuildContext context,
+          String userId, List<ChatUIKitDetailsListViewItemModel> defaultItems)?
+      detailsListViewItemsBuilder;
   final ChatUIKitViewObserver? viewObserver;
   final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
   final bool enableAppBar;
@@ -328,53 +330,75 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
       ],
     );
 
+    List<ChatUIKitDetailsListViewItemModel> models = [];
+
+    models.add(
+      ChatUIKitDetailsListViewItemModel(
+        title:
+            ChatUIKitLocal.contactDetailViewDoNotDisturb.localString(context),
+        trailing: ValueListenableBuilder(
+          valueListenable: isNotDisturb,
+          builder: (context, value, child) {
+            return CupertinoSwitch(
+              value: isNotDisturb.value,
+              activeColor: theme.color.isDark
+                  ? theme.color.primaryColor6
+                  : theme.color.primaryColor5,
+              trackColor: theme.color.isDark
+                  ? theme.color.neutralColor3
+                  : theme.color.neutralColor9,
+              onChanged: (value) async {
+                if (value == true) {
+                  await ChatUIKit.instance.setSilentMode(
+                      conversationId: profile!.id,
+                      type: ConversationType.Chat,
+                      param: ChatSilentModeParam.remindType(
+                          ChatPushRemindType.MENTION_ONLY));
+                } else {
+                  await ChatUIKit.instance.clearSilentMode(
+                      conversationId: profile!.id, type: ConversationType.Chat);
+                }
+                safeSetState(() {
+                  isNotDisturb.value = value;
+                });
+              },
+            );
+          },
+        ),
+      ),
+    );
+
+    models.add(ChatUIKitDetailsListViewItemModel(
+      title:
+          ChatUIKitLocal.contactDetailViewClearChatHistory.localString(context),
+      onTap: clearAllHistory,
+    ));
+
+    models = widget.detailsListViewItemsBuilder
+            ?.call(context, profile!.id, models) ??
+        models;
+
+    List<Widget> list = models.map((e) {
+      if (e.onTap != null) {
+        return InkWell(
+          onTap: e.onTap,
+          child: ChatUIKitDetailsListViewItem(
+            title: e.title,
+            trailing: e.trailing,
+          ),
+        );
+      } else {
+        return ChatUIKitDetailsListViewItem(
+          title: e.title,
+          trailing: e.trailing,
+        );
+      }
+    }).toList();
+
     content = ListView(
       children: [
         content,
-        if (widget.contentWidgetBuilder != null)
-          widget.contentWidgetBuilder!.call(context),
-        ChatUIKitDetailsListViewItem(
-          title:
-              ChatUIKitLocal.contactDetailViewDoNotDisturb.localString(context),
-          trailing: ValueListenableBuilder(
-            valueListenable: isNotDisturb,
-            builder: (context, value, child) {
-              return CupertinoSwitch(
-                value: isNotDisturb.value,
-                activeColor: theme.color.isDark
-                    ? theme.color.primaryColor6
-                    : theme.color.primaryColor5,
-                trackColor: theme.color.isDark
-                    ? theme.color.neutralColor3
-                    : theme.color.neutralColor9,
-                onChanged: (value) async {
-                  if (value == true) {
-                    await ChatUIKit.instance.setSilentMode(
-                        conversationId: profile!.id,
-                        type: ConversationType.Chat,
-                        param: ChatSilentModeParam.remindType(
-                            ChatPushRemindType.MENTION_ONLY));
-                  } else {
-                    await ChatUIKit.instance.clearSilentMode(
-                        conversationId: profile!.id,
-                        type: ConversationType.Chat);
-                  }
-                  safeSetState(() {
-                    isNotDisturb.value = value;
-                  });
-                },
-              );
-            },
-          ),
-        ),
-        InkWell(
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          onTap: clearAllHistory,
-          child: ChatUIKitDetailsListViewItem(
-              title: ChatUIKitLocal.contactDetailViewClearChatHistory
-                  .localString(context)),
-        ),
+        ...list,
       ],
     );
 

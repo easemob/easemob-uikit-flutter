@@ -28,4 +28,16 @@ mixin ChatUIKitContactActions on ChatSDKWrapper {
     }
     return ret;
   }
+
+  @override
+  Future<void> addBlockedContact({required String userId}) async {
+    await super.addBlockedContact(userId: userId);
+    ChatUIKit.instance.onBlockedContactAdded(userId);
+  }
+
+  @override
+  Future<void> deleteBlockedContact({required String userId}) async {
+    await super.deleteBlockedContact(userId: userId);
+    ChatUIKit.instance.onBlockedContactDeleted(userId);
+  }
 }

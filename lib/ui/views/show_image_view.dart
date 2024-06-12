@@ -30,7 +30,7 @@ class ShowImageView extends StatefulWidget {
   final Message message;
   final void Function(BuildContext context, Message message)? onLongPressed;
   final void Function(BuildContext context, Message message)? onTap;
-  final ChatUIKitAppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final bool enableAppBar;
   final String? attributes;
   final bool isCombine;
