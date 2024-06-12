@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ContactDetailsView extends StatefulWidget {
-  ContactDetailsView.arguments(ContactDetailsViewArguments arguments,
-      {super.key})
+  ContactDetailsView.arguments(ContactDetailsViewArguments arguments, {super.key})
       : actionsBuilder = arguments.actionsBuilder,
         profile = arguments.profile,
         onMessageDidClear = arguments.onMessageDidClear,
@@ -37,9 +36,7 @@ class ContactDetailsView extends StatefulWidget {
   final VoidCallback? onContactDeleted;
   final PreferredSizeWidget? appBar;
   final String? attributes;
-  final List<ChatUIKitDetailsListViewItemModel> Function(BuildContext context,
-          String userId, List<ChatUIKitDetailsListViewItemModel> defaultItems)?
-      detailsListViewItemsBuilder;
+  final ChatUIKitDetailItemBuilder? detailsListViewItemsBuilder;
   final ChatUIKitViewObserver? viewObserver;
   final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
   final bool enableAppBar;
@@ -48,8 +45,7 @@ class ContactDetailsView extends StatefulWidget {
   State<ContactDetailsView> createState() => _ContactDetailsViewState();
 }
 
-class _ContactDetailsViewState extends State<ContactDetailsView>
-    with ChatUIKitProviderObserver, ChatUIKitRouteHelper {
+class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitProviderObserver, ChatUIKitRouteHelper {
   ValueNotifier<bool> isNotDisturb = ValueNotifier<bool>(false);
   ChatUIKitProfile? profile;
 
@@ -62,16 +58,14 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
     profile = widget.profile;
 
     ChatUIKitProvider.instance.addObserver(this);
-    isNotDisturb.value =
-        ChatUIKitContext.instance.conversationIsMute(profile!.id);
+    isNotDisturb.value = ChatUIKitContext.instance.conversationIsMute(profile!.id);
     fetchInfo();
   }
 
   void fetchInfo() async {
-    Conversation conversation = await ChatUIKit.instance.createConversation(
-        conversationId: profile!.id, type: ConversationType.Chat);
-    Map<String, ChatSilentModeResult> map = await ChatUIKit.instance
-        .fetchSilentModel(conversations: [conversation]);
+    Conversation conversation =
+        await ChatUIKit.instance.createConversation(conversationId: profile!.id, type: ConversationType.Chat);
+    Map<String, ChatSilentModeResult> map = await ChatUIKit.instance.fetchSilentModel(conversations: [conversation]);
     isNotDisturb.value = map.values.first.remindType != ChatPushRemindType.ALL;
   }
 
@@ -105,9 +99,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: theme.color.isDark
-            ? theme.color.neutralColor1
-            : theme.color.neutralColor98,
+        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
         appBar: !widget.enableAppBar
             ? null
             : widget.appBar ??
@@ -123,15 +115,11 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
                         child: Icon(
                           Icons.more_vert,
                           size: 24,
-                          color: theme.color.isDark
-                              ? theme.color.neutralColor95
-                              : theme.color.neutralColor3,
+                          color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
                         ),
                       )
                     ];
-                    return widget.appBarTrailingActionsBuilder
-                            ?.call(context, actions) ??
-                        actions;
+                    return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
                   }(),
                 ),
         body: _buildContent());
@@ -151,9 +139,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
       style: TextStyle(
         fontSize: theme.font.headlineLarge.fontSize,
         fontWeight: theme.font.headlineLarge.fontWeight,
-        color: theme.color.isDark
-            ? theme.color.neutralColor100
-            : theme.color.neutralColor1,
+        color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
       ),
     );
 
@@ -165,9 +151,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
       style: TextStyle(
         fontSize: theme.font.bodySmall.fontSize,
         fontWeight: theme.font.bodySmall.fontWeight,
-        color: theme.color.isDark
-            ? theme.color.neutralColor5
-            : theme.color.neutralColor7,
+        color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
       ),
     );
 
@@ -186,9 +170,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
           child: Icon(
             Icons.file_copy_sharp,
             size: 16,
-            color: theme.color.isDark
-                ? theme.color.neutralColor5
-                : theme.color.neutralColor7,
+            color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
           ),
         ),
       ],
@@ -246,8 +228,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
       ),
     ];
 
-    List<ChatUIKitModelAction> actions =
-        widget.actionsBuilder?.call(context, defaultActions) ?? defaultActions;
+    List<ChatUIKitModelAction> actions = widget.actionsBuilder?.call(context, defaultActions) ?? defaultActions;
     assert(actions.length <= 5, 'The maximum number of actions is 5');
 
     Widget content = Column(
@@ -264,8 +245,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
           child: LayoutBuilder(builder: (context, constraints) {
             double maxWidth = () {
               if (actions.length > 2) {
-                return (constraints.maxWidth - 24 - actions.length * 8) /
-                    actions.length;
+                return (constraints.maxWidth - 24 - actions.length * 8) / actions.length;
               } else {
                 return 114.0;
               }
@@ -281,9 +261,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: theme.color.isDark
-                          ? theme.color.neutralColor3
-                          : theme.color.neutralColor95,
+                      color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
                     ),
                     constraints: BoxConstraints(minWidth: maxWidth),
                     child: Column(
@@ -294,9 +272,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
                           height: action.iconSize?.height ?? 24,
                           child: Image.asset(
                             action.icon,
-                            color: theme.color.isDark
-                                ? theme.color.primaryColor6
-                                : theme.color.primaryColor5,
+                            color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                             package: action.packageName,
                           ),
                         ),
@@ -308,9 +284,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
                           style: TextStyle(
                             fontSize: theme.font.bodySmall.fontSize,
                             fontWeight: theme.font.bodySmall.fontWeight,
-                            color: theme.color.isDark
-                                ? theme.color.primaryColor6
-                                : theme.color.primaryColor5,
+                            color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -334,29 +308,22 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
 
     models.add(
       ChatUIKitDetailsListViewItemModel(
-        title:
-            ChatUIKitLocal.contactDetailViewDoNotDisturb.localString(context),
+        title: ChatUIKitLocal.contactDetailViewDoNotDisturb.localString(context),
         trailing: ValueListenableBuilder(
           valueListenable: isNotDisturb,
           builder: (context, value, child) {
             return CupertinoSwitch(
               value: isNotDisturb.value,
-              activeColor: theme.color.isDark
-                  ? theme.color.primaryColor6
-                  : theme.color.primaryColor5,
-              trackColor: theme.color.isDark
-                  ? theme.color.neutralColor3
-                  : theme.color.neutralColor9,
+              activeColor: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+              trackColor: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor9,
               onChanged: (value) async {
                 if (value == true) {
                   await ChatUIKit.instance.setSilentMode(
                       conversationId: profile!.id,
                       type: ConversationType.Chat,
-                      param: ChatSilentModeParam.remindType(
-                          ChatPushRemindType.MENTION_ONLY));
+                      param: ChatSilentModeParam.remindType(ChatPushRemindType.MENTION_ONLY));
                 } else {
-                  await ChatUIKit.instance.clearSilentMode(
-                      conversationId: profile!.id, type: ConversationType.Chat);
+                  await ChatUIKit.instance.clearSilentMode(conversationId: profile!.id, type: ConversationType.Chat);
                 }
                 safeSetState(() {
                   isNotDisturb.value = value;
@@ -369,28 +336,37 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
     );
 
     models.add(ChatUIKitDetailsListViewItemModel(
-      title:
-          ChatUIKitLocal.contactDetailViewClearChatHistory.localString(context),
+      title: ChatUIKitLocal.contactDetailViewClearChatHistory.localString(context),
       onTap: clearAllHistory,
     ));
 
-    models = widget.detailsListViewItemsBuilder
-            ?.call(context, profile!.id, models) ??
-        models;
+    models = widget.detailsListViewItemsBuilder?.call(context, profile!.id, models) ?? models;
 
     List<Widget> list = models.map((e) {
-      if (e.onTap != null) {
-        return InkWell(
-          onTap: e.onTap,
-          child: ChatUIKitDetailsListViewItem(
-            title: e.title,
-            trailing: e.trailing,
-          ),
+      if (e.type == ChatUIKitDetailsListViewItemModelType.normal) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: () {
+            if (e.onTap != null) {
+              return InkWell(
+                onTap: e.onTap,
+                child: ChatUIKitDetailsListViewItem(
+                  title: e.title!,
+                  trailing: e.trailing,
+                ),
+              );
+            } else {
+              return ChatUIKitDetailsListViewItem(
+                title: e.title!,
+                trailing: e.trailing,
+              );
+            }
+          }(),
         );
       } else {
-        return ChatUIKitDetailsListViewItem(
-          title: e.title,
-          trailing: e.trailing,
+        return Container(
+          height: 20,
+          color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
         );
       }
     }).toList();
@@ -402,33 +378,23 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
       ],
     );
 
-    content = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: content,
-    );
     return content;
   }
 
   void clearAllHistory() async {
     final ret = await showChatUIKitDialog(
-      title: ChatUIKitLocal.contactDetailViewClearChatHistoryAlertTitle
-          .localString(context),
-      content: ChatUIKitLocal.contactDetailViewClearChatHistoryAlertSubTitle
-          .localString(context),
+      title: ChatUIKitLocal.contactDetailViewClearChatHistoryAlertTitle.localString(context),
+      content: ChatUIKitLocal.contactDetailViewClearChatHistoryAlertSubTitle.localString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal
-              .contactDetailViewClearChatHistoryAlertButtonCancel
-              .localString(context),
+          label: ChatUIKitLocal.contactDetailViewClearChatHistoryAlertButtonCancel.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
-          label: ChatUIKitLocal
-              .contactDetailViewClearChatHistoryAlertButtonConfirm
-              .localString(context),
+          label: ChatUIKitLocal.contactDetailViewClearChatHistoryAlertButtonConfirm.localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },
@@ -474,22 +440,18 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
 
   void deleteContact() async {
     final ret = await showChatUIKitDialog(
-      title:
-          ChatUIKitLocal.contactDetailViewDeleteAlertTitle.localString(context),
-      content: ChatUIKitLocal.contactDetailViewDeleteAlertSubTitle
-          .localString(context),
+      title: ChatUIKitLocal.contactDetailViewDeleteAlertTitle.localString(context),
+      content: ChatUIKitLocal.contactDetailViewDeleteAlertSubTitle.localString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal.contactDetailViewDeleteAlertButtonCancel
-              .localString(context),
+          label: ChatUIKitLocal.contactDetailViewDeleteAlertButtonCancel.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
-          label: ChatUIKitLocal.contactDetailViewDeleteAlertButtonConfirm
-              .localString(context),
+          label: ChatUIKitLocal.contactDetailViewDeleteAlertButtonConfirm.localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },

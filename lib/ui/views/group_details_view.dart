@@ -16,7 +16,7 @@ class GroupDetailsView extends StatefulWidget {
         onMessageDidClear = arguments.onMessageDidClear,
         viewObserver = arguments.viewObserver,
         appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
-        contentWidgetBuilder = arguments.contentWidgetBuilder,
+        detailsListViewItemsBuilder = arguments.detailsListViewItemsBuilder,
         attributes = arguments.attributes;
 
   const GroupDetailsView({
@@ -26,7 +26,7 @@ class GroupDetailsView extends StatefulWidget {
     this.enableAppBar = true,
     this.attributes,
     this.onMessageDidClear,
-    this.contentWidgetBuilder,
+    this.detailsListViewItemsBuilder,
     this.viewObserver,
     this.appBarTrailingActionsBuilder,
     super.key,
@@ -37,7 +37,7 @@ class GroupDetailsView extends StatefulWidget {
   final bool enableAppBar;
   final String? attributes;
   final VoidCallback? onMessageDidClear;
-  final WidgetBuilder? contentWidgetBuilder;
+  final ChatUIKitDetailItemBuilder? detailsListViewItemsBuilder;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
@@ -69,8 +69,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   }
 
   void fetchGroupInfos() {
-    isNotDisturb.value =
-        ChatUIKitContext.instance.conversationIsMute(profile!.id);
+    isNotDisturb.value = ChatUIKitContext.instance.conversationIsMute(profile!.id);
     fetchGroup();
   }
 
@@ -105,8 +104,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   }
 
   @override
-  void onOwnerChangedFromGroup(
-      String groupId, String newOwner, String oldOwner) {
+  void onOwnerChangedFromGroup(String groupId, String newOwner, String oldOwner) {
     if (groupId == profile!.id) {
       fetchGroup();
     }
@@ -120,8 +118,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   }
 
   @override
-  void onGroupEvent(
-      MultiDevicesEvent event, String groupId, List<String>? userIds) {
+  void onGroupEvent(MultiDevicesEvent event, String groupId, List<String>? userIds) {
     if (groupId == profile!.id) {
       if (event == MultiDevicesEvent.GROUP_LEAVE) {
         ChatUIKitRoute.popToGroupsView(
@@ -157,12 +154,10 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
 
   void fetchSilentInfo() async {
     try {
-      Conversation conversation = await ChatUIKit.instance.createConversation(
-          conversationId: profile!.id, type: ConversationType.GroupChat);
-      Map<String, ChatSilentModeResult> map = await ChatUIKit.instance
-          .fetchSilentModel(conversations: [conversation]);
-      isNotDisturb.value =
-          map.values.first.remindType != ChatPushRemindType.ALL;
+      Conversation conversation =
+          await ChatUIKit.instance.createConversation(conversationId: profile!.id, type: ConversationType.GroupChat);
+      Map<String, ChatSilentModeResult> map = await ChatUIKit.instance.fetchSilentModel(conversations: [conversation]);
+      isNotDisturb.value = map.values.first.remindType != ChatPushRemindType.ALL;
     } on ChatError catch (e) {
       chatPrint(e.toString());
     }
@@ -179,9 +174,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     final theme = ChatUIKitTheme.of(context);
     Widget content = Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: theme.color.isDark
-            ? theme.color.neutralColor1
-            : theme.color.neutralColor98,
+        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
         appBar: !widget.enableAppBar
             ? null
             : widget.appBar ??
@@ -197,15 +190,11 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                         child: Icon(
                           Icons.more_vert,
                           size: 24,
-                          color: theme.color.isDark
-                              ? theme.color.neutralColor95
-                              : theme.color.neutralColor3,
+                          color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
                         ),
                       )
                     ];
-                    return widget.appBarTrailingActionsBuilder
-                            ?.call(context, actions) ??
-                        actions;
+                    return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
                   }(),
                 ),
         body: _buildContent());
@@ -225,9 +214,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       style: TextStyle(
         fontSize: theme.font.headlineLarge.fontSize,
         fontWeight: theme.font.headlineLarge.fontWeight,
-        color: theme.color.isDark
-            ? theme.color.neutralColor100
-            : theme.color.neutralColor1,
+        color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
       ),
     );
 
@@ -241,9 +228,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
             style: TextStyle(
               fontSize: theme.font.bodySmall.fontSize,
               fontWeight: theme.font.bodySmall.fontWeight,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor95
-                  : theme.color.neutralColor3,
+              color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
             ),
           )
         : const SizedBox();
@@ -256,9 +241,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       style: TextStyle(
         fontSize: theme.font.bodySmall.fontSize,
         fontWeight: theme.font.bodySmall.fontWeight,
-        color: theme.color.isDark
-            ? theme.color.neutralColor5
-            : theme.color.neutralColor7,
+        color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
       ),
     );
 
@@ -277,9 +260,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
           child: Icon(
             Icons.file_copy_sharp,
             size: 16,
-            color: theme.color.isDark
-                ? theme.color.neutralColor5
-                : theme.color.neutralColor7,
+            color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
           ),
         ),
       ],
@@ -337,8 +318,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       ),
     ];
 
-    List<ChatUIKitModelAction> actions =
-        widget.actionsBuilder?.call(context, defaultList) ?? defaultList;
+    List<ChatUIKitModelAction> actions = widget.actionsBuilder?.call(context, defaultList) ?? defaultList;
     assert(actions.length <= 5, 'The maximum number of actions is 5');
 
     Widget content = Column(
@@ -358,8 +338,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
           child: LayoutBuilder(builder: (context, constraints) {
             double maxWidth = () {
               if (actions.length > 2) {
-                return (constraints.maxWidth - 24 - actions.length * 8) /
-                    actions.length;
+                return (constraints.maxWidth - 24 - actions.length * 8) / actions.length;
               } else {
                 return 114.0;
               }
@@ -375,9 +354,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: theme.color.isDark
-                          ? theme.color.neutralColor3
-                          : theme.color.neutralColor95,
+                      color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
                     ),
                     constraints: BoxConstraints(minWidth: maxWidth),
                     child: Column(
@@ -388,9 +365,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                           height: action.iconSize?.height ?? 24,
                           child: Image.asset(
                             action.icon,
-                            color: theme.color.isDark
-                                ? theme.color.primaryColor6
-                                : theme.color.primaryColor5,
+                            color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                             package: action.packageName,
                           ),
                         ),
@@ -402,9 +377,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                           style: TextStyle(
                             fontSize: theme.font.bodySmall.fontSize,
                             fontWeight: theme.font.bodySmall.fontWeight,
-                            color: theme.color.isDark
-                                ? theme.color.primaryColor6
-                                : theme.color.primaryColor5,
+                            color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -424,218 +397,207 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       ],
     );
 
+    List<ChatUIKitDetailsListViewItemModel> models = [];
+
+    models.add(ChatUIKitDetailsListViewItemModel(
+      title: ChatUIKitLocal.groupDetailViewMember.localString(context),
+      trailing: SizedBox(
+        width: 100,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            () {
+              if (memberCount == 0) {
+                return const SizedBox();
+              } else {
+                return Text(
+                  '$memberCount',
+                  textScaler: TextScaler.noScaling,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
+                    fontSize: theme.font.labelLarge.fontSize,
+                    fontWeight: theme.font.labelLarge.fontWeight,
+                  ),
+                );
+              }
+            }(),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
+              size: 18,
+            )
+          ],
+        ),
+      ),
+      onTap: () {
+        ChatUIKitRoute.pushOrPushNamed(
+          context,
+          ChatUIKitRouteNames.groupMembersView,
+          GroupMembersViewArguments(
+            profile: widget.profile,
+            attributes: widget.attributes,
+          ),
+        );
+      },
+    ));
+
+    models.add(
+      ChatUIKitDetailsListViewItemModel(
+        title: ChatUIKitLocal.groupDetailViewDoNotDisturb.localString(context),
+        trailing: ValueListenableBuilder(
+          valueListenable: isNotDisturb,
+          builder: (context, value, child) {
+            return CupertinoSwitch(
+              value: isNotDisturb.value,
+              activeColor: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+              trackColor: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor9,
+              onChanged: (value) async {
+                if (value == true) {
+                  await ChatUIKit.instance.setSilentMode(
+                      conversationId: profile!.id,
+                      type: ConversationType.GroupChat,
+                      param: ChatSilentModeParam.remindType(ChatPushRemindType.MENTION_ONLY));
+                } else {
+                  await ChatUIKit.instance
+                      .clearSilentMode(conversationId: profile!.id, type: ConversationType.GroupChat);
+                }
+                safeSetState(() {
+                  isNotDisturb.value = value;
+                });
+              },
+            );
+          },
+        ),
+      ),
+    );
+
+    models.add(
+      ChatUIKitDetailsListViewItemModel(
+        title: ChatUIKitLocal.groupDetailViewClearChatHistory.localString(context),
+        onTap: clearAllHistory,
+      ),
+    );
+
+    if (group?.permissionType == GroupPermissionType.Owner) {
+      models.add(ChatUIKitDetailsListViewItemModel.space());
+      models.add(
+        ChatUIKitDetailsListViewItemModel(
+          title: ChatUIKitLocal.groupDetailViewGroupName.localString(context),
+          onTap: changeOwner,
+          trailing: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Text(
+                  group?.name ?? "",
+                  overflow: TextOverflow.ellipsis,
+                  textScaler: TextScaler.noScaling,
+                  maxLines: 1,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
+                    fontSize: theme.font.labelLarge.fontSize,
+                    fontWeight: theme.font.labelLarge.fontWeight,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 2),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
+                size: 18,
+              )
+            ],
+          ),
+        ),
+      );
+      models.add(
+        ChatUIKitDetailsListViewItemModel(
+          title: ChatUIKitLocal.groupDetailViewDescription.localString(context),
+          onTap: changeGroupDesc,
+          trailing: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Text(
+                  group?.description ?? "",
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
+                  maxLines: 1,
+                  textScaler: TextScaler.noScaling,
+                  style: TextStyle(
+                    color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
+                    fontSize: theme.font.labelLarge.fontSize,
+                    fontWeight: theme.font.labelLarge.fontWeight,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 2),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
+                size: 18,
+              )
+            ],
+          ),
+        ),
+      );
+    }
+
+    List<Widget> list = models.map((e) {
+      if (e.type == ChatUIKitDetailsListViewItemModelType.normal) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: () {
+            if (e.onTap != null) {
+              return InkWell(
+                onTap: e.onTap,
+                child: ChatUIKitDetailsListViewItem(
+                  title: e.title!,
+                  trailing: e.trailing,
+                ),
+              );
+            } else {
+              return ChatUIKitDetailsListViewItem(
+                title: e.title!,
+                trailing: e.trailing,
+              );
+            }
+          }(),
+        );
+      } else {
+        return Container(
+          height: 20,
+          color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
+        );
+      }
+    }).toList();
+
     content = ListView(
       children: [
         content,
-        if (widget.contentWidgetBuilder != null)
-          widget.contentWidgetBuilder!.call(context),
-        InkWell(
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          onTap: () {
-            ChatUIKitRoute.pushOrPushNamed(
-              context,
-              ChatUIKitRouteNames.groupMembersView,
-              GroupMembersViewArguments(
-                profile: widget.profile,
-                attributes: widget.attributes,
-              ),
-            );
-          },
-          child: ChatUIKitDetailsListViewItem(
-            title: ChatUIKitLocal.groupDetailViewMember.localString(context),
-            trailing: SizedBox(
-              width: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  () {
-                    if (memberCount == 0) {
-                      return const SizedBox();
-                    } else {
-                      return Text(
-                        '$memberCount',
-                        textScaler: TextScaler.noScaling,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: theme.color.isDark
-                              ? theme.color.neutralColor6
-                              : theme.color.neutralColor5,
-                          fontSize: theme.font.labelLarge.fontSize,
-                          fontWeight: theme.font.labelLarge.fontWeight,
-                        ),
-                      );
-                    }
-                  }(),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor5
-                        : theme.color.neutralColor7,
-                    size: 18,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-        ChatUIKitDetailsListViewItem(
-          title:
-              ChatUIKitLocal.groupDetailViewDoNotDisturb.localString(context),
-          trailing: ValueListenableBuilder(
-            valueListenable: isNotDisturb,
-            builder: (context, value, child) {
-              return CupertinoSwitch(
-                value: isNotDisturb.value,
-                activeColor: theme.color.isDark
-                    ? theme.color.primaryColor6
-                    : theme.color.primaryColor5,
-                trackColor: theme.color.isDark
-                    ? theme.color.neutralColor3
-                    : theme.color.neutralColor9,
-                onChanged: (value) async {
-                  if (value == true) {
-                    await ChatUIKit.instance.setSilentMode(
-                        conversationId: profile!.id,
-                        type: ConversationType.GroupChat,
-                        param: ChatSilentModeParam.remindType(
-                            ChatPushRemindType.MENTION_ONLY));
-                  } else {
-                    await ChatUIKit.instance.clearSilentMode(
-                        conversationId: profile!.id,
-                        type: ConversationType.GroupChat);
-                  }
-                  safeSetState(() {
-                    isNotDisturb.value = value;
-                  });
-                },
-              );
-            },
-          ),
-        ),
-        InkWell(
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          onTap: clearAllHistory,
-          child: ChatUIKitDetailsListViewItem(
-              title: ChatUIKitLocal.groupDetailViewClearChatHistory
-                  .localString(context)),
-        ),
-        if (group?.permissionType == GroupPermissionType.Owner) ...[
-          Container(
-            height: 20,
-            color: theme.color.isDark
-                ? theme.color.neutralColor3
-                : theme.color.neutralColor95,
-          ),
-          InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onTap: () {
-              changeGroupName();
-            },
-            child: ChatUIKitDetailsListViewItem(
-              title:
-                  ChatUIKitLocal.groupDetailViewGroupName.localString(context),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: Text(
-                      group?.name ?? "",
-                      overflow: TextOverflow.ellipsis,
-                      textScaler: TextScaler.noScaling,
-                      maxLines: 1,
-                      textAlign: TextAlign.end,
-                      style: TextStyle(
-                        color: theme.color.isDark
-                            ? theme.color.neutralColor6
-                            : theme.color.neutralColor5,
-                        fontSize: theme.font.labelLarge.fontSize,
-                        fontWeight: theme.font.labelLarge.fontWeight,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 2),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor5
-                        : theme.color.neutralColor7,
-                    size: 18,
-                  )
-                ],
-              ),
-            ),
-          ),
-          InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onTap: () {
-              changeGroupDesc();
-            },
-            child: ChatUIKitDetailsListViewItem(
-              title: ChatUIKitLocal.groupDetailViewDescription
-                  .localString(context),
-              trailing: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: Text(
-                      group?.description ?? "",
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.end,
-                      maxLines: 1,
-                      textScaler: TextScaler.noScaling,
-                      style: TextStyle(
-                        color: theme.color.isDark
-                            ? theme.color.neutralColor6
-                            : theme.color.neutralColor5,
-                        fontSize: theme.font.labelLarge.fontSize,
-                        fontWeight: theme.font.labelLarge.fontWeight,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 2),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor5
-                        : theme.color.neutralColor7,
-                    size: 18,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ]
+        ...list,
       ],
     );
-    content = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: content,
-    );
+
     return content;
   }
 
   void clearAllHistory() async {
     final ret = await showChatUIKitDialog(
-      title:
-          ChatUIKitLocal.groupDetailViewClearChatHistory.localString(context),
+      title: ChatUIKitLocal.groupDetailViewClearChatHistory.localString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal.groupDetailViewClearChatHistoryAlertButtonCancel
-              .localString(context),
+          label: ChatUIKitLocal.groupDetailViewClearChatHistoryAlertButtonCancel.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
-          label: ChatUIKitLocal
-              .contactDetailViewClearChatHistoryAlertButtonConfirm
-              .localString(context),
+          label: ChatUIKitLocal.contactDetailViewClearChatHistoryAlertButtonConfirm.localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },
@@ -657,8 +619,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       list.add(
         ChatUIKitBottomSheetItem.normal(
           actionType: ChatUIKitActionType.transferOwner,
-          label:
-              ChatUIKitLocal.groupDetailViewTransferGroup.localString(context),
+          label: ChatUIKitLocal.groupDetailViewTransferGroup.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
             changeOwner();
@@ -668,8 +629,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       list.add(
         ChatUIKitBottomSheetItem.destructive(
           actionType: ChatUIKitActionType.disbandGroup,
-          label:
-              ChatUIKitLocal.groupDetailViewDisbandGroup.localString(context),
+          label: ChatUIKitLocal.groupDetailViewDisbandGroup.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
             destroyGroup();
@@ -706,22 +666,18 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
 
   void destroyGroup() async {
     final ret = await showChatUIKitDialog(
-      title:
-          ChatUIKitLocal.groupDetailViewDisbandAlertTitle.localString(context),
-      content: ChatUIKitLocal.groupDetailViewDisbandAlertSubTitle
-          .localString(context),
+      title: ChatUIKitLocal.groupDetailViewDisbandAlertTitle.localString(context),
+      content: ChatUIKitLocal.groupDetailViewDisbandAlertSubTitle.localString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal.groupDetailViewDisbandAlertButtonCancel
-              .localString(context),
+          label: ChatUIKitLocal.groupDetailViewDisbandAlertButtonCancel.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
-          label: ChatUIKitLocal.groupDetailViewDisbandAlertButtonConfirm
-              .localString(context),
+          label: ChatUIKitLocal.groupDetailViewDisbandAlertButtonConfirm.localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },
@@ -741,20 +697,17 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   void leaveGroup() async {
     final ret = await showChatUIKitDialog(
       title: ChatUIKitLocal.groupDetailViewLeaveAlertTitle.localString(context),
-      content:
-          ChatUIKitLocal.groupDetailViewLeaveAlertSubTitle.localString(context),
+      content: ChatUIKitLocal.groupDetailViewLeaveAlertSubTitle.localString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal.groupDetailViewLeaveAlertButtonCancel
-              .localString(context),
+          label: ChatUIKitLocal.groupDetailViewLeaveAlertButtonCancel.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
-          label: ChatUIKitLocal.groupDetailViewLeaveAlertButtonConfirm
-              .localString(context),
+          label: ChatUIKitLocal.groupDetailViewLeaveAlertButtonConfirm.localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },
@@ -803,9 +756,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       ),
     ).then((value) {
       if (value is String) {
-        ChatUIKit.instance
-            .changeGroupName(groupId: group!.groupId, name: value)
-            .then((_) {
+        ChatUIKit.instance.changeGroupName(groupId: group!.groupId, name: value).then((_) {
           fetchGroup();
         }).catchError((e) {});
       }
@@ -829,9 +780,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       ),
     ).then((value) {
       if (value is String) {
-        ChatUIKit.instance
-            .changeGroupDescription(groupId: group!.groupId, desc: value)
-            .then((_) {
+        ChatUIKit.instance.changeGroupDescription(groupId: group!.groupId, desc: value).then((_) {
           fetchGroup();
         }).catchError((e) {
           chatPrint(e.toString());

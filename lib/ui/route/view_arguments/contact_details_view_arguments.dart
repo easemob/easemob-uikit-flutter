@@ -20,9 +20,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
   final ChatUIKitModelActionsBuilder? actionsBuilder;
   final VoidCallback? onMessageDidClear;
   final PreferredSizeWidget? appBar;
-  final List<ChatUIKitDetailsListViewItemModel> Function(BuildContext context,
-          String userId, List<ChatUIKitDetailsListViewItemModel> defaultItems)?
-      detailsListViewItemsBuilder;
+  final ChatUIKitDetailItemBuilder? detailsListViewItemsBuilder;
   final VoidCallback? onContactDeleted;
   @override
   String? attributes;
@@ -39,11 +37,7 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
     ChatUIKitViewObserver? viewObserver,
     VoidCallback? onContactDeleted,
     String? attributes,
-    List<ChatUIKitDetailsListViewItemModel> Function(
-            BuildContext context,
-            String userId,
-            List<ChatUIKitDetailsListViewItemModel> defaultItems)?
-        detailsListViewItemsBuilder,
+    ChatUIKitDetailItemBuilder? detailsListViewItemsBuilder,
     ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder,
     bool? enableAppBar,
   }) {
@@ -54,10 +48,8 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
       appBar: appBar ?? this.appBar,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
-      detailsListViewItemsBuilder:
-          detailsListViewItemsBuilder ?? this.detailsListViewItemsBuilder,
-      appBarTrailingActionsBuilder:
-          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      detailsListViewItemsBuilder: detailsListViewItemsBuilder ?? this.detailsListViewItemsBuilder,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       onContactDeleted: onContactDeleted ?? this.onContactDeleted,
     );

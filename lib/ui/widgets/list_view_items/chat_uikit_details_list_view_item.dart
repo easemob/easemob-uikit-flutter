@@ -1,21 +1,32 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
+enum ChatUIKitDetailsListViewItemModelType {
+  normal,
+  space,
+}
+
 class ChatUIKitDetailsListViewItemModel {
   ChatUIKitDetailsListViewItemModel({
     required this.title,
     this.trailing,
     this.onTap,
-  });
+  }) : type = ChatUIKitDetailsListViewItemModelType.normal;
 
-  final String title;
+  ChatUIKitDetailsListViewItemModel.space()
+      : type = ChatUIKitDetailsListViewItemModelType.space,
+        title = null,
+        trailing = null,
+        onTap = null;
+
+  final String? title;
   final Widget? trailing;
   final VoidCallback? onTap;
+  final ChatUIKitDetailsListViewItemModelType type;
 }
 
 class ChatUIKitDetailsListViewItem extends StatelessWidget {
-  const ChatUIKitDetailsListViewItem(
-      {required this.title, this.trailing, super.key});
+  const ChatUIKitDetailsListViewItem({required this.title, this.trailing, super.key});
   final String title;
   final Widget? trailing;
 
@@ -33,9 +44,7 @@ class ChatUIKitDetailsListViewItem extends StatelessWidget {
           style: TextStyle(
             fontWeight: theme.font.headlineSmall.fontWeight,
             fontSize: theme.font.headlineSmall.fontSize,
-            color: theme.color.isDark
-                ? theme.color.neutralColor100
-                : theme.color.neutralColor1,
+            color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
           ),
         ),
         const SizedBox(width: 16),
@@ -59,9 +68,7 @@ class ChatUIKitDetailsListViewItem extends StatelessWidget {
           child: Divider(
             height: borderHeight,
             thickness: borderHeight,
-            color: theme.color.isDark
-                ? theme.color.neutralColor2
-                : theme.color.neutralColor9,
+            color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9,
           ),
         )
       ],

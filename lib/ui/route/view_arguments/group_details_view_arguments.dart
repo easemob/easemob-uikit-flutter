@@ -9,7 +9,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
     this.enableAppBar = true,
     this.onMessageDidClear,
     this.viewObserver,
-    this.contentWidgetBuilder,
+    this.detailsListViewItemsBuilder,
     this.attributes,
     this.appBarTrailingActionsBuilder,
   });
@@ -18,7 +18,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
   final PreferredSizeWidget? appBar;
   final bool enableAppBar;
   final VoidCallback? onMessageDidClear;
-  final WidgetBuilder? contentWidgetBuilder;
+  final ChatUIKitDetailItemBuilder? detailsListViewItemsBuilder;
 
   @override
   String? attributes;
@@ -30,7 +30,7 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
       ChatUIKitModelActionsBuilder? actionsBuilder,
       bool? enableAppBar,
       ChatUIKitAppBar? appBar,
-      WidgetBuilder? contentWidgetBuilder,
+      ChatUIKitDetailItemBuilder? detailsListViewItemsBuilder,
       ChatUIKitViewObserver? viewObserver,
       VoidCallback? onMessageDidClear,
       String? attributes,
@@ -42,10 +42,9 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
       appBar: appBar ?? this.appBar,
       onMessageDidClear: onMessageDidClear ?? this.onMessageDidClear,
       viewObserver: viewObserver ?? this.viewObserver,
-      contentWidgetBuilder: contentWidgetBuilder ?? this.contentWidgetBuilder,
+      detailsListViewItemsBuilder: detailsListViewItemsBuilder ?? this.detailsListViewItemsBuilder,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder:
-          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }
