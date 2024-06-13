@@ -1,8 +1,14 @@
+## 2.0.2
+
+- 添加黑名单列表组件 blockListView;
+- 修改联系人详情，群组详情页自定义内容实现；
+- 移除消息中长按listItem的回调，统一使用 `onItemLongPressHandler` 修改和添加消息长按事件；
+
 ## 2.0.1
 
 ### fix
 
-- add broken image when thumbnail not found.
+- 添加消息图片过期或者下载失败时的占位图
 
 ## 2.0.0
 
