@@ -340,7 +340,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
       onTap: clearAllHistory,
     ));
 
-    models = widget.detailsListViewItemsBuilder?.call(context, profile!.id, models) ?? models;
+    models = widget.detailsListViewItemsBuilder?.call(context, profile, models) ?? models;
 
     List<Widget> list = models.map((e) {
       if (e.type == ChatUIKitDetailsListViewItemModelType.normal) {

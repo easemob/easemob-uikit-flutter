@@ -546,6 +546,8 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       );
     }
 
+    models = widget.detailsListViewItemsBuilder?.call(context, profile, models) ?? models;
+
     List<Widget> list = models.map((e) {
       if (e.type == ChatUIKitDetailsListViewItemModelType.normal) {
         return Padding(

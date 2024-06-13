@@ -84,6 +84,6 @@ typedef ChatUIKitAppBarTrailingActionsBuilder = List<ChatUIKitAppBarTrailingActi
 
 typedef ChatUIKitDetailItemBuilder = List<ChatUIKitDetailsListViewItemModel> Function(
   BuildContext context,
-  String userId,
+  ChatUIKitProfile? profile,
   List<ChatUIKitDetailsListViewItemModel> defaultItems,
 );
