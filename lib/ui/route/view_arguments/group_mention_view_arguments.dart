@@ -5,7 +5,7 @@ class GroupMentionViewArguments implements ChatUIKitViewArguments {
   GroupMentionViewArguments({
     required this.groupId,
     this.controller,
-    this.appBar,
+    this.appBarModel,
     this.onSearchTap,
     this.listViewItemBuilder,
     this.onTap,
@@ -21,13 +21,12 @@ class GroupMentionViewArguments implements ChatUIKitViewArguments {
 
   final String groupId;
   final GroupMemberListViewController? controller;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
   final void Function(List<ContactItemModel> data)? onSearchTap;
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
-  final void Function(BuildContext context, ContactItemModel model)?
-      onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final bool enableAppBar;
@@ -36,11 +35,11 @@ class GroupMentionViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+  final ChatUIKitAppBarActionsBuilder? appBarTrailingActionsBuilder;
   GroupMentionViewArguments copyWith(
       {String? groupId,
       GroupMemberListViewController? controller,
-      ChatUIKitAppBar? appBar,
+      ChatUIKitAppBarModel? appBarModel,
       void Function(List<ContactItemModel> data)? onSearchTap,
       ChatUIKitContactItemBuilder? listViewItemBuilder,
       void Function(BuildContext context, ContactItemModel model)? onTap,
@@ -51,11 +50,11 @@ class GroupMentionViewArguments implements ChatUIKitViewArguments {
       String? title,
       ChatUIKitViewObserver? viewObserver,
       String? attributes,
-      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
+      ChatUIKitAppBarActionsBuilder? appBarTrailingActionsBuilder}) {
     return GroupMentionViewArguments(
       groupId: groupId ?? this.groupId,
       controller: controller ?? this.controller,
-      appBar: appBar ?? this.appBar,
+      appBarModel: appBarModel ?? this.appBarModel,
       onSearchTap: onSearchTap ?? this.onSearchTap,
       listViewItemBuilder: listViewItemBuilder ?? this.listViewItemBuilder,
       onTap: onTap ?? this.onTap,
@@ -66,8 +65,7 @@ class GroupMentionViewArguments implements ChatUIKitViewArguments {
       title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder:
-          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

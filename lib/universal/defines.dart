@@ -44,6 +44,7 @@ const String voiceHasReadKey = 'voiceHasRead';
 const String hasTranslatedKey = 'hasTranslatedKey';
 
 enum ChatUIKitActionType {
+  avatar,
   reaction,
   copy, // only text message
   reply,

@@ -9,7 +9,7 @@ class CreateGroupViewArguments implements ChatUIKitViewArguments {
     this.listViewBackground,
     this.onItemTap,
     this.onItemLongPress,
-    this.appBar,
+    this.appBarModel,
     this.controller,
     this.enableAppBar = true,
     this.createGroupHandler,
@@ -17,11 +17,10 @@ class CreateGroupViewArguments implements ChatUIKitViewArguments {
     this.title,
     this.viewObserver,
     this.attributes,
-    this.appBarTrailingActionsBuilder,
   });
 
   final ContactListViewController? controller;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
   final void Function(List<ContactItemModel> data)? onSearchTap;
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
@@ -37,11 +36,10 @@ class CreateGroupViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   CreateGroupViewArguments copyWith({
     ContactListViewController? controller,
-    ChatUIKitAppBar? appBar,
+    ChatUIKitAppBarModel? appBarModel,
     void Function(List<ContactItemModel> data)? onSearchTap,
     ChatUIKitContactItemBuilder? listViewItemBuilder,
     void Function(ContactItemModel model)? onItemTap,
@@ -55,24 +53,22 @@ class CreateGroupViewArguments implements ChatUIKitViewArguments {
     String? title,
     ChatUIKitViewObserver? viewObserver,
     String? attributes,
-    ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder,
   }) {
     return CreateGroupViewArguments(
-        controller: controller ?? this.controller,
-        appBar: appBar ?? this.appBar,
-        onSearchTap: onSearchTap ?? this.onSearchTap,
-        listViewItemBuilder: listViewItemBuilder ?? this.listViewItemBuilder,
-        onItemTap: onItemTap ?? this.onItemTap,
-        onItemLongPress: onItemLongPress ?? this.onItemLongPress,
-        searchBarHideText: searchBarHideText ?? this.searchBarHideText,
-        listViewBackground: listViewBackground ?? this.listViewBackground,
-        enableAppBar: enableAppBar ?? this.enableAppBar,
-        createGroupHandler: createGroupHandler ?? this.createGroupHandler,
-        createGroupInfo: createGroupInfo ?? this.createGroupInfo,
-        title: title ?? this.title,
-        viewObserver: viewObserver ?? this.viewObserver,
-        attributes: attributes ?? this.attributes,
-        appBarTrailingActionsBuilder:
-            appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder);
+      controller: controller ?? this.controller,
+      appBarModel: appBarModel ?? this.appBarModel,
+      onSearchTap: onSearchTap ?? this.onSearchTap,
+      listViewItemBuilder: listViewItemBuilder ?? this.listViewItemBuilder,
+      onItemTap: onItemTap ?? this.onItemTap,
+      onItemLongPress: onItemLongPress ?? this.onItemLongPress,
+      searchBarHideText: searchBarHideText ?? this.searchBarHideText,
+      listViewBackground: listViewBackground ?? this.listViewBackground,
+      enableAppBar: enableAppBar ?? this.enableAppBar,
+      createGroupHandler: createGroupHandler ?? this.createGroupHandler,
+      createGroupInfo: createGroupInfo ?? this.createGroupInfo,
+      title: title ?? this.title,
+      viewObserver: viewObserver ?? this.viewObserver,
+      attributes: attributes ?? this.attributes,
+    );
   }
 }

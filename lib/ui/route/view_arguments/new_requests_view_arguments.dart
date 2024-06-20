@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 class NewRequestsViewArguments implements ChatUIKitViewArguments {
   NewRequestsViewArguments({
     this.controller,
-    this.appBar,
+    this.appBarModel,
     this.onSearchTap,
     this.listViewItemBuilder,
     this.onTap,
@@ -13,49 +13,43 @@ class NewRequestsViewArguments implements ChatUIKitViewArguments {
     this.listViewBackground,
     this.loadErrorMessage,
     this.enableAppBar = true,
-    this.title,
     this.viewObserver,
     this.attributes,
-    this.appBarTrailingActionsBuilder,
   });
 
   final NewRequestListViewController? controller;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
   final void Function(List<NewRequestItemModel> data)? onSearchTap;
   final ChatUIKitNewRequestItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, NewRequestItemModel model)? onTap;
-  final void Function(BuildContext context, NewRequestItemModel model)?
-      onLongPress;
+  final void Function(BuildContext context, NewRequestItemModel model)? onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final String? loadErrorMessage;
   final bool enableAppBar;
-  final String? title;
+
   @override
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
-  NewRequestsViewArguments copyWith(
-      {NewRequestListViewController? controller,
-      ChatUIKitAppBar? appBar,
-      void Function(List<NewRequestItemModel> data)? onSearchTap,
-      ChatUIKitNewRequestItemBuilder? listViewItemBuilder,
-      void Function(BuildContext context, NewRequestItemModel model)? onTap,
-      void Function(BuildContext context, NewRequestItemModel model)?
-          onLongPress,
-      String? searchBarHideText,
-      Widget? listViewBackground,
-      String? loadErrorMessage,
-      bool? enableAppBar,
-      String? title,
-      ChatUIKitViewObserver? viewObserver,
-      String? attributes,
-      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
+  NewRequestsViewArguments copyWith({
+    NewRequestListViewController? controller,
+    ChatUIKitAppBarModel? appBarModel,
+    void Function(List<NewRequestItemModel> data)? onSearchTap,
+    ChatUIKitNewRequestItemBuilder? listViewItemBuilder,
+    void Function(BuildContext context, NewRequestItemModel model)? onTap,
+    void Function(BuildContext context, NewRequestItemModel model)? onLongPress,
+    String? searchBarHideText,
+    Widget? listViewBackground,
+    String? loadErrorMessage,
+    bool? enableAppBar,
+    ChatUIKitViewObserver? viewObserver,
+    String? attributes,
+  }) {
     return NewRequestsViewArguments(
       controller: controller ?? this.controller,
-      appBar: appBar ?? this.appBar,
+      appBarModel: appBarModel ?? this.appBarModel,
       onSearchTap: onSearchTap ?? this.onSearchTap,
       listViewItemBuilder: listViewItemBuilder ?? this.listViewItemBuilder,
       onTap: onTap ?? this.onTap,
@@ -64,11 +58,8 @@ class NewRequestsViewArguments implements ChatUIKitViewArguments {
       listViewBackground: listViewBackground ?? this.listViewBackground,
       loadErrorMessage: loadErrorMessage ?? this.loadErrorMessage,
       enableAppBar: enableAppBar ?? this.enableAppBar,
-      title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder:
-          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

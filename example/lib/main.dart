@@ -18,7 +18,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'pages/me/settings/advanced_page.dart';
 
-const appKey = '';
+const appKey = 'easemob#easeim';
 
 const bool appDebug = false;
 

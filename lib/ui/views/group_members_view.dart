@@ -11,12 +11,10 @@ class GroupMembersView extends StatefulWidget {
         listViewBackground = arguments.listViewBackground,
         onTap = arguments.onTap,
         onLongPress = arguments.onLongPress,
-        appBar = arguments.appBar,
+        appBarModel = arguments.appBarModel,
         controller = arguments.controller,
         loadErrorMessage = arguments.loadErrorMessage,
         enableAppBar = arguments.enableAppBar,
-        title = arguments.title,
-        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes,
         viewObserver = arguments.viewObserver,
         super(key: key);
@@ -29,54 +27,50 @@ class GroupMembersView extends StatefulWidget {
     this.listViewBackground,
     this.onTap,
     this.onLongPress,
-    this.appBar,
+    this.appBarModel,
     this.controller,
     this.loadErrorMessage,
     this.enableAppBar = true,
-    this.title,
     this.attributes,
     this.viewObserver,
-    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
   final ChatUIKitProfile profile;
 
   final GroupMemberListViewController? controller;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
   final void Function(List<ContactItemModel> data)? onSearchTap;
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
-  final void Function(BuildContext context, ContactItemModel model)?
-      onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final String? loadErrorMessage;
   final bool enableAppBar;
-  final String? title;
+
   final String? attributes;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+
   @override
   State<GroupMembersView> createState() => _GroupMembersViewState();
 }
 
-class _GroupMembersViewState extends State<GroupMembersView>
-    with GroupObserver {
+class _GroupMembersViewState extends State<GroupMembersView> with GroupObserver {
   late final GroupMemberListViewController controller;
   List<ContactItemModel>? addedBuffers;
   List<ContactItemModel>? deleteBuffer;
   ValueNotifier<int> memberCount = ValueNotifier<int>(0);
+  ChatUIKitAppBarModel? appBarModel;
   Group? group;
   @override
   void initState() {
     super.initState();
     ChatUIKit.instance.addObserver(this);
-    controller = widget.controller ??
-        GroupMemberListViewController(groupId: widget.profile.id);
+    controller = widget.controller ?? GroupMemberListViewController(groupId: widget.profile.id);
     widget.viewObserver?.addListener(() {
       setState(() {});
     });
@@ -103,101 +97,98 @@ class _GroupMembersViewState extends State<GroupMembersView>
   void fetchGroup() async {
     try {
       group = await ChatUIKit.instance.getGroup(groupId: widget.profile.id);
-      group ??=
-          await ChatUIKit.instance.fetchGroupInfo(groupId: widget.profile.id);
+      group ??= await ChatUIKit.instance.fetchGroupInfo(groupId: widget.profile.id);
       memberCount.value = group?.memberCount ?? 0;
       setState(() {});
       // ignore: empty_catches
     } catch (e) {}
   }
 
+  void updateAppBarModel(ChatUIKitTheme theme) {
+    appBarModel = ChatUIKitAppBarModel(
+      title: widget.appBarModel?.title,
+      centerWidget: widget.appBarModel?.centerWidget ??
+          ValueListenableBuilder(
+            valueListenable: memberCount,
+            builder: (context, value, child) {
+              if (memberCount.value == 0) {
+                return Text(
+                  widget.appBarModel?.title ?? ChatUIKitLocal.groupMembersViewTitle.localString(context),
+                  textScaler: TextScaler.noScaling,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                    fontWeight: theme.font.titleMedium.fontWeight,
+                    fontSize: theme.font.titleMedium.fontSize,
+                  ),
+                );
+              } else {
+                return Text(
+                  '${ChatUIKitLocal.groupMembersViewTitle.localString(context)}(${memberCount.value})',
+                  textScaler: TextScaler.noScaling,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                    fontWeight: theme.font.titleMedium.fontWeight,
+                    fontSize: theme.font.titleMedium.fontSize,
+                  ),
+                );
+              }
+            },
+          ),
+      titleTextStyle: widget.appBarModel?.titleTextStyle,
+      subtitle: widget.appBarModel?.subtitle,
+      subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
+      leadingActions:
+          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions: () {
+        List<ChatUIKitAppBarAction> actions = [];
+
+        if (group?.permissionType == GroupPermissionType.Owner) {
+          actions.add(
+            ChatUIKitAppBarAction(
+              actionType: ChatUIKitActionType.add,
+              onTap: (context) {
+                pushToAddMember();
+              },
+              child: Icon(
+                Icons.person_add_alt_1_outlined,
+                color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
+                size: 24,
+              ),
+            ),
+          );
+          actions.add(ChatUIKitAppBarAction(
+            actionType: ChatUIKitActionType.remove,
+            onTap: (context) {
+              pushToRemoveMember();
+            },
+            child: Icon(
+              Icons.person_remove_alt_1_outlined,
+              color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
+              size: 24,
+            ),
+          ));
+          actions = widget.appBarModel?.trailingActionsBuilder?.call(context, actions) ?? actions;
+        }
+        return actions;
+      }(),
+      showBackButton: widget.appBarModel?.showBackButton ?? true,
+      onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
+      centerTitle: widget.appBarModel?.centerTitle ?? false,
+      systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
+      backgroundColor: widget.appBarModel?.backgroundColor,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
+    updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
-      appBar: !widget.enableAppBar
-          ? null
-          : widget.appBar ??
-              ChatUIKitAppBar(
-                showBackButton: true,
-                trailingActions: () {
-                  List<ChatUIKitAppBarTrailingAction> actions = [];
-
-                  if (group?.permissionType == GroupPermissionType.Owner) {
-                    actions.add(
-                      ChatUIKitAppBarTrailingAction(
-                        actionType: ChatUIKitActionType.add,
-                        onTap: (context) {
-                          pushToAddMember();
-                        },
-                        child: Icon(
-                          Icons.person_add_alt_1_outlined,
-                          color: theme.color.isDark
-                              ? theme.color.neutralColor9
-                              : theme.color.neutralColor3,
-                          size: 24,
-                        ),
-                      ),
-                    );
-                    actions.add(ChatUIKitAppBarTrailingAction(
-                      actionType: ChatUIKitActionType.remove,
-                      onTap: (context) {
-                        pushToRemoveMember();
-                      },
-                      child: Icon(
-                        Icons.person_remove_alt_1_outlined,
-                        color: theme.color.isDark
-                            ? theme.color.neutralColor9
-                            : theme.color.neutralColor3,
-                        size: 24,
-                      ),
-                    ));
-                    actions = widget.appBarTrailingActionsBuilder
-                            ?.call(context, actions) ??
-                        actions;
-                  }
-                  return actions;
-                }(),
-                centerTitle: false,
-                titleWidget: ValueListenableBuilder(
-                  valueListenable: memberCount,
-                  builder: (context, value, child) {
-                    if (memberCount.value == 0) {
-                      return Text(
-                        widget.title ??
-                            ChatUIKitLocal.groupMembersViewTitle
-                                .localString(context),
-                        textScaler: TextScaler.noScaling,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: theme.color.isDark
-                              ? theme.color.neutralColor98
-                              : theme.color.neutralColor1,
-                          fontWeight: theme.font.titleMedium.fontWeight,
-                          fontSize: theme.font.titleMedium.fontSize,
-                        ),
-                      );
-                    } else {
-                      return Text(
-                        '${ChatUIKitLocal.groupMembersViewTitle.localString(context)}(${memberCount.value})',
-                        textScaler: TextScaler.noScaling,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: theme.color.isDark
-                              ? theme.color.neutralColor98
-                              : theme.color.neutralColor1,
-                          fontWeight: theme.font.titleMedium.fontWeight,
-                          fontSize: theme.font.titleMedium.fontSize,
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: SafeArea(
         child: GroupMemberListView(
           groupId: widget.profile.id,
@@ -228,9 +219,7 @@ class _GroupMembersViewState extends State<GroupMembersView>
           onTap: pushToAddMember,
           child: Icon(
             Icons.person_add_alt_1_outlined,
-            color: theme.color.isDark
-                ? theme.color.neutralColor9
-                : theme.color.neutralColor3,
+            color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
             size: 24,
           ),
         ),
@@ -240,9 +229,7 @@ class _GroupMembersViewState extends State<GroupMembersView>
           onTap: pushToRemoveMember,
           child: Icon(
             Icons.person_remove_alt_1_outlined,
-            color: theme.color.isDark
-                ? theme.color.neutralColor9
-                : theme.color.neutralColor3,
+            color: theme.color.isDark ? theme.color.neutralColor9 : theme.color.neutralColor3,
             size: 24,
           ),
         )
@@ -364,8 +351,7 @@ class _GroupMembersViewState extends State<GroupMembersView>
 
         for (var userId in userIds) {
           controller.list.removeWhere((element) {
-            return (element is ContactItemModel &&
-                element.profile.id == userId);
+            return (element is ContactItemModel && element.profile.id == userId);
           });
         }
         controller.refresh();

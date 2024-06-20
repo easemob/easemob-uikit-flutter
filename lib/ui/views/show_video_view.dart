@@ -6,11 +6,10 @@ class ShowVideoView extends StatefulWidget {
   ShowVideoView.arguments(ShowVideoViewArguments arguments, {super.key})
       : message = arguments.message,
         onLongPressed = arguments.onLongPressed,
-        appBar = arguments.appBar,
+        appBarModel = arguments.appBarModel,
         enableAppBar = arguments.enableAppBar,
         playIcon = arguments.playIcon,
         viewObserver = arguments.viewObserver,
-        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         isCombine = arguments.isCombine,
         attributes = arguments.attributes;
 
@@ -18,11 +17,10 @@ class ShowVideoView extends StatefulWidget {
     required this.message,
     this.onLongPressed,
     this.playIcon,
-    this.appBar,
+    this.appBarModel,
     this.enableAppBar = true,
     this.attributes,
     this.viewObserver,
-    this.appBarTrailingActionsBuilder,
     this.isCombine = false,
     super.key,
   });
@@ -30,20 +28,20 @@ class ShowVideoView extends StatefulWidget {
   final Message message;
   final void Function(BuildContext context, Message message)? onLongPressed;
   final Widget? playIcon;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
   final bool enableAppBar;
   final String? attributes;
   final bool isCombine;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<ShowVideoView> createState() => _ShowVideoViewState();
 }
 
 class _ShowVideoViewState extends State<ShowVideoView> {
+  ChatUIKitAppBarModel? appBarModel;
   @override
   void initState() {
     super.initState();
@@ -58,8 +56,29 @@ class _ShowVideoViewState extends State<ShowVideoView> {
     super.dispose();
   }
 
+  void updateAppBarModel(ChatUIKitTheme theme) {
+    appBarModel = ChatUIKitAppBarModel(
+      title: widget.appBarModel?.title,
+      centerWidget: widget.appBarModel?.centerWidget,
+      titleTextStyle: widget.appBarModel?.titleTextStyle,
+      subtitle: widget.appBarModel?.subtitle,
+      subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
+      leadingActions:
+          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions:
+          widget.appBarModel?.trailingActions ?? widget.appBarModel?.trailingActionsBuilder?.call(context, null),
+      showBackButton: widget.appBarModel?.showBackButton ?? true,
+      onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
+      centerTitle: widget.appBarModel?.centerTitle ?? false,
+      systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
+      backgroundColor: widget.appBarModel?.backgroundColor ?? Colors.transparent,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = ChatUIKitTheme.of(context);
+    updateAppBarModel(theme);
     Widget content = ChatUIKitShowVideoWidget(
       message: widget.message,
       onLongPressed: widget.onLongPressed,
@@ -70,14 +89,7 @@ class _ShowVideoViewState extends State<ShowVideoView> {
     content = Scaffold(
       backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
-      appBar: !widget.enableAppBar
-          ? null
-          : widget.appBar ??
-              ChatUIKitAppBar(
-                backgroundColor: Colors.black,
-                trailingActions:
-                    widget.appBarTrailingActionsBuilder?.call(context, null),
-              ),
+      appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: content,
     );
 

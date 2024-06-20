@@ -21,12 +21,10 @@ class ChatUIKitMessageThreadWidget extends StatefulWidget {
   final Color? backgroundColor;
   final bool enableMessageCount;
   @override
-  State<ChatUIKitMessageThreadWidget> createState() =>
-      _ChatUIKitMessageThreadWidgetState();
+  State<ChatUIKitMessageThreadWidget> createState() => _ChatUIKitMessageThreadWidgetState();
 }
 
-class _ChatUIKitMessageThreadWidgetState
-    extends State<ChatUIKitMessageThreadWidget> {
+class _ChatUIKitMessageThreadWidgetState extends State<ChatUIKitMessageThreadWidget> {
   int threadMessageCount = 0;
   String threadName = '';
   String subtitle = '';
@@ -54,9 +52,7 @@ class _ChatUIKitMessageThreadWidgetState
                   ChatUIKitImageLoader.messageLongPressThread(
                     width: 16,
                     height: 16,
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor95
-                        : theme.color.neutralColor3,
+                    color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
                   ),
             ),
             Expanded(
@@ -68,9 +64,7 @@ class _ChatUIKitMessageThreadWidgetState
                     TextStyle(
                       fontWeight: theme.font.labelSmall.fontWeight,
                       fontSize: theme.font.labelSmall.fontSize,
-                      color: theme.color.isDark
-                          ? theme.color.neutralColor95
-                          : theme.color.neutralColor3,
+                      color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
                     ),
               ),
             ),
@@ -80,8 +74,7 @@ class _ChatUIKitMessageThreadWidgetState
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text:
-                          '${threadMessageCount > 99 ? '99+' : threadMessageCount}',
+                      text: '${threadMessageCount > 99 ? '99+' : threadMessageCount}',
                     ),
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
@@ -90,9 +83,7 @@ class _ChatUIKitMessageThreadWidgetState
                         child: Icon(
                           Icons.arrow_forward_ios,
                           size: 7,
-                          color: theme.color.isDark
-                              ? theme.color.neutralColor95
-                              : theme.color.neutralColor3,
+                          color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
                         ),
                       ),
                     ),
@@ -100,9 +91,7 @@ class _ChatUIKitMessageThreadWidgetState
                   style: TextStyle(
                     fontWeight: theme.font.labelSmall.fontWeight,
                     fontSize: theme.font.labelSmall.fontSize,
-                    color: theme.color.isDark
-                        ? theme.color.primaryColor6
-                        : theme.color.primaryColor5,
+                    color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                   ),
                 ),
               ),
@@ -119,9 +108,7 @@ class _ChatUIKitMessageThreadWidgetState
                 TextStyle(
                   fontWeight: theme.font.bodyMedium.fontWeight,
                   fontSize: theme.font.bodyMedium.fontSize,
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor6
-                      : theme.color.neutralColor5,
+                  color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
                 ),
           ),
         ),
@@ -132,14 +119,14 @@ class _ChatUIKitMessageThreadWidgetState
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(4)),
-          color: widget.backgroundColor ??
-              (theme.color.isDark
-                  ? theme.color.neutralColor2
-                  : theme.color.neutralColor95)),
+          color:
+              widget.backgroundColor ?? (theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor95)),
       child: content,
     );
 
     content = InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
       focusColor: Colors.transparent,
       onTap: widget.onTap,
       child: content,

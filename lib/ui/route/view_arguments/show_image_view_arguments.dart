@@ -6,45 +6,41 @@ class ShowImageViewArguments implements ChatUIKitViewArguments {
     required this.message,
     this.onLongPressed,
     this.onTap,
-    this.appBar,
+    this.appBarModel,
     this.enableAppBar = true,
     this.viewObserver,
     this.attributes,
     this.isCombine = false,
-    this.appBarTrailingActionsBuilder,
   });
 
   final Message message;
   final void Function(BuildContext context, Message message)? onLongPressed;
   final void Function(BuildContext context, Message message)? onTap;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
   final bool enableAppBar;
   final bool isCombine;
   @override
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   ShowImageViewArguments copyWith(
       {Message? message,
       void Function(BuildContext context, Message message)? onLongPressed,
       void Function(BuildContext context, Message message)? onTap,
-      ChatUIKitAppBar? appBar,
+      ChatUIKitAppBarModel? appBarModel,
       bool? enableAppBar,
       ChatUIKitViewObserver? viewObserver,
       String? attributes,
-      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
+      ChatUIKitAppBarActionsBuilder? appBarTrailingActionsBuilder}) {
     return ShowImageViewArguments(
       message: message ?? this.message,
       onLongPressed: onLongPressed ?? this.onLongPressed,
       onTap: onTap ?? this.onTap,
-      appBar: appBar ?? this.appBar,
+      appBarModel: appBarModel ?? this.appBarModel,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder:
-          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

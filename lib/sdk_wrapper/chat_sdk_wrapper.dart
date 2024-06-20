@@ -181,6 +181,8 @@ class ChatSDKWrapper extends ChatUIKitWrapperBase
     return Client.getInstance.currentUserId != null;
   }
 
+  Future<bool> isConnect() => Client.getInstance.isConnected();
+
   /// Get current user id
   ///
   /// Return: current user id

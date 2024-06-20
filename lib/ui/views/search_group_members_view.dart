@@ -10,10 +10,9 @@ class SearchGroupMembersView extends StatefulWidget {
         searchHideText = arguments.searchHideText,
         itemBuilder = arguments.itemBuilder,
         enableAppBar = arguments.enableAppBar,
-        appBar = arguments.appBar,
+        appBarModel = arguments.appBarModel,
         onTap = arguments.onTap,
         viewObserver = arguments.viewObserver,
-        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
   const SearchGroupMembersView({
@@ -21,32 +20,30 @@ class SearchGroupMembersView extends StatefulWidget {
     required this.searchHideText,
     this.itemBuilder,
     this.onTap,
-    this.appBar,
+    this.appBarModel,
     this.enableAppBar = false,
     this.attributes,
     this.viewObserver,
-    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
   final List<NeedSearch> searchData;
   final String searchHideText;
   final void Function(BuildContext context, ChatUIKitProfile profile)? onTap;
-  final Widget Function(BuildContext context, ChatUIKitProfile profile,
-      String? searchKeyword)? itemBuilder;
-  final PreferredSizeWidget? appBar;
+  final Widget Function(BuildContext context, ChatUIKitProfile profile, String? searchKeyword)? itemBuilder;
+  final ChatUIKitAppBarModel? appBarModel;
   final bool enableAppBar;
   final String? attributes;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<SearchGroupMembersView> createState() => _SearchGroupMembersViewState();
 }
 
 class _SearchGroupMembersViewState extends State<SearchGroupMembersView> {
+  ChatUIKitAppBarModel? appBarModel;
   @override
   void initState() {
     super.initState();
@@ -61,9 +58,29 @@ class _SearchGroupMembersViewState extends State<SearchGroupMembersView> {
     super.dispose();
   }
 
+  void updateAppBarModel(ChatUIKitTheme theme) {
+    appBarModel = ChatUIKitAppBarModel(
+      title: widget.appBarModel?.title,
+      centerWidget: widget.appBarModel?.centerWidget,
+      titleTextStyle: widget.appBarModel?.titleTextStyle,
+      subtitle: widget.appBarModel?.subtitle,
+      subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
+      leadingActions:
+          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions:
+          widget.appBarModel?.trailingActions ?? widget.appBarModel?.trailingActionsBuilder?.call(context, null),
+      showBackButton: widget.appBarModel?.showBackButton ?? false,
+      onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
+      centerTitle: widget.appBarModel?.centerTitle ?? false,
+      systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
+      backgroundColor: widget.appBarModel?.backgroundColor,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
+    updateAppBarModel(theme);
     Widget content = ChatUIKitSearchWidget(
       searchHideText: widget.searchHideText,
       list: widget.searchData,
@@ -71,15 +88,12 @@ class _SearchGroupMembersViewState extends State<SearchGroupMembersView> {
       builder: (context, searchKeyword, list) {
         return ChatUIKitListView(
           list: list,
-          type: list.isEmpty
-              ? ChatUIKitListViewType.empty
-              : ChatUIKitListViewType.normal,
+          type: list.isEmpty ? ChatUIKitListViewType.empty : ChatUIKitListViewType.normal,
           enableSearchBar: false,
           itemBuilder: (context, model) {
             if (model is NeedSearch) {
               if (widget.itemBuilder != null) {
-                return widget.itemBuilder!
-                    .call(context, model.profile, searchKeyword);
+                return widget.itemBuilder!.call(context, model.profile, searchKeyword);
               }
 
               return InkWell(
@@ -113,17 +127,8 @@ class _SearchGroupMembersViewState extends State<SearchGroupMembersView> {
     );
 
     content = Scaffold(
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
-      appBar: !widget.enableAppBar
-          ? null
-          : widget.appBar ??
-              ChatUIKitAppBar(
-                showBackButton: false,
-                trailingActions:
-                    widget.appBarTrailingActionsBuilder?.call(context, null),
-              ),
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: SafeArea(child: content),
     );
 

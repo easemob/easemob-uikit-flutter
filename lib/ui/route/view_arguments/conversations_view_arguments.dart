@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 class ConversationsViewArguments implements ChatUIKitViewArguments {
   ConversationsViewArguments({
     this.controller,
-    this.appBar,
+    this.appBarModel,
     this.onSearchTap,
     this.beforeWidgets,
     this.afterWidgets,
@@ -15,20 +15,16 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
     this.searchBarHideText,
     this.listViewBackground,
     this.enableAppBar = true,
-    this.appBarMoreActionsBuilder,
     this.enableSearchBar = true,
-    this.title,
-    this.appBarLeading,
     this.viewObserver,
+    this.moreActionsBuilder,
     this.attributes,
-    this.appBarTrailingActionsBuilder,
   });
 
   /// 会话列表控制器，用户管理会话列表数据，如果不设置将会自动创建。详细参考 [ConversationListViewController]。
   final ConversationListViewController? controller;
 
-  /// 自定义AppBar, 如果设置后将会替换默认的AppBar。详细参考 [ChatUIKitAppBar]。
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
 
   /// 点击搜索按钮的回调，点击后会把当前的会话列表数据传递过来。如果不设置默认会跳转到搜索页面。具体参考 [SearchView]。
   final void Function(List<ConversationItemModel> data)? onSearchTap;
@@ -57,17 +53,8 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
   /// 会话列表的背景，会话为空时会显示，如果设置后将会替换默认的背景。
   final Widget? listViewBackground;
 
-  /// 更多按钮点击事件列表，如果设置后点击更多时会把当前的默认的点击事件列表传给你，你需要调整后返回来，返回来的数据会用于菜单显示。
-  final AppBarMoreActionsBuilder? appBarMoreActionsBuilder;
-
   /// 是否显示AppBar, 默认为 `true`。 当为 `false` 时将不会显示AppBar。同时也会影响到是否显示标题。
   final bool enableAppBar;
-
-  /// 自定义标题。
-  final String? title;
-
-  /// 自定义标题栏左侧控件。
-  final Widget? appBarLeading;
 
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   @override
@@ -75,31 +62,28 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
   @override
   ChatUIKitViewObserver? viewObserver;
 
-  /// 自定义AppBar右侧控件。
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+  final ChatUIKitMoreActionsBuilder? moreActionsBuilder;
 
-  ConversationsViewArguments copyWith(
-      {ConversationListViewController? controller,
-      ChatUIKitAppBar? appBar,
-      void Function(List<ConversationItemModel> data)? onSearchTap,
-      List<NeedAlphabeticalWidget>? beforeWidgets,
-      List<NeedAlphabeticalWidget>? afterWidgets,
-      ChatUIKitListItemBuilder? listViewItemBuilder,
-      void Function(BuildContext context, ConversationItemModel model)? onTap,
-      ConversationsViewItemLongPressHandler? onLongPressHandler,
-      String? searchBarHideText,
-      Widget? listViewBackground,
-      bool? enableAppBar,
-      bool? enableSearchBar,
-      AppBarMoreActionsBuilder? appBarMoreActionsBuilder,
-      String? title,
-      Widget? appBarLeading,
-      ChatUIKitViewObserver? viewObserver,
-      String? attributes,
-      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
+  ConversationsViewArguments copyWith({
+    ConversationListViewController? controller,
+    ChatUIKitAppBarModel? appBarModel,
+    void Function(List<ConversationItemModel> data)? onSearchTap,
+    List<NeedAlphabeticalWidget>? beforeWidgets,
+    List<NeedAlphabeticalWidget>? afterWidgets,
+    ChatUIKitListItemBuilder? listViewItemBuilder,
+    void Function(BuildContext context, ConversationItemModel model)? onTap,
+    ConversationsViewItemLongPressHandler? onLongPressHandler,
+    String? searchBarHideText,
+    Widget? listViewBackground,
+    bool? enableAppBar,
+    bool? enableSearchBar,
+    ChatUIKitViewObserver? viewObserver,
+    ChatUIKitMoreActionsBuilder? moreActionsBuilder,
+    String? attributes,
+  }) {
     return ConversationsViewArguments(
       controller: controller ?? this.controller,
-      appBar: appBar ?? this.appBar,
+      appBarModel: appBarModel ?? this.appBarModel,
       onSearchTap: onSearchTap ?? this.onSearchTap,
       beforeWidgets: beforeWidgets ?? this.beforeWidgets,
       afterWidgets: afterWidgets ?? this.afterWidgets,
@@ -110,14 +94,9 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
       searchBarHideText: searchBarHideText ?? this.searchBarHideText,
       listViewBackground: listViewBackground ?? this.listViewBackground,
       enableAppBar: enableAppBar ?? this.enableAppBar,
-      appBarMoreActionsBuilder:
-          appBarMoreActionsBuilder ?? this.appBarMoreActionsBuilder,
-      title: title ?? this.title,
-      appBarLeading: appBarLeading ?? this.appBarLeading,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder:
-          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      moreActionsBuilder: moreActionsBuilder ?? this.moreActionsBuilder,
     );
   }
 }

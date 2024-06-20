@@ -1,40 +1,35 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:flutter/material.dart';
 
 class CurrentUserInfoViewArguments implements ChatUIKitViewArguments {
   CurrentUserInfoViewArguments({
     required this.profile,
     this.attributes,
-    this.appBar,
+    this.appBarModel,
     this.enableAppBar = true,
     this.viewObserver,
-    this.appBarTrailingActionsBuilder,
   });
 
   final ChatUIKitProfile profile;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
   final bool enableAppBar;
   @override
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
-  CurrentUserInfoViewArguments copyWith(
-      {ChatUIKitProfile? profile,
-      ChatUIKitAppBar? appBar,
-      bool? enableAppBar,
-      ChatUIKitViewObserver? viewObserver,
-      String? attributes,
-      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
+  CurrentUserInfoViewArguments copyWith({
+    ChatUIKitProfile? profile,
+    ChatUIKitAppBarModel? appBarModel,
+    bool? enableAppBar,
+    ChatUIKitViewObserver? viewObserver,
+    String? attributes,
+  }) {
     return CurrentUserInfoViewArguments(
       profile: profile ?? this.profile,
-      appBar: appBar ?? this.appBar,
+      appBarModel: appBarModel ?? this.appBarModel,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder:
-          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

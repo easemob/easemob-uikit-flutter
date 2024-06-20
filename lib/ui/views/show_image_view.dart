@@ -6,11 +6,10 @@ class ShowImageView extends StatefulWidget {
   ShowImageView.arguments(ShowImageViewArguments arguments, {super.key})
       : message = arguments.message,
         onTap = arguments.onTap,
-        appBar = arguments.appBar,
+        appBarModel = arguments.appBarModel,
         enableAppBar = arguments.enableAppBar,
         onLongPressed = arguments.onLongPressed,
         viewObserver = arguments.viewObserver,
-        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         isCombine = arguments.isCombine,
         attributes = arguments.attributes;
 
@@ -18,11 +17,10 @@ class ShowImageView extends StatefulWidget {
     required this.message,
     this.onLongPressed,
     this.onTap,
-    this.appBar,
+    this.appBarModel,
     this.enableAppBar = true,
     this.attributes,
     this.viewObserver,
-    this.appBarTrailingActionsBuilder,
     this.isCombine = false,
     super.key,
   });
@@ -30,20 +28,20 @@ class ShowImageView extends StatefulWidget {
   final Message message;
   final void Function(BuildContext context, Message message)? onLongPressed;
   final void Function(BuildContext context, Message message)? onTap;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
   final bool enableAppBar;
   final String? attributes;
   final bool isCombine;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<ShowImageView> createState() => _ShowImageViewState();
 }
 
 class _ShowImageViewState extends State<ShowImageView> {
+  ChatUIKitAppBarModel? appBarModel;
   @override
   void initState() {
     super.initState();
@@ -58,8 +56,29 @@ class _ShowImageViewState extends State<ShowImageView> {
     super.dispose();
   }
 
+  void updateAppBarModel(ChatUIKitTheme theme) {
+    appBarModel = ChatUIKitAppBarModel(
+      title: widget.appBarModel?.title,
+      centerWidget: widget.appBarModel?.centerWidget,
+      titleTextStyle: widget.appBarModel?.titleTextStyle,
+      subtitle: widget.appBarModel?.subtitle,
+      subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
+      leadingActions:
+          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions:
+          widget.appBarModel?.trailingActions ?? widget.appBarModel?.trailingActionsBuilder?.call(context, null),
+      showBackButton: widget.appBarModel?.showBackButton ?? true,
+      onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
+      centerTitle: widget.appBarModel?.centerTitle ?? false,
+      systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
+      backgroundColor: widget.appBarModel?.backgroundColor ?? Colors.transparent,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = ChatUIKitTheme.of(context);
+    updateAppBarModel(theme);
     Widget content = ChatUIKitShowImageWidget(
       message: widget.message,
       onLongPressed: widget.onLongPressed,
@@ -78,14 +97,7 @@ class _ShowImageViewState extends State<ShowImageView> {
 
     content = Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: !widget.enableAppBar
-          ? null
-          : widget.appBar ??
-              ChatUIKitAppBar(
-                backgroundColor: Colors.black,
-                trailingActions:
-                    widget.appBarTrailingActionsBuilder?.call(context, null),
-              ),
+      appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: content,
     );
 

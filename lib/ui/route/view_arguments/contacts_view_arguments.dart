@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 class ContactsViewArguments implements ChatUIKitViewArguments {
   ContactsViewArguments({
     this.controller,
-    this.appBar,
+    this.appBarModel,
     this.enableAppBar = true,
     this.enableSearchBar = true,
     this.onSearchTap,
@@ -16,24 +16,17 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
     this.loadErrorMessage,
     this.beforeItems,
     this.afterItems,
-    this.title,
     this.viewObserver,
     this.attributes,
-    this.appBarTrailingActionsBuilder,
-    this.appBarLeading,
   });
 
   /// 联系人列表控制器，用于控制联系人列表数据，如果不设置将会自动创建。详细参考 [ContactListViewController]。
   final ContactListViewController? controller;
 
-  /// 自定义AppBar, 如果设置后将会替换默认的AppBar。详细参考 [ChatUIKitAppBar]。
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
 
   /// 是否显示AppBar, 默认为 `true`。 当为 `false` 时将不会显示AppBar。同时也会影响到是否显示标题。
   final bool enableAppBar;
-
-  /// 自定义标题。
-  final String? title;
 
   /// 点击搜索按钮的回调，点击后会把当前的联系人列表数据传递过来。如果不设置默认会跳转到搜索页面。具体参考 [SearchView]。
   final void Function(List<ContactItemModel> data)? onSearchTap;
@@ -54,8 +47,7 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
   final void Function(BuildContext context, ContactItemModel model)? onTap;
 
   /// 长按联系人列表的回调，长按后会把当前的联系人数据传递过来。具体参考 [ContactItemModel]。
-  final void Function(BuildContext context, ContactItemModel model)?
-      onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
 
   /// 联系人搜索框的隐藏文字。
   final String? searchHideText;
@@ -72,32 +64,27 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
   @override
   ChatUIKitViewObserver? viewObserver;
 
-  /// 自定义AppBar右侧控件。
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
-
-  /// 自定义AppBar的左侧内容。
-  final Widget? appBarLeading;
-
-  ContactsViewArguments copyWith(
-      {ContactListViewController? controller,
-      ChatUIKitAppBar? appBar,
-      void Function(List<ContactItemModel> data)? onSearchTap,
-      ChatUIKitContactItemBuilder? listViewItemBuilder,
-      void Function(BuildContext context, ContactItemModel model)? onTap,
-      void Function(BuildContext context, ContactItemModel model)? onLongPress,
-      String? searchHideText,
-      Widget? listViewBackground,
-      String? loadErrorMessage,
-      bool? enableSearchBar,
-      bool? enableAppBar,
-      String? title,
-      ChatUIKitViewObserver? viewObserver,
-      String? attributes,
-      Widget? appBarLeading,
-      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
+  ContactsViewArguments copyWith({
+    ContactListViewController? controller,
+    ChatUIKitAppBarModel? appBarModel,
+    void Function(List<ContactItemModel> data)? onSearchTap,
+    ChatUIKitContactItemBuilder? listViewItemBuilder,
+    void Function(BuildContext context, ContactItemModel model)? onTap,
+    void Function(BuildContext context, ContactItemModel model)? onLongPress,
+    String? searchHideText,
+    Widget? listViewBackground,
+    String? loadErrorMessage,
+    bool? enableSearchBar,
+    bool? enableAppBar,
+    String? title,
+    ChatUIKitViewObserver? viewObserver,
+    String? attributes,
+    Widget? appBarLeading,
+    ChatUIKitAppBarActionsBuilder? appBarTrailingActionsBuilder,
+  }) {
     return ContactsViewArguments(
       controller: controller ?? this.controller,
-      appBar: appBar ?? this.appBar,
+      appBarModel: appBarModel ?? this.appBarModel,
       enableSearchBar: enableSearchBar ?? this.enableSearchBar,
       onSearchTap: onSearchTap ?? this.onSearchTap,
       listViewItemBuilder: listViewItemBuilder ?? this.listViewItemBuilder,
@@ -107,12 +94,8 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
       listViewBackground: listViewBackground ?? this.listViewBackground,
       loadErrorMessage: loadErrorMessage ?? this.loadErrorMessage,
       enableAppBar: enableAppBar ?? this.enableAppBar,
-      title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder:
-          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
-      appBarLeading: appBarLeading ?? this.appBarLeading,
     );
   }
 }

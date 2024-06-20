@@ -9,42 +9,36 @@ class ForwardMessagesView extends StatefulWidget {
     super.key,
   })  : message = arguments.message,
         enableAppBar = arguments.enableAppBar,
-        appBar = arguments.appBar,
-        title = arguments.title,
+        appBarModel = arguments.appBarModel,
         viewObserver = arguments.viewObserver,
         summaryBuilder = arguments.summaryBuilder,
-        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
   const ForwardMessagesView({
     required this.message,
     required this.enableAppBar,
-    this.appBar,
-    this.title,
+    this.appBarModel,
     this.attributes,
     this.summaryBuilder,
     this.viewObserver,
-    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
   final Message message;
   final bool enableAppBar;
-  final PreferredSizeWidget? appBar;
-  final String? title;
+  final ChatUIKitAppBarModel? appBarModel;
   final String? attributes;
   final String? Function(BuildContext context, Message message)? summaryBuilder;
   final ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   @override
   State<ForwardMessagesView> createState() => _ForwardMessagesViewState();
 }
 
-class _ForwardMessagesViewState extends State<ForwardMessagesView>
-    with ChatObserver {
+class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObserver {
   late final Message message;
   bool downloading = false;
+  ChatUIKitAppBarModel? appBarModel;
   List<MessageModel> models = [];
   @override
   void initState() {
@@ -65,8 +59,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
   void fetchCombineList() async {
     try {
       downloading = true;
-      List<Message> fetchedMsgs =
-          await ChatUIKit.instance.fetchCombineMessageDetail(message: message);
+      List<Message> fetchedMsgs = await ChatUIKit.instance.fetchCombineMessageDetail(message: message);
       models.addAll(fetchedMsgs.map((e) => MessageModel(message: e)));
     } on ChatError catch (e) {
       chatPrint('download error: $e');
@@ -78,9 +71,29 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
     }
   }
 
+  void updateAppBarModel(ChatUIKitTheme theme) {
+    appBarModel = ChatUIKitAppBarModel(
+      title: widget.appBarModel?.title ?? ChatUIKitLocal.historyMessages.localString(context),
+      centerWidget: widget.appBarModel?.centerWidget,
+      titleTextStyle: widget.appBarModel?.titleTextStyle,
+      subtitle: widget.appBarModel?.subtitle,
+      subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
+      leadingActions:
+          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions:
+          widget.appBarModel?.trailingActions ?? widget.appBarModel?.trailingActionsBuilder?.call(context, null),
+      showBackButton: widget.appBarModel?.showBackButton ?? true,
+      onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
+      centerTitle: widget.appBarModel?.centerTitle ?? true,
+      systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
+      backgroundColor: widget.appBarModel?.backgroundColor,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
+    updateAppBarModel(theme);
     Widget? content;
     if (downloading == true) {
       content = Center(
@@ -89,9 +102,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
           height: 30,
           child: CircularProgressIndicator(
             strokeWidth: 2,
-            color: theme.color.isDark
-                ? theme.color.neutralColor4
-                : theme.color.neutralColor7,
+            color: theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor7,
           ),
         ),
       );
@@ -99,26 +110,14 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
       content = historyWidget(theme);
     } else {
       content = Center(
-        child: Text(
-            ChatUIKitLocal.forwardedMessageDownloadError.localString(context)),
+        child: Text(ChatUIKitLocal.forwardedMessageDownloadError.localString(context)),
       );
     }
 
     content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
-      appBar: widget.enableAppBar
-          ? widget.appBar ??
-              ChatUIKitAppBar(
-                centerTitle: false,
-                title: widget.title ??
-                    ChatUIKitLocal.historyMessages.localString(context),
-                trailingActions:
-                    widget.appBarTrailingActionsBuilder?.call(context, null),
-              )
-          : null,
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: SafeArea(child: content),
     );
 
@@ -136,9 +135,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
           endIndent: 0,
           height: .5,
           thickness: .5,
-          color: theme.color.isDark
-              ? theme.color.neutralColor3
-              : theme.color.neutralColor9,
+          color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor9,
         );
       },
       itemCount: models.length,
@@ -180,8 +177,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
         content = const SizedBox();
     }
 
-    ChatUIKitProfile? profile =
-        ChatUIKitProvider.instance.profilesCache[model.message.from!];
+    ChatUIKitProfile? profile = ChatUIKitProvider.instance.profilesCache[model.message.from!];
 
     Widget titleRow = Row(
       mainAxisSize: MainAxisSize.max,
@@ -195,9 +191,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style: TextStyle(
-              color: theme.color.isDark
-                  ? theme.color.neutralSpecialColor6
-                  : theme.color.neutralSpecialColor5,
+              color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
               fontSize: theme.font.titleSmall.fontSize,
               fontWeight: theme.font.titleSmall.fontWeight,
             ),
@@ -205,15 +199,13 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
         ),
         const SizedBox(width: 10),
         Text(
-          ChatUIKitTimeFormatter.instance.formatterHandler?.call(context,
-                  ChatUIKitTimeType.conversation, model.message.serverTime) ??
+          ChatUIKitTimeFormatter.instance.formatterHandler
+                  ?.call(context, ChatUIKitTimeType.conversation, model.message.serverTime) ??
               ChatUIKitTimeTool.getChatTimeStr(model.message.serverTime),
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralColor6
-                : theme.color.neutralColor5,
+            color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
             fontSize: theme.font.bodySmall.fontSize,
             fontWeight: theme.font.bodySmall.fontWeight,
           ),
@@ -225,8 +217,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: [
-        ChatUIKitAvatar(
-            avatarUrl: profile?.avatarUrl ?? model.message.avatarUrl),
+        ChatUIKitAvatar(avatarUrl: profile?.avatarUrl ?? model.message.avatarUrl),
         const SizedBox(width: 10),
         Expanded(
           child: Column(
@@ -257,15 +248,15 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
       style: TextStyle(
         fontWeight: theme.font.bodyMedium.fontWeight,
         fontSize: theme.font.bodyMedium.fontSize,
-        color: theme.color.isDark
-            ? theme.color.neutralColor98
-            : theme.color.neutralColor1,
+        color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
       ),
     );
   }
 
   Widget imageWidget(MessageModel model, ChatUIKitTheme theme) {
     return InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
       onTap: () {
         ChatUIKitRoute.pushOrPushNamed(
             context,
@@ -310,6 +301,8 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
 
   Widget videoWidget(MessageModel model, ChatUIKitTheme theme) {
     return InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
       onTap: () {
         ChatUIKitRoute.pushOrPushNamed(
             context,

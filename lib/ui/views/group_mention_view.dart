@@ -10,7 +10,7 @@ class GroupMentionView extends StatefulWidget {
         listViewBackground = arguments.listViewBackground,
         onTap = arguments.onTap,
         onLongPress = arguments.onLongPress,
-        appBar = arguments.appBar,
+        appBarModel = arguments.appBarModel,
         controller = arguments.controller,
         enableAppBar = arguments.enableAppBar,
         groupId = arguments.groupId,
@@ -27,7 +27,7 @@ class GroupMentionView extends StatefulWidget {
     this.listViewBackground,
     this.onTap,
     this.onLongPress,
-    this.appBar,
+    this.appBarModel,
     this.controller,
     this.enableAppBar = true,
     this.attributes,
@@ -39,13 +39,12 @@ class GroupMentionView extends StatefulWidget {
 
   final String groupId;
   final GroupMemberListViewController? controller;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
   final void Function(List<ContactItemModel> data)? onSearchTap;
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
-  final void Function(BuildContext context, ContactItemModel model)?
-      onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final bool enableAppBar;
@@ -54,21 +53,20 @@ class GroupMentionView extends StatefulWidget {
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+  final ChatUIKitAppBarActionsBuilder? appBarTrailingActionsBuilder;
   @override
   State<GroupMentionView> createState() => _GroupMentionViewState();
 }
 
 class _GroupMentionViewState extends State<GroupMentionView> {
-  final ValueNotifier<List<ChatUIKitProfile>> selectedProfiles =
-      ValueNotifier<List<ChatUIKitProfile>>([]);
+  final ValueNotifier<List<ChatUIKitProfile>> selectedProfiles = ValueNotifier<List<ChatUIKitProfile>>([]);
   late final GroupMemberListViewController controller;
+  ChatUIKitAppBarModel? appBarModel;
 
   @override
   void initState() {
     super.initState();
-    controller = widget.controller ??
-        GroupMemberListViewController(groupId: widget.groupId);
+    controller = widget.controller ?? GroupMemberListViewController(groupId: widget.groupId);
     widget.viewObserver?.addListener(() {
       setState(() {});
     });
@@ -80,25 +78,33 @@ class _GroupMentionViewState extends State<GroupMentionView> {
     super.dispose();
   }
 
+  void updateAppBarModel(ChatUIKitTheme theme) {
+    appBarModel = ChatUIKitAppBarModel(
+      title: widget.appBarModel?.title ?? '@${ChatUIKitLocal.groupMembersMentionViewTitle.localString(context)}',
+      centerWidget: widget.appBarModel?.centerWidget,
+      titleTextStyle: widget.appBarModel?.titleTextStyle,
+      subtitle: widget.appBarModel?.subtitle,
+      subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
+      leadingActions:
+          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions:
+          widget.appBarModel?.trailingActions ?? widget.appBarModel?.trailingActionsBuilder?.call(context, null),
+      showBackButton: widget.appBarModel?.showBackButton ?? true,
+      onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
+      centerTitle: widget.appBarModel?.centerTitle ?? false,
+      systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
+      backgroundColor: widget.appBarModel?.backgroundColor,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
+    updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
-      appBar: !widget.enableAppBar
-          ? null
-          : widget.appBar ??
-              ChatUIKitAppBar(
-                showBackButton: true,
-                centerTitle: false,
-                title: widget.title ??
-                    '@${ChatUIKitLocal.groupMembersMentionViewTitle.localString(context)}',
-                trailingActions:
-                    widget.appBarTrailingActionsBuilder?.call(context, null),
-              ),
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: ValueListenableBuilder(
         valueListenable: selectedProfiles,
         builder: (context, value, child) {
@@ -150,8 +156,7 @@ class _GroupMentionViewState extends State<GroupMentionView> {
           valueListenable: selectedProfiles,
           builder: (context, value, child) {
             return SearchView(
-              searchHideText: ChatUIKitLocal.groupMentionViewSearchHint
-                  .localString(context),
+              searchHideText: ChatUIKitLocal.groupMentionViewSearchHint.localString(context),
               searchData: list,
               itemBuilder: (context, profile, searchKeyword) {
                 return InkWell(
@@ -186,9 +191,7 @@ class MentionAllItem extends StatelessWidget {
     final theme = ChatUIKitTheme.of(context);
 
     TextStyle normalStyle = TextStyle(
-      color: theme.color.isDark
-          ? theme.color.neutralColor98
-          : theme.color.neutralColor1,
+      color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
       fontSize: theme.font.titleMedium.fontSize,
       fontWeight: theme.font.titleMedium.fontWeight,
     );
@@ -214,9 +217,7 @@ class MentionAllItem extends StatelessWidget {
     content = Container(
       padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
       height: 60 - 0.5,
-      color: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       child: content,
     );
 
@@ -226,9 +227,7 @@ class MentionAllItem extends StatelessWidget {
         content,
         Container(
           height: borderHeight,
-          color: theme.color.isDark
-              ? theme.color.neutralColor2
-              : theme.color.neutralColor9,
+          color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9,
           margin: const EdgeInsets.only(left: 16),
         )
       ],

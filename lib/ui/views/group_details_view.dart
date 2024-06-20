@@ -10,30 +10,30 @@ class GroupDetailsView extends StatefulWidget {
     GroupDetailsViewArguments arguments, {
     super.key,
   })  : profile = arguments.profile,
-        appBar = arguments.appBar,
+        appBarModel = arguments.appBarModel,
         enableAppBar = arguments.enableAppBar,
-        actionsBuilder = arguments.actionsBuilder,
+        contentActionsBuilder = arguments.actionsBuilder,
         onMessageDidClear = arguments.onMessageDidClear,
         viewObserver = arguments.viewObserver,
-        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         detailsListViewItemsBuilder = arguments.detailsListViewItemsBuilder,
+        rightTopMoreActionsBuilder = arguments.moreActionsBuilder,
         attributes = arguments.attributes;
 
   const GroupDetailsView({
     required this.profile,
-    this.actionsBuilder,
-    this.appBar,
+    this.contentActionsBuilder,
+    this.appBarModel,
     this.enableAppBar = true,
     this.attributes,
     this.onMessageDidClear,
     this.detailsListViewItemsBuilder,
+    this.rightTopMoreActionsBuilder,
     this.viewObserver,
-    this.appBarTrailingActionsBuilder,
     super.key,
   });
-  final ChatUIKitModelActionsBuilder? actionsBuilder;
+  final ChatUIKitDetailContentActionsBuilder? contentActionsBuilder;
   final ChatUIKitProfile profile;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
   final bool enableAppBar;
   final String? attributes;
   final VoidCallback? onMessageDidClear;
@@ -41,7 +41,9 @@ class GroupDetailsView extends StatefulWidget {
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+
+  /// 更多操作构建器，用于构建更多操作的菜单，如果不设置将会使用默认的菜单。
+  final ChatUIKitMoreActionsBuilder? rightTopMoreActionsBuilder;
 
   @override
   State<GroupDetailsView> createState() => _GroupDetailsViewState();
@@ -53,6 +55,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   int memberCount = 0;
   Group? group;
   ChatUIKitProfile? profile;
+  ChatUIKitAppBarModel? appBarModel;
 
   @override
   void initState() {
@@ -169,34 +172,48 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     }
   }
 
+  void updateAppBarModel(ChatUIKitTheme theme) {
+    appBarModel = ChatUIKitAppBarModel(
+      title: widget.appBarModel?.title,
+      centerWidget: widget.appBarModel?.centerWidget,
+      titleTextStyle: widget.appBarModel?.titleTextStyle,
+      subtitle: widget.appBarModel?.subtitle,
+      subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
+      leadingActions:
+          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions: widget.appBarModel?.trailingActions ??
+          () {
+            List<ChatUIKitAppBarAction> actions = [
+              ChatUIKitAppBarAction(
+                actionType: ChatUIKitActionType.more,
+                onTap: (context) {
+                  showBottom();
+                },
+                child: Icon(
+                  Icons.more_vert,
+                  size: 24,
+                  color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
+                ),
+              )
+            ];
+            return widget.appBarModel?.trailingActionsBuilder?.call(context, actions) ?? actions;
+          }(),
+      showBackButton: widget.appBarModel?.showBackButton ?? true,
+      onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
+      centerTitle: widget.appBarModel?.centerTitle ?? false,
+      systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
+      backgroundColor: widget.appBarModel?.backgroundColor,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
+    updateAppBarModel(theme);
     Widget content = Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
-        appBar: !widget.enableAppBar
-            ? null
-            : widget.appBar ??
-                ChatUIKitAppBar(
-                  showBackButton: true,
-                  trailingActions: () {
-                    List<ChatUIKitAppBarTrailingAction> actions = [
-                      ChatUIKitAppBarTrailingAction(
-                        actionType: ChatUIKitActionType.more,
-                        onTap: (context) {
-                          showBottom();
-                        },
-                        child: Icon(
-                          Icons.more_vert,
-                          size: 24,
-                          color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
-                        ),
-                      )
-                    ];
-                    return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
-                  }(),
-                ),
+        appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
         body: _buildContent());
 
     return content;
@@ -268,8 +285,8 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
 
     List<Widget> items = [];
 
-    List<ChatUIKitModelAction> defaultList = [
-      ChatUIKitModelAction(
+    List<ChatUIKitDetailContentAction> defaultList = [
+      ChatUIKitDetailContentAction(
         title: ChatUIKitLocal.groupDetailViewSend.localString(context),
         icon: 'assets/images/chat.png',
         iconSize: const Size(32, 32),
@@ -285,7 +302,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
           );
         },
       ),
-      ChatUIKitModelAction(
+      ChatUIKitDetailContentAction(
         title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
         icon: 'assets/images/search_history.png',
         packageName: ChatUIKitImageLoader.packageName,
@@ -318,7 +335,8 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       ),
     ];
 
-    List<ChatUIKitModelAction> actions = widget.actionsBuilder?.call(context, defaultList) ?? defaultList;
+    List<ChatUIKitDetailContentAction> actions =
+        widget.contentActionsBuilder?.call(context, defaultList) ?? defaultList;
     assert(actions.length <= 5, 'The maximum number of actions is 5');
 
     Widget content = Column(
@@ -484,7 +502,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       models.add(
         ChatUIKitDetailsListViewItemModel(
           title: ChatUIKitLocal.groupDetailViewGroupName.localString(context),
-          onTap: changeOwner,
+          onTap: changeGroupName,
           trailing: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
@@ -555,6 +573,8 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
           child: () {
             if (e.onTap != null) {
               return InkWell(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
                 onTap: e.onTap,
                 child: ChatUIKitDetailsListViewItem(
                   title: e.title!,
@@ -616,10 +636,10 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   }
 
   void showBottom() async {
-    List<ChatUIKitBottomSheetItem> list = [];
+    List<ChatUIKitBottomSheetAction> list = [];
     if (group?.permissionType == GroupPermissionType.Owner) {
       list.add(
-        ChatUIKitBottomSheetItem.normal(
+        ChatUIKitBottomSheetAction.normal(
           actionType: ChatUIKitActionType.transferOwner,
           label: ChatUIKitLocal.groupDetailViewTransferGroup.localString(context),
           onTap: () async {
@@ -629,7 +649,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
         ),
       );
       list.add(
-        ChatUIKitBottomSheetItem.destructive(
+        ChatUIKitBottomSheetAction.destructive(
           actionType: ChatUIKitActionType.disbandGroup,
           label: ChatUIKitLocal.groupDetailViewDisbandGroup.localString(context),
           onTap: () async {
@@ -640,7 +660,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       );
     } else {
       list.add(
-        ChatUIKitBottomSheetItem.destructive(
+        ChatUIKitBottomSheetAction.destructive(
           actionType: ChatUIKitActionType.leave,
           label: ChatUIKitLocal.groupDetailViewLeaveGroup.localString(context),
           onTap: () async {
@@ -650,6 +670,8 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
         ),
       );
     }
+
+    list = widget.rightTopMoreActionsBuilder?.call(context, list) ?? list;
 
     showChatUIKitBottomSheet(
       cancelLabel: ChatUIKitLocal.groupDetailViewCancel.localString(context),
@@ -746,7 +768,9 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       context,
       ChatUIKitRouteNames.changeInfoView,
       ChangeInfoViewArguments(
-        title: ChatUIKitLocal.groupDetailViewGroupName.localString(context),
+        appBarModel: ChatUIKitAppBarModel(
+          title: ChatUIKitLocal.groupDetailViewGroupName.localString(context),
+        ),
         maxLength: 32,
         attributes: widget.attributes,
         inputTextCallback: () async {
@@ -770,7 +794,9 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       context,
       ChatUIKitRouteNames.changeInfoView,
       ChangeInfoViewArguments(
-        title: ChatUIKitLocal.groupDetailViewDescription.localString(context),
+        appBarModel: ChatUIKitAppBarModel(
+          title: ChatUIKitLocal.groupDetailViewDescription.localString(context),
+        ),
         maxLength: 256,
         attributes: widget.attributes,
         inputTextCallback: () async {

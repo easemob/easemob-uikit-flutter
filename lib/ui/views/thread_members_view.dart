@@ -8,10 +8,9 @@ class ThreadMembersView extends StatefulWidget {
     super.key,
   })  : thread = arguments.thread,
         attributes = arguments.attributes,
-        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         viewObserver = arguments.viewObserver,
         enableAppBar = arguments.enableAppBar,
-        appBar = arguments.appBar,
+        appBarModel = arguments.appBarModel,
         controller = arguments.controller;
 
   const ThreadMembersView({
@@ -20,19 +19,17 @@ class ThreadMembersView extends StatefulWidget {
     this.attributes,
     this.controller,
     this.enableAppBar = true,
-    this.appBar,
+    this.appBarModel,
     this.viewObserver,
-    this.appBarTrailingActionsBuilder,
   });
 
   final String? attributes;
   final ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   final ChatThread thread;
   final ThreadMembersViewController? controller;
   final bool enableAppBar;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
 
   @override
   State<ThreadMembersView> createState() => _ThreadMembersViewState();
@@ -41,7 +38,7 @@ class ThreadMembersView extends StatefulWidget {
 class _ThreadMembersViewState extends State<ThreadMembersView> {
   late ThreadMembersViewController controller;
   late final ScrollController _scrollController = ScrollController();
-
+  ChatUIKitAppBarModel? appBarModel;
   @override
   void initState() {
     super.initState();
@@ -64,36 +61,43 @@ class _ThreadMembersViewState extends State<ThreadMembersView> {
     super.dispose();
   }
 
+  void updateAppBarModel(ChatUIKitTheme theme) {
+    appBarModel = ChatUIKitAppBarModel(
+      title: widget.appBarModel?.title ?? ChatUIKitLocal.threadMembers.localString(context),
+      centerWidget: widget.appBarModel?.centerWidget,
+      titleTextStyle: widget.appBarModel?.titleTextStyle ??
+          TextStyle(
+            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            fontWeight: theme.font.titleMedium.fontWeight,
+            fontSize: theme.font.titleMedium.fontSize,
+          ),
+      subtitle: widget.appBarModel?.subtitle,
+      subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
+      leadingActions:
+          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions:
+          widget.appBarModel?.trailingActions ?? widget.appBarModel?.trailingActionsBuilder?.call(context, null),
+      showBackButton: widget.appBarModel?.showBackButton ?? true,
+      onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
+      centerTitle: widget.appBarModel?.centerTitle ?? false,
+      systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
+      backgroundColor: widget.appBarModel?.backgroundColor,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
+    updateAppBarModel(theme);
+
     return Scaffold(
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
-      appBar: !widget.enableAppBar
-          ? null
-          : widget.appBar ??
-              ChatUIKitAppBar(
-                centerTitle: false,
-                title: '话题成员',
-                titleTextStyle: TextStyle(
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor98
-                      : theme.color.neutralColor1,
-                  fontWeight: theme.font.titleMedium.fontWeight,
-                  fontSize: theme.font.titleMedium.fontSize,
-                ),
-                trailingActions:
-                    widget.appBarTrailingActionsBuilder?.call(context, null),
-              ),
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: SafeArea(
         child: NotificationListener(
           onNotification: (notification) {
             if (notification is ScrollEndNotification) {
-              if (_scrollController.position.pixels -
-                      _scrollController.position.maxScrollExtent >
-                  -1500) {
+              if (_scrollController.position.pixels - _scrollController.position.maxScrollExtent > -1500) {
                 controller.fetchMembers();
               }
             }

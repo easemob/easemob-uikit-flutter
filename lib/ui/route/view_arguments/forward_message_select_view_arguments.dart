@@ -4,8 +4,7 @@ import 'package:flutter/widgets.dart';
 class ForwardMessageSelectViewArguments implements ChatUIKitViewArguments {
   final List<Message> messages;
   final bool enableAppBar;
-  final PreferredSizeWidget? appBar;
-  final String? title;
+  final ChatUIKitAppBarModel? appBarModel;
   final String? Function(BuildContext context, Message message)? summaryBuilder;
 
   final bool isMulti;
@@ -13,43 +12,36 @@ class ForwardMessageSelectViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
   ForwardMessageSelectViewArguments({
     required this.messages,
     this.enableAppBar = true,
-    this.appBar,
-    this.title,
+    this.appBarModel,
     this.viewObserver,
     this.summaryBuilder,
     this.isMulti = true,
     this.attributes,
-    this.appBarTrailingActionsBuilder,
   });
 
-  ForwardMessageSelectViewArguments copyWith(
-      {List<Message>? messages,
-      bool? enableAppBar,
-      ChatUIKitAppBar? appBar,
-      String? title,
-      List<Widget>? pages,
-      List<String>? pageTitles,
-      ChatUIKitViewObserver? viewObserver,
-      String? Function(BuildContext context, Message message)? summaryBuilder,
-      bool? isMulti,
-      String? attributes,
-      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
+  ForwardMessageSelectViewArguments copyWith({
+    List<Message>? messages,
+    bool? enableAppBar,
+    ChatUIKitAppBarModel? appBarModel,
+    List<Widget>? pages,
+    List<String>? pageTitles,
+    ChatUIKitViewObserver? viewObserver,
+    String? Function(BuildContext context, Message message)? summaryBuilder,
+    bool? isMulti,
+    String? attributes,
+  }) {
     return ForwardMessageSelectViewArguments(
       messages: messages ?? this.messages,
       enableAppBar: enableAppBar ?? this.enableAppBar,
-      appBar: appBar ?? this.appBar,
-      title: title ?? this.title,
+      appBarModel: appBarModel ?? this.appBarModel,
       summaryBuilder: summaryBuilder ?? this.summaryBuilder,
       viewObserver: viewObserver ?? this.viewObserver,
       isMulti: isMulti ?? this.isMulti,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder:
-          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

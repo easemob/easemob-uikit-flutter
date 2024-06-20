@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/ui/widgets/chat_uikit_reg_exp_text.dart';
 
 import 'package:flutter/material.dart';
 
@@ -9,17 +10,24 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
     required this.model,
     this.style,
     this.forceLeft,
+    this.exp,
+    this.expHighlightColor,
+    this.enableExpUnderline = true,
+    this.onExpTap,
     super.key,
   });
   final TextStyle? style;
   final MessageModel model;
   final bool? forceLeft;
+  final RegExp? exp;
+  final Color? expHighlightColor;
+  final bool enableExpUnderline;
+  final Function(String expStr)? onExpTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    bool left =
-        forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
+    bool left = forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     String str = model.message.textContent;
 
@@ -28,19 +36,19 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
             ? TextStyle(
                 fontWeight: theme.font.bodyLarge.fontWeight,
                 fontSize: theme.font.bodyLarge.fontSize,
-                color: theme.color.isDark
-                    ? theme.color.neutralColor98
-                    : theme.color.neutralColor1,
+                color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
               )
             : TextStyle(
                 fontWeight: theme.font.bodyLarge.fontWeight,
                 fontSize: theme.font.bodyLarge.fontSize,
-                color: theme.color.isDark
-                    ? theme.color.neutralColor1
-                    : theme.color.neutralColor98,
+                color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
               ));
 
-    Widget content = ChatUIKitEmojiRichText(
+    Widget content = ChatUIKitRegExpText(
+      exp: exp,
+      onExpTap: onExpTap,
+      enableExpUnderline: enableExpUnderline,
+      expHighlightColor: expHighlightColor,
       text: str,
       style: tmpStyle,
     );
@@ -93,15 +101,18 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: Divider(
                 height: 0.5,
-                color: theme.color.isDark
-                    ? theme.color.neutralColor3
-                    : theme.color.neutralColor95,
+                color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
               ),
             )),
       );
       widgets.add(
-        ChatUIKitEmojiRichText(
+        // ChatUIKitEmojiRichText
+        ChatUIKitRegExpText(
           text: model.message.translateText,
+          exp: exp,
+          onExpTap: onExpTap,
+          enableExpUnderline: enableExpUnderline,
+          expHighlightColor: expHighlightColor,
           style: TextStyle(
             fontWeight: theme.font.bodyLarge.fontWeight,
             fontSize: theme.font.bodyLarge.fontSize,
@@ -201,8 +212,6 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
       textDirection: TextDirection.ltr,
     )..layout(minWidth: 0, maxWidth: double.infinity);
 
-    return max(max(painter1.size.width, painter2.size.width),
-            max(painter3.size.width, painter4.size.width)) +
-        5;
+    return max(max(painter1.size.width, painter2.size.width), max(painter3.size.width, painter4.size.width)) + 5;
   }
 }

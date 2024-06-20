@@ -9,31 +9,26 @@ class ForwardMessageSelectView extends StatefulWidget {
     super.key,
   })  : messages = arguments.messages,
         enableAppBar = arguments.enableAppBar,
-        appBar = arguments.appBar,
-        title = arguments.title,
+        appBarModel = arguments.appBarModel,
         viewObserver = arguments.viewObserver,
         summaryBuilder = arguments.summaryBuilder,
         isMulti = arguments.isMulti,
-        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
   const ForwardMessageSelectView({
     required this.messages,
     this.enableAppBar = true,
-    this.appBar,
-    this.title,
+    this.appBarModel,
     this.attributes,
     this.viewObserver,
     this.summaryBuilder,
     this.isMulti = true,
-    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
   final List<Message> messages;
   final bool enableAppBar;
-  final PreferredSizeWidget? appBar;
-  final String? title;
+  final ChatUIKitAppBarModel? appBarModel;
   final String? attributes;
   final bool isMulti;
   final String? Function(BuildContext context, Message message)? summaryBuilder;
@@ -41,21 +36,20 @@ class ForwardMessageSelectView extends StatefulWidget {
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
 
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
   @override
-  State<ForwardMessageSelectView> createState() =>
-      _ForwardMessageSelectViewState();
+  State<ForwardMessageSelectView> createState() => _ForwardMessageSelectViewState();
 }
 
-class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
-    with SingleTickerProviderStateMixin {
+class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   List<String> forwardedList = [];
 
+  late String summary;
+
   ChatUIKitViewObserver? viewObserver;
 
-  late String summary;
+  ChatUIKitAppBarModel? appBarModel;
 
   @override
   void initState() {
@@ -77,8 +71,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
       if (typeBuilder?.isNotEmpty == true) {
         str += typeBuilder!;
       } else {
-        ChatUIKitProfile? profile =
-            ChatUIKitProvider.instance.profilesCache[msg.from!];
+        ChatUIKitProfile? profile = ChatUIKitProvider.instance.profilesCache[msg.from!];
         str += '${profile?.nickname ?? msg.fromProfile.nickname}: ';
         if (msg.bodyType == MessageType.TXT) {
           str += msg.textContent;
@@ -129,28 +122,36 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
     super.dispose();
   }
 
+  void updateAppBarModel(ChatUIKitTheme theme) {
+    appBarModel = ChatUIKitAppBarModel(
+      title: widget.appBarModel?.title ?? ChatUIKitLocal.forwardMessageViewTitle.localString(context),
+      centerWidget: widget.appBarModel?.centerWidget,
+      titleTextStyle: widget.appBarModel?.titleTextStyle,
+      subtitle: widget.appBarModel?.subtitle,
+      subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
+      leadingActions:
+          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions:
+          widget.appBarModel?.trailingActions ?? widget.appBarModel?.trailingActionsBuilder?.call(context, null),
+      showBackButton: widget.appBarModel?.showBackButton ?? true,
+      onBackButtonPressed: widget.appBarModel?.onBackButtonPressed ??
+          () {
+            Navigator.of(context).pop(forwardedList.isNotEmpty);
+          },
+      centerTitle: widget.appBarModel?.centerTitle ?? false,
+      systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
+      backgroundColor: widget.appBarModel?.backgroundColor,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
+    updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
-      appBar: !widget.enableAppBar
-          ? null
-          : widget.appBar ??
-              ChatUIKitAppBar(
-                showBackButton: true,
-                onBackButtonPressed: () {
-                  Navigator.of(context).pop(forwardedList.isNotEmpty);
-                },
-                centerTitle: false,
-                title: widget.title ??
-                    ChatUIKitLocal.forwardMessageViewTitle.localString(context),
-                trailingActions:
-                    widget.appBarTrailingActionsBuilder?.call(context, null),
-              ),
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: Column(
         children: [
           TabBar(
@@ -164,20 +165,15 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
             ),
             controller: _tabController,
             labelStyle: TextStyle(
-              fontWeight:
-                  ChatUIKitTheme.of(context).font.titleMedium.fontWeight,
+              fontWeight: ChatUIKitTheme.of(context).font.titleMedium.fontWeight,
               fontSize: ChatUIKitTheme.of(context).font.titleMedium.fontSize,
             ),
             labelColor: (ChatUIKitTheme.of(context).color.isDark
                 ? ChatUIKitTheme.of(context).color.neutralColor98
                 : ChatUIKitTheme.of(context).color.neutralColor1),
             tabs: [
-              Tab(
-                  text: ChatUIKitLocal.forwardSelectContacts
-                      .localString(context)),
-              Tab(
-                  text:
-                      ChatUIKitLocal.forwardSelectGroups.localString(context)),
+              Tab(text: ChatUIKitLocal.forwardSelectContacts.localString(context)),
+              Tab(text: ChatUIKitLocal.forwardSelectGroups.localString(context)),
             ],
           ),
           Expanded(
@@ -239,8 +235,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
     return content;
   }
 
-  void onSearchTap(List<ContactItemModel> data, BuildContext context,
-      ChatUIKitTheme theme) async {
+  void onSearchTap(List<ContactItemModel> data, BuildContext context, ChatUIKitTheme theme) async {
     viewObserver ??= ChatUIKitViewObserver();
     List<NeedSearch> list = [];
     for (var item in data) {
@@ -279,8 +274,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
 
           return item;
         },
-        searchHideText:
-            ChatUIKitLocal.conversationsViewSearchHint.localString(context),
+        searchHideText: ChatUIKitLocal.conversationsViewSearchHint.localString(context),
         searchData: list,
       ),
     ).then((value) => viewObserver = null);
@@ -297,9 +291,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
       style: ElevatedButton.styleFrom(
         shadowColor: Colors.transparent,
         padding: EdgeInsets.zero,
-        backgroundColor: theme.color.isDark
-            ? theme.color.neutralColor3
-            : theme.color.neutralColor95,
+        backgroundColor: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
         ),

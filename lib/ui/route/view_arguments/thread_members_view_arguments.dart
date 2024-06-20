@@ -1,11 +1,10 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:flutter/material.dart';
 
 class ThreadMembersViewArguments implements ChatUIKitViewArguments {
   ThreadMembersViewArguments({
     required this.thread,
     this.enableAppBar = true,
-    this.appBar,
+    this.appBarModel,
     this.controller,
     this.attributes,
     this.viewObserver,
@@ -18,28 +17,25 @@ class ThreadMembersViewArguments implements ChatUIKitViewArguments {
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+  final ChatUIKitAppBarActionsBuilder? appBarTrailingActionsBuilder;
   final bool enableAppBar;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
 
   ThreadMembersViewArguments copyWith({
     ChatThread? thread,
     ThreadMembersViewController? controller,
     String? attributes,
     bool? enableAppBar,
-    ChatUIKitAppBar? appBar,
+    ChatUIKitAppBarModel? appBarModel,
     ChatUIKitViewObserver? viewObserver,
-    ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder,
   }) {
     return ThreadMembersViewArguments(
       thread: thread ?? this.thread,
       enableAppBar: enableAppBar ?? this.enableAppBar,
-      appBar: appBar ?? this.appBar,
+      appBarModel: appBarModel ?? this.appBarModel,
       controller: controller ?? this.controller,
       attributes: attributes ?? this.attributes,
       viewObserver: viewObserver ?? this.viewObserver,
-      appBarTrailingActionsBuilder:
-          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

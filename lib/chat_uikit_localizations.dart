@@ -334,6 +334,7 @@ mixin ChatUIKitLocal {
   static const threadsMessageDestroy = 'threads_message_destroy';
   static const threadEditName = 'thread_edit_name';
   static const threadNewName = 'thread_new_name';
+  static const threadMembers = 'thread_members';
 
   static const searchHistory = 'search_history';
 
@@ -549,6 +550,7 @@ mixin ChatUIKitLocal {
     threadsMessageDestroy: '删除话题',
     threadEditName: '修改话题名称',
     threadNewName: '新话题名称',
+    threadMembers: '话题成员',
     searchHistory: '搜索历史',
   };
 
@@ -773,6 +775,7 @@ mixin ChatUIKitLocal {
     threadsMessageDestroy: 'Delete Topic',
     threadEditName: 'Topic Name',
     threadNewName: 'New Topic Name',
+    threadMembers: 'Topic Members',
     searchHistory: 'Search History',
   };
 }

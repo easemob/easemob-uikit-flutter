@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 
 typedef ChatUIKitActionItemOnTap = void Function(BuildContext context);
 
-class ChatUIKitModelAction {
-  ChatUIKitModelAction({
+class ChatUIKitDetailContentAction {
+  ChatUIKitDetailContentAction({
     this.title,
     required this.icon,
     this.iconSize,
@@ -22,26 +22,26 @@ class ChatUIKitModelAction {
   final bool singleLine;
 }
 
-class ChatUIKitAppBarTrailingAction {
+class ChatUIKitAppBarAction {
   final Widget child;
   final ChatUIKitActionItemOnTap? onTap;
   final ChatUIKitActionType actionType;
 
-  ChatUIKitAppBarTrailingAction({
+  ChatUIKitAppBarAction({
     required this.child,
     this.actionType = ChatUIKitActionType.custom,
     this.onTap,
   });
 
-  ChatUIKitAppBarTrailingAction copyWith({
-    Widget? child,
+  ChatUIKitAppBarAction copyWith({
     ChatUIKitActionItemOnTap? onTap,
+    Widget? child,
     ChatUIKitActionType? actionType,
   }) {
-    return ChatUIKitAppBarTrailingAction(
+    return ChatUIKitAppBarAction(
       child: child ?? this.child,
       actionType: actionType ?? this.actionType,
-      onTap: onTap,
+      onTap: onTap ?? this.onTap,
     );
   }
 }

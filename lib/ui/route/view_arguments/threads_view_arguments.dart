@@ -1,14 +1,12 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:flutter/material.dart';
 
 class ThreadsViewArguments implements ChatUIKitViewArguments {
   ThreadsViewArguments({
     required this.profile,
     this.enableAppBar = true,
-    this.appBar,
+    this.appBarModel,
     this.attributes,
     this.viewObserver,
-    this.appBarTrailingActionsBuilder,
   });
 
   final ChatUIKitProfile profile;
@@ -17,26 +15,24 @@ class ThreadsViewArguments implements ChatUIKitViewArguments {
 
   @override
   ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+
   final bool enableAppBar;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
 
   ThreadsViewArguments copyWith({
     ChatUIKitProfile? profile,
     bool? enableAppBar,
-    ChatUIKitAppBar? appBar,
+    ChatUIKitAppBarModel? appBarModel,
     String? attributes,
     ChatUIKitViewObserver? viewObserver,
-    ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder,
+    ChatUIKitAppBarActionsBuilder? appBarTrailingActionsBuilder,
   }) {
     return ThreadsViewArguments(
       profile: profile ?? this.profile,
       enableAppBar: enableAppBar ?? this.enableAppBar,
-      appBar: appBar ?? this.appBar,
+      appBarModel: appBarModel ?? this.appBarModel,
       attributes: attributes ?? this.attributes,
       viewObserver: viewObserver ?? this.viewObserver,
-      appBarTrailingActionsBuilder:
-          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

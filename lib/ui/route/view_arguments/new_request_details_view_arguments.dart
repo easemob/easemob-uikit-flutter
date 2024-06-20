@@ -1,5 +1,4 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:flutter/material.dart';
 
 class NewRequestDetailsViewArguments implements ChatUIKitViewArguments {
   NewRequestDetailsViewArguments({
@@ -7,45 +6,38 @@ class NewRequestDetailsViewArguments implements ChatUIKitViewArguments {
     this.isReceivedRequest = false,
     this.btnText,
     this.attributes,
-    this.appBar,
-    this.title,
+    this.appBarModel,
     this.viewObserver,
     this.enableAppBar = true,
-    this.appBarTrailingActionsBuilder,
   });
   final ChatUIKitProfile profile;
   final bool isReceivedRequest;
   final String? btnText;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
   final bool enableAppBar;
-  final String? title;
+
   @override
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
 
-  NewRequestDetailsViewArguments copyWith(
-      {ChatUIKitProfile? profile,
-      bool? isReceivedRequest,
-      String? btnText,
-      ChatUIKitAppBar? appBar,
-      bool? enableAppBar,
-      String? title,
-      ChatUIKitViewObserver? viewObserver,
-      String? attributes,
-      ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder}) {
+  NewRequestDetailsViewArguments copyWith({
+    ChatUIKitProfile? profile,
+    bool? isReceivedRequest,
+    String? btnText,
+    ChatUIKitAppBarModel? appBarModel,
+    bool? enableAppBar,
+    ChatUIKitViewObserver? viewObserver,
+    String? attributes,
+  }) {
     return NewRequestDetailsViewArguments(
       profile: profile ?? this.profile,
       isReceivedRequest: isReceivedRequest ?? this.isReceivedRequest,
       btnText: btnText ?? this.btnText,
-      appBar: appBar ?? this.appBar,
+      appBarModel: appBarModel ?? this.appBarModel,
       enableAppBar: enableAppBar ?? this.enableAppBar,
-      title: title ?? this.title,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
-      appBarTrailingActionsBuilder:
-          appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
     );
   }
 }

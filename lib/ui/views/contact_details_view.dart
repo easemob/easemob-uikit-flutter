@@ -5,40 +5,43 @@ import 'package:flutter/services.dart';
 
 class ContactDetailsView extends StatefulWidget {
   ContactDetailsView.arguments(ContactDetailsViewArguments arguments, {super.key})
-      : actionsBuilder = arguments.actionsBuilder,
-        profile = arguments.profile,
+      : profile = arguments.profile,
         onMessageDidClear = arguments.onMessageDidClear,
-        appBar = arguments.appBar,
+        appBarModel = arguments.appBarModel,
+        contentActionsBuilder = arguments.actionsBuilder,
         detailsListViewItemsBuilder = arguments.detailsListViewItemsBuilder,
+        moreActionsBuilder = arguments.moreActionsBuilder,
         viewObserver = arguments.viewObserver,
         enableAppBar = arguments.enableAppBar,
         onContactDeleted = arguments.onContactDeleted,
-        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         attributes = arguments.attributes;
 
   const ContactDetailsView({
     required this.profile,
-    this.actionsBuilder,
+    this.contentActionsBuilder,
     this.onMessageDidClear,
-    this.appBar,
+    this.appBarModel,
     this.attributes,
     this.viewObserver,
-    this.appBarTrailingActionsBuilder,
     this.onContactDeleted,
     this.detailsListViewItemsBuilder,
+    this.moreActionsBuilder,
     this.enableAppBar = true,
     super.key,
   });
 
   final ChatUIKitProfile profile;
-  final ChatUIKitModelActionsBuilder? actionsBuilder;
+  final ChatUIKitDetailContentActionsBuilder? contentActionsBuilder;
   final VoidCallback? onMessageDidClear;
   final VoidCallback? onContactDeleted;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
   final String? attributes;
   final ChatUIKitDetailItemBuilder? detailsListViewItemsBuilder;
   final ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+
+  /// 更多操作构建器，用于构建更多操作的菜单，如果不设置将会使用默认的菜单。
+  final ChatUIKitMoreActionsBuilder<bool>? moreActionsBuilder;
+
   final bool enableAppBar;
 
   @override
@@ -48,6 +51,8 @@ class ContactDetailsView extends StatefulWidget {
 class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitProviderObserver, ChatUIKitRouteHelper {
   ValueNotifier<bool> isNotDisturb = ValueNotifier<bool>(false);
   ChatUIKitProfile? profile;
+
+  ChatUIKitAppBarModel? appBarModel;
 
   @override
   void initState() {
@@ -94,34 +99,48 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
     }
   }
 
+  void updateAppBarModel(ChatUIKitTheme theme) {
+    appBarModel = ChatUIKitAppBarModel(
+      title: widget.appBarModel?.title,
+      centerWidget: widget.appBarModel?.centerWidget,
+      titleTextStyle: widget.appBarModel?.titleTextStyle,
+      subtitle: widget.appBarModel?.subtitle,
+      subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
+      leadingActions:
+          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions: widget.appBarModel?.trailingActions ??
+          () {
+            List<ChatUIKitAppBarAction> actions = [
+              ChatUIKitAppBarAction(
+                actionType: ChatUIKitActionType.more,
+                onTap: (context) {
+                  showBottom();
+                },
+                child: Icon(
+                  Icons.more_vert,
+                  size: 24,
+                  color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
+                ),
+              )
+            ];
+            return widget.appBarModel?.trailingActionsBuilder?.call(context, actions) ?? actions;
+          }(),
+      showBackButton: widget.appBarModel?.showBackButton ?? true,
+      onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
+      centerTitle: widget.appBarModel?.centerTitle ?? true,
+      systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
+      backgroundColor: widget.appBarModel?.backgroundColor,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
+    updateAppBarModel(theme);
     Widget content = Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
-        appBar: !widget.enableAppBar
-            ? null
-            : widget.appBar ??
-                ChatUIKitAppBar(
-                  showBackButton: true,
-                  trailingActions: () {
-                    List<ChatUIKitAppBarTrailingAction> actions = [
-                      ChatUIKitAppBarTrailingAction(
-                        actionType: ChatUIKitActionType.more,
-                        onTap: (context) {
-                          showBottom();
-                        },
-                        child: Icon(
-                          Icons.more_vert,
-                          size: 24,
-                          color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
-                        ),
-                      )
-                    ];
-                    return widget.appBarTrailingActionsBuilder?.call(context, actions) ?? actions;
-                  }(),
-                ),
+        appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
         body: _buildContent());
 
     return content;
@@ -178,8 +197,8 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
 
     List<Widget> items = [];
 
-    List<ChatUIKitModelAction> defaultActions = [
-      ChatUIKitModelAction(
+    List<ChatUIKitDetailContentAction> defaultActions = [
+      ChatUIKitDetailContentAction(
         title: ChatUIKitLocal.contactDetailViewSend.localString(context),
         icon: 'assets/images/chat.png',
         iconSize: const Size(32, 32),
@@ -195,7 +214,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
           );
         },
       ),
-      ChatUIKitModelAction(
+      ChatUIKitDetailContentAction(
         title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
         icon: 'assets/images/search_history.png',
         packageName: ChatUIKitImageLoader.packageName,
@@ -228,7 +247,8 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
       ),
     ];
 
-    List<ChatUIKitModelAction> actions = widget.actionsBuilder?.call(context, defaultActions) ?? defaultActions;
+    List<ChatUIKitDetailContentAction> actions =
+        widget.contentActionsBuilder?.call(context, defaultActions) ?? defaultActions;
     assert(actions.length <= 5, 'The maximum number of actions is 5');
 
     Widget content = Column(
@@ -349,6 +369,8 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
           child: () {
             if (e.onTap != null) {
               return InkWell(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
                 onTap: e.onTap,
                 child: ChatUIKitDetailsListViewItem(
                   title: e.title!,
@@ -411,19 +433,23 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
   }
 
   void showBottom() async {
+    List<ChatUIKitBottomSheetAction<bool>>? list = [
+      ChatUIKitBottomSheetAction.destructive(
+        actionType: ChatUIKitActionType.delete,
+        label: ChatUIKitLocal.contactDetailViewDelete.localString(context),
+        onTap: () async {
+          Navigator.of(context).pop(true);
+          return true;
+        },
+      ),
+    ];
+
+    list = widget.moreActionsBuilder?.call(context, list) ?? list;
+
     bool? ret = await showChatUIKitBottomSheet(
-      cancelLabel: ChatUIKitLocal.contactDetailViewCancel.localString(context),
+      cancelLabel: ChatUIKitLocal.conversationsViewMenuCancel.localString(context),
       context: context,
-      items: [
-        ChatUIKitBottomSheetItem.destructive(
-          actionType: ChatUIKitActionType.delete,
-          label: ChatUIKitLocal.contactDetailViewDelete.localString(context),
-          onTap: () async {
-            Navigator.of(context).pop(true);
-            return true;
-          },
-        ),
-      ],
+      items: list,
     );
 
     if (ret == true) {

@@ -12,21 +12,18 @@ class ContactsView extends StatefulWidget {
         listViewBackground = arguments.listViewBackground,
         onTap = arguments.onTap,
         onLongPress = arguments.onLongPress,
-        appBar = arguments.appBar,
+        appBarModel = arguments.appBarModel,
         controller = arguments.controller,
         enableAppBar = arguments.enableAppBar,
         beforeItems = arguments.beforeItems,
         afterItems = arguments.afterItems,
         loadErrorMessage = arguments.loadErrorMessage,
-        title = arguments.title,
         enableSearchBar = arguments.enableSearchBar,
         viewObserver = arguments.viewObserver,
-        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
-        appBarLeading = arguments.appBarLeading,
         attributes = arguments.attributes;
 
   const ContactsView({
-    this.appBar,
+    this.appBarModel,
     this.enableAppBar = true,
     this.enableSearchBar = true,
     this.onSearchTap,
@@ -39,25 +36,18 @@ class ContactsView extends StatefulWidget {
     this.loadErrorMessage,
     this.beforeItems,
     this.afterItems,
-    this.title,
     this.attributes,
     this.viewObserver,
-    this.appBarTrailingActionsBuilder,
-    this.appBarLeading,
     super.key,
   });
 
   /// 联系人列表控制器，用于控制联系人列表数据，如果不设置将会自动创建。详细参考 [ContactListViewController]。
   final ContactListViewController? controller;
 
-  /// 自定义AppBar, 如果设置后将会替换默认的AppBar。详细参考 [ChatUIKitAppBar]。
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
 
   /// 是否显示AppBar, 默认为 `true`。 当为 `false` 时将不会显示AppBar。同时也会影响到是否显示标题。
   final bool enableAppBar;
-
-  /// 自定义标题。
-  final String? title;
 
   /// 点击搜索按钮的回调，点击后会把当前的联系人列表数据传递过来。如果不设置默认会跳转到搜索页面。具体参考 [SearchView]。
   final void Function(List<ContactItemModel> data)? onSearchTap;
@@ -78,8 +68,7 @@ class ContactsView extends StatefulWidget {
   final void Function(BuildContext context, ContactItemModel model)? onTap;
 
   /// 长按联系人列表的回调，长按后会把当前的联系人数据传递过来。具体参考 [ContactItemModel]。
-  final void Function(BuildContext context, ContactItemModel model)?
-      onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
 
   /// 联系人搜索框的隐藏文字。
   final String? searchHideText;
@@ -96,18 +85,13 @@ class ContactsView extends StatefulWidget {
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
 
-  /// 自定义AppBar右侧控件。
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
-
-  /// 自定义AppBar的左侧内容。
-  final Widget? appBarLeading;
-
   @override
   State<ContactsView> createState() => _ContactsViewState();
 }
 
 class _ContactsViewState extends State<ContactsView> with ContactObserver {
   late final ContactListViewController controller;
+  ChatUIKitAppBarModel? appBarModel;
 
   ValueNotifier<int> contactRequestCount = ValueNotifier(0);
   @override
@@ -128,56 +112,65 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
     super.dispose();
   }
 
+  void updateAppBarModel(ChatUIKitTheme theme) {
+    appBarModel = ChatUIKitAppBarModel(
+      title: widget.appBarModel?.title ?? 'Contacts',
+      titleTextStyle: widget.appBarModel?.titleTextStyle ??
+          TextStyle(
+            color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+            fontSize: theme.font.titleLarge.fontSize,
+            fontWeight: FontWeight.w900,
+          ),
+      centerWidget: widget.appBarModel?.centerWidget,
+      centerTitle: widget.appBarModel?.centerTitle ?? true,
+      subtitle: widget.appBarModel?.subtitle,
+      subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
+      showBackButton: widget.appBarModel?.showBackButton ?? false,
+      leadingActions: widget.appBarModel?.leadingActions ??
+          () {
+            List<ChatUIKitAppBarAction> actions = [];
+            actions.add(
+              ChatUIKitAppBarAction(
+                actionType: ChatUIKitActionType.avatar,
+                child: ChatUIKitAvatar.current(
+                  size: 32,
+                  avatarUrl: ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
+                ),
+              ),
+            );
+            return widget.appBarModel?.leadingActionsBuilder?.call(context, actions) ?? actions;
+          }(),
+      trailingActions: widget.appBarModel?.trailingActions ??
+          () {
+            List<ChatUIKitAppBarAction> actions = [
+              ChatUIKitAppBarAction(
+                actionType: ChatUIKitActionType.add,
+                onTap: (context) {
+                  addContact();
+                },
+                child: Icon(
+                  Icons.person_add_alt_1_outlined,
+                  color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
+                  size: 24,
+                ),
+              ),
+            ];
+            return widget.appBarModel?.trailingActionsBuilder?.call(context, actions) ?? actions;
+          }(),
+      backgroundColor: widget.appBarModel?.backgroundColor,
+      systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
+      onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
+    updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
-      appBar: !widget.enableAppBar
-          ? null
-          : widget.appBar ??
-              ChatUIKitAppBar(
-                  title: widget.title ?? 'Contacts',
-                  titleTextStyle: TextStyle(
-                    color: theme.color.isDark
-                        ? theme.color.primaryColor6
-                        : theme.color.primaryColor5,
-                    fontSize: theme.font.titleLarge.fontSize,
-                    fontWeight: FontWeight.w900,
-                  ),
-                  showBackButton: false,
-                  leading: widget.appBarLeading ??
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
-                        child: ChatUIKitAvatar.current(
-                          size: 32,
-                          avatarUrl: ChatUIKitProvider
-                              .instance.currentUserProfile?.avatarUrl,
-                        ),
-                      ),
-                  trailingActions: () {
-                    List<ChatUIKitAppBarTrailingAction> actions = [
-                      ChatUIKitAppBarTrailingAction(
-                        actionType: ChatUIKitActionType.add,
-                        onTap: (context) {
-                          addContact();
-                        },
-                        child: Icon(
-                          Icons.person_add_alt_1_outlined,
-                          color: theme.color.isDark
-                              ? theme.color.neutralColor95
-                              : theme.color.neutralColor3,
-                          size: 24,
-                        ),
-                      ),
-                    ];
-                    return widget.appBarTrailingActionsBuilder
-                            ?.call(context, actions) ??
-                        actions;
-                  }()),
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: SafeArea(
         child: ContactListView(
           controller: controller,
@@ -227,9 +220,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
           title: ChatUIKitLocal.contactsViewGroups.localString(context),
           onTap: () {
             ChatUIKitRoute.pushOrPushNamed(
-                context,
-                ChatUIKitRouteNames.groupsView,
-                GroupsViewArguments(attributes: widget.attributes));
+                context, ChatUIKitRouteNames.groupsView, GroupsViewArguments(attributes: widget.attributes));
           }),
     ];
   }
@@ -247,8 +238,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
           onTap: (ctx, profile) {
             Navigator.of(ctx).pop(profile);
           },
-          searchHideText:
-              ChatUIKitLocal.conversationsViewSearchHint.localString(context),
+          searchHideText: ChatUIKitLocal.conversationsViewSearchHint.localString(context),
           searchData: list,
           attributes: widget.attributes),
     ).then((value) {
@@ -272,23 +262,18 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
   void addContact() async {
     String? userId = await showChatUIKitDialog(
       title: ChatUIKitLocal.contactsAddContactAlertTitle.localString(context),
-      content:
-          ChatUIKitLocal.contactsAddContactAlertSubTitle.localString(context),
+      content: ChatUIKitLocal.contactsAddContactAlertSubTitle.localString(context),
       context: context,
-      hintsText: [
-        ChatUIKitLocal.contactsAddContactAlertHintText.localString(context)
-      ],
+      hintsText: [ChatUIKitLocal.contactsAddContactAlertHintText.localString(context)],
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal.contactsAddContactAlertButtonCancel
-              .localString(context),
+          label: ChatUIKitLocal.contactsAddContactAlertButtonCancel.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.inputsConfirm(
-          label: ChatUIKitLocal.contactsAddContactAlertButtonConfirm
-              .localString(context),
+          label: ChatUIKitLocal.contactsAddContactAlertButtonConfirm.localString(context),
           onInputsTap: (inputs) async {
             Navigator.of(context).pop(inputs.first);
           },

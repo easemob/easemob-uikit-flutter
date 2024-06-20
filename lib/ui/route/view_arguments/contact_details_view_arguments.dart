@@ -7,49 +7,49 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
     required this.profile,
     this.actionsBuilder,
     this.onMessageDidClear,
-    this.appBar,
+    this.appBarModel,
     this.viewObserver,
     this.detailsListViewItemsBuilder,
     this.attributes,
-    this.appBarTrailingActionsBuilder,
     this.onContactDeleted,
     this.enableAppBar = true,
+    this.moreActionsBuilder,
   });
 
   final ChatUIKitProfile profile;
-  final ChatUIKitModelActionsBuilder? actionsBuilder;
+  final ChatUIKitDetailContentActionsBuilder? actionsBuilder;
   final VoidCallback? onMessageDidClear;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
   final ChatUIKitDetailItemBuilder? detailsListViewItemsBuilder;
   final VoidCallback? onContactDeleted;
   @override
   String? attributes;
   @override
   ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+  final ChatUIKitMoreActionsBuilder<bool>? moreActionsBuilder;
   final bool enableAppBar;
 
   ContactDetailsViewArguments copyWith({
     ChatUIKitProfile? profile,
-    ChatUIKitModelActionsBuilder? actionsBuilder,
+    ChatUIKitDetailContentActionsBuilder? actionsBuilder,
     VoidCallback? onMessageDidClear,
-    ChatUIKitAppBar? appBar,
+    ChatUIKitAppBarModel? appBarModel,
     ChatUIKitViewObserver? viewObserver,
     VoidCallback? onContactDeleted,
     String? attributes,
     ChatUIKitDetailItemBuilder? detailsListViewItemsBuilder,
-    ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder,
+    ChatUIKitMoreActionsBuilder<bool>? moreActionsBuilder,
     bool? enableAppBar,
   }) {
     return ContactDetailsViewArguments(
       profile: profile ?? this.profile,
       actionsBuilder: actionsBuilder ?? this.actionsBuilder,
       onMessageDidClear: onMessageDidClear ?? this.onMessageDidClear,
-      appBar: appBar ?? this.appBar,
+      appBarModel: appBarModel ?? this.appBarModel,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
       detailsListViewItemsBuilder: detailsListViewItemsBuilder ?? this.detailsListViewItemsBuilder,
-      appBarTrailingActionsBuilder: appBarTrailingActionsBuilder ?? this.appBarTrailingActionsBuilder,
+      moreActionsBuilder: moreActionsBuilder ?? this.moreActionsBuilder,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       onContactDeleted: onContactDeleted ?? this.onContactDeleted,
     );

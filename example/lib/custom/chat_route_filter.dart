@@ -141,7 +141,10 @@ class ChatRouteFilter {
   // 为 MessagesView 添加文件点击下载
   static RouteSettings messagesView(RouteSettings settings) {
     MessagesViewArguments arguments = settings.arguments as MessagesViewArguments;
+    ChatUIKitViewObserver viewObserver = ChatUIKitViewObserver();
+
     arguments = arguments.copyWith(
+      viewObserver: viewObserver,
       showMessageItemNickname: (model) {
         // 只有群组消息并且不是自己发的消息显示昵称
         return (arguments.profile.type == ChatUIKitProfileType.group) &&

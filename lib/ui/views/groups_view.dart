@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class GroupsView extends StatefulWidget {
   GroupsView.arguments(GroupsViewArguments arguments, {super.key})
       : controller = arguments.controller,
-        appBar = arguments.appBar,
+        appBarModel = arguments.appBarModel,
         onSearchTap = arguments.onSearchTap,
         listViewItemBuilder = arguments.listViewItemBuilder,
         onTap = arguments.onTap,
@@ -14,14 +14,12 @@ class GroupsView extends StatefulWidget {
         listViewBackground = arguments.listViewBackground,
         enableAppBar = arguments.enableAppBar,
         loadErrorMessage = arguments.loadErrorMessage,
-        title = arguments.title,
-        appBarTrailingActionsBuilder = arguments.appBarTrailingActionsBuilder,
         viewObserver = arguments.viewObserver,
         attributes = arguments.attributes;
 
   const GroupsView({
     this.controller,
-    this.appBar,
+    this.appBarModel,
     this.onSearchTap,
     this.listViewItemBuilder,
     this.onTap,
@@ -30,15 +28,13 @@ class GroupsView extends StatefulWidget {
     this.listViewBackground,
     this.loadErrorMessage,
     this.enableAppBar = true,
-    this.title,
     this.attributes,
     this.viewObserver,
-    this.appBarTrailingActionsBuilder,
     super.key,
   });
 
   final GroupListViewController? controller;
-  final PreferredSizeWidget? appBar;
+  final ChatUIKitAppBarModel? appBarModel;
   final void Function(List<GroupItemModel> data)? onSearchTap;
   final ChatUIKitGroupItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, GroupItemModel model)? onTap;
@@ -47,12 +43,12 @@ class GroupsView extends StatefulWidget {
   final Widget? listViewBackground;
   final String? loadErrorMessage;
   final bool enableAppBar;
-  final String? title;
+
   final String? attributes;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
-  final ChatUIKitAppBarTrailingActionsBuilder? appBarTrailingActionsBuilder;
+
   @override
   State<GroupsView> createState() => _GroupsViewState();
 }
@@ -60,6 +56,7 @@ class GroupsView extends StatefulWidget {
 class _GroupsViewState extends State<GroupsView> {
   late final GroupListViewController controller;
   ValueNotifier<int> joinedCount = ValueNotifier(0);
+  ChatUIKitAppBarModel? appBarModel;
 
   @override
   void initState() {
@@ -89,41 +86,49 @@ class _GroupsViewState extends State<GroupsView> {
     }
   }
 
+  void updateAppBarModel(ChatUIKitTheme theme) {
+    appBarModel = ChatUIKitAppBarModel(
+      title: widget.appBarModel?.title,
+      centerWidget: widget.appBarModel?.centerWidget ??
+          ValueListenableBuilder<int>(
+            valueListenable: joinedCount,
+            builder: (context, value, child) {
+              return Text(
+                widget.appBarModel?.title ??
+                    "${ChatUIKitLocal.groupsViewTitle.localString(context)}${value != 0 ? '($value)' : ''}",
+                textScaler: TextScaler.noScaling,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontWeight: theme.font.titleMedium.fontWeight,
+                  fontSize: theme.font.titleMedium.fontSize,
+                  color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                ),
+              );
+            },
+          ),
+      titleTextStyle: widget.appBarModel?.titleTextStyle,
+      subtitle: widget.appBarModel?.subtitle,
+      subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
+      leadingActions:
+          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions:
+          widget.appBarModel?.trailingActions ?? widget.appBarModel?.trailingActionsBuilder?.call(context, null),
+      showBackButton: widget.appBarModel?.showBackButton ?? true,
+      onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
+      centerTitle: widget.appBarModel?.centerTitle ?? false,
+      systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
+      backgroundColor: widget.appBarModel?.backgroundColor,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
+    updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
-      appBar: !widget.enableAppBar
-          ? null
-          : widget.appBar ??
-              ChatUIKitAppBar(
-                showBackButton: true,
-                centerTitle: false,
-                trailingActions:
-                    widget.appBarTrailingActionsBuilder?.call(context, null),
-                titleWidget: ValueListenableBuilder<int>(
-                  valueListenable: joinedCount,
-                  builder: (context, value, child) {
-                    return Text(
-                      widget.title ??
-                          "${ChatUIKitLocal.groupsViewTitle.localString(context)}${value != 0 ? '($value)' : ''}",
-                      textScaler: TextScaler.noScaling,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontWeight: theme.font.titleMedium.fontWeight,
-                        fontSize: theme.font.titleMedium.fontSize,
-                        color: theme.color.isDark
-                            ? theme.color.neutralColor98
-                            : theme.color.neutralColor1,
-                      ),
-                    );
-                  },
-                ),
-              ),
+      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: SafeArea(
         child: GroupListView(
           controller: controller,
@@ -153,8 +158,7 @@ class _GroupsViewState extends State<GroupsView> {
       if (model != null) {
         if (model.type == ChatUIKitRouteBackType.remove) {
           controller.list.removeWhere((element) {
-            return element is GroupItemModel &&
-                element.profile.id == model.profileId;
+            return element is GroupItemModel && element.profile.id == model.profileId;
           });
           controller.refresh();
         }
