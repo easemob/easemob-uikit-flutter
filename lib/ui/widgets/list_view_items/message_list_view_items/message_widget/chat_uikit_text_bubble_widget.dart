@@ -92,6 +92,19 @@ class ChatUIKitTextBubbleWidget extends StatelessWidget {
                 width: 300,
                 imageUrl: obj.imageUrl!,
                 fit: BoxFit.cover,
+                errorWidget: (context, url, error) {
+                  return Container(
+                    height: 118,
+                    width: 300,
+                    color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
+                    child: Center(
+                      child: Icon(
+                        Icons.error,
+                        color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           );
