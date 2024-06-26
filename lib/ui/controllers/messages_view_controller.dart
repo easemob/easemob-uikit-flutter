@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
@@ -14,7 +15,7 @@ enum MessageLastActionType {
 }
 
 /// 消息列表控制器
-class MessageListViewController extends ChangeNotifier
+class MessagesViewController extends ChangeNotifier
     with ChatObserver, MessageObserver, ThreadObserver, ChatUIKitProviderObserver {
   /// 用户信息对象，用于设置对方信息, 详细参考 [ChatUIKitProfile]。如果你自己设置了 `MessageListViewController` 需要确保 `profile` 与 [MessagesView] 传入的 `profile` 一致。
   ChatUIKitProfile profile;
@@ -76,7 +77,7 @@ class MessageListViewController extends ChangeNotifier
     refresh();
   }
 
-  MessageListViewController({
+  MessagesViewController({
     required this.profile,
     this.pageSize = 30,
     this.searchedMsg,
@@ -846,5 +847,33 @@ class MessageListViewController extends ChangeNotifier
     } catch (e) {
       chatPrint('updateReaction: $e');
     }
+  }
+
+  Future<void> pinMessage(String msgId) async {
+    try {
+      await ChatUIKit.instance.pinMessage(
+        messageId: msgId,
+      );
+    } catch (e) {
+      debugPrint('pinMessage: $e');
+    }
+  }
+
+  Future<void> unpinMessage(String msgId) async {
+    try {
+      await ChatUIKit.instance.unpinMessage(messageId: msgId);
+    } catch (e) {
+      debugPrint('unpinMessage: $e');
+    }
+  }
+
+  Future<List<Message>> fetchPinnedMessages() async {
+    List<Message> ret = [];
+    try {
+      ret = await ChatUIKit.instance.fetchPinnedMessages(conversationId: profile.id);
+    } catch (e) {
+      debugPrint('fetchPinMessage: $e');
+    }
+    return ret;
   }
 }

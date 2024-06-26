@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 
 class ChatUIKitImageLoader {
   static String packageName = 'em_chat_uikit';
-  static Widget chatIcon(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget chatIcon({double width = 24, double height = 24, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
@@ -15,8 +14,7 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget bubbleVoice(int frame,
-      {double width = 20, double height = 20, Color? color}) {
+  static Widget bubbleVoice(int frame, {double width = 20, double height = 20, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
@@ -59,8 +57,7 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget listEmpty(
-      {double width = 105, double height = 105, Color? color}) {
+  static Widget listEmpty({double width = 105, double height = 105, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
@@ -71,8 +68,7 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget noDisturb(
-      {double width = 20, double height = 20, Color? color}) {
+  static Widget noDisturb({double width = 20, double height = 20, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
@@ -83,15 +79,13 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget defaultAvatar(
-      {double width = 30, double height = 30, Color? color}) {
+  static Widget defaultAvatar({double width = 30, double height = 30, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
       width: width,
       height: height,
-      image: ChatUIKitSettings.avatarPlaceholder ??
-          AssetImage('assets/images/avatar.png', package: packageName),
+      image: ChatUIKitSettings.avatarPlaceholder ?? AssetImage('assets/images/avatar.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
@@ -105,32 +99,27 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget textKeyboard(
-      {double width = 30, double height = 30, Color? color}) {
+  static Widget textKeyboard({double width = 30, double height = 30, Color? color}) {
     return Image(
       width: width,
       height: height,
       color: color,
-      image: AssetImage('assets/images/input_bar_keyboard.png',
-          package: packageName),
+      image: AssetImage('assets/images/input_bar_keyboard.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget voiceKeyboard(
-      {double width = 30, double height = 30, Color? color}) {
+  static Widget voiceKeyboard({double width = 30, double height = 30, Color? color}) {
     return Image(
       color: color,
       width: width,
       height: height,
-      image:
-          AssetImage('assets/images/input_bar_voice.png', package: packageName),
+      image: AssetImage('assets/images/input_bar_voice.png', package: packageName),
       // fit: BoxFit.fill,
     );
   }
 
-  static Widget messageEdit(
-      {double width = 16, double height = 16, Color? color}) {
+  static Widget messageEdit({double width = 16, double height = 16, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
@@ -141,60 +130,51 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget moreKeyboard(
-      {double width = 28, double height = 30, Color? color}) {
+  static Widget moreKeyboard({double width = 28, double height = 30, Color? color}) {
     return Image(
       color: color,
       width: width,
       height: height,
       gaplessPlayback: true,
-      image:
-          AssetImage('assets/images/input_bar_more.png', package: packageName),
+      image: AssetImage('assets/images/input_bar_more.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget faceKeyboard(
-      {double width = 30, double height = 30, Color? color}) {
+  static Widget faceKeyboard({double width = 30, double height = 30, Color? color}) {
     return Image(
       color: color,
       width: width,
       height: height,
       gaplessPlayback: true,
-      image:
-          AssetImage('assets/images/input_bar_face.png', package: packageName),
+      image: AssetImage('assets/images/input_bar_face.png', package: packageName),
       // fit: BoxFit.fill,
     );
   }
 
-  static Widget sendKeyboard(
-      {double width = 30, double height = 30, Color? color}) {
+  static Widget sendKeyboard({double width = 30, double height = 30, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
       width: width,
       height: height,
-      image:
-          AssetImage('assets/images/input_bar_send.png', package: packageName),
+      image: AssetImage('assets/images/input_bar_send.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget voiceDelete(
-      {double width = 20, double height = 20, Color? color}) {
+  static Widget voiceDelete({double width = 20, double height = 20, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
       width: width,
       height: height,
-      image:
-          AssetImage('assets/images/record_delete.png', package: packageName),
+      image: AssetImage('assets/images/record_delete.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget voiceSend(
-      {double width = 20, double height = 20, Color? color}) {
+  static Widget voiceSend({double width = 20, double height = 20, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
@@ -205,8 +185,7 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget voiceMic(
-      {double width = 20, double height = 20, Color? color}) {
+  static Widget voiceMic({double width = 20, double height = 20, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
@@ -217,28 +196,24 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget imageDefault(
-      {double width = 44, double height = 44, Color? color}) {
+  static Widget imageDefault({double width = 44, double height = 44, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
       width: width,
       height: height,
-      image:
-          AssetImage('assets/images/image_default.png', package: packageName),
+      image: AssetImage('assets/images/image_default.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget videoDefault(
-      {double width = 44, double height = 44, Color? color}) {
+  static Widget videoDefault({double width = 44, double height = 44, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
       width: width,
       height: height,
-      image:
-          AssetImage('assets/images/video_default.png', package: packageName),
+      image: AssetImage('assets/images/video_default.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
@@ -267,8 +242,7 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget messageViewMoreAlbum(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageViewMoreAlbum({double width = 24, double height = 24, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
@@ -279,8 +253,7 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget messageViewMoreVideo(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageViewMoreVideo({double width = 24, double height = 24, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
@@ -291,8 +264,7 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget messageViewMoreCamera(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageViewMoreCamera({double width = 24, double height = 24, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
@@ -303,8 +275,7 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget messageViewMoreFile(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageViewMoreFile({double width = 24, double height = 24, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
@@ -315,8 +286,7 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget messageViewMoreCard(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageViewMoreCard({double width = 24, double height = 24, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
@@ -327,138 +297,117 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget messageLongPressCopy(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageLongPressCopy({double width = 24, double height = 24, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
       width: width,
       height: height,
-      image: AssetImage('assets/images/message_long_press_copy.png',
-          package: packageName),
+      image: AssetImage('assets/images/message_long_press_copy.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget messageLongPressReply(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageLongPressReply({double width = 24, double height = 24, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
       width: width,
       height: height,
-      image: AssetImage('assets/images/message_long_press_reply.png',
-          package: packageName),
+      image: AssetImage('assets/images/message_long_press_reply.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget messageLongPressEdit(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageLongPressEdit({double width = 24, double height = 24, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
       width: width,
       height: height,
-      image: AssetImage('assets/images/message_long_press_edit.png',
-          package: packageName),
+      image: AssetImage('assets/images/message_long_press_edit.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget messageLongPressTranslate(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageLongPressTranslate({double width = 24, double height = 24, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
       width: width,
       height: height,
-      image: AssetImage('assets/images/message_long_press_translate.png',
-          package: packageName),
+      image: AssetImage('assets/images/message_long_press_translate.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget messageLongPressMultiSelected(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageLongPressMultiSelected({double width = 24, double height = 24, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
       width: width,
       height: height,
-      image: AssetImage('assets/images/message_long_press_multi_selected.png',
-          package: packageName),
+      image: AssetImage('assets/images/message_long_press_multi_selected.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget messageLongPressForward(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageLongPressForward({double width = 24, double height = 24, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
       width: width,
       height: height,
-      image: AssetImage('assets/images/message_long_press_forward.png',
-          package: packageName),
+      image: AssetImage('assets/images/message_long_press_forward.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget messageLongPressThread(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageLongPressThread({double width = 24, double height = 24, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
       width: width,
       height: height,
-      image: AssetImage('assets/images/message_long_press_thread.png',
-          package: packageName),
+      image: AssetImage('assets/images/message_long_press_thread.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget messageLongPressReport(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageLongPressReport({double width = 24, double height = 24, Color? color}) {
     return Image(
       gaplessPlayback: true,
       color: color,
       width: width,
       height: height,
-      image: AssetImage('assets/images/message_long_press_report.png',
-          package: packageName),
+      image: AssetImage('assets/images/message_long_press_report.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget messageLongPressDelete(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageLongPressDelete({double width = 24, double height = 24, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
       width: width,
       height: height,
-      image: AssetImage('assets/images/message_long_press_report.png',
-          package: packageName),
+      image: AssetImage('assets/images/message_long_press_report.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget messageLongPressRecall(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageLongPressRecall({double width = 24, double height = 24, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
       width: width,
       height: height,
-      image: AssetImage('assets/images/message_long_press_recall.png',
-          package: packageName),
+      image: AssetImage('assets/images/message_long_press_recall.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
 
-  static Widget messageTrash(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget messageTrash({double width = 24, double height = 24, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
@@ -469,8 +418,7 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget messageHistory(
-      {double width = 16, double height = 16, Color? color}) {
+  static Widget messageHistory({double width = 16, double height = 16, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
@@ -481,15 +429,13 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget moreReactions(
-      {double width = 36, double height = 36, Color? color}) {
+  static Widget moreReactions({double width = 36, double height = 36, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
       width: width,
       height: height,
-      image:
-          AssetImage('assets/images/more_reactions.png', package: packageName),
+      image: AssetImage('assets/images/more_reactions.png', package: packageName),
       fit: BoxFit.fill,
     );
   }
@@ -505,8 +451,7 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget contacts(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget contacts({double width = 24, double height = 24, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
@@ -517,14 +462,24 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget leaveThread(
-      {double width = 24, double height = 24, Color? color}) {
+  static Widget leaveThread({double width = 24, double height = 24, Color? color}) {
     return Image(
       color: color,
       gaplessPlayback: true,
       width: width,
       height: height,
       image: AssetImage('assets/images/leave_thread.png', package: packageName),
+      fit: BoxFit.fill,
+    );
+  }
+
+  static Widget pinMessage({double width = 24, double height = 24, Color? color}) {
+    return Image(
+      color: color,
+      gaplessPlayback: true,
+      width: width,
+      height: height,
+      image: AssetImage('assets/images/pin.png', package: packageName),
       fit: BoxFit.fill,
     );
   }

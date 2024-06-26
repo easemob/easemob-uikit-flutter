@@ -31,7 +31,7 @@ class MessageListView extends StatefulWidget {
     super.key,
   });
 
-  final MessageListViewController controller;
+  final MessagesViewController controller;
   final MessageItemTapHandler? onItemTap;
   final MessageItemTapHandler? onItemLongPress;
   final MessageItemTapHandler? onItemDoubleTap;
@@ -60,7 +60,7 @@ class MessageListView extends StatefulWidget {
 }
 
 class _MessageListViewState extends State<MessageListView> {
-  late final MessageListViewController controller;
+  late final MessagesViewController controller;
   late final AutoScrollController _scrollController;
   ChatUIKitTheme? theme;
   Size? size;

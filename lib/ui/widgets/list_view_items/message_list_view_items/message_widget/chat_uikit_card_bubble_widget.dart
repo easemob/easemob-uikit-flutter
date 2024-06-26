@@ -30,7 +30,13 @@ class ChatUIKitCardBubbleWidget extends StatelessWidget {
         ),
         Expanded(
           child: Text(
-            model.message.cardUserNickname ?? model.message.cardUserId!,
+            () {
+              if (model.message.cardUserNickname?.isNotEmpty == true) {
+                return model.message.cardUserNickname!;
+              } else {
+                return model.message.cardUserId!;
+              }
+            }(),
             textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,

@@ -76,7 +76,7 @@ export 'ui/controllers/contact_list_view_controller.dart';
 export 'ui/controllers/group_list_view_controller.dart';
 export 'ui/controllers/new_request_list_view_controller.dart';
 export 'ui/controllers/group_member_list_view_controller.dart';
-export 'ui/controllers/message_list_view_controller.dart';
+export 'ui/controllers/messages_view_controller.dart';
 export 'ui/controllers/thread_messages_view_controller.dart';
 export 'ui/controllers/thread_members_view_controller.dart';
 export 'ui/controllers/block_list_view_controller.dart';

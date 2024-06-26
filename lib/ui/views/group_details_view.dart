@@ -323,7 +323,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
                 MessagesViewArguments(
                   profile: widget.profile,
                   attributes: widget.attributes,
-                  controller: MessageListViewController(
+                  controller: MessagesViewController(
                     profile: widget.profile,
                     searchedMsg: value,
                   ),

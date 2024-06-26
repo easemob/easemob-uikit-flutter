@@ -44,8 +44,8 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   /// 用户信息对象，用于设置对方信息。详细参考 [ChatUIKitProfile]。
   ChatUIKitProfile profile;
 
-  /// 消息列表控制器，用于控制消息列表和收发消息等，如果不设置将会自动创建。详细参考 [MessageListViewController]。
-  MessageListViewController? controller;
+  /// 消息列表控制器，用于控制消息列表和收发消息等，如果不设置将会自动创建。详细参考 [MessagesViewController]。
+  MessagesViewController? controller;
 
   late ChatUIKitAppBarModel appBarModel;
 
@@ -142,8 +142,8 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     /// 用户信息对象，用于设置对方信息。详细参考 [ChatUIKitProfile]。
     ChatUIKitProfile? profile,
 
-    /// 消息列表控制器，用于控制消息列表和收发消息等，如果不设置将会自动创建。详细参考 [MessageListViewController]。
-    MessageListViewController? controller,
+    /// 消息列表控制器，用于控制消息列表和收发消息等，如果不设置将会自动创建。详细参考 [MessagesViewController]。
+    MessagesViewController? controller,
     ChatUIKitAppBarModel? appBarModel,
 
     /// 自定义输入框, 如果设置后将会替换默认的输入框。详细参考 [ChatUIKitInputBar]。

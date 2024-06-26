@@ -88,8 +88,8 @@ class MessagesView extends StatefulWidget {
   /// 用户信息对象，用于设置对方信息。详细参考 [ChatUIKitProfile]。
   final ChatUIKitProfile profile;
 
-  /// 消息列表控制器，用于控制消息列表和收发消息等，如果不设置将会自动创建。详细参考 [MessageListViewController]。
-  final MessageListViewController? controller;
+  /// 消息列表控制器，用于控制消息列表和收发消息等，如果不设置将会自动创建。详细参考 [MessagesViewController]。
+  final MessagesViewController? controller;
 
   final ChatUIKitAppBarModel? appBarModel;
 
@@ -186,7 +186,7 @@ class MessagesView extends StatefulWidget {
 }
 
 class _MessagesViewState extends State<MessagesView> with ChatObserver {
-  late final MessageListViewController controller;
+  late final MessagesViewController controller;
   late final ChatUIKitInputBarController inputBarController;
   late final ImagePicker _picker;
   late final AudioPlayer _player;
@@ -237,7 +237,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       }
     });
 
-    controller = widget.controller ?? MessageListViewController(profile: profile!);
+    controller = widget.controller ?? MessagesViewController(profile: profile!);
     controller.addListener(() {
       updateView();
       if (controller.lastActionType == MessageLastActionType.topPosition) {
@@ -302,6 +302,14 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       trailingActions: widget.appBarModel?.trailingActions ??
           () {
             List<ChatUIKitAppBarAction> actions = [
+              if (ChatUIKitSettings.enablePinMsg && controller.conversationType == ConversationType.GroupChat)
+                ChatUIKitAppBarAction(
+                  actionType: ChatUIKitActionType.pinMessage,
+                  child: ChatUIKitImageLoader.pinMessage(),
+                  onTap: (context) {
+                    debugPrint('pin message');
+                  },
+                ),
               ChatUIKitAppBarAction(
                 actionType: controller.isMultiSelectMode ? ChatUIKitActionType.cancel : ChatUIKitActionType.thread,
                 onTap: (context) {

@@ -235,7 +235,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView> with ChatUIKitP
                 MessagesViewArguments(
                   profile: widget.profile,
                   attributes: widget.attributes,
-                  controller: MessageListViewController(
+                  controller: MessagesViewController(
                     profile: widget.profile,
                     searchedMsg: value,
                   ),

@@ -75,6 +75,9 @@ class ChatUIKitSettings {
     caseSensitive: false,
   );
 
+  /// 是否开启消息置顶功能
+  static bool enablePinMsg = true;
+
   /// 是否开启消息引用功能
   static bool enableMessageReply = true;
 
