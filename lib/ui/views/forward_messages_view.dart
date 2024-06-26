@@ -267,7 +267,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObse
               isCombine: true,
             ));
       },
-      child: ChatUIKitImageMessageWidget(model: model, isCombine: true),
+      child: ChatUIKitImageBubbleWidget(model: model, isCombine: true),
     );
   }
 
@@ -313,7 +313,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView> with ChatObse
               isCombine: true,
             ));
       },
-      child: ChatUIKitVideoMessageWidget(model: model, isCombine: true),
+      child: ChatUIKitVideoBubbleWidget(model: model, isCombine: true),
     );
   }
 

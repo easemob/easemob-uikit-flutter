@@ -1,16 +1,19 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/tools/chat_uikit_url_helper.dart';
+
 import 'package:em_chat_uikit/ui/widgets/chat_uikit_reg_exp_text.dart';
 
 import 'package:flutter/material.dart';
 
-class ChatUIKitTextMessageWidget extends StatelessWidget {
-  const ChatUIKitTextMessageWidget({
+class ChatUIKitTextBubbleWidget extends StatelessWidget {
+  const ChatUIKitTextBubbleWidget({
     required this.model,
     this.style,
     this.forceLeft,
-    this.exp,
+    // this.exp,
     this.expHighlightColor,
     this.enableExpUnderline = true,
     this.onExpTap,
@@ -19,9 +22,10 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
   final TextStyle? style;
   final MessageModel model;
   final bool? forceLeft;
-  final RegExp? exp;
+  // final RegExp? exp;
   final Color? expHighlightColor;
   final bool enableExpUnderline;
+
   final Function(String expStr)? onExpTap;
 
   @override
@@ -44,8 +48,10 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
                 color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
               ));
 
+    List<Widget> contents = [];
+
     Widget content = ChatUIKitRegExpText(
-      exp: exp,
+      // exp: exp,
       onExpTap: onExpTap,
       enableExpUnderline: enableExpUnderline,
       expHighlightColor: expHighlightColor,
@@ -53,7 +59,95 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
       style: tmpStyle,
     );
 
-    List<Widget> widgets = [content];
+    contents.add(content);
+    if (model.message.hasFetchingPreview()) {
+      contents.add(
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Text(
+            'Parsing...',
+            style: TextStyle(
+              fontWeight: theme.font.bodySmall.fontWeight,
+              fontSize: theme.font.bodySmall.fontSize,
+              color: left
+                  ? theme.color.isDark
+                      ? theme.color.neutralColor7
+                      : theme.color.neutralColor5
+                  : theme.color.isDark
+                      ? theme.color.primaryColor8
+                      : theme.color.primaryColor9,
+            ),
+          ),
+        ),
+      );
+    } else {
+      ChatUIKitPreviewObj? obj = model.message.getPreview();
+      if (obj != null) {
+        if (obj.imageUrl != null) {
+          contents.add(
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: CachedNetworkImage(
+                height: 118,
+                width: 300,
+                imageUrl: obj.imageUrl!,
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        }
+        if (obj.title != null) {
+          contents.add(
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Text(
+                obj.title!,
+                textScaler: TextScaler.noScaling,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: TextStyle(
+                  fontWeight: theme.font.headlineSmall.fontWeight,
+                  fontSize: theme.font.headlineSmall.fontSize,
+                  color: left
+                      ? theme.color.isDark
+                          ? theme.color.neutralColor98
+                          : theme.color.neutralColor1
+                      : theme.color.isDark
+                          ? theme.color.neutralColor1
+                          : theme.color.neutralColor98,
+                ),
+              ),
+            ),
+          );
+        }
+        if (obj.description != null) {
+          contents.add(
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Text(
+                obj.description!,
+                textScaler: TextScaler.noScaling,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: TextStyle(
+                  fontWeight: theme.font.bodyMedium.fontWeight,
+                  fontSize: theme.font.bodyMedium.fontSize,
+                  color: left
+                      ? theme.color.isDark
+                          ? theme.color.neutralColor98
+                          : theme.color.neutralColor1
+                      : theme.color.isDark
+                          ? theme.color.neutralColor1
+                          : theme.color.neutralColor98,
+                ),
+              ),
+            ),
+          );
+        }
+      }
+    }
+
+    List<Widget> widgets = contents;
 
     if (model.message.isEdit) {
       widgets.add(
@@ -106,10 +200,9 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
             )),
       );
       widgets.add(
-        // ChatUIKitEmojiRichText
         ChatUIKitRegExpText(
           text: model.message.translateText,
-          exp: exp,
+          // exp: exp,
           onExpTap: onExpTap,
           enableExpUnderline: enableExpUnderline,
           expHighlightColor: expHighlightColor,
@@ -167,7 +260,7 @@ class ChatUIKitTextMessageWidget extends StatelessWidget {
 
     content = Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: widgets,
     );
 

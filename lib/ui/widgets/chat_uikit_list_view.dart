@@ -11,8 +11,7 @@ typedef ListViewBuilder = Widget Function(
   List<ChatUIKitListItemModelBase> list,
 );
 
-typedef ChatUIKitListItemBuilder = Widget? Function(
-    BuildContext context, ChatUIKitListItemModelBase model);
+typedef ChatUIKitListItemBuilder = Widget? Function(BuildContext context, ChatUIKitListItemModelBase model);
 
 class ChatUIKitListView extends StatefulWidget {
   const ChatUIKitListView({
@@ -66,8 +65,7 @@ class _ChatUIKitListViewState extends State<ChatUIKitListView> {
   @override
   void initState() {
     super.initState();
-    controller =
-        widget.scrollController ?? ScrollController(keepScrollOffset: true);
+    controller = widget.scrollController ?? ScrollController(keepScrollOffset: true);
   }
 
   @override
@@ -83,9 +81,7 @@ class _ChatUIKitListViewState extends State<ChatUIKitListView> {
           height: 30,
           child: CircularProgressIndicator(
             strokeWidth: 2,
-            color: theme.color.isDark
-                ? theme.color.neutralColor4
-                : theme.color.neutralColor7,
+            color: theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor7,
           ),
         ),
       );
@@ -105,14 +101,11 @@ class _ChatUIKitListViewState extends State<ChatUIKitListView> {
             widget.background ?? ChatUIKitImageLoader.listEmpty(),
             const SizedBox(height: 8),
             Text(
-              widget.errorMessage ??
-                  ChatUIKitLocal.listViewLoadFailed.localString(context),
+              widget.errorMessage ?? ChatUIKitLocal.listViewLoadFailed.localString(context),
               textScaler: TextScaler.noScaling,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: theme.color.isDark
-                    ? theme.color.neutralColor7
-                    : theme.color.neutralColor4,
+                color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor4,
                 fontWeight: theme.font.bodyMedium.fontWeight,
                 fontSize: theme.font.bodyMedium.fontSize,
               ),
@@ -128,19 +121,14 @@ class _ChatUIKitListViewState extends State<ChatUIKitListView> {
                 padding: const EdgeInsets.fromLTRB(20, 9, 20, 9),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
-                  color: theme.color.isDark
-                      ? theme.color.primaryColor6
-                      : theme.color.primaryColor5,
+                  color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
                 ),
                 child: Text(
-                  widget.reloadMessage ??
-                      ChatUIKitLocal.listViewReload.localString(context),
+                  widget.reloadMessage ?? ChatUIKitLocal.listViewReload.localString(context),
                   textScaler: TextScaler.noScaling,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor98
-                        : theme.color.neutralColor98,
+                    color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor98,
                     fontWeight: theme.font.labelMedium.fontWeight,
                     fontSize: theme.font.labelMedium.fontSize,
                   ),
@@ -227,8 +215,7 @@ class _ChatUIKitListViewState extends State<ChatUIKitListView> {
       onNotification: (notification) {
         if (notification is ScrollEndNotification) {
           if (widget.hasMore) {
-            if (controller!.position.pixels ==
-                controller!.position.maxScrollExtent) {
+            if (controller!.position.pixels == controller!.position.maxScrollExtent) {
               widget.loadMore?.call();
             }
           }
@@ -239,9 +226,7 @@ class _ChatUIKitListViewState extends State<ChatUIKitListView> {
     );
 
     content = Container(
-      color: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
       child: content,
     );
 
@@ -268,11 +253,8 @@ class _ChatUIKitListViewState extends State<ChatUIKitListView> {
           margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
-            borderRadius:
-                BorderRadius.circular(CornerRadiusHelper.searchBarRadius(36)),
-            color: theme.color.isDark
-                ? theme.color.neutralColor2
-                : theme.color.neutralColor95,
+            borderRadius: BorderRadius.circular(CornerRadiusHelper.searchBarRadius(36)),
+            color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor95,
           ),
           height: 36,
           child: Center(
@@ -288,14 +270,10 @@ class _ChatUIKitListViewState extends State<ChatUIKitListView> {
                 Flexible(
                   fit: FlexFit.loose,
                   child: Text(
-                    widget.searchBarHideText ??
-                        ChatUIKitLocal.conversationsViewSearchHint
-                            .localString(context),
+                    widget.searchBarHideText ?? ChatUIKitLocal.conversationsViewSearchHint.localString(context),
                     textScaler: TextScaler.noScaling,
                     style: TextStyle(
-                      color: theme.color.isDark
-                          ? theme.color.neutralColor4
-                          : theme.color.neutralColor6,
+                      color: theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor6,
                     ),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,

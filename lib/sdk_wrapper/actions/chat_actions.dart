@@ -74,8 +74,8 @@ mixin ChatActions on ChatWrapper {
     ConversationType type = ConversationType.Chat,
   }) {
     return checkResult(ChatSDKEvent.createConversation, () async {
-      Conversation? conv = await Client.getInstance.chatManager
-          .getConversation(conversationId, type: type, createIfNeed: true);
+      Conversation? conv =
+          await Client.getInstance.chatManager.getConversation(conversationId, type: type, createIfNeed: true);
       return conv!;
     });
   }
@@ -85,8 +85,7 @@ mixin ChatActions on ChatWrapper {
     ConversationType type = ConversationType.Chat,
   }) {
     return checkResult(ChatSDKEvent.getConversation, () {
-      return Client.getInstance.chatManager
-          .getConversation(conversationId, type: type, createIfNeed: false);
+      return Client.getInstance.chatManager.getConversation(conversationId, type: type, createIfNeed: false);
     });
   }
 
@@ -102,8 +101,7 @@ mixin ChatActions on ChatWrapper {
 
   Future<void> markAllConversationsAsRead() async {
     return checkResult(ChatSDKEvent.markAllConversationsAsRead, () async {
-      Future<void> ret =
-          Client.getInstance.chatManager.markAllConversationsAsRead();
+      Future<void> ret = Client.getInstance.chatManager.markAllConversationsAsRead();
       super.onConversationsUpdate();
       return ret;
     });
@@ -131,8 +129,7 @@ mixin ChatActions on ChatWrapper {
   Future<int> getAppointUnreadCount({required List<String> appointIds}) {
     return checkResult(ChatSDKEvent.getAppointUnreadCount, () async {
       int unreadCount = 0;
-      List<Conversation>? list =
-          await Client.getInstance.chatManager.loadAllConversations();
+      List<Conversation>? list = await Client.getInstance.chatManager.loadAllConversations();
       for (var conversation in list) {
         if (appointIds.contains(conversation.id)) {
           unreadCount += await conversation.unreadCount();
@@ -147,8 +144,7 @@ mixin ChatActions on ChatWrapper {
   }) {
     return checkResult(ChatSDKEvent.haveNewMessageConversationCount, () async {
       int unreadConversationCount = 0;
-      List<Conversation>? list =
-          await Client.getInstance.chatManager.loadAllConversations();
+      List<Conversation>? list = await Client.getInstance.chatManager.loadAllConversations();
 
       for (var conversation in list) {
         if (appointIds.contains(conversation.id)) {
@@ -176,8 +172,7 @@ mixin ChatActions on ChatWrapper {
 
   Future<void> insertMessage({required Message message}) {
     return checkResult(ChatSDKEvent.importMessages, () async {
-      Conversation? conversation =
-          await Client.getInstance.chatManager.getConversation(
+      Conversation? conversation = await Client.getInstance.chatManager.getConversation(
         message.conversationId ?? message.from!,
         type: ConversationType.values[message.chatType.index],
         createIfNeed: true,
@@ -200,15 +195,13 @@ mixin ChatActions on ChatWrapper {
 
   Future<void> downloadMessageAttachmentInCombine({required Message message}) {
     return checkResult(ChatSDKEvent.downloadMessageAttachmentInCombine, () {
-      return Client.getInstance.chatManager
-          .downloadMessageAttachmentInCombine(message);
+      return Client.getInstance.chatManager.downloadMessageAttachmentInCombine(message);
     });
   }
 
   Future<void> downloadMessageThumbnailInCombine({required Message message}) {
     return checkResult(ChatSDKEvent.downloadMessageThumbnailInCombine, () {
-      return Client.getInstance.chatManager
-          .downloadMessageThumbnailInCombine(message);
+      return Client.getInstance.chatManager.downloadMessageThumbnailInCombine(message);
     });
   }
 
@@ -601,6 +594,39 @@ mixin ChatActions on ChatWrapper {
         type: type,
       );
       return await conversation!.deleteMessageByIds(messageIds);
+    });
+  }
+
+  Future<List<Message>> loadPinnedMessages({
+    required String conversationId,
+    required ConversationType type,
+  }) {
+    return checkResult(ChatSDKEvent.loadPinnedMessages, () async {
+      final conversation = await getConversation(
+        conversationId: conversationId,
+        type: type,
+      );
+      return await conversation!.loadPinnedMessages();
+    });
+  }
+
+  Future<List<Message>> fetchPinnedMessages({
+    required String conversationId,
+  }) {
+    return checkResult(ChatSDKEvent.fetchPinnedMessages, () async {
+      return Client.getInstance.chatManager.fetchPinnedMessages(conversationId: conversationId);
+    });
+  }
+
+  Future<void> pinMessage({required String messageId}) {
+    return checkResult(ChatSDKEvent.pinMessage, () async {
+      return Client.getInstance.chatManager.pinMessage(messageId: messageId);
+    });
+  }
+
+  Future<void> unpinMessage({required String messageId}) {
+    return checkResult(ChatSDKEvent.unpinMessage, () async {
+      return Client.getInstance.chatManager.unpinMessage(messageId: messageId);
     });
   }
 }

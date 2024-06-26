@@ -11,8 +11,8 @@ enum ChatUIKitMessageListViewBubbleStyle {
   noArrow,
 }
 
-class ChatUIKitMessageListViewBubble extends StatelessWidget {
-  const ChatUIKitMessageListViewBubble({
+class ChatUIKitMessageBubbleWidget extends StatelessWidget {
+  const ChatUIKitMessageBubbleWidget({
     required this.child,
     this.isLeft = true,
     this.style = ChatUIKitMessageListViewBubbleStyle.arrow,
@@ -41,12 +41,8 @@ class ChatUIKitMessageListViewBubble extends StatelessWidget {
         painter: _BubblePainter(
           color: color ??
               (!isLeft
-                  ? (theme.color.isDark
-                      ? theme.color.primaryColor6
-                      : theme.color.primaryColor5)
-                  : (theme.color.isDark
-                      ? theme.color.primaryColor2
-                      : theme.color.primaryColor95)),
+                  ? (theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5)
+                  : (theme.color.isDark ? theme.color.primaryColor2 : theme.color.primaryColor95)),
           isLeft: isLeft,
         ),
         child: RepaintBoundary(
@@ -77,16 +73,11 @@ class ChatUIKitMessageListViewBubble extends StatelessWidget {
         decoration: BoxDecoration(
           color: color ??
               (!isLeft
-                  ? (theme.color.isDark
-                      ? theme.color.primaryColor6
-                      : theme.color.primaryColor5)
-                  : (theme.color.isDark
-                      ? theme.color.primaryColor2
-                      : theme.color.primaryColor95)),
+                  ? (theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5)
+                  : (theme.color.isDark ? theme.color.primaryColor2 : theme.color.primaryColor95)),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(isLeft ? (!needSmallCorner ? 4 : 12) : 16),
-            topRight:
-                Radius.circular(!isLeft ? (!needSmallCorner ? 4 : 12) : 16),
+            topRight: Radius.circular(!isLeft ? (!needSmallCorner ? 4 : 12) : 16),
             bottomLeft: Radius.circular(isLeft ? 4 : 16),
             bottomRight: Radius.circular(!isLeft ? 4 : 16),
           ),
@@ -141,8 +132,7 @@ class _BubblePainter extends CustomPainter {
     } else {
       path.moveTo(size.width - arrowWidth, size.height - arrowPosition);
       path.lineTo(size.width, size.height - arrowPosition - arrowHeight / 2);
-      path.lineTo(
-          size.width - arrowWidth, size.height - arrowPosition - arrowHeight);
+      path.lineTo(size.width - arrowWidth, size.height - arrowPosition - arrowHeight);
     }
 
     path.close();

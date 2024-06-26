@@ -2,8 +2,8 @@ import 'dart:math';
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
-class ChatUIKitVoiceMessageWidget extends StatefulWidget {
-  const ChatUIKitVoiceMessageWidget({
+class ChatUIKitVoiceBubbleWidget extends StatefulWidget {
+  const ChatUIKitVoiceBubbleWidget({
     required this.model,
     this.style,
     this.icon,
@@ -18,13 +18,10 @@ class ChatUIKitVoiceMessageWidget extends StatefulWidget {
   final bool? forceLeft;
 
   @override
-  State<ChatUIKitVoiceMessageWidget> createState() =>
-      _ChatUIKitVoiceMessageWidgetState();
+  State<ChatUIKitVoiceBubbleWidget> createState() => _ChatUIKitVoiceBubbleWidgetState();
 }
 
-class _ChatUIKitVoiceMessageWidgetState
-    extends State<ChatUIKitVoiceMessageWidget>
-    with SingleTickerProviderStateMixin {
+class _ChatUIKitVoiceBubbleWidgetState extends State<ChatUIKitVoiceBubbleWidget> with SingleTickerProviderStateMixin {
   late final MessageModel model;
   late AnimationController controller;
   late Animation<int> animation;
@@ -32,8 +29,7 @@ class _ChatUIKitVoiceMessageWidgetState
   void initState() {
     super.initState();
     model = widget.model;
-    controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000));
+    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
     animation = IntTween(begin: 0, end: 2).animate(controller)
       ..addListener(() {
         safeSetState(() {});
@@ -56,8 +52,7 @@ class _ChatUIKitVoiceMessageWidgetState
       controller.stop();
     }
     final theme = ChatUIKitTheme.of(context);
-    bool left =
-        widget.forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
+    bool left = widget.forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     Color iconColor = left
         ? theme.color.isDark
@@ -91,8 +86,7 @@ class _ChatUIKitVoiceMessageWidgetState
     if (!controller.isAnimating) {
       iconWidget = ChatUIKitImageLoader.bubbleVoice(2, color: iconColor);
     } else {
-      iconWidget =
-          ChatUIKitImageLoader.bubbleVoice(animation.value, color: iconColor);
+      iconWidget = ChatUIKitImageLoader.bubbleVoice(animation.value, color: iconColor);
     }
 
     if (!left) {

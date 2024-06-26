@@ -2,8 +2,8 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
 
-class ChatUIKitCombineMessageWidget extends StatelessWidget {
-  const ChatUIKitCombineMessageWidget({
+class ChatUIKitCombineBubbleWidget extends StatelessWidget {
+  const ChatUIKitCombineBubbleWidget({
     required this.model,
     this.forceLeft,
     this.style,
@@ -18,8 +18,7 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    bool left =
-        forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
+    bool left = forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     Widget topWidget = ChatUIKitEmojiRichText(
       emojiSize: const Size(14, 14),
@@ -32,16 +31,12 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
               ? TextStyle(
                   fontWeight: theme.font.bodySmall.fontWeight,
                   fontSize: theme.font.bodySmall.fontSize,
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor98
-                      : theme.color.neutralColor1,
+                  color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
                 )
               : TextStyle(
                   fontWeight: theme.font.bodySmall.fontWeight,
                   fontSize: theme.font.bodySmall.fontSize,
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor1
-                      : theme.color.neutralColor98,
+                  color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
                 )),
     );
 
@@ -142,8 +137,7 @@ class ChatUIKitCombineMessageWidget extends StatelessWidget {
         hasCatch = true;
       }
       if (typeStr == '[Location]') {
-        typeStr =
-            ChatUIKitLocal.messageCellCombineLocation.localString(context);
+        typeStr = ChatUIKitLocal.messageCellCombineLocation.localString(context);
         hasCatch = true;
       }
       if (typeStr == '[Video]') {

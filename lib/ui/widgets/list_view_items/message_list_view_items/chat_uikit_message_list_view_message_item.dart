@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/tools/chat_uikit_url_helper.dart';
 import 'package:flutter/material.dart';
 
 class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
@@ -77,7 +78,21 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     Widget? msgWidget = messageWidget;
 
     if (model.message.bodyType == MessageType.TXT) {
-      msgWidget = _buildTextMessage(context, model, left);
+      Widget textWidget = _buildTextMessage(context, model, left);
+      if (model.message.textContent.hasURL() && ChatUIKitURLHelper().isFetching(model.message.msgId)) {
+        textWidget = Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            textWidget,
+            Text(
+              'Parsing...',
+              style: TextStyle(color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor5),
+            ),
+          ],
+        );
+      }
+      msgWidget = textWidget;
     } else if (model.message.bodyType == MessageType.IMAGE) {
       msgWidget = _buildImageMessage(context, model, left);
     } else if (model.message.bodyType == MessageType.VOICE) {
@@ -101,7 +116,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
       bubbleWidget = bubbleBuilder?.call(context, msgWidget, model) ?? msgWidget;
     } else {
       bubbleWidget = bubbleBuilder?.call(context, msgWidget, model) ??
-          ChatUIKitMessageListViewBubble(
+          ChatUIKitMessageBubbleWidget(
             key: ValueKey(model.message.localTime),
             needSmallCorner: model.message.getQuote == null,
             style: bubbleStyle,
@@ -154,9 +169,9 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
               onErrorBtnTap: onErrorBtnTap,
               size: 16,
               statusType: () {
-                if (model.message.status == MessageStatus.CREATE || model.message.status == MessageStatus.PROGRESS) {
+                if (model.message.status == MessageStatus.PROGRESS) {
                   return MessageStatusType.loading;
-                } else if (model.message.status == MessageStatus.FAIL) {
+                } else if (model.message.status == MessageStatus.CREATE || model.message.status == MessageStatus.FAIL) {
                   return MessageStatusType.fail;
                 } else {
                   if (model.message.hasDeliverAck) {
@@ -225,12 +240,12 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   }
 
   Widget _buildTextMessage(BuildContext context, MessageModel model, bool isLeft) {
-    return bubbleContentBuilder?.call(context, model) ?? ChatUIKitTextMessageWidget(model: model, forceLeft: isLeft);
+    return bubbleContentBuilder?.call(context, model) ?? ChatUIKitTextBubbleWidget(model: model, forceLeft: isLeft);
   }
 
   Widget _buildImageMessage(BuildContext context, MessageModel model, bool isLeft) {
     return bubbleContentBuilder?.call(context, model) ??
-        ChatUIKitImageMessageWidget(
+        ChatUIKitImageBubbleWidget(
           model: model,
           bubbleStyle: bubbleStyle,
           isLeft: isLeft,
@@ -243,7 +258,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     bool isLeft,
   ) {
     Widget? content = bubbleContentBuilder?.call(context, model);
-    content ??= ChatUIKitVoiceMessageWidget(
+    content ??= ChatUIKitVoiceBubbleWidget(
       model: model,
       playing: isPlaying,
       forceLeft: isLeft,
@@ -254,7 +269,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
 
   Widget _buildVideoMessage(BuildContext context, MessageModel model, bool isLeft) {
     return bubbleContentBuilder?.call(context, model) ??
-        ChatUIKitVideoMessageWidget(
+        ChatUIKitVideoBubbleWidget(
           model: model,
           bubbleStyle: bubbleStyle,
           forceLeft: isLeft,
@@ -263,7 +278,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
 
   Widget _buildFileMessage(BuildContext context, MessageModel model, bool isLeft) {
     return bubbleContentBuilder?.call(context, model) ??
-        ChatUIKitFileMessageWidget(
+        ChatUIKitFileBubbleWidget(
           model: model,
           bubbleStyle: bubbleStyle,
           forceLeft: isLeft,
@@ -272,7 +287,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
 
   Widget _buildCombineMessage(BuildContext context, MessageModel model, bool isLeft) {
     return bubbleContentBuilder?.call(context, model) ??
-        ChatUIKitCombineMessageWidget(
+        ChatUIKitCombineBubbleWidget(
           model: model,
           forceLeft: isLeft,
         );
@@ -280,7 +295,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
 
   Widget _buildCardMessage(BuildContext context, MessageModel model, bool isLeft) {
     return bubbleContentBuilder?.call(context, model) ??
-        ChatUIKitCardMessageWidget(
+        ChatUIKitCardBubbleWidget(
           model: model,
           forceLeft: isLeft,
         );

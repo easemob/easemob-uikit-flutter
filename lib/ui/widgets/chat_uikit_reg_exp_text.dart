@@ -47,11 +47,7 @@ class ChatUIKitRegExpText extends StatelessWidget {
 
     String string = '';
 
-    RegExp exp = this.exp ??
-        RegExp(
-          r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+',
-          caseSensitive: false,
-        );
+    RegExp exp = this.exp ?? ChatUIKitSettings.defaultUrlRegExp;
 
     for (var i = 0; i < characters.length; i++) {
       if (!ChatUIKitEmojiData.emojiList.contains(characters[i])) {

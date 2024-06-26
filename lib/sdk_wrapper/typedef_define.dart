@@ -58,3 +58,5 @@ typedef ChatThreadOperation = chat.EMChatThreadOperation;
 typedef ChatThread = chat.EMChatThread;
 typedef MessageSearchScope = chat.MessageSearchScope;
 typedef UserInfo = chat.EMUserInfo;
+typedef MessagePinOperation = chat.MessagePinOperation;
+typedef MessagePinInfo = chat.MessagePinInfo;

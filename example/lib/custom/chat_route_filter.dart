@@ -150,6 +150,17 @@ class ChatRouteFilter {
         return (arguments.profile.type == ChatUIKitProfileType.group) &&
             model.message.from != ChatUIKit.instance.currentUserId;
       },
+      bubbleContentBuilder: (context, model) {
+        if (model.message.bodyType == MessageType.TXT) {
+          return ChatUIKitTextBubbleWidget(
+            model: model,
+            onExpTap: (expStr) {
+              debugPrint('expStr: $expStr');
+            },
+          );
+        }
+        return null;
+      },
       onItemTap: (ctx, messageModel) {
         if (messageModel.message.bodyType == MessageType.FILE) {
           Navigator.of(ctx).push(

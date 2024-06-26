@@ -626,7 +626,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
     if (model.message.bodyType == MessageType.TXT) {
       msgWidget = Flexible(
           fit: FlexFit.loose,
-          child: ChatUIKitTextMessageWidget(
+          child: ChatUIKitTextBubbleWidget(
             model: model,
             style: TextStyle(
               fontWeight: theme.font.bodyMedium.fontWeight,
@@ -635,18 +635,18 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView> with ThreadObse
             ),
           ));
     } else if (model.message.bodyType == MessageType.IMAGE) {
-      msgWidget = ChatUIKitImageMessageWidget(model: model);
+      msgWidget = ChatUIKitImageBubbleWidget(model: model);
     } else if (model.message.bodyType == MessageType.VOICE) {
-      msgWidget = ChatUIKitVoiceMessageWidget(model: model, playing: false);
+      msgWidget = ChatUIKitVoiceBubbleWidget(model: model, playing: false);
     } else if (model.message.bodyType == MessageType.VIDEO) {
-      msgWidget = ChatUIKitVideoMessageWidget(model: model);
+      msgWidget = ChatUIKitVideoBubbleWidget(model: model);
     } else if (model.message.bodyType == MessageType.FILE) {
-      msgWidget = ChatUIKitFileMessageWidget(model: model);
+      msgWidget = ChatUIKitFileBubbleWidget(model: model);
     } else if (model.message.bodyType == MessageType.COMBINE) {
-      msgWidget = ChatUIKitCombineMessageWidget(model: model);
+      msgWidget = ChatUIKitCombineBubbleWidget(model: model);
     } else if (model.message.bodyType == MessageType.CUSTOM) {
       if (model.message.isCardMessage) {
-        msgWidget = ChatUIKitCardMessageWidget(model: model);
+        msgWidget = ChatUIKitCardBubbleWidget(model: model);
       }
     }
     msgWidget ??= ChatUIKitNonsupportMessageWidget(model: model);

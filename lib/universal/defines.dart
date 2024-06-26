@@ -1,5 +1,6 @@
 const String userGroupName = 'chatUIKit_group_member_nick_name';
 const String msgUserInfoKey = "ease_chat_uikit_user_info";
+const String msgPreviewKey = "ease_chat_uikit_text_url_preview";
 const String userAvatarKey = "avatarURL";
 const String userNicknameKey = "nickname";
 const String cardMessageKey = "userCard";
@@ -61,6 +62,7 @@ enum ChatUIKitActionType {
   camera,
   file,
   contactCard,
+  pinMessage,
   members,
   destroy,
   leave,

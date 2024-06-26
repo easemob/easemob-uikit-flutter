@@ -2,6 +2,8 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
 
+import 'chat_uikit_url_helper.dart';
+
 extension MessageHelper on Message {
   MessageType get bodyType => body.type;
 
@@ -17,6 +19,37 @@ extension MessageHelper on Message {
   void addProfile() {
     _addAvatarURL(ChatUIKitProvider.instance.currentUserProfile?.avatarUrl);
     _addNickname(ChatUIKitProvider.instance.currentUserProfile?.showName);
+  }
+
+  void addPreview(ChatUIKitPreviewObj? previewObj) {
+    attributes ??= {};
+    attributes![msgPreviewKey] = previewObj?.toJson();
+  }
+
+  ChatUIKitPreviewObj? getPreview() {
+    Map<String, dynamic>? previewMap = attributes?[msgPreviewKey];
+    if (previewMap != null) {
+      return ChatUIKitPreviewObj.fromJson(previewMap);
+    }
+    return null;
+  }
+
+  void removePreview() {
+    attributes?.remove(msgPreviewKey);
+  }
+
+  void fetchPreviewing() {
+    attributes ??= {};
+    attributes!['fetching'] = true;
+  }
+
+  void removePreviewing() {
+    attributes?.remove('fetching');
+  }
+
+  bool hasFetchingPreview() {
+    attributes ??= {};
+    return attributes!['fetching'] == true;
   }
 
   String? get avatarUrl {
@@ -278,8 +311,7 @@ extension MessageHelper on Message {
     String? title;
     if (needShowName) {
       if (chatType == ChatType.GroupChat) {
-        String? showName =
-            ChatUIKitProvider.instance.profilesCache[from!]?.showName;
+        String? showName = ChatUIKitProvider.instance.profilesCache[from!]?.showName;
         showName ??= nickname;
         title = "${showName ?? from ?? ""}: ";
       }
@@ -292,35 +324,26 @@ extension MessageHelper on Message {
         str = (body as TextMessageBody).content;
         break;
       case MessageType.IMAGE:
-        str =
-            '${[ChatUIKitLocal.messageCellCombineImage.localString(context)]}';
+        str = '${[ChatUIKitLocal.messageCellCombineImage.localString(context)]}';
         break;
       case MessageType.VIDEO:
-        str =
-            '${[ChatUIKitLocal.messageCellCombineVideo.localString(context)]}';
+        str = '${[ChatUIKitLocal.messageCellCombineVideo.localString(context)]}';
         break;
       case MessageType.VOICE:
-        str =
-            '${[ChatUIKitLocal.messageCellCombineVoice.localString(context)]}';
+        str = '${[ChatUIKitLocal.messageCellCombineVoice.localString(context)]}';
         break;
       case MessageType.LOCATION:
-        str = '${[
-          ChatUIKitLocal.messageCellCombineLocation.localString(context)
-        ]}';
+        str = '${[ChatUIKitLocal.messageCellCombineLocation.localString(context)]}';
         break;
       case MessageType.COMBINE:
-        str = '${[
-          ChatUIKitLocal.messageCellCombineCombine.localString(context)
-        ]}';
+        str = '${[ChatUIKitLocal.messageCellCombineCombine.localString(context)]}';
         break;
       case MessageType.FILE:
         str = '${[ChatUIKitLocal.messageCellCombineFile.localString(context)]}';
         break;
       case MessageType.CUSTOM:
         if (isCardMessage) {
-          str = '${[
-            ChatUIKitLocal.messageCellCombineContact.localString(context)
-          ]}';
+          str = '${[ChatUIKitLocal.messageCellCombineContact.localString(context)]}';
         } else {
           if (isRecallAlert) {
             Map<String, String>? map = (body as CustomMessageBody).params;

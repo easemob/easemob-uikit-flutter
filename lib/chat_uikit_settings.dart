@@ -15,8 +15,7 @@ class ChatUIKitSettings {
   static ImageProvider? avatarPlaceholder;
 
   // Dialog 圆角
-  static ChatUIKitDialogRectangleType dialogRectangleType =
-      ChatUIKitDialogRectangleType.filletCorner;
+  static ChatUIKitDialogRectangleType dialogRectangleType = ChatUIKitDialogRectangleType.filletCorner;
 
   // 会话列表是否显示头像
   static bool showConversationListAvatar = true;
@@ -66,6 +65,12 @@ class ChatUIKitSettings {
     '\u{1F62D}',
     '\u{1F389}',
   ];
+
+  /// 默认 消息 url 正则
+  static RegExp defaultUrlRegExp = RegExp(
+    r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+',
+    caseSensitive: false,
+  );
 
   /// 是否开启消息引用功能
   static bool enableMessageReply = true;

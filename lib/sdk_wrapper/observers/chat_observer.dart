@@ -11,7 +11,12 @@ abstract mixin class ChatObserver implements ChatUIKitObserverBase {
   void onConversationsUpdate() {}
   void onConversationRead(String from, String to) {}
   void onMessageReactionDidChange(List<MessageReactionEvent> events) {}
-  void onMessageContentChanged(
-      Message message, String operatorId, int operationTime) {}
+  void onMessageContentChanged(Message message, String operatorId, int operationTime) {}
   void onTyping(List<String> fromUsers) {}
+  void onMessagePinChanged(
+    String messageId,
+    String conversationId,
+    MessagePinOperation pinOperation,
+    MessagePinInfo pinInfo,
+  ) {}
 }

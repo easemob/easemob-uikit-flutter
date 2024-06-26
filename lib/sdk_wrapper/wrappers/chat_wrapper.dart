@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/sdk_wrapper/sdk_wrapper_tools.dart';
+import 'package:em_chat_uikit/tools/chat_uikit_url_helper.dart';
 import 'package:flutter/foundation.dart';
 
 mixin ChatWrapper on ChatUIKitWrapperBase {
@@ -23,6 +24,7 @@ mixin ChatWrapper on ChatUIKitWrapperBase {
         onConversationRead: onConversationRead,
         onMessageReactionDidChange: onMessageReactionDidChange,
         onMessageContentChanged: onMessageContentChanged,
+        onMessagePinChanged: onMessagePinChanged,
       ),
     );
   }
@@ -130,10 +132,21 @@ mixin ChatWrapper on ChatUIKitWrapperBase {
   }
 
   @protected
-  void onMessageContentChanged(
-      Message message, String operatorId, int operationTime) {
+  void onMessageContentChanged(Message message, String operatorId, int operationTime) async {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
+        // clear message's preview.
+        if (message.bodyType == MessageType.TXT) {
+          message.removePreview();
+          String? url = ChatUIKitURLHelper().getUrlFromText(message.textContent);
+          if (url?.isNotEmpty == true) {
+            ChatUIKitPreviewObj? obj = await ChatUIKitURLHelper().fetchPreview(url!);
+            if (obj != null) {
+              message.addPreview(obj);
+            }
+            Future.value({ChatUIKit.instance.updateMessage(message: message)});
+          }
+        }
         observer.onMessageContentChanged(message, operatorId, operationTime);
       }
     }
@@ -176,6 +189,19 @@ mixin ChatWrapper on ChatUIKitWrapperBase {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
         observer.onTyping(fromUsers);
+      }
+    }
+  }
+
+  void onMessagePinChanged(
+    String messageId,
+    String conversationId,
+    MessagePinOperation pinOperation,
+    MessagePinInfo pinInfo,
+  ) {
+    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
+      if (observer is ChatObserver) {
+        observer.onMessagePinChanged(messageId, conversationId, pinOperation, pinInfo);
       }
     }
   }

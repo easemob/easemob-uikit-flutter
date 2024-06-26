@@ -2,8 +2,8 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/material.dart';
 
-class ChatUIKitCardMessageWidget extends StatelessWidget {
-  const ChatUIKitCardMessageWidget({
+class ChatUIKitCardBubbleWidget extends StatelessWidget {
+  const ChatUIKitCardBubbleWidget({
     required this.model,
     this.forceLeft,
     super.key,
@@ -15,8 +15,7 @@ class ChatUIKitCardMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    bool left =
-        forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
+    bool left = forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     Widget content = Row(
       mainAxisAlignment: MainAxisAlignment.start,
