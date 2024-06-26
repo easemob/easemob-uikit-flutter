@@ -37,7 +37,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     super.key,
   });
 
-  final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
+  final ChatUIKitMessageListViewBubbleStyle? bubbleStyle;
   final MessageModel model;
   final List<MessageReaction>? reactions;
   final MessageItemShowHandler? showAvatar;
@@ -186,7 +186,6 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
           ),
           const SizedBox(width: 4),
           Flexible(
-            flex: 1,
             fit: FlexFit.loose,
             child: bubbleWidget,
           ),
@@ -214,7 +213,10 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
       children: [
         showNickname?.call(model) ?? true ? _nickname(theme, context, showAvatar, isLeft: left) : const SizedBox(),
         quoteWidget(context, model: model.message.getQuote, isLeft: left),
-        avatarAndBubble,
+        Flexible(
+          fit: FlexFit.loose,
+          child: avatarAndBubble,
+        ),
         if (model.reactions?.isNotEmpty == true) const SizedBox(height: 4),
         if (enableThread) threadWidget(context, theme, left),
         if (enableReaction) reactionsWidget(context, theme, left),

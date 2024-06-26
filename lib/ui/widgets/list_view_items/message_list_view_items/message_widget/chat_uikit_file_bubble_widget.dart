@@ -15,7 +15,7 @@ class ChatUIKitFileBubbleWidget extends StatelessWidget {
   final TextStyle? subTitleStyle;
   final MessageModel model;
   final Widget? icon;
-  final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
+  final ChatUIKitMessageListViewBubbleStyle? bubbleStyle;
   final bool? forceLeft;
 
   @override

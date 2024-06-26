@@ -39,7 +39,7 @@ class ThreadMessageListView extends StatefulWidget {
   final MessageItemTapHandler? onAvatarTap;
   final MessageItemTapHandler? onAvatarLongPressed;
   final MessageItemTapHandler? onNicknameTap;
-  final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
+  final ChatUIKitMessageListViewBubbleStyle? bubbleStyle;
   final MessageItemBuilder? itemBuilder;
   final MessageItemBuilder? alertItemBuilder;
   final MessageItemShowHandler? showAvatar;

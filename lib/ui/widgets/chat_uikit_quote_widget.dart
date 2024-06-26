@@ -10,7 +10,7 @@ class ChatUIKitQuoteWidget extends StatefulWidget {
     this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     super.key,
   });
-  final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
+  final ChatUIKitMessageListViewBubbleStyle? bubbleStyle;
   final QuoteModel model;
   final bool isLeft;
   @override
@@ -63,9 +63,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
     final theme = ChatUIKitTheme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: theme.color.isDark
-            ? theme.color.neutralColor2
-            : theme.color.neutralColor95,
+        color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor95,
         borderRadius: borderRadius,
       ),
       padding: const EdgeInsets.all(8),
@@ -104,17 +102,14 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       children: [
         Text(
           () {
-            ChatUIKitProfile? profile =
-                ChatUIKitProvider.instance.profilesCache[message.from!];
+            ChatUIKitProfile? profile = ChatUIKitProvider.instance.profilesCache[message.from!];
             profile ??= message.fromProfile;
             return profile.showName;
           }(),
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralSpecialColor5
-                : theme.color.neutralSpecialColor6,
+            color: theme.color.isDark ? theme.color.neutralSpecialColor5 : theme.color.neutralSpecialColor6,
             fontSize: theme.font.labelSmall.fontSize,
             fontWeight: theme.font.labelSmall.fontWeight,
           ),
@@ -126,9 +121,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
           textScaler: TextScaler.noScaling,
           maxLines: 2,
           style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralColor6
-                : theme.color.neutralColor5,
+            color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
             fontSize: theme.font.bodyMedium.fontSize,
             fontWeight: theme.font.bodyMedium.fontWeight,
           ),
@@ -158,9 +151,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
             style: TextStyle(
               fontWeight: theme.font.labelMedium.fontWeight,
               fontSize: theme.font.labelMedium.fontSize,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor6
-                  : theme.color.neutralColor5,
+              color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
             ),
           ),
         )
@@ -171,17 +162,14 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       children: [
         Text(
           () {
-            return ChatUIKitProvider
-                    .instance.profilesCache[message.from!]?.showName ??
+            return ChatUIKitProvider.instance.profilesCache[message.from!]?.showName ??
                 message.nickname ??
                 message.from!;
           }(),
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralSpecialColor5
-                : theme.color.neutralSpecialColor6,
+            color: theme.color.isDark ? theme.color.neutralSpecialColor5 : theme.color.neutralSpecialColor6,
             fontSize: theme.font.labelSmall.fontSize,
             fontWeight: theme.font.labelSmall.fontWeight,
           ),
@@ -222,8 +210,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
                   );
                 }
               }
-              if (message.thumbnailRemotePath?.isNotEmpty == true &&
-                  content == null) {
+              if (message.thumbnailRemotePath?.isNotEmpty == true && content == null) {
                 content = Image(
                   gaplessPlayback: true,
                   image: ResizeImage(
@@ -256,9 +243,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
                 child: ChatUIKitImageLoader.imageDefault(
                   width: 24,
                   height: 24,
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor5
-                      : theme.color.neutralColor7,
+                  color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
                 ),
               );
 
@@ -266,24 +251,18 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: theme.color.isDark
-                      ? theme.color.neutralColor1
-                      : theme.color.neutralColor98,
+                  color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(
                     width: 1,
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor3
-                        : theme.color.neutralColor8,
+                    color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor8,
                   ),
                 ),
                 foregroundDecoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(
                     width: 1,
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor3
-                        : theme.color.neutralColor8,
+                    color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor8,
                   ),
                 ),
                 child: content,
@@ -308,9 +287,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
           child: ChatUIKitImageLoader.videoDefault(
             width: 16,
             height: 16,
-            color: theme.color.isDark
-                ? theme.color.neutralColor5
-                : theme.color.neutralColor7,
+            color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
           ),
         ),
         const SizedBox(width: 4),
@@ -322,9 +299,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
             style: TextStyle(
               fontWeight: theme.font.labelMedium.fontWeight,
               fontSize: theme.font.labelMedium.fontSize,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor6
-                  : theme.color.neutralColor5,
+              color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
             ),
           ),
         ),
@@ -335,17 +310,14 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       children: [
         Text(
           () {
-            return ChatUIKitProvider
-                    .instance.profilesCache[message.from!]?.showName ??
+            return ChatUIKitProvider.instance.profilesCache[message.from!]?.showName ??
                 message.nickname ??
                 message.from!;
           }(),
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralSpecialColor5
-                : theme.color.neutralSpecialColor6,
+            color: theme.color.isDark ? theme.color.neutralSpecialColor5 : theme.color.neutralSpecialColor6,
             fontSize: theme.font.labelSmall.fontSize,
             fontWeight: theme.font.labelSmall.fontWeight,
           ),
@@ -394,9 +366,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
           child: ChatUIKitImageLoader.videoDefault(
             width: 24,
             height: 24,
-            color: theme.color.isDark
-                ? theme.color.neutralColor5
-                : theme.color.neutralColor7,
+            color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
           ),
         );
       }();
@@ -404,24 +374,18 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
         width: 36,
         height: 36,
         decoration: BoxDecoration(
-          color: theme.color.isDark
-              ? theme.color.neutralColor1
-              : theme.color.neutralColor98,
+          color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
           borderRadius: BorderRadius.circular(4),
           border: Border.all(
             width: 1,
-            color: theme.color.isDark
-                ? theme.color.neutralColor3
-                : theme.color.neutralColor8,
+            color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor8,
           ),
         ),
         foregroundDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           border: Border.all(
             width: 1,
-            color: theme.color.isDark
-                ? theme.color.neutralColor3
-                : theme.color.neutralColor8,
+            color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor8,
           ),
         ),
         child: content,
@@ -452,9 +416,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
                     child: Icon(
                       Icons.play_circle_outline,
                       size: 20,
-                      color: theme.color.isDark
-                          ? theme.color.neutralColor1
-                          : theme.color.neutralColor98,
+                      color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
                     ),
                   ),
                 ),
@@ -474,9 +436,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
           width: 16,
           height: 16,
           child: ChatUIKitImageLoader.bubbleVoice(2,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor6
-                  : theme.color.neutralColor5),
+              color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5),
         ),
         const SizedBox(width: 4),
         Flexible(
@@ -488,14 +448,11 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text:
-                      ChatUIKitLocal.quoteWidgetTitleVoice.localString(context),
+                  text: ChatUIKitLocal.quoteWidgetTitleVoice.localString(context),
                   style: TextStyle(
                     fontWeight: theme.font.bodySmall.fontWeight,
                     fontSize: theme.font.bodySmall.fontSize,
-                    color: theme.color.isDark
-                        ? theme.color.neutralSpecialColor6
-                        : theme.color.neutralSpecialColor5,
+                    color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
                   ),
                 ),
                 TextSpan(
@@ -503,9 +460,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
                   style: TextStyle(
                     fontWeight: theme.font.labelSmall.fontWeight,
                     fontSize: theme.font.labelSmall.fontSize,
-                    color: theme.color.isDark
-                        ? theme.color.neutralSpecialColor6
-                        : theme.color.neutralSpecialColor5,
+                    color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
                   ),
                 ),
               ],
@@ -519,8 +474,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       children: [
         Text(
           () {
-            return ChatUIKitProvider
-                    .instance.profilesCache[message.from!]?.showName ??
+            return ChatUIKitProvider.instance.profilesCache[message.from!]?.showName ??
                 message.nickname ??
                 message.from!;
           }(),
@@ -528,9 +482,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
           textScaler: TextScaler.noScaling,
           maxLines: 1,
           style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralSpecialColor5
-                : theme.color.neutralSpecialColor6,
+            color: theme.color.isDark ? theme.color.neutralSpecialColor5 : theme.color.neutralSpecialColor6,
             fontSize: theme.font.labelSmall.fontSize,
             fontWeight: theme.font.labelSmall.fontWeight,
           ),
@@ -549,11 +501,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
           width: 16,
           height: 16,
           child: ChatUIKitImageLoader.file(
-              width: 32,
-              height: 32,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor6
-                  : theme.color.neutralColor7),
+              width: 32, height: 32, color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor7),
         ),
         const SizedBox(width: 4),
         Flexible(
@@ -564,14 +512,11 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text:
-                      ChatUIKitLocal.quoteWidgetTitleFile.localString(context),
+                  text: ChatUIKitLocal.quoteWidgetTitleFile.localString(context),
                   style: TextStyle(
                     fontWeight: theme.font.labelSmall.fontWeight,
                     fontSize: theme.font.labelSmall.fontSize,
-                    color: theme.color.isDark
-                        ? theme.color.neutralSpecialColor6
-                        : theme.color.neutralSpecialColor5,
+                    color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
                   ),
                 ),
                 TextSpan(
@@ -579,9 +524,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
                   style: TextStyle(
                     fontWeight: theme.font.bodySmall.fontWeight,
                     fontSize: theme.font.bodySmall.fontSize,
-                    color: theme.color.isDark
-                        ? theme.color.neutralSpecialColor6
-                        : theme.color.neutralSpecialColor5,
+                    color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
                   ),
                 ),
               ],
@@ -595,17 +538,14 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       children: [
         Text(
           () {
-            return ChatUIKitProvider
-                    .instance.profilesCache[message.from!]?.showName ??
+            return ChatUIKitProvider.instance.profilesCache[message.from!]?.showName ??
                 message.nickname ??
                 message.from!;
           }(),
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralSpecialColor5
-                : theme.color.neutralSpecialColor6,
+            color: theme.color.isDark ? theme.color.neutralSpecialColor5 : theme.color.neutralSpecialColor6,
             fontSize: theme.font.labelSmall.fontSize,
             fontWeight: theme.font.labelSmall.fontWeight,
           ),
@@ -625,11 +565,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
           width: 16,
           height: 16,
           child: ChatUIKitImageLoader.messageHistory(
-              width: 32,
-              height: 32,
-              color: theme.color.isDark
-                  ? theme.color.neutralColor6
-                  : theme.color.neutralColor7),
+              width: 32, height: 32, color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor7),
         ),
         const SizedBox(width: 4),
         Flexible(
@@ -640,14 +576,11 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: ChatUIKitLocal.quoteWidgetTitleCombine
-                      .localString(context),
+                  text: ChatUIKitLocal.quoteWidgetTitleCombine.localString(context),
                   style: TextStyle(
                     fontWeight: theme.font.labelSmall.fontWeight,
                     fontSize: theme.font.labelSmall.fontSize,
-                    color: theme.color.isDark
-                        ? theme.color.neutralSpecialColor6
-                        : theme.color.neutralSpecialColor5,
+                    color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
                   ),
                 ),
                 TextSpan(
@@ -655,9 +588,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
                   style: TextStyle(
                     fontWeight: theme.font.bodySmall.fontWeight,
                     fontSize: theme.font.bodySmall.fontSize,
-                    color: theme.color.isDark
-                        ? theme.color.neutralSpecialColor6
-                        : theme.color.neutralSpecialColor5,
+                    color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
                   ),
                 ),
               ],
@@ -674,9 +605,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
           textScaler: TextScaler.noScaling,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralSpecialColor5
-                : theme.color.neutralSpecialColor6,
+            color: theme.color.isDark ? theme.color.neutralSpecialColor5 : theme.color.neutralSpecialColor6,
             fontSize: theme.font.labelSmall.fontSize,
             fontWeight: theme.font.labelSmall.fontWeight,
           ),
@@ -689,8 +618,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
   }
 
   Widget custom(ChatUIKitTheme theme, Message message) {
-    if (model.msgType == MessageType.CUSTOM.getString &&
-        message.isCardMessage) {
+    if (model.msgType == MessageType.CUSTOM.getString && message.isCardMessage) {
       Widget content = Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -700,9 +628,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
             child: ChatUIKitImageLoader.card(
                 width: 32,
                 height: 32,
-                color: theme.color.isDark
-                    ? theme.color.neutralColor6
-                    : theme.color.neutralColor7),
+                color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor7),
           ),
           const SizedBox(width: 4),
           Flexible(
@@ -712,14 +638,11 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: ChatUIKitLocal.quoteWidgetTitleContact
-                        .localString(context),
+                    text: ChatUIKitLocal.quoteWidgetTitleContact.localString(context),
                     style: TextStyle(
                       fontWeight: theme.font.labelMedium.fontWeight,
                       fontSize: theme.font.labelMedium.fontSize,
-                      color: theme.color.isDark
-                          ? theme.color.neutralColor6
-                          : theme.color.neutralColor5,
+                      color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5,
                     ),
                   ),
                   TextSpan(
@@ -727,9 +650,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
                     style: TextStyle(
                       fontWeight: theme.font.bodyMedium.fontWeight,
                       fontSize: theme.font.bodyMedium.fontSize,
-                      color: theme.color.isDark
-                          ? theme.color.neutralSpecialColor6
-                          : theme.color.neutralSpecialColor5,
+                      color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5,
                     ),
                   ),
                 ],
@@ -744,17 +665,14 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
         children: [
           Text(
             () {
-              return ChatUIKitProvider
-                      .instance.profilesCache[message.from!]?.showName ??
+              return ChatUIKitProvider.instance.profilesCache[message.from!]?.showName ??
                   message.nickname ??
                   message.from!;
             }(),
             textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: theme.color.isDark
-                  ? theme.color.neutralSpecialColor5
-                  : theme.color.neutralSpecialColor6,
+              color: theme.color.isDark ? theme.color.neutralSpecialColor5 : theme.color.neutralSpecialColor6,
               fontSize: theme.font.labelSmall.fontSize,
               fontWeight: theme.font.labelSmall.fontWeight,
             ),
@@ -774,9 +692,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        color: theme.color.isDark
-            ? theme.color.neutralColor5
-            : theme.color.neutralColor7,
+        color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
         fontSize: theme.font.bodyMedium.fontSize,
         fontWeight: theme.font.bodyMedium.fontWeight,
       ),
@@ -789,9 +705,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        color: theme.color.isDark
-            ? theme.color.neutralColor5
-            : theme.color.neutralColor7,
+        color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
         fontSize: theme.font.bodyMedium.fontSize,
         fontWeight: theme.font.bodyMedium.fontWeight,
       ),

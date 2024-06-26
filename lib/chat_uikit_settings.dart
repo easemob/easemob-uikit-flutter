@@ -17,6 +17,9 @@ class ChatUIKitSettings {
   // Dialog 圆角
   static ChatUIKitDialogRectangleType dialogRectangleType = ChatUIKitDialogRectangleType.filletCorner;
 
+  // 消息气泡默认显示样式
+  static ChatUIKitMessageListViewBubbleStyle messageBubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow;
+
   // 会话列表是否显示头像
   static bool showConversationListAvatar = true;
 

@@ -18,7 +18,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     this.itemBuilder,
     this.alertItemBuilder,
     this.morePressActions,
-    this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
+    this.bubbleStyle,
     this.replyBarBuilder,
     this.quoteBuilder,
     this.onErrorBtnTapHandler,
@@ -76,8 +76,8 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   /// 昵称点击事件， 如果设置后昵称点击事件将直接回调，如果不处理可以返回 `false`。
   final MessageItemTapHandler? onNicknameTap;
 
-  /// 气泡样式，默认为 [ChatUIKitMessageListViewBubbleStyle.arrow]。
-  final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
+  /// 气泡样式，默认为 [ChatUIKitSettings.messageBubbleStyle]。
+  final ChatUIKitMessageListViewBubbleStyle? bubbleStyle;
 
   /// 消息 `item` 构建器, 如果设置后需要显示消息时会直接回调，如果不处理可以返回 `null`。
   final MessageItemBuilder? itemBuilder;
@@ -170,7 +170,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     /// 昵称点击事件， 如果设置后昵称点击事件将直接回调，如果不处理可以返回 `false`。
     MessageItemTapHandler? onNicknameTap,
 
-    /// 气泡样式，默认为 [ChatUIKitMessageListViewBubbleStyle.arrow]。
+    /// 气泡样式，默认为 [ChatUIKitSettings.messageBubbleStyle]。
     ChatUIKitMessageListViewBubbleStyle? bubbleStyle,
 
     /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitBottomSheetAction]。

@@ -87,21 +87,22 @@ class ChatUIKitTextBubbleWidget extends StatelessWidget {
           contents.add(
             Padding(
               padding: const EdgeInsets.only(top: 12),
-              child: CachedNetworkImage(
-                height: 118,
-                width: 300,
-                imageUrl: obj.imageUrl!,
-                fit: BoxFit.cover,
-                errorWidget: (context, url, error) {
-                  return Container(
-                    height: 118,
-                    width: 300,
-                    color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
-                    child: Center(
-                      child: Icon(
-                        Icons.error,
-                        color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
-                      ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return FittedBox(
+                    fit: BoxFit.none,
+                    child: CachedNetworkImage(
+                      height: 118,
+                      width: constraints.maxWidth + 24,
+                      imageUrl: obj.imageUrl!,
+                      fit: BoxFit.cover,
+                      errorWidget: (context, url, error) {
+                        return Container(
+                          height: 118,
+                          width: 300,
+                          color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
+                        );
+                      },
                     ),
                   );
                 },
@@ -163,6 +164,7 @@ class ChatUIKitTextBubbleWidget extends StatelessWidget {
     List<Widget> widgets = contents;
 
     if (model.message.isEdit) {
+      widgets.add(const SizedBox(height: 8));
       widgets.add(
         RichText(
           text: TextSpan(
@@ -232,9 +234,10 @@ class ChatUIKitTextBubbleWidget extends StatelessWidget {
           ),
         ),
       );
-
+      widgets.add(const SizedBox(height: 6));
       widgets.add(
         RichText(
+          textAlign: TextAlign.end,
           text: TextSpan(
             children: [
               WidgetSpan(

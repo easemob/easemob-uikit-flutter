@@ -15,7 +15,7 @@ class ChatUIKitMessageBubbleWidget extends StatelessWidget {
   const ChatUIKitMessageBubbleWidget({
     required this.child,
     this.isLeft = true,
-    this.style = ChatUIKitMessageListViewBubbleStyle.arrow,
+    this.style,
     this.color,
     this.needSmallCorner = true,
     this.padding,
@@ -28,46 +28,48 @@ class ChatUIKitMessageBubbleWidget extends StatelessWidget {
   final bool needSmallCorner;
   final EdgeInsets? padding;
 
-  final ChatUIKitMessageListViewBubbleStyle style;
+  final ChatUIKitMessageListViewBubbleStyle? style;
 
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-
     Widget content = child;
 
-    if (style == ChatUIKitMessageListViewBubbleStyle.arrow) {
+    if ((style ?? ChatUIKitSettings.messageBubbleStyle) == ChatUIKitMessageListViewBubbleStyle.arrow) {
       content = CustomPaint(
-        painter: _BubblePainter(
-          color: color ??
-              (!isLeft
-                  ? (theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5)
-                  : (theme.color.isDark ? theme.color.primaryColor2 : theme.color.primaryColor95)),
-          isLeft: isLeft,
-        ),
-        child: RepaintBoundary(
-          child: Padding(
-            padding: () {
-              if (padding != null) {
-                return EdgeInsets.only(
-                  left: padding!.left + (isLeft ? arrowWidth : 0),
-                  right: padding!.right + (!isLeft ? arrowWidth : 0),
-                  top: padding!.top,
-                  bottom: padding!.bottom,
-                );
-              } else {
-                return EdgeInsets.only(
-                  left: (isLeft ? arrowWidth : 0) + 12,
-                  right: (!isLeft ? arrowWidth : 0) + 12,
-                  top: 7,
-                  bottom: 7,
-                );
-              }
-            }(),
-            child: child,
+          painter: _BubblePainter(
+            color: color ??
+                (!isLeft
+                    ? (theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5)
+                    : (theme.color.isDark ? theme.color.primaryColor2 : theme.color.primaryColor95)),
+            isLeft: isLeft,
           ),
-        ),
-      );
+          child: RepaintBoundary(
+            child: Padding(
+              padding: () {
+                if (padding != null) {
+                  return EdgeInsets.only(
+                    left: padding!.left + (isLeft ? arrowWidth : 0),
+                    right: padding!.right + (!isLeft ? arrowWidth : 0),
+                    top: padding!.top,
+                    bottom: padding!.bottom,
+                  );
+                } else {
+                  return EdgeInsets.only(
+                    left: (isLeft ? arrowWidth : 0) + 12,
+                    right: (!isLeft ? arrowWidth : 0) + 12,
+                    top: 7,
+                    bottom: 7,
+                  );
+                }
+              }(),
+              child: child,
+            ),
+          )
+          // child: RepaintBoundary(
+          //   child: child,
+          // ),
+          );
     } else {
       content = Container(
         decoration: BoxDecoration(

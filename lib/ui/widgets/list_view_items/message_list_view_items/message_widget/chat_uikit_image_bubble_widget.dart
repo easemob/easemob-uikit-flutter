@@ -17,7 +17,7 @@ class ChatUIKitImageBubbleWidget extends StatefulWidget {
     super.key,
   });
   final MessageModel model;
-  final ChatUIKitMessageListViewBubbleStyle bubbleStyle;
+  final ChatUIKitMessageListViewBubbleStyle? bubbleStyle;
   final Color? progressIndicatorColor;
   final bool? isLeft;
   final bool isCombine;
