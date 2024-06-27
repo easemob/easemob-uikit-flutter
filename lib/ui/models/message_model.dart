@@ -8,6 +8,7 @@ class MessageModel {
   final List<MessageReaction>? reactions;
   final Message? quoteMessage;
   final ChatThread? thread;
+  final MessagePinInfo? pinInfo;
 
   MessageModel({
     String? modelId,
@@ -15,6 +16,7 @@ class MessageModel {
     this.reactions,
     this.quoteMessage,
     this.thread,
+    this.pinInfo,
   }) : id = modelId ?? randomId(message);
 
   MessageModel copyWith({
@@ -22,6 +24,7 @@ class MessageModel {
     List<MessageReaction>? reactions,
     Message? quoteMessage,
     ChatThread? thread,
+    MessagePinInfo? pinInfo,
   }) {
     return MessageModel(
       modelId: id,
@@ -29,6 +32,7 @@ class MessageModel {
       reactions: reactions ?? this.reactions,
       quoteMessage: quoteMessage ?? this.quoteMessage,
       thread: thread ?? this.thread,
+      pinInfo: pinInfo ?? this.pinInfo,
     );
   }
 
@@ -39,6 +43,17 @@ class MessageModel {
       reactions: reactions,
       quoteMessage: quoteMessage,
       thread: null,
+    );
+  }
+
+  MessageModel clearPinInfo() {
+    return MessageModel(
+      modelId: id,
+      message: message,
+      reactions: reactions,
+      quoteMessage: quoteMessage,
+      thread: thread,
+      pinInfo: null,
     );
   }
 

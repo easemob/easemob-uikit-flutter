@@ -31,7 +31,8 @@ class ChatUIKitTextBubbleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    bool left = forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
+    bool left =
+        forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     String str = model.message.textContent;
 
@@ -40,12 +41,16 @@ class ChatUIKitTextBubbleWidget extends StatelessWidget {
             ? TextStyle(
                 fontWeight: theme.font.bodyLarge.fontWeight,
                 fontSize: theme.font.bodyLarge.fontSize,
-                color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                color: theme.color.isDark
+                    ? theme.color.neutralColor98
+                    : theme.color.neutralColor1,
               )
             : TextStyle(
                 fontWeight: theme.font.bodyLarge.fontWeight,
                 fontSize: theme.font.bodyLarge.fontSize,
-                color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+                color: theme.color.isDark
+                    ? theme.color.neutralColor1
+                    : theme.color.neutralColor98,
               ));
 
     List<Widget> contents = [];
@@ -83,32 +88,50 @@ class ChatUIKitTextBubbleWidget extends StatelessWidget {
     } else {
       ChatUIKitPreviewObj? obj = model.message.getPreview();
       if (obj != null) {
-        if (obj.imageUrl != null) {
+        if (obj.imageUrl?.isNotEmpty == true) {
           contents.add(
             Padding(
               padding: const EdgeInsets.only(top: 12),
               child: LayoutBuilder(
                 builder: (context, constraints) {
+                  String imgUrl = obj.imageUrl!;
+                  if (imgUrl.startsWith('//')) {
+                    imgUrl = 'https:$imgUrl';
+                  } else if (imgUrl.startsWith('/')) {
+                    if (obj.url!.startsWith('http')) {
+                      imgUrl = '${obj.url}$imgUrl';
+                    } else {
+                      imgUrl = 'https://${obj.url!}$imgUrl';
+                    }
+                  }
                   return FittedBox(
                     fit: BoxFit.none,
                     child: CachedNetworkImage(
                       height: 118,
                       width: constraints.maxWidth + 24,
-                      imageUrl: obj.imageUrl!,
+                      imageUrl: imgUrl,
                       fit: BoxFit.cover,
                       placeholder: (context, url) {
                         return Container(
                           height: 118,
                           width: 300,
-                          color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
+                          color: theme.color.isDark
+                              ? theme.color.neutralColor3
+                              : theme.color.neutralColor95,
                         );
                       },
                       errorWidget: (context, url, error) {
+                        debugPrint('urlPreview errorWidget: $url');
                         return Container(
                           height: 118,
                           width: 300,
-                          color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
+                          color: theme.color.isDark
+                              ? theme.color.neutralColor3
+                              : theme.color.neutralColor95,
                         );
+                      },
+                      errorListener: (value) {
+                        debugPrint('urlPreview errorListener: $value');
                       },
                     ),
                   );
@@ -117,7 +140,7 @@ class ChatUIKitTextBubbleWidget extends StatelessWidget {
             ),
           );
         }
-        if (obj.title != null) {
+        if (obj.title?.isNotEmpty == true) {
           contents.add(
             Padding(
               padding: const EdgeInsets.only(top: 12),
@@ -141,7 +164,7 @@ class ChatUIKitTextBubbleWidget extends StatelessWidget {
             ),
           );
         }
-        if (obj.description != null) {
+        if (obj.description?.isNotEmpty == true) {
           contents.add(
             Padding(
               padding: const EdgeInsets.only(top: 5),
@@ -217,7 +240,9 @@ class ChatUIKitTextBubbleWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: Divider(
                 height: 0.5,
-                color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
+                color: theme.color.isDark
+                    ? theme.color.neutralColor3
+                    : theme.color.neutralColor95,
               ),
             )),
       );
@@ -328,6 +353,8 @@ class ChatUIKitTextBubbleWidget extends StatelessWidget {
       textDirection: TextDirection.ltr,
     )..layout(minWidth: 0, maxWidth: double.infinity);
 
-    return max(max(painter1.size.width, painter2.size.width), max(painter3.size.width, painter4.size.width)) + 5;
+    return max(max(painter1.size.width, painter2.size.width),
+            max(painter3.size.width, painter4.size.width)) +
+        5;
   }
 }

@@ -182,8 +182,10 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
       appBarModel: appBarModel ?? this.appBarModel,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       inputBar: inputBar ?? this.inputBar,
-      showMessageItemAvatar: showMessageItemAvatar ?? this.showMessageItemAvatar,
-      showMessageItemNickname: showMessageItemNickname ?? this.showMessageItemNickname,
+      showMessageItemAvatar:
+          showMessageItemAvatar ?? this.showMessageItemAvatar,
+      showMessageItemNickname:
+          showMessageItemNickname ?? this.showMessageItemNickname,
       onItemTap: onItemTap ?? this.onItemTap,
       onItemLongPress: onItemLongPress ?? this.onItemLongPress,
       onDoubleTap: onDoubleTap ?? this.onDoubleTap,
@@ -194,9 +196,11 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
       itemBuilder: itemBuilder ?? this.itemBuilder,
       alertItemBuilder: alertItemBuilder ?? this.alertItemBuilder,
       morePressActions: morePressActions ?? this.morePressActions,
-      onMoreActionsItemsHandler: onMoreActionsItemsHandler ?? this.onMoreActionsItemsHandler,
+      onMoreActionsItemsHandler:
+          onMoreActionsItemsHandler ?? this.onMoreActionsItemsHandler,
       longPressActions: longPressActions ?? this.longPressActions,
-      onItemLongPressHandler: onItemLongPressHandler ?? this.onItemLongPressHandler,
+      onItemLongPressHandler:
+          onItemLongPressHandler ?? this.onItemLongPressHandler,
       forceLeft: forceLeft ?? this.forceLeft,
       emojiWidget: emojiWidget ?? this.emojiWidget,
       replyBarBuilder: replyBarBuilder ?? this.replyBarBuilder,
@@ -204,14 +208,16 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
       onErrorBtnTapHandler: onErrorBtnTapHandler ?? this.onErrorBtnTapHandler,
       bubbleBuilder: bubbleBuilder ?? this.bubbleBuilder,
       bubbleContentBuilder: bubbleContentBuilder ?? this.bubbleContentBuilder,
-      inputBarTextEditingController: inputBarTextEditingController ?? this.inputBarTextEditingController,
+      inputBarTextEditingController:
+          inputBarTextEditingController ?? this.inputBarTextEditingController,
       multiSelectBottomBar: multiSelectBottomBar ?? this.multiSelectBottomBar,
       onReactionItemTap: onReactionItemTap ?? this.onReactionItemTap,
       onReactionInfoTap: onReactionInfoTap ?? this.onReactionInfoTap,
       reactionItemsBuilder: reactionItemsBuilder ?? this.reactionItemsBuilder,
       attributes: attributes ?? this.attributes,
       viewObserver: viewObserver ?? this.viewObserver,
-      rightTopMoreActionsBuilder: rightTopMoreActionsBuilder ?? this.rightTopMoreActionsBuilder,
+      rightTopMoreActionsBuilder:
+          rightTopMoreActionsBuilder ?? this.rightTopMoreActionsBuilder,
     );
   }
 }

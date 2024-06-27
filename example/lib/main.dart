@@ -30,7 +30,8 @@ void main() async {
     ),
   );
   SettingsDataStore().init();
-  return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) => runApp(const MyApp()));
+  return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -47,7 +48,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _localization.defaultLocale = [
-      ChatLocal('zh', Map.from(ChatUIKitLocal.zh)..addAll(DemoLocalizations.zh)),
+      ChatLocal(
+          'zh', Map.from(ChatUIKitLocal.zh)..addAll(DemoLocalizations.zh)),
       ChatLocal('en', Map.from(ChatUIKitLocal.en)..addAll(DemoLocalizations.en))
     ];
     // 添加语言后需要进行resetLocales操作
@@ -77,14 +79,17 @@ class _MyAppState extends State<MyApp> {
         builder: EasyLoading.init(
           builder: (context, child) {
             return ChatUIKitTheme(
-              color: AppSettingsNotification.isLight ? ChatUIKitColor.light() : ChatUIKitColor.dark(),
+              color: AppSettingsNotification.isLight
+                  ? ChatUIKitColor.light()
+                  : ChatUIKitColor.dark(),
               child: child!,
             );
           },
         ),
         home: const WelcomePage(),
         onGenerateRoute: (settings) {
-          RouteSettings newSettings = ChatRouteFilter.chatRouteSettings(settings);
+          RouteSettings newSettings =
+              ChatRouteFilter.chatRouteSettings(settings);
           return ChatUIKitRoute().generateRoute(newSettings) ??
               MaterialPageRoute(
                 builder: (context) {

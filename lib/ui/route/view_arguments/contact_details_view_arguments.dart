@@ -48,7 +48,8 @@ class ContactDetailsViewArguments implements ChatUIKitViewArguments {
       appBarModel: appBarModel ?? this.appBarModel,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
-      detailsListViewItemsBuilder: detailsListViewItemsBuilder ?? this.detailsListViewItemsBuilder,
+      detailsListViewItemsBuilder:
+          detailsListViewItemsBuilder ?? this.detailsListViewItemsBuilder,
       moreActionsBuilder: moreActionsBuilder ?? this.moreActionsBuilder,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       onContactDeleted: onContactDeleted ?? this.onContactDeleted,

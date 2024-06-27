@@ -63,15 +63,16 @@ class _ShowImageViewState extends State<ShowImageView> {
       titleTextStyle: widget.appBarModel?.titleTextStyle,
       subtitle: widget.appBarModel?.subtitle,
       subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
-      leadingActions:
-          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
-      trailingActions:
-          widget.appBarModel?.trailingActions ?? widget.appBarModel?.trailingActionsBuilder?.call(context, null),
+      leadingActions: widget.appBarModel?.leadingActions ??
+          widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions: widget.appBarModel?.trailingActions ??
+          widget.appBarModel?.trailingActionsBuilder?.call(context, null),
       showBackButton: widget.appBarModel?.showBackButton ?? true,
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
       centerTitle: widget.appBarModel?.centerTitle ?? false,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
-      backgroundColor: widget.appBarModel?.backgroundColor ?? Colors.transparent,
+      backgroundColor:
+          widget.appBarModel?.backgroundColor ?? Colors.transparent,
     );
   }
 

@@ -37,7 +37,8 @@ class SelectContactView extends StatefulWidget {
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
-  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)?
+      onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final bool enableAppBar;
@@ -76,8 +77,8 @@ class _SelectContactViewState extends State<SelectContactView> {
       titleTextStyle: widget.appBarModel?.titleTextStyle,
       subtitle: widget.appBarModel?.subtitle,
       subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
-      leadingActions:
-          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      leadingActions: widget.appBarModel?.leadingActions ??
+          widget.appBarModel?.leadingActionsBuilder?.call(context, null),
       trailingActions: () {
         List<ChatUIKitAppBarAction> actions = [
           ChatUIKitAppBarAction(
@@ -86,18 +87,23 @@ class _SelectContactViewState extends State<SelectContactView> {
               Navigator.of(context).pop();
             },
             child: Text(
-              ChatUIKitLocal.messagesViewSelectContactCancel.localString(context),
+              ChatUIKitLocal.messagesViewSelectContactCancel
+                  .localString(context),
               textScaler: TextScaler.noScaling,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                color: theme.color.isDark
+                    ? theme.color.neutralColor98
+                    : theme.color.neutralColor1,
                 fontWeight: theme.font.titleMedium.fontWeight,
                 fontSize: theme.font.titleMedium.fontSize,
               ),
             ),
           )
         ];
-        return widget.appBarModel?.trailingActionsBuilder?.call(context, actions) ?? actions;
+        return widget.appBarModel?.trailingActionsBuilder
+                ?.call(context, actions) ??
+            actions;
       }(),
       showBackButton: widget.appBarModel?.showBackButton ?? true,
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
@@ -113,7 +119,9 @@ class _SelectContactViewState extends State<SelectContactView> {
     updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: ContactListView(
         controller: controller,
@@ -141,7 +149,8 @@ class _SelectContactViewState extends State<SelectContactView> {
         onTap: (ctx, profile) {
           Navigator.of(ctx).pop(profile);
         },
-        searchHideText: ChatUIKitLocal.selectContactViewSearchHint.localString(context),
+        searchHideText:
+            ChatUIKitLocal.selectContactViewSearchHint.localString(context),
         searchData: list,
         attributes: widget.attributes,
       ),

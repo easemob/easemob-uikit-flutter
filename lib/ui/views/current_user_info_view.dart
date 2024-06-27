@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CurrentUserInfoView extends StatefulWidget {
-  CurrentUserInfoView.arguments(CurrentUserInfoViewArguments arguments, {super.key})
+  CurrentUserInfoView.arguments(CurrentUserInfoViewArguments arguments,
+      {super.key})
       : profile = arguments.profile,
         appBarModel = arguments.appBarModel,
         viewObserver = arguments.viewObserver,
@@ -30,7 +31,8 @@ class CurrentUserInfoView extends StatefulWidget {
   State<CurrentUserInfoView> createState() => _CurrentUserInfoViewState();
 }
 
-class _CurrentUserInfoViewState extends State<CurrentUserInfoView> with ChatUIKitProviderObserver {
+class _CurrentUserInfoViewState extends State<CurrentUserInfoView>
+    with ChatUIKitProviderObserver {
   ChatUIKitProfile? profile;
 
   ChatUIKitAppBarModel? appBarModel;
@@ -71,10 +73,10 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> with ChatUIKi
       titleTextStyle: widget.appBarModel?.titleTextStyle,
       subtitle: widget.appBarModel?.subtitle,
       subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
-      leadingActions:
-          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
-      trailingActions:
-          widget.appBarModel?.trailingActions ?? widget.appBarModel?.trailingActionsBuilder?.call(context, null),
+      leadingActions: widget.appBarModel?.leadingActions ??
+          widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions: widget.appBarModel?.trailingActions ??
+          widget.appBarModel?.trailingActionsBuilder?.call(context, null),
       showBackButton: widget.appBarModel?.showBackButton ?? true,
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
       centerTitle: widget.appBarModel?.centerTitle ?? true,
@@ -89,8 +91,11 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> with ChatUIKi
     updateAppBarModel(theme);
     Widget content = Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
-        appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
+        backgroundColor: theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98,
+        appBar:
+            widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
         body: _buildContent());
 
     return content;
@@ -104,14 +109,18 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> with ChatUIKi
     );
 
     Widget name = Text(
-      ChatUIKitProvider.instance.currentUserProfile?.showName ?? ChatUIKit.instance.currentUserId ?? '',
+      ChatUIKitProvider.instance.currentUserProfile?.showName ??
+          ChatUIKit.instance.currentUserId ??
+          '',
       overflow: TextOverflow.ellipsis,
       textScaler: TextScaler.noScaling,
       maxLines: 1,
       style: TextStyle(
         fontSize: theme.font.headlineLarge.fontSize,
         fontWeight: theme.font.headlineLarge.fontWeight,
-        color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
+        color: theme.color.isDark
+            ? theme.color.neutralColor100
+            : theme.color.neutralColor1,
       ),
     );
 
@@ -123,7 +132,9 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> with ChatUIKi
       style: TextStyle(
         fontSize: theme.font.bodySmall.fontSize,
         fontWeight: theme.font.bodySmall.fontWeight,
-        color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
+        color: theme.color.isDark
+            ? theme.color.neutralColor5
+            : theme.color.neutralColor7,
       ),
     );
 
@@ -142,7 +153,9 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView> with ChatUIKi
           child: Icon(
             Icons.file_copy_sharp,
             size: 16,
-            color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
+            color: theme.color.isDark
+                ? theme.color.neutralColor5
+                : theme.color.neutralColor7,
           ),
         ),
       ],

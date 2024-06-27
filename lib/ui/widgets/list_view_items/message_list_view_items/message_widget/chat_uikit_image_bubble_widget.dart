@@ -23,10 +23,12 @@ class ChatUIKitImageBubbleWidget extends StatefulWidget {
   final bool isCombine;
 
   @override
-  State<ChatUIKitImageBubbleWidget> createState() => _ChatUIKitImageBubbleWidgetState();
+  State<ChatUIKitImageBubbleWidget> createState() =>
+      _ChatUIKitImageBubbleWidgetState();
 }
 
-class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget> with MessageObserver {
+class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget>
+    with MessageObserver {
   late MessageModel model;
   bool downloading = false;
   bool downloadError = false;
@@ -62,7 +64,8 @@ class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget>
   @override
   void onError(String msgId, Message msg, ChatError error) {
     if (msgId == model.message.msgId && msg.bodyType == MessageType.IMAGE) {
-      (msg.body as ImageMessageBody).fileStatus != (model.message.body as ImageMessageBody).fileStatus;
+      (msg.body as ImageMessageBody).fileStatus !=
+          (model.message.body as ImageMessageBody).fileStatus;
       safeSetState(() {
         downloading = false;
         downloadError = true;
@@ -74,7 +77,8 @@ class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget>
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
 
-    bool left = widget.isLeft ?? model.message.direction == MessageDirection.RECEIVE;
+    bool left =
+        widget.isLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     String? localPath = model.message.localPath;
     String? thumbnailLocalPath = model.message.thumbnailLocalPath;
@@ -186,7 +190,10 @@ class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget>
     content = Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow ? 4 : 16),
+        borderRadius: BorderRadius.circular(
+            widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow
+                ? 4
+                : 16),
         border: Border.all(
           width: 1,
           color: theme.color.isDark
@@ -199,7 +206,10 @@ class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget>
         ),
       ),
       foregroundDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow ? 4 : 16),
+        borderRadius: BorderRadius.circular(
+            widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow
+                ? 4
+                : 16),
         border: Border.all(
           width: 1,
           color: theme.color.isDark
@@ -222,13 +232,15 @@ class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget>
     downloading = true;
     if (model.message.thumbnailLocalPath?.isNotEmpty == true) {
       if (widget.isCombine) {
-        ChatUIKit.instance.downloadMessageThumbnailInCombine(message: model.message);
+        ChatUIKit.instance
+            .downloadMessageThumbnailInCombine(message: model.message);
       } else {
         ChatUIKit.instance.downloadThumbnail(message: model.message);
       }
     } else {
       if (widget.isCombine) {
-        ChatUIKit.instance.downloadMessageAttachmentInCombine(message: model.message);
+        ChatUIKit.instance
+            .downloadMessageAttachmentInCombine(message: model.message);
       } else {
         ChatUIKit.instance.downloadAttachment(message: model.message);
       }
@@ -241,13 +253,17 @@ class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget>
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9,
+        color: theme.color.isDark
+            ? theme.color.neutralColor2
+            : theme.color.neutralColor9,
       ),
       child: Center(
         child: ChatUIKitImageLoader.imageDefault(
           width: 64,
           height: 64,
-          color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
+          color: theme.color.isDark
+              ? theme.color.neutralColor5
+              : theme.color.neutralColor7,
         ),
       ),
     );

@@ -80,13 +80,14 @@ class _CreateGroupViewState extends State<CreateGroupView> {
 
   void updateAppBarModel(ChatUIKitTheme theme) {
     appBarModel = ChatUIKitAppBarModel(
-      title: widget.appBarModel?.title ?? ChatUIKitLocal.createGroupViewTitle.localString(context),
+      title: widget.appBarModel?.title ??
+          ChatUIKitLocal.createGroupViewTitle.localString(context),
       centerWidget: widget.appBarModel?.centerWidget,
       titleTextStyle: widget.appBarModel?.titleTextStyle,
       subtitle: widget.appBarModel?.subtitle,
       subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
-      leadingActions:
-          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      leadingActions: widget.appBarModel?.leadingActions ??
+          widget.appBarModel?.leadingActionsBuilder?.call(context, null),
       trailingActions: widget.appBarModel?.trailingActions ??
           () {
             List<ChatUIKitAppBarAction> actions = [
@@ -100,19 +101,24 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                 },
                 child: Text(
                   selectedProfiles.isEmpty
-                      ? ChatUIKitLocal.createGroupViewCreate.localString(context)
+                      ? ChatUIKitLocal.createGroupViewCreate
+                          .localString(context)
                       : '${ChatUIKitLocal.createGroupViewCreate.localString(context)}(${selectedProfiles.length})',
                   textScaler: TextScaler.noScaling,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                    color: theme.color.isDark
+                        ? theme.color.primaryColor6
+                        : theme.color.primaryColor5,
                     fontWeight: theme.font.labelMedium.fontWeight,
                     fontSize: theme.font.labelMedium.fontSize,
                   ),
                 ),
               ),
             ];
-            return widget.appBarModel?.trailingActionsBuilder?.call(context, actions) ?? actions;
+            return widget.appBarModel?.trailingActionsBuilder
+                    ?.call(context, actions) ??
+                actions;
           }(),
       showBackButton: widget.appBarModel?.showBackButton ?? true,
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
@@ -128,7 +134,9 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: ContactListView(
         controller: controller,
@@ -148,12 +156,16 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                           ? Icon(
                               Icons.check_box,
                               size: 28,
-                              color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                              color: theme.color.isDark
+                                  ? theme.color.primaryColor6
+                                  : theme.color.primaryColor5,
                             )
                           : Icon(
                               Icons.check_box_outline_blank,
                               size: 28,
-                              color: theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor7,
+                              color: theme.color.isDark
+                                  ? theme.color.neutralColor4
+                                  : theme.color.neutralColor7,
                             ),
                       Expanded(child: ChatUIKitContactListViewItem(model))
                     ],
@@ -184,7 +196,8 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                   Navigator.of(ctx).pop(profile);
                 },
                 canChangeSelected: selectedProfiles,
-                searchHideText: ChatUIKitLocal.createGroupViewSearchContact.localString(context),
+                searchHideText: ChatUIKitLocal.createGroupViewSearchContact
+                    .localString(context),
                 searchData: list,
                 enableMulti: true,
                 attributes: widget.attributes))
@@ -227,7 +240,8 @@ class _CreateGroupViewState extends State<CreateGroupView> {
       groupName: info?.groupName ??
           widget.createGroupInfo?.groupName ??
           [
-            ...selectedProfiles + [ChatUIKitProvider.instance.currentUserProfile!]
+            ...selectedProfiles +
+                [ChatUIKitProvider.instance.currentUserProfile!]
           ].map((e) => e.showName).join(','),
       desc: info?.groupDesc ?? widget.createGroupInfo?.groupDesc,
       options: GroupOptions(

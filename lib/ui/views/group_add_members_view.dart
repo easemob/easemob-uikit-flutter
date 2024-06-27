@@ -3,7 +3,8 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
 class GroupAddMembersView extends StatefulWidget {
-  GroupAddMembersView.arguments(GroupAddMembersViewArguments arguments, {super.key})
+  GroupAddMembersView.arguments(GroupAddMembersViewArguments arguments,
+      {super.key})
       : listViewItemBuilder = arguments.listViewItemBuilder,
         onSearchTap = arguments.onSearchTap,
         searchBarHideText = arguments.searchBarHideText,
@@ -42,7 +43,8 @@ class GroupAddMembersView extends StatefulWidget {
   final List<ChatUIKitProfile>? inGroupMembers;
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
-  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)?
+      onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final bool enableAppBar;
@@ -76,13 +78,14 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
 
   void updateAppBarModel(ChatUIKitTheme theme) {
     appBarModel = ChatUIKitAppBarModel(
-      title: widget.appBarModel?.title ?? ChatUIKitLocal.groupAddMembersViewTitle.localString(context),
+      title: widget.appBarModel?.title ??
+          ChatUIKitLocal.groupAddMembersViewTitle.localString(context),
       centerWidget: widget.appBarModel?.centerWidget,
       titleTextStyle: widget.appBarModel?.titleTextStyle,
       subtitle: widget.appBarModel?.subtitle,
       subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
-      leadingActions:
-          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      leadingActions: widget.appBarModel?.leadingActions ??
+          widget.appBarModel?.leadingActionsBuilder?.call(context, null),
       trailingActions: () {
         List<ChatUIKitAppBarAction> actions = [
           ChatUIKitAppBarAction(
@@ -100,14 +103,18 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
               textScaler: TextScaler.noScaling,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                color: theme.color.isDark
+                    ? theme.color.primaryColor6
+                    : theme.color.primaryColor5,
                 fontWeight: theme.font.labelMedium.fontWeight,
                 fontSize: theme.font.labelMedium.fontSize,
               ),
             ),
           )
         ];
-        return widget.appBarModel?.trailingActionsBuilder?.call(context, actions) ?? actions;
+        return widget.appBarModel?.trailingActionsBuilder
+                ?.call(context, actions) ??
+            actions;
       }(),
       showBackButton: widget.appBarModel?.showBackButton ?? true,
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
@@ -123,7 +130,9 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
     updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: ContactListView(
         controller: controller,
@@ -133,7 +142,9 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
                 highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
                 onTap: () {
-                  if (widget.inGroupMembers?.any((element) => element.id == model.profile.id) != true) {
+                  if (widget.inGroupMembers
+                          ?.any((element) => element.id == model.profile.id) !=
+                      true) {
                     tapContactInfo(model.profile);
                   }
                 },
@@ -143,31 +154,43 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
                     children: [
                       Row(
                         children: [
-                          widget.inGroupMembers?.any((element) => element.id == model.profile.id) == true
+                          widget.inGroupMembers?.any((element) =>
+                                      element.id == model.profile.id) ==
+                                  true
                               ? Icon(
                                   Icons.check_box,
                                   size: 28,
-                                  color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                                  color: theme.color.isDark
+                                      ? theme.color.primaryColor6
+                                      : theme.color.primaryColor5,
                                 )
                               : selectedProfiles.contains(model.profile)
                                   ? Icon(
                                       Icons.check_box,
                                       size: 28,
-                                      color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                                      color: theme.color.isDark
+                                          ? theme.color.primaryColor6
+                                          : theme.color.primaryColor5,
                                     )
                                   : Icon(
                                       Icons.check_box_outline_blank,
                                       size: 28,
-                                      color: theme.color.isDark ? theme.color.neutralColor4 : theme.color.neutralColor7,
+                                      color: theme.color.isDark
+                                          ? theme.color.neutralColor4
+                                          : theme.color.neutralColor7,
                                     ),
                           Expanded(child: ChatUIKitContactListViewItem(model))
                         ],
                       ),
-                      if (widget.inGroupMembers?.any((element) => element.id == model.profile.id) == true)
+                      if (widget.inGroupMembers?.any(
+                              (element) => element.id == model.profile.id) ==
+                          true)
                         Opacity(
                           opacity: 0.6,
                           child: Container(
-                            color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+                            color: theme.color.isDark
+                                ? theme.color.neutralColor1
+                                : theme.color.neutralColor98,
                           ),
                         ),
                     ],
@@ -198,7 +221,8 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView> {
           },
           cantChangeSelected: widget.inGroupMembers,
           canChangeSelected: selectedProfiles,
-          searchHideText: ChatUIKitLocal.createGroupViewSearchContact.localString(context),
+          searchHideText:
+              ChatUIKitLocal.createGroupViewSearchContact.localString(context),
           searchData: list,
           enableMulti: true,
           attributes: widget.attributes,

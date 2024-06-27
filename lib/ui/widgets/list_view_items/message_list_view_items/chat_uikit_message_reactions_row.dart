@@ -17,10 +17,12 @@ class ChatUIKitMessageReactionsRow extends StatefulWidget {
   final bool isLeft;
 
   @override
-  State<ChatUIKitMessageReactionsRow> createState() => _ChatUIKitMessageReactionsRowState();
+  State<ChatUIKitMessageReactionsRow> createState() =>
+      _ChatUIKitMessageReactionsRowState();
 }
 
-class _ChatUIKitMessageReactionsRowState extends State<ChatUIKitMessageReactionsRow> {
+class _ChatUIKitMessageReactionsRowState
+    extends State<ChatUIKitMessageReactionsRow> {
   @override
   void initState() {
     super.initState();
@@ -70,7 +72,9 @@ class _ChatUIKitMessageReactionsRowState extends State<ChatUIKitMessageReactions
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 2),
               decoration: BoxDecoration(
-                color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor95,
+                color: theme.color.isDark
+                    ? theme.color.neutralColor2
+                    : theme.color.neutralColor95,
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Padding(
@@ -81,7 +85,9 @@ class _ChatUIKitMessageReactionsRowState extends State<ChatUIKitMessageReactions
           ),
         );
         return Row(
-            mainAxisAlignment: widget.isLeft ? MainAxisAlignment.start : MainAxisAlignment.end, children: children);
+            mainAxisAlignment:
+                widget.isLeft ? MainAxisAlignment.start : MainAxisAlignment.end,
+            children: children);
       },
     );
   }

@@ -4,7 +4,8 @@ import 'package:em_chat_uikit/universal/inner_headers.dart';
 import 'package:flutter/material.dart';
 
 class GroupChangeOwnerView extends StatefulWidget {
-  GroupChangeOwnerView.arguments(GroupChangeOwnerViewArguments arguments, {super.key})
+  GroupChangeOwnerView.arguments(GroupChangeOwnerViewArguments arguments,
+      {super.key})
       : groupId = arguments.groupId,
         listViewItemBuilder = arguments.listViewItemBuilder,
         onSearchTap = arguments.onSearchTap,
@@ -44,7 +45,8 @@ class GroupChangeOwnerView extends StatefulWidget {
 
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onItemTap;
-  final void Function(BuildContext context, ContactItemModel model)? onItemLongPress;
+  final void Function(BuildContext context, ContactItemModel model)?
+      onItemLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final String? loadErrorMessage;
@@ -83,15 +85,16 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
 
   void updateAppBarModel(ChatUIKitTheme theme) {
     appBarModel = ChatUIKitAppBarModel(
-      title: widget.appBarModel?.title ?? ChatUIKitLocal.groupChangeOwnerViewTitle.localString(context),
+      title: widget.appBarModel?.title ??
+          ChatUIKitLocal.groupChangeOwnerViewTitle.localString(context),
       centerWidget: widget.appBarModel?.centerWidget,
       titleTextStyle: widget.appBarModel?.titleTextStyle,
       subtitle: widget.appBarModel?.subtitle,
       subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
-      leadingActions:
-          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
-      trailingActions:
-          widget.appBarModel?.trailingActions ?? widget.appBarModel?.trailingActionsBuilder?.call(context, null),
+      leadingActions: widget.appBarModel?.leadingActions ??
+          widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions: widget.appBarModel?.trailingActions ??
+          widget.appBarModel?.trailingActionsBuilder?.call(context, null),
       showBackButton: widget.appBarModel?.showBackButton ?? true,
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
       centerTitle: widget.appBarModel?.centerTitle ?? false,
@@ -106,7 +109,9 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
     updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: GroupMemberListView(
         groupId: widget.groupId,
@@ -147,17 +152,20 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
   void showConfirmDialog(BuildContext context, ContactItemModel model) async {
     bool? ret = await showChatUIKitDialog(
       title: Strings.format(
-          '${ChatUIKitLocal.groupChangeOwnerViewAlertTitle.localString(context)}"%a"?', [model.profile.nickname]),
+          '${ChatUIKitLocal.groupChangeOwnerViewAlertTitle.localString(context)}"%a"?',
+          [model.profile.nickname]),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal.groupChangeOwnerViewAlertButtonCancel.localString(context),
+          label: ChatUIKitLocal.groupChangeOwnerViewAlertButtonCancel
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
-          label: ChatUIKitLocal.groupChangeOwnerViewAlertButtonConfirm.localString(context),
+          label: ChatUIKitLocal.groupChangeOwnerViewAlertButtonConfirm
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },
@@ -166,7 +174,9 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
     );
 
     if (ret == true) {
-      ChatUIKit.instance.changeGroupOwner(groupId: widget.groupId, newOwner: model.profile.id).then((value) {
+      ChatUIKit.instance
+          .changeGroupOwner(groupId: widget.groupId, newOwner: model.profile.id)
+          .then((value) {
         Navigator.of(context).pop(true);
       }).catchError((e) {});
     }

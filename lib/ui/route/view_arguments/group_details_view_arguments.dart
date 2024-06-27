@@ -45,7 +45,8 @@ class GroupDetailsViewArguments implements ChatUIKitViewArguments {
       appBarModel: appBarModel ?? this.appBarModel,
       onMessageDidClear: onMessageDidClear ?? this.onMessageDidClear,
       viewObserver: viewObserver ?? this.viewObserver,
-      detailsListViewItemsBuilder: detailsListViewItemsBuilder ?? this.detailsListViewItemsBuilder,
+      detailsListViewItemsBuilder:
+          detailsListViewItemsBuilder ?? this.detailsListViewItemsBuilder,
       moreActionsBuilder: moreActionsBuilder ?? this.moreActionsBuilder,
       attributes: attributes ?? this.attributes,
     );

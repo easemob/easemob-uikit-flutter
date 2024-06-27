@@ -38,7 +38,8 @@ class NewRequestsView extends StatefulWidget {
   final void Function(List<NewRequestItemModel> data)? onSearchTap;
   final ChatUIKitNewRequestItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, NewRequestItemModel model)? onTap;
-  final void Function(BuildContext context, NewRequestItemModel model)? onLongPress;
+  final void Function(BuildContext context, NewRequestItemModel model)?
+      onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
   final String? loadErrorMessage;
@@ -52,7 +53,8 @@ class NewRequestsView extends StatefulWidget {
   State<NewRequestsView> createState() => _NewRequestsViewState();
 }
 
-class _NewRequestsViewState extends State<NewRequestsView> with ContactObserver, ChatSDKEventsObserver {
+class _NewRequestsViewState extends State<NewRequestsView>
+    with ContactObserver, ChatSDKEventsObserver {
   late final NewRequestListViewController controller;
   ChatUIKitAppBarModel? appBarModel;
   @override
@@ -74,15 +76,16 @@ class _NewRequestsViewState extends State<NewRequestsView> with ContactObserver,
 
   void updateAppBarModel(ChatUIKitTheme theme) {
     appBarModel = ChatUIKitAppBarModel(
-      title: widget.appBarModel?.title ?? ChatUIKitLocal.newRequestsViewTitle.localString(context),
+      title: widget.appBarModel?.title ??
+          ChatUIKitLocal.newRequestsViewTitle.localString(context),
       centerWidget: widget.appBarModel?.centerWidget,
       titleTextStyle: widget.appBarModel?.titleTextStyle,
       subtitle: widget.appBarModel?.subtitle,
       subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
-      leadingActions:
-          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
-      trailingActions:
-          widget.appBarModel?.trailingActions ?? widget.appBarModel?.trailingActionsBuilder?.call(context, null),
+      leadingActions: widget.appBarModel?.leadingActions ??
+          widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions: widget.appBarModel?.trailingActions ??
+          widget.appBarModel?.trailingActionsBuilder?.call(context, null),
       showBackButton: widget.appBarModel?.showBackButton ?? true,
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
       centerTitle: widget.appBarModel?.centerTitle ?? false,
@@ -98,8 +101,11 @@ class _NewRequestsViewState extends State<NewRequestsView> with ContactObserver,
     updateAppBarModel(theme);
     Widget content = Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
-        appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
+        backgroundColor: theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98,
+        appBar:
+            widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
         body: SafeArea(
           child: NewRequestsListView(
             controller: controller,

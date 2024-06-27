@@ -25,15 +25,18 @@ class ChatRouteFilter {
 
   static RouteSettings groupDetail(RouteSettings settings) {
     ChatUIKitViewObserver? viewObserver = ChatUIKitViewObserver();
-    GroupDetailsViewArguments arguments = settings.arguments as GroupDetailsViewArguments;
+    GroupDetailsViewArguments arguments =
+        settings.arguments as GroupDetailsViewArguments;
 
     arguments = arguments.copyWith(
       viewObserver: viewObserver,
     );
     Future(() async {
       debugPrint('groupDetail: ${arguments.profile.id}');
-      Group group = await ChatUIKit.instance.fetchGroupInfo(groupId: arguments.profile.id);
-      ChatUIKitProfile profile = arguments.profile.copyWith(name: group.name, avatarUrl: group.extension);
+      Group group = await ChatUIKit.instance
+          .fetchGroupInfo(groupId: arguments.profile.id);
+      ChatUIKitProfile profile = arguments.profile
+          .copyWith(name: group.name, avatarUrl: group.extension);
       ChatUIKitProvider.instance.addProfiles([profile]);
       UserDataStore().saveUserData(profile);
     }).then((value) {
@@ -48,7 +51,8 @@ class ChatRouteFilter {
   // 自定义 contact detail view
   static RouteSettings contactDetail(RouteSettings settings) {
     ChatUIKitViewObserver? viewObserver = ChatUIKitViewObserver();
-    ContactDetailsViewArguments arguments = settings.arguments as ContactDetailsViewArguments;
+    ContactDetailsViewArguments arguments =
+        settings.arguments as ContactDetailsViewArguments;
 
     arguments = arguments.copyWith(
       viewObserver: viewObserver,
@@ -58,31 +62,43 @@ class ChatRouteFilter {
         return [
           ChatUIKitDetailsListViewItemModel(
             title: DemoLocalizations.contactRemark.localString(context),
-            trailing: Text(ChatUIKitProvider.instance.getProfile(arguments.profile).remark ?? ''),
+            trailing: Text(ChatUIKitProvider.instance
+                    .getProfile(arguments.profile)
+                    .remark ??
+                ''),
             onTap: () async {
               String? remark = await showChatUIKitDialog(
                 context: context,
                 title: DemoLocalizations.contactRemark.localString(context),
-                hintsText: [DemoLocalizations.contactRemarkDesc.localString(context)],
+                hintsText: [
+                  DemoLocalizations.contactRemarkDesc.localString(context)
+                ],
                 items: [
                   ChatUIKitDialogItem.inputsConfirm(
-                    label: DemoLocalizations.contactRemarkConfirm.localString(context),
+                    label: DemoLocalizations.contactRemarkConfirm
+                        .localString(context),
                     onInputsTap: (inputs) async {
                       Navigator.of(context).pop(inputs.first);
                     },
                   ),
-                  ChatUIKitDialogItem.cancel(label: DemoLocalizations.contactRemarkCancel.localString(context)),
+                  ChatUIKitDialogItem.cancel(
+                      label: DemoLocalizations.contactRemarkCancel
+                          .localString(context)),
                 ],
               );
 
               if (remark?.isNotEmpty == true) {
-                ChatUIKit.instance.updateContactRemark(arguments.profile.id, remark!).then((value) {
-                  ChatUIKitProfile profile = arguments.profile.copyWith(remark: remark);
+                ChatUIKit.instance
+                    .updateContactRemark(arguments.profile.id, remark!)
+                    .then((value) {
+                  ChatUIKitProfile profile =
+                      arguments.profile.copyWith(remark: remark);
                   // 更新数据，并设置到provider中
                   UserDataStore().saveUserData(profile);
                   ChatUIKitProvider.instance.addProfiles([profile]);
                 }).catchError((e) {
-                  EasyLoading.showError(DemoLocalizations.contactRemarkFailed.localString(context));
+                  EasyLoading.showError(DemoLocalizations.contactRemarkFailed
+                      .localString(context));
                 });
               }
             },
@@ -114,7 +130,8 @@ class ChatRouteFilter {
     Future(() async {
       String userId = arguments.profile.id;
       try {
-        Map<String, UserInfo> map = await ChatUIKit.instance.fetchUserInfoByIds([userId]);
+        Map<String, UserInfo> map =
+            await ChatUIKit.instance.fetchUserInfoByIds([userId]);
         UserInfo? userInfo = map[userId];
         Contact? contact = await ChatUIKit.instance.getContact(userId);
         if (contact != null) {
@@ -140,7 +157,8 @@ class ChatRouteFilter {
 
   // 为 MessagesView 添加文件点击下载
   static RouteSettings messagesView(RouteSettings settings) {
-    MessagesViewArguments arguments = settings.arguments as MessagesViewArguments;
+    MessagesViewArguments arguments =
+        settings.arguments as MessagesViewArguments;
     ChatUIKitViewObserver viewObserver = ChatUIKitViewObserver();
 
     arguments = arguments.copyWith(
@@ -182,7 +200,8 @@ class ChatRouteFilter {
 
   // 添加创建群组拦截，并添加设置群名称功能
   static RouteSettings createGroupView(RouteSettings settings) {
-    CreateGroupViewArguments arguments = settings.arguments as CreateGroupViewArguments;
+    CreateGroupViewArguments arguments =
+        settings.arguments as CreateGroupViewArguments;
     arguments = arguments.copyWith(
       createGroupHandler: (context, selectedProfiles) async {
         String? groupName = await showChatUIKitDialog(
@@ -209,10 +228,13 @@ class ChatRouteFilter {
               if (error != null) {
                 showChatUIKitDialog(
                   context: context,
-                  title: DemoLocalizations.createGroupFailed.localString(context),
+                  title:
+                      DemoLocalizations.createGroupFailed.localString(context),
                   content: error.description,
                   items: [
-                    ChatUIKitDialogItem.confirm(label: DemoLocalizations.createGroupConfirm.localString(context)),
+                    ChatUIKitDialogItem.confirm(
+                        label: DemoLocalizations.createGroupConfirm
+                            .localString(context)),
                   ],
                 );
               } else {

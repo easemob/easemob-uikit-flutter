@@ -181,7 +181,8 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     Widget? emojiWidget,
     Widget? Function(BuildContext context, MessageModel model)? replyBarBuilder,
     Widget Function(BuildContext context, QuoteModel model)? quoteBuilder,
-    bool Function(BuildContext context, MessageModel message)? onErrorBtnTapHandler,
+    bool Function(BuildContext context, MessageModel message)?
+        onErrorBtnTapHandler,
     MessageItemBubbleBuilder? bubbleBuilder,
     MessageItemBuilder? bubbleContentBuilder,
     MessagesViewMorePressHandler? onMoreActionsItemsHandler,
@@ -203,8 +204,10 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       controller: controller ?? this.controller,
       appBarModel: appBarModel ?? this.appBarModel,
       inputBar: inputBar ?? this.inputBar,
-      showMessageItemAvatar: showMessageItemAvatar ?? this.showMessageItemAvatar,
-      showMessageItemNickname: showMessageItemNickname ?? this.showMessageItemNickname,
+      showMessageItemAvatar:
+          showMessageItemAvatar ?? this.showMessageItemAvatar,
+      showMessageItemNickname:
+          showMessageItemNickname ?? this.showMessageItemNickname,
       onItemTap: onItemTap ?? this.onItemTap,
       onDoubleTap: onDoubleTap ?? this.onDoubleTap,
       onAvatarTap: onAvatarTap ?? this.onAvatarTap,
@@ -220,10 +223,13 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       onErrorBtnTapHandler: onErrorBtnTapHandler ?? this.onErrorBtnTapHandler,
       bubbleBuilder: bubbleBuilder ?? this.bubbleBuilder,
       bubbleContentBuilder: bubbleContentBuilder ?? this.bubbleContentBuilder,
-      onMoreActionsItemsHandler: onMoreActionsItemsHandler ?? this.onMoreActionsItemsHandler,
-      onItemLongPressHandler: onItemLongPressHandler ?? this.onItemLongPressHandler,
+      onMoreActionsItemsHandler:
+          onMoreActionsItemsHandler ?? this.onMoreActionsItemsHandler,
+      onItemLongPressHandler:
+          onItemLongPressHandler ?? this.onItemLongPressHandler,
       enableAppBar: enableAppBar ?? this.enableAppBar,
-      inputBarTextEditingController: inputBarTextEditingController ?? this.inputBarTextEditingController,
+      inputBarTextEditingController:
+          inputBarTextEditingController ?? this.inputBarTextEditingController,
       forceLeft: forceLeft ?? this.forceLeft,
       multiSelectBottomBar: multiSelectBottomBar ?? this.multiSelectBottomBar,
       viewObserver: viewObserver ?? this.viewObserver,

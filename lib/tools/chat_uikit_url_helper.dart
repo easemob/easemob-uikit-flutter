@@ -28,7 +28,8 @@ class ChatUIKitURLHelper {
     return _fetchingIds.contains(msgId);
   }
 
-  Future<ChatUIKitPreviewObj?> fetchPreview(String url, {String? messageId}) async {
+  Future<ChatUIKitPreviewObj?> fetchPreview(String url,
+      {String? messageId}) async {
     try {
       final response = await fetchWithRedirects(url);
       final document = parse(await response.transform(utf8.decoder).join());
@@ -36,7 +37,9 @@ class ChatUIKitURLHelper {
         _fetchingIds.add(messageId);
       }
       String? title = document.head?.querySelector('title')?.text;
-      String? desc = document.head?.querySelector("meta[name='description']")?.attributes['content'];
+      String? desc = document.head
+          ?.querySelector("meta[name='description']")
+          ?.attributes['content'];
       String? image = document.body?.querySelector('img')?.attributes['src'];
 
       return title?.isNotEmpty == true
@@ -54,7 +57,8 @@ class ChatUIKitURLHelper {
 
   String? getUrlFromText(String text) {
     String? url;
-    Iterable<RegExpMatch> match = ChatUIKitSettings.defaultUrlRegExp.allMatches(text);
+    Iterable<RegExpMatch> match =
+        ChatUIKitSettings.defaultUrlRegExp.allMatches(text);
     if (match.isNotEmpty) {
       url = text.substring(match.first.start, match.first.end);
     }
@@ -102,7 +106,8 @@ class ChatUIKitURLHelper {
 
   bool _isRedirect(HttpClientResponse response) {
     if (response.redirects.isNotEmpty) {
-      return [301, 302, 303, 307, 308].contains(response.redirects.last.statusCode);
+      return [301, 302, 303, 307, 308]
+          .contains(response.redirects.last.statusCode);
     }
     return false;
   }

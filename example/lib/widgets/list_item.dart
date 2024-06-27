@@ -53,7 +53,9 @@ class ListItem extends StatelessWidget {
                   style: TextStyle(
                     fontSize: theme.font.titleMedium.fontSize,
                     fontWeight: theme.font.titleMedium.fontWeight,
-                    color: theme.color.isDark ? theme.color.neutralColor100 : theme.color.neutralColor1,
+                    color: theme.color.isDark
+                        ? theme.color.neutralColor100
+                        : theme.color.neutralColor1,
                   ),
                 ),
                 if (subtitle?.isNotEmpty == true)
@@ -63,7 +65,9 @@ class ListItem extends StatelessWidget {
                     style: TextStyle(
                       fontSize: theme.font.labelMedium.fontSize,
                       fontWeight: theme.font.labelMedium.fontWeight,
-                      color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor5,
+                      color: theme.color.isDark
+                          ? theme.color.neutralColor7
+                          : theme.color.neutralColor5,
                     ),
                   ),
               ],
@@ -88,7 +92,9 @@ class ListItem extends StatelessWidget {
                     TextStyle(
                       fontSize: theme.font.labelMedium.fontSize,
                       fontWeight: theme.font.labelMedium.fontWeight,
-                      color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor5,
+                      color: theme.color.isDark
+                          ? theme.color.neutralColor7
+                          : theme.color.neutralColor5,
                     ),
               ),
             ),
@@ -97,7 +103,9 @@ class ListItem extends StatelessWidget {
             Icon(
               Icons.arrow_forward_ios,
               size: 16,
-              color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
+              color: theme.color.isDark
+                  ? theme.color.neutralColor95
+                  : theme.color.neutralColor3,
             ),
         ],
       ),
@@ -117,7 +125,9 @@ class ListItem extends StatelessWidget {
           bottom: 0,
           child: Divider(
             height: 0.5,
-            color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9,
+            color: theme.color.isDark
+                ? theme.color.neutralColor2
+                : theme.color.neutralColor9,
           ),
         ),
       ],

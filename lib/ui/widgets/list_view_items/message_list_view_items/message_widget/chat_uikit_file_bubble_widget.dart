@@ -21,7 +21,8 @@ class ChatUIKitFileBubbleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
-    bool left = forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
+    bool left =
+        forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     Widget title = Text(
       model.message.displayName ?? '',
@@ -61,12 +62,20 @@ class ChatUIKitFileBubbleWidget extends StatelessWidget {
     );
 
     Widget fileIcon = ChatUIKitImageLoader.file(
-        width: 32, height: 32, color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor7);
+        width: 32,
+        height: 32,
+        color: theme.color.isDark
+            ? theme.color.neutralColor6
+            : theme.color.neutralColor7);
     fileIcon = Container(
       decoration: BoxDecoration(
-          borderRadius:
-              BorderRadius.all(Radius.circular(bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow ? 4 : 8)),
-          color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor100),
+          borderRadius: BorderRadius.all(Radius.circular(
+              bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow
+                  ? 4
+                  : 8)),
+          color: theme.color.isDark
+              ? theme.color.neutralColor2
+              : theme.color.neutralColor100),
       padding: const EdgeInsets.all(6),
       margin: const EdgeInsets.only(
         top: 4,
@@ -86,7 +95,11 @@ class ChatUIKitFileBubbleWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       textDirection: !left ? TextDirection.rtl : TextDirection.ltr,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [Expanded(child: content), const SizedBox(width: 12), icon ?? fileIcon],
+      children: [
+        Expanded(child: content),
+        const SizedBox(width: 12),
+        icon ?? fileIcon
+      ],
     );
 
     return content;

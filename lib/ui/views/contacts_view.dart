@@ -68,7 +68,8 @@ class ContactsView extends StatefulWidget {
   final void Function(BuildContext context, ContactItemModel model)? onTap;
 
   /// 长按联系人列表的回调，长按后会把当前的联系人数据传递过来。具体参考 [ContactItemModel]。
-  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)?
+      onLongPress;
 
   /// 联系人搜索框的隐藏文字。
   final String? searchHideText;
@@ -117,7 +118,9 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
       title: widget.appBarModel?.title ?? 'Contacts',
       titleTextStyle: widget.appBarModel?.titleTextStyle ??
           TextStyle(
-            color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+            color: theme.color.isDark
+                ? theme.color.primaryColor6
+                : theme.color.primaryColor5,
             fontSize: theme.font.titleLarge.fontSize,
             fontWeight: FontWeight.w900,
           ),
@@ -134,11 +137,14 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
                 actionType: ChatUIKitActionType.avatar,
                 child: ChatUIKitAvatar.current(
                   size: 32,
-                  avatarUrl: ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
+                  avatarUrl:
+                      ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
                 ),
               ),
             );
-            return widget.appBarModel?.leadingActionsBuilder?.call(context, actions) ?? actions;
+            return widget.appBarModel?.leadingActionsBuilder
+                    ?.call(context, actions) ??
+                actions;
           }(),
       trailingActions: widget.appBarModel?.trailingActions ??
           () {
@@ -150,12 +156,16 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
                 },
                 child: Icon(
                   Icons.person_add_alt_1_outlined,
-                  color: theme.color.isDark ? theme.color.neutralColor95 : theme.color.neutralColor3,
+                  color: theme.color.isDark
+                      ? theme.color.neutralColor95
+                      : theme.color.neutralColor3,
                   size: 24,
                 ),
               ),
             ];
-            return widget.appBarModel?.trailingActionsBuilder?.call(context, actions) ?? actions;
+            return widget.appBarModel?.trailingActionsBuilder
+                    ?.call(context, actions) ??
+                actions;
           }(),
       backgroundColor: widget.appBarModel?.backgroundColor,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
@@ -169,7 +179,9 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
     updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: SafeArea(
         child: ContactListView(
@@ -220,7 +232,9 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
           title: ChatUIKitLocal.contactsViewGroups.localString(context),
           onTap: () {
             ChatUIKitRoute.pushOrPushNamed(
-                context, ChatUIKitRouteNames.groupsView, GroupsViewArguments(attributes: widget.attributes));
+                context,
+                ChatUIKitRouteNames.groupsView,
+                GroupsViewArguments(attributes: widget.attributes));
           }),
     ];
   }
@@ -238,7 +252,8 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
           onTap: (ctx, profile) {
             Navigator.of(ctx).pop(profile);
           },
-          searchHideText: ChatUIKitLocal.conversationsViewSearchHint.localString(context),
+          searchHideText:
+              ChatUIKitLocal.conversationsViewSearchHint.localString(context),
           searchData: list,
           attributes: widget.attributes),
     ).then((value) {
@@ -262,18 +277,23 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
   void addContact() async {
     String? userId = await showChatUIKitDialog(
       title: ChatUIKitLocal.contactsAddContactAlertTitle.localString(context),
-      content: ChatUIKitLocal.contactsAddContactAlertSubTitle.localString(context),
+      content:
+          ChatUIKitLocal.contactsAddContactAlertSubTitle.localString(context),
       context: context,
-      hintsText: [ChatUIKitLocal.contactsAddContactAlertHintText.localString(context)],
+      hintsText: [
+        ChatUIKitLocal.contactsAddContactAlertHintText.localString(context)
+      ],
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal.contactsAddContactAlertButtonCancel.localString(context),
+          label: ChatUIKitLocal.contactsAddContactAlertButtonCancel
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.inputsConfirm(
-          label: ChatUIKitLocal.contactsAddContactAlertButtonConfirm.localString(context),
+          label: ChatUIKitLocal.contactsAddContactAlertButtonConfirm
+              .localString(context),
           onInputsTap: (inputs) async {
             Navigator.of(context).pop(inputs.first);
           },

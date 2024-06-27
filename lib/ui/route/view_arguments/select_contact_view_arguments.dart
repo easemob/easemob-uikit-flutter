@@ -20,7 +20,8 @@ class SelectContactViewArguments implements ChatUIKitViewArguments {
   final void Function(List<ContactItemModel> data)? onSearchTap;
   final ChatUIKitContactItemBuilder? listViewItemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
-  final void Function(BuildContext context, ContactItemModel model)? onLongPress;
+  final void Function(BuildContext context, ContactItemModel model)?
+      onLongPress;
   final String? searchBarHideText;
   final Widget? listViewBackground;
 

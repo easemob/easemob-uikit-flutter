@@ -56,14 +56,19 @@ class ChatUIKitRegExpText extends StatelessWidget {
         Iterable<RegExpMatch> allMatches = exp.allMatches(string);
         int index = 0;
         for (var match in allMatches) {
-          spans.add(TextSpan(text: string.substring(index, match.start)));
+          spans.add(TextSpan(
+            text: string.substring(index, match.start),
+          ));
           String matched = string.substring(match.start, match.end);
+
           spans.add(
             TextSpan(
               text: matched,
               style: TextStyle(
                   color: expHighlightColor,
-                  decoration: enableExpUnderline ? TextDecoration.underline : TextDecoration.none),
+                  decoration: enableExpUnderline
+                      ? TextDecoration.underline
+                      : TextDecoration.none),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
                   onExpTap?.call(matched);
@@ -105,7 +110,9 @@ class ChatUIKitRegExpText extends StatelessWidget {
             text: matched,
             style: TextStyle(
                 color: expHighlightColor,
-                decoration: enableExpUnderline ? TextDecoration.underline : TextDecoration.none),
+                decoration: enableExpUnderline
+                    ? TextDecoration.underline
+                    : TextDecoration.none),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
                 onExpTap?.call(matched);

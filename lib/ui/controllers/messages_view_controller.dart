@@ -16,7 +16,11 @@ enum MessageLastActionType {
 
 /// 消息列表控制器
 class MessagesViewController extends ChangeNotifier
-    with ChatObserver, MessageObserver, ThreadObserver, ChatUIKitProviderObserver {
+    with
+        ChatObserver,
+        MessageObserver,
+        ThreadObserver,
+        ChatUIKitProviderObserver {
   /// 用户信息对象，用于设置对方信息, 详细参考 [ChatUIKitProfile]。如果你自己设置了 `MessageListViewController` 需要确保 `profile` 与 [MessagesView] 传入的 `profile` 一致。
   ChatUIKitProfile profile;
 
@@ -61,6 +65,8 @@ class MessagesViewController extends ChangeNotifier
 
   List<MessageModel> cacheMessages = [];
 
+  ValueNotifier<List<Message>> pinedMessages = ValueNotifier([]);
+
   bool isMultiSelectMode = false;
 
   Message? searchedMsg;
@@ -95,7 +101,8 @@ class MessagesViewController extends ChangeNotifier
     userMap[profile.id] = profile;
     if (ChatUIKitProvider.instance.currentUserProfile != null) {
       // 这能保证每次修改自己的信息后看到的历史信息数据是正确的
-      userMap[ChatUIKit.instance.currentUserId!] = ChatUIKitProvider.instance.currentUserProfile!;
+      userMap[ChatUIKit.instance.currentUserId!] =
+          ChatUIKitProvider.instance.currentUserProfile!;
     }
   }
 
@@ -125,6 +132,7 @@ class MessagesViewController extends ChangeNotifier
     isDisposed = true;
     ChatUIKitProvider.instance.removeObserver(this);
     ChatUIKit.instance.removeObserver(this);
+    pinedMessages.dispose();
     super.dispose();
   }
 
@@ -136,7 +144,8 @@ class MessagesViewController extends ChangeNotifier
     _isFetching = true;
     List<Message> list;
     if (searchedMsg != null && hasSearched == false) {
-      List<Message> searchList = await ChatUIKit.instance.loadLocalMessagesByTimestamp(
+      List<Message> searchList =
+          await ChatUIKit.instance.loadLocalMessagesByTimestamp(
         conversationId: profile.id,
         type: conversationType,
         count: 100,
@@ -144,7 +153,8 @@ class MessagesViewController extends ChangeNotifier
         endTime: DateTime.now().millisecondsSinceEpoch,
       );
 
-      List<Message> beforeSearchList = await ChatUIKit.instance.loadLocalMessages(
+      List<Message> beforeSearchList =
+          await ChatUIKit.instance.loadLocalMessages(
         conversationId: profile.id,
         type: conversationType,
         count: pageSize,
@@ -173,15 +183,18 @@ class MessagesViewController extends ChangeNotifier
       for (var msg in list) {
         List<MessageReaction> reactions = await msg.reactionList();
         ChatThread? threadOverView = await msg.chatThread();
+        MessagePinInfo? pinInfo = await msg.pinInfo();
         modelLists.add(
           MessageModel(
             message: msg,
             reactions: reactions,
             thread: threadOverView,
+            pinInfo: pinInfo,
           ),
         );
         // 先从缓存的profile中取
-        ChatUIKitProfile? profile = ChatUIKitProvider.instance.profilesCache[msg.from!];
+        ChatUIKitProfile? profile =
+            ChatUIKitProvider.instance.profilesCache[msg.from!];
         if (profile != null) {
           userMap[msg.from!] = profile;
         } else {
@@ -218,7 +231,8 @@ class MessagesViewController extends ChangeNotifier
     String operatorId,
     int operationTime,
   ) {
-    final index = msgModelList.indexWhere((element) => element.message.msgId == message.msgId);
+    final index = msgModelList
+        .indexWhere((element) => element.message.msgId == message.msgId);
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(message: message);
       refresh();
@@ -233,7 +247,8 @@ class MessagesViewController extends ChangeNotifier
         list.add(
           MessageModel(message: element),
         );
-        ChatUIKitProfile? profile = ChatUIKitProvider.instance.profilesCache[element.from!];
+        ChatUIKitProfile? profile =
+            ChatUIKitProvider.instance.profilesCache[element.from!];
         profile ??= element.fromProfile;
         userMap[element.from!] = profile;
       }
@@ -266,7 +281,9 @@ class MessagesViewController extends ChangeNotifier
   @override
   void onMessagesDelivered(List<Message> messages) {
     List<MessageModel> list = msgModelList
-        .where((element1) => messages.where((element2) => element1.message.msgId == element2.msgId).isNotEmpty)
+        .where((element1) => messages
+            .where((element2) => element1.message.msgId == element2.msgId)
+            .isNotEmpty)
         .toList();
     if (list.isNotEmpty) {
       for (var element in list) {
@@ -279,7 +296,9 @@ class MessagesViewController extends ChangeNotifier
   @override
   void onMessagesRead(List<Message> messages) {
     List<MessageModel> list = msgModelList
-        .where((element1) => messages.where((element2) => element1.message.msgId == element2.msgId).isNotEmpty)
+        .where((element1) => messages
+            .where((element2) => element1.message.msgId == element2.msgId)
+            .isNotEmpty)
         .toList();
     if (list.isNotEmpty) {
       for (var element in list) {
@@ -293,9 +312,11 @@ class MessagesViewController extends ChangeNotifier
   void onMessagesRecalled(List<Message> recalled, List<Message> replaces) {
     bool needReload = false;
     for (var i = 0; i < recalled.length; i++) {
-      int index = msgModelList.indexWhere((element) => recalled[i].msgId == element.message.msgId);
+      int index = msgModelList
+          .indexWhere((element) => recalled[i].msgId == element.message.msgId);
       if (index != -1) {
-        msgModelList[index] = msgModelList[index].copyWith(message: replaces[i]);
+        msgModelList[index] =
+            msgModelList[index].copyWith(message: replaces[i]);
         needReload = true;
       }
     }
@@ -309,9 +330,11 @@ class MessagesViewController extends ChangeNotifier
     bool needUpdate = false;
     for (var reactionEvent in events) {
       if (reactionEvent.conversationId == profile.id) {
-        final index = msgModelList.indexWhere((element) => element.message.msgId == reactionEvent.messageId);
+        final index = msgModelList.indexWhere(
+            (element) => element.message.msgId == reactionEvent.messageId);
         if (index != -1) {
-          Message? msg = await ChatUIKit.instance.loadMessage(messageId: msgModelList[index].message.msgId);
+          Message? msg = await ChatUIKit.instance
+              .loadMessage(messageId: msgModelList[index].message.msgId);
           if (msg != null) {
             needUpdate = true;
             List<MessageReaction>? reactions = await msg.reactionList();
@@ -331,10 +354,12 @@ class MessagesViewController extends ChangeNotifier
 
   @override
   void onChatThreadUpdate(ChatThreadEvent event) async {
-    int index = msgModelList.indexWhere((element) => element.message.msgId == event.chatThread?.messageId);
+    int index = msgModelList.indexWhere(
+        (element) => element.message.msgId == event.chatThread?.messageId);
     if (index != -1) {
       if (event.type == ChatThreadOperation.Update_Msg) {
-        msgModelList[index] = msgModelList[index].copyWith(thread: event.chatThread);
+        msgModelList[index] =
+            msgModelList[index].copyWith(thread: event.chatThread);
         lastActionType = MessageLastActionType.originalPosition;
       } else if (event.type == ChatThreadOperation.Update) {
         ChatThread oldThread = msgModelList[index].thread!;
@@ -349,7 +374,8 @@ class MessagesViewController extends ChangeNotifier
 
   @override
   void onChatThreadDestroy(ChatThreadEvent event) async {
-    int index = msgModelList.indexWhere((element) => element.message.msgId == event.chatThread?.messageId);
+    int index = msgModelList.indexWhere(
+        (element) => element.message.msgId == event.chatThread?.messageId);
     if (index != -1) {
       msgModelList[index] = msgModelList[index].clearThread();
       lastActionType = MessageLastActionType.originalPosition;
@@ -359,8 +385,8 @@ class MessagesViewController extends ChangeNotifier
 
   @override
   void onSuccess(String msgId, Message msg) {
-    final index =
-        msgModelList.indexWhere((element) => element.message.msgId == msgId && msg.status != element.message.status);
+    final index = msgModelList.indexWhere((element) =>
+        element.message.msgId == msgId && msg.status != element.message.status);
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(message: msg);
       refresh();
@@ -369,8 +395,8 @@ class MessagesViewController extends ChangeNotifier
 
   @override
   void onError(String msgId, Message msg, ChatError error) {
-    final index =
-        msgModelList.indexWhere((element) => element.message.msgId == msgId && msg.status != element.message.status);
+    final index = msgModelList.indexWhere((element) =>
+        element.message.msgId == msgId && msg.status != element.message.status);
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(message: msg);
       refresh();
@@ -378,7 +404,8 @@ class MessagesViewController extends ChangeNotifier
   }
 
   void _replaceMessage(Message message) {
-    final index = msgModelList.indexWhere((element) => element.message.msgId == message.msgId);
+    final index = msgModelList
+        .indexWhere((element) => element.message.msgId == message.msgId);
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(message: message);
       refresh();
@@ -394,7 +421,8 @@ class MessagesViewController extends ChangeNotifier
     }
   }
 
-  Future<void> translateMessage(Message message, {bool showTranslate = true}) async {
+  Future<void> translateMessage(Message message,
+      {bool showTranslate = true}) async {
     Message msg = await ChatUIKit.instance.translateMessage(
       msg: message,
       languages: [ChatUIKitSettings.translateTargetLanguage],
@@ -489,7 +517,8 @@ class MessagesViewController extends ChangeNotifier
         msg.removePreview();
       }
       ChatUIKit.instance.updateMessage(message: msg);
-      final index = msgModelList.indexWhere((element) => msg.msgId == element.message.msgId);
+      final index = msgModelList
+          .indexWhere((element) => msg.msgId == element.message.msgId);
       if (index != -1) {
         msgModelList[index] = msgModelList[index].copyWith(message: msg);
         refresh();
@@ -497,10 +526,12 @@ class MessagesViewController extends ChangeNotifier
 
       if (url != null) {
         try {
-          ChatUIKitPreviewObj? obj = await ChatUIKitURLHelper().fetchPreview(url);
+          ChatUIKitPreviewObj? obj =
+              await ChatUIKitURLHelper().fetchPreview(url);
           msg.addPreview(obj);
           ChatUIKit.instance.updateMessage(message: msg);
-          final index = msgModelList.indexWhere((element) => msg.msgId == element.message.msgId);
+          final index = msgModelList
+              .indexWhere((element) => msg.msgId == element.message.msgId);
           if (index != -1) {
             msgModelList[index] = msgModelList[index].copyWith(message: msg);
             refresh();
@@ -532,7 +563,8 @@ class MessagesViewController extends ChangeNotifier
   }
 
   Future<void> recallMessage(Message message) async {
-    int index = msgModelList.indexWhere((element) => message.msgId == element.message.msgId);
+    int index = msgModelList
+        .indexWhere((element) => message.msgId == element.message.msgId);
     if (index != -1) {
       try {
         await ChatUIKit.instance.recallMessage(message: message);
@@ -610,7 +642,8 @@ class MessagesViewController extends ChangeNotifier
     );
     if (imageData != null) {
       final directory = await getApplicationCacheDirectory();
-      String thumbnailPath = '${directory.path}/thumbnail_${Random().nextInt(999999999)}.jpeg';
+      String thumbnailPath =
+          '${directory.path}/thumbnail_${Random().nextInt(999999999)}.jpeg';
       final file = File(thumbnailPath);
       file.writeAsBytesSync(imageData);
 
@@ -678,7 +711,8 @@ class MessagesViewController extends ChangeNotifier
     }
     willSendMsg.addProfile();
     if (ChatUIKitProvider.instance.currentUserProfile != null) {
-      userMap[ChatUIKit.instance.currentUserId!] = ChatUIKitProvider.instance.currentUserProfile!;
+      userMap[ChatUIKit.instance.currentUserId!] =
+          ChatUIKitProvider.instance.currentUserProfile!;
     }
     // 插入缓存中的消息
     addAllCacheToList();
@@ -695,7 +729,8 @@ class MessagesViewController extends ChangeNotifier
         hasNew = true;
         lastActionType = MessageLastActionType.bottomPosition;
         refresh();
-        ChatUIKitPreviewObj? obj = await ChatUIKitURLHelper().fetchPreview(url!, messageId: willSendMsg.msgId);
+        ChatUIKitPreviewObj? obj = await ChatUIKitURLHelper()
+            .fetchPreview(url!, messageId: willSendMsg.msgId);
         willSendMsg.removePreviewing();
         willSendMsg.addPreview(obj);
         await ChatUIKit.instance.sendMessage(message: willSendMsg);
@@ -713,7 +748,8 @@ class MessagesViewController extends ChangeNotifier
   }
 
   Future<void> resendMessage(Message message) async {
-    msgModelList.removeWhere((element) => element.message.msgId == message.msgId);
+    msgModelList
+        .removeWhere((element) => element.message.msgId == message.msgId);
     sendMessage(message);
   }
 
@@ -743,7 +779,8 @@ class MessagesViewController extends ChangeNotifier
         );
         int unreadCount = await conv?.unreadCount() ?? 0;
         if (unreadCount > 0) {
-          await ChatUIKit.instance.sendConversationReadAck(conversationId: profile.id);
+          await ChatUIKit.instance
+              .sendConversationReadAck(conversationId: profile.id);
           for (var element in msgModelList) {
             element.message.hasReadAck = true;
           }
@@ -777,7 +814,8 @@ class MessagesViewController extends ChangeNotifier
   }
 
   String getModelId(Message message) {
-    return Random().nextInt(999999999).toString() + message.localTime.toString();
+    return Random().nextInt(999999999).toString() +
+        message.localTime.toString();
   }
 
   void attemptSendInputType() {
@@ -820,7 +858,8 @@ class MessagesViewController extends ChangeNotifier
         type: conversationType,
         messageIds: messageIds,
       );
-      msgModelList.removeWhere((element) => messageIds.contains(element.message.msgId));
+      msgModelList
+          .removeWhere((element) => messageIds.contains(element.message.msgId));
 
       refresh();
       // ignore: empty_catches
@@ -849,31 +888,47 @@ class MessagesViewController extends ChangeNotifier
     }
   }
 
-  Future<void> pinMessage(String msgId) async {
+  Future<void> pinMessage(Message message) async {
     try {
       await ChatUIKit.instance.pinMessage(
-        messageId: msgId,
+        messageId: message.msgId,
       );
+      pinedMessages.value = pinedMessages.value + [message];
     } catch (e) {
       debugPrint('pinMessage: $e');
     }
   }
 
-  Future<void> unpinMessage(String msgId) async {
+  Future<void> unpinMessage(Message message) async {
     try {
-      await ChatUIKit.instance.unpinMessage(messageId: msgId);
+      await ChatUIKit.instance.unpinMessage(messageId: message.msgId);
+      List<Message> pinedMessagesList = pinedMessages.value;
+      int index = pinedMessagesList
+          .indexWhere((element) => element.msgId == message.msgId);
+      if (index != -1) {
+        pinedMessagesList.removeAt(index);
+        pinedMessages.value = pinedMessagesList;
+      }
     } catch (e) {
       debugPrint('unpinMessage: $e');
     }
   }
 
-  Future<List<Message>> fetchPinnedMessages() async {
-    List<Message> ret = [];
+  Future<void> fetchPinnedMessages() async {
     try {
-      ret = await ChatUIKit.instance.fetchPinnedMessages(conversationId: profile.id);
+      List<Message> ret = await ChatUIKit.instance
+          .fetchPinnedMessages(conversationId: profile.id);
+      pinedMessages.value = ret;
     } catch (e) {
       debugPrint('fetchPinMessage: $e');
     }
-    return ret;
   }
+
+  @override
+  void onMessagePinChanged(
+    String messageId,
+    String conversationId,
+    MessagePinOperation pinOperation,
+    MessagePinInfo pinInfo,
+  ) {}
 }

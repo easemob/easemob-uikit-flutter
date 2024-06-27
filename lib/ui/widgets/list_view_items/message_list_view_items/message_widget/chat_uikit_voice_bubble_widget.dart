@@ -18,10 +18,12 @@ class ChatUIKitVoiceBubbleWidget extends StatefulWidget {
   final bool? forceLeft;
 
   @override
-  State<ChatUIKitVoiceBubbleWidget> createState() => _ChatUIKitVoiceBubbleWidgetState();
+  State<ChatUIKitVoiceBubbleWidget> createState() =>
+      _ChatUIKitVoiceBubbleWidgetState();
 }
 
-class _ChatUIKitVoiceBubbleWidgetState extends State<ChatUIKitVoiceBubbleWidget> with SingleTickerProviderStateMixin {
+class _ChatUIKitVoiceBubbleWidgetState extends State<ChatUIKitVoiceBubbleWidget>
+    with SingleTickerProviderStateMixin {
   late final MessageModel model;
   late AnimationController controller;
   late Animation<int> animation;
@@ -29,7 +31,8 @@ class _ChatUIKitVoiceBubbleWidgetState extends State<ChatUIKitVoiceBubbleWidget>
   void initState() {
     super.initState();
     model = widget.model;
-    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
+    controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1000));
     animation = IntTween(begin: 0, end: 2).animate(controller)
       ..addListener(() {
         safeSetState(() {});
@@ -52,7 +55,8 @@ class _ChatUIKitVoiceBubbleWidgetState extends State<ChatUIKitVoiceBubbleWidget>
       controller.stop();
     }
     final theme = ChatUIKitTheme.of(context);
-    bool left = widget.forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
+    bool left =
+        widget.forceLeft ?? model.message.direction == MessageDirection.RECEIVE;
 
     Color iconColor = left
         ? theme.color.isDark
@@ -86,7 +90,8 @@ class _ChatUIKitVoiceBubbleWidgetState extends State<ChatUIKitVoiceBubbleWidget>
     if (!controller.isAnimating) {
       iconWidget = ChatUIKitImageLoader.bubbleVoice(2, color: iconColor);
     } else {
-      iconWidget = ChatUIKitImageLoader.bubbleVoice(animation.value, color: iconColor);
+      iconWidget =
+          ChatUIKitImageLoader.bubbleVoice(animation.value, color: iconColor);
     }
 
     if (!left) {

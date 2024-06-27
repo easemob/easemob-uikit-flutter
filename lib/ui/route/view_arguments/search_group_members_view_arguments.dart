@@ -16,7 +16,8 @@ class SearchGroupMembersViewArguments implements ChatUIKitViewArguments {
   final List<NeedSearch> searchData;
   final String searchHideText;
   final void Function(BuildContext context, ChatUIKitProfile profile)? onTap;
-  final Widget Function(BuildContext context, ChatUIKitProfile profile, String? searchKeyword)? itemBuilder;
+  final Widget Function(BuildContext context, ChatUIKitProfile profile,
+      String? searchKeyword)? itemBuilder;
   final ChatUIKitAppBarModel? appBarModel;
   final bool enableAppBar;
   @override
@@ -28,7 +29,9 @@ class SearchGroupMembersViewArguments implements ChatUIKitViewArguments {
       {List<NeedSearch>? searchData,
       String? searchHideText,
       void Function(BuildContext context, ChatUIKitProfile profile)? onTap,
-      Widget Function(BuildContext context, ChatUIKitProfile profile, String? searchKeyword)? itemBuilder,
+      Widget Function(BuildContext context, ChatUIKitProfile profile,
+              String? searchKeyword)?
+          itemBuilder,
       ChatUIKitAppBarModel? appBarModel,
       bool? enableAppBar,
       ChatUIKitViewObserver? viewObserver,

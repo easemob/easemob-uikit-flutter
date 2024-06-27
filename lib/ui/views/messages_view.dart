@@ -216,7 +216,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     widget.viewObserver?.addListener(() {
       updateView();
     });
-    inputBarController = widget.inputBarTextEditingController ?? ChatUIKitInputBarController();
+    inputBarController =
+        widget.inputBarTextEditingController ?? ChatUIKitInputBarController();
     inputBarController.addListener(() {
       attemptSendInputType();
       if (showMoreBtn != !inputBarController.text.trim().isNotEmpty) {
@@ -242,8 +243,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       updateView();
       if (controller.lastActionType == MessageLastActionType.topPosition) {
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-          int index =
-              controller.msgModelList.indexWhere((element) => element.message.msgId == controller.searchedMsg?.msgId);
+          int index = controller.msgModelList.indexWhere((element) =>
+              element.message.msgId == controller.searchedMsg?.msgId);
           if (index != -1) {
             await _scrollController.scrollToIndex(
               index,
@@ -297,26 +298,36 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 ),
               ),
             ];
-            return widget.appBarModel?.leadingActionsBuilder?.call(context, actions) ?? actions;
+            return widget.appBarModel?.leadingActionsBuilder
+                    ?.call(context, actions) ??
+                actions;
           }(),
       trailingActions: widget.appBarModel?.trailingActions ??
           () {
             List<ChatUIKitAppBarAction> actions = [
-              if (ChatUIKitSettings.enablePinMsg && controller.conversationType == ConversationType.GroupChat)
+              if (ChatUIKitSettings.enablePinMsg &&
+                  controller.conversationType == ConversationType.GroupChat)
                 ChatUIKitAppBarAction(
                   actionType: ChatUIKitActionType.pinMessage,
-                  child: ChatUIKitImageLoader.pinMessage(),
+                  child: ChatUIKitImageLoader.pinMessage(
+                    color: theme.color.isDark
+                        ? theme.color.neutralColor9
+                        : theme.color.neutralColor3,
+                  ),
                   onTap: (context) {
-                    debugPrint('pin message');
+                    showPinMsgsView();
                   },
                 ),
               ChatUIKitAppBarAction(
-                actionType: controller.isMultiSelectMode ? ChatUIKitActionType.cancel : ChatUIKitActionType.thread,
+                actionType: controller.isMultiSelectMode
+                    ? ChatUIKitActionType.cancel
+                    : ChatUIKitActionType.thread,
                 onTap: (context) {
                   if (controller.isMultiSelectMode) {
                     controller.disableMultiSelectMode();
                   } else {
-                    if (controller.conversationType == ConversationType.GroupChat &&
+                    if (controller.conversationType ==
+                            ConversationType.GroupChat &&
                         ChatUIKitSettings.enableMessageThread) {
                       showBottom();
                     }
@@ -326,21 +337,32 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                     ? Text(
                         ChatUIKitLocal.bottomSheetCancel.localString(context),
                         style: TextStyle(
-                          color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                          color: theme.color.isDark
+                              ? theme.color.primaryColor6
+                              : theme.color.primaryColor5,
                           fontWeight: theme.font.labelMedium.fontWeight,
                           fontSize: theme.font.labelMedium.fontSize,
                         ),
                       )
-                    : controller.conversationType == ConversationType.GroupChat && ChatUIKitSettings.enableMessageThread
-                        ? ChatUIKitImageLoader.messageLongPressThread()
+                    : controller.conversationType ==
+                                ConversationType.GroupChat &&
+                            ChatUIKitSettings.enableMessageThread
+                        ? ChatUIKitImageLoader.messageLongPressThread(
+                            color: theme.color.isDark
+                                ? theme.color.neutralColor9
+                                : theme.color.neutralColor3,
+                          )
                         : const SizedBox(),
               )
             ];
-            return widget.appBarModel?.trailingActionsBuilder?.call(context, actions) ?? actions;
+            return widget.appBarModel?.trailingActionsBuilder
+                    ?.call(context, actions) ??
+                actions;
           }(),
       backgroundColor: widget.appBarModel?.backgroundColor,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
+      bottomLine: widget.appBarModel?.bottomLine ?? true,
     );
   }
 
@@ -460,7 +482,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         }
       },
       onReactionItemTap: (model, reaction) {
-        bool? ret = widget.onReactionItemTap?.call(context, model, reaction) ?? false;
+        bool? ret =
+            widget.onReactionItemTap?.call(context, model, reaction) ?? false;
         if (ret == false) {
           controller.updateReaction(
             model.message.msgId,
@@ -532,7 +555,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
 
     content = Column(children: list);
     content = Scaffold(
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: SafeArea(child: content),
     );
@@ -559,7 +584,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           ),
         if (editMessage != null)
           Padding(
-            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -586,10 +612,13 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           } else {
             if (controller.onBottom == true) {
               controller.onBottom = false;
-              controller.lastActionType = MessageLastActionType.originalPosition;
+              controller.lastActionType =
+                  MessageLastActionType.originalPosition;
             }
           }
-          if (_scrollController.position.maxScrollExtent - _scrollController.offset < 1500) {
+          if (_scrollController.position.maxScrollExtent -
+                  _scrollController.offset <
+              1500) {
             controller.fetchItemList();
           }
         }
@@ -628,8 +657,12 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       },
       enableSelected: controller.isMultiSelectMode
           ? () {
-              if (controller.selectedMessages.map((e) => e.msgId).toList().contains(model.message.msgId)) {
-                controller.selectedMessages.removeWhere((e) => model.message.msgId == e.msgId);
+              if (controller.selectedMessages
+                  .map((e) => e.msgId)
+                  .toList()
+                  .contains(model.message.msgId)) {
+                controller.selectedMessages
+                    .removeWhere((e) => model.message.msgId == e.msgId);
               } else {
                 controller.selectedMessages.add(model.message);
               }
@@ -670,7 +703,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     );
 
     double zoom = 0.8;
-    if (MediaQuery.of(context).size.width > MediaQuery.of(context).size.height) {
+    if (MediaQuery.of(context).size.width >
+        MediaQuery.of(context).size.height) {
       zoom = 0.5;
     }
 
@@ -680,7 +714,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     );
 
     content = Align(
-      alignment: model.message.direction == MessageDirection.SEND ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: model.message.direction == MessageDirection.SEND
+          ? Alignment.centerRight
+          : Alignment.centerLeft,
       child: content,
     );
 
@@ -700,9 +736,12 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       content = ChatUIKitMessageListViewAlertItem(
         infos: [
           MessageAlertAction(
-            text: ChatUIKitTimeFormatter.instance.formatterHandler
-                    ?.call(context, ChatUIKitTimeType.message, model.message.serverTime) ??
-                ChatUIKitTimeTool.getChatTimeStr(model.message.serverTime, needTime: true),
+            text: ChatUIKitTimeFormatter.instance.formatterHandler?.call(
+                    context,
+                    ChatUIKitTimeType.message,
+                    model.message.serverTime) ??
+                ChatUIKitTimeTool.getChatTimeStr(model.message.serverTime,
+                    needTime: true),
           )
         ],
       );
@@ -711,7 +750,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
 
     // 如果是撤回消息提醒
     if (model.message.isRecallAlert) {
-      Map<String, String>? map = (model.message.body as CustomMessageBody).params;
+      Map<String, String>? map =
+          (model.message.body as CustomMessageBody).params;
 
       String? from = map?[alertOperatorIdKey];
       String? showName;
@@ -719,7 +759,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         showName = ChatUIKitLocal.alertYou.localString(context);
       } else {
         if (from?.isNotEmpty == true) {
-          ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(ChatUIKitProfile.contact(id: from!));
+          ChatUIKitProfile profile = ChatUIKitProvider.instance
+              .getProfile(ChatUIKitProfile.contact(id: from!));
           showName = profile.showName;
         }
       }
@@ -727,7 +768,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       content ??= ChatUIKitMessageListViewAlertItem(
         infos: [
           MessageAlertAction(
-            text: '${showName ?? ""}${ChatUIKitLocal.alertRecallInfo.localString(context)}',
+            text:
+                '${showName ?? ""}${ChatUIKitLocal.alertRecallInfo.localString(context)}',
           ),
         ],
       );
@@ -754,7 +796,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     if (model.message.isCreateGroupAlert) {
       ChatUIKitProfile? targetProfile;
       if (targetId != null) {
-        targetProfile = ChatUIKitProvider.instance.getProfile(ChatUIKitProfile.group(id: targetId));
+        targetProfile = ChatUIKitProvider.instance
+            .getProfile(ChatUIKitProfile.group(id: targetId));
       }
 
       content ??= ChatUIKitMessageListViewAlertItem(
@@ -767,7 +810,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
               }
             },
           ),
-          MessageAlertAction(text: ChatUIKitLocal.messagesViewAlertGroupInfoTitle.localString(context)),
+          MessageAlertAction(
+              text: ChatUIKitLocal.messagesViewAlertGroupInfoTitle
+                  .localString(context)),
           MessageAlertAction(
             text: targetProfile?.showName ?? "",
             onTap: () {
@@ -792,7 +837,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
               }
             },
           ),
-          MessageAlertAction(text: ChatUIKitLocal.messagesViewAlertThreadInfoTitle.localString(context)),
+          MessageAlertAction(
+              text: ChatUIKitLocal.messagesViewAlertThreadInfoTitle
+                  .localString(context)),
           MessageAlertAction(
             text: map?[alertTargetNameKey] ?? map?[alertTargetIdKey] ?? '',
             onTap: () async {
@@ -802,12 +849,14 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 if (value != null) {
                   value.chatThread().then((thread) {
                     if (thread == null) return;
-                    MessageModel model = MessageModel(message: value, thread: thread);
+                    MessageModel model =
+                        MessageModel(message: value, thread: thread);
                     ChatUIKitRoute.pushOrPushNamed(
                       context,
                       ChatUIKitRouteNames.threadMessagesView,
                       ThreadMessagesViewArguments(
-                        appBarModel: ChatUIKitAppBarModel(subtitle: controller.profile.showName),
+                        appBarModel: ChatUIKitAppBarModel(
+                            subtitle: controller.profile.showName),
                         controller: ThreadMessagesViewController(model: model),
                         attributes: widget.attributes,
                       ),
@@ -890,7 +939,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       key: const ValueKey('editKey'),
       autofocus: true,
       onChanged: (input) {
-        final canSend = input.trim() != editMessage?.textContent && input.isNotEmpty;
+        final canSend =
+            input.trim() != editMessage?.textContent && input.isNotEmpty;
         if (messageEditCanSend != canSend) {
           messageEditCanSend = canSend;
           updateView();
@@ -940,13 +990,18 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           style: TextStyle(
               fontWeight: theme.font.labelSmall.fontWeight,
               fontSize: theme.font.labelSmall.fontSize,
-              color: theme.color.isDark ? theme.color.neutralSpecialColor6 : theme.color.neutralSpecialColor5),
+              color: theme.color.isDark
+                  ? theme.color.neutralSpecialColor6
+                  : theme.color.neutralSpecialColor5),
         ),
       ],
     );
     header = Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-      decoration: BoxDecoration(color: theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9),
+      decoration: BoxDecoration(
+          color: theme.color.isDark
+              ? theme.color.neutralColor2
+              : theme.color.neutralColor9),
       child: header,
     );
     content = Column(
@@ -1023,14 +1078,18 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 splashColor: Colors.transparent,
                 onTap: () {
                   clearAllType();
-                  List<ChatUIKitBottomSheetAction>? items = widget.morePressActions;
+                  List<ChatUIKitBottomSheetAction>? items =
+                      widget.morePressActions;
                   if (items == null) {
                     items = [];
                     items.add(ChatUIKitBottomSheetAction.normal(
                       actionType: ChatUIKitActionType.photos,
-                      label: ChatUIKitLocal.messagesViewMoreActionsTitleAlbum.localString(context),
+                      label: ChatUIKitLocal.messagesViewMoreActionsTitleAlbum
+                          .localString(context),
                       icon: ChatUIKitImageLoader.messageViewMoreAlbum(
-                        color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                        color: theme.color.isDark
+                            ? theme.color.primaryColor6
+                            : theme.color.primaryColor5,
                       ),
                       onTap: () async {
                         Navigator.of(context).pop();
@@ -1039,9 +1098,12 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                     ));
                     items.add(ChatUIKitBottomSheetAction.normal(
                       actionType: ChatUIKitActionType.video,
-                      label: ChatUIKitLocal.messagesViewMoreActionsTitleVideo.localString(context),
+                      label: ChatUIKitLocal.messagesViewMoreActionsTitleVideo
+                          .localString(context),
                       icon: ChatUIKitImageLoader.messageViewMoreVideo(
-                        color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                        color: theme.color.isDark
+                            ? theme.color.primaryColor6
+                            : theme.color.primaryColor5,
                       ),
                       onTap: () async {
                         Navigator.of(context).pop();
@@ -1050,9 +1112,12 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                     ));
                     items.add(ChatUIKitBottomSheetAction.normal(
                       actionType: ChatUIKitActionType.camera,
-                      label: ChatUIKitLocal.messagesViewMoreActionsTitleCamera.localString(context),
+                      label: ChatUIKitLocal.messagesViewMoreActionsTitleCamera
+                          .localString(context),
                       icon: ChatUIKitImageLoader.messageViewMoreCamera(
-                        color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                        color: theme.color.isDark
+                            ? theme.color.primaryColor6
+                            : theme.color.primaryColor5,
                       ),
                       onTap: () async {
                         Navigator.of(context).pop();
@@ -1061,9 +1126,12 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                     ));
                     items.add(ChatUIKitBottomSheetAction.normal(
                       actionType: ChatUIKitActionType.file,
-                      label: ChatUIKitLocal.messagesViewMoreActionsTitleFile.localString(context),
+                      label: ChatUIKitLocal.messagesViewMoreActionsTitleFile
+                          .localString(context),
                       icon: ChatUIKitImageLoader.messageViewMoreFile(
-                        color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                        color: theme.color.isDark
+                            ? theme.color.primaryColor6
+                            : theme.color.primaryColor5,
                       ),
                       onTap: () async {
                         Navigator.of(context).pop();
@@ -1072,9 +1140,12 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                     ));
                     items.add(ChatUIKitBottomSheetAction.normal(
                       actionType: ChatUIKitActionType.contactCard,
-                      label: ChatUIKitLocal.messagesViewMoreActionsTitleContact.localString(context),
+                      label: ChatUIKitLocal.messagesViewMoreActionsTitleContact
+                          .localString(context),
                       icon: ChatUIKitImageLoader.messageViewMoreCard(
-                        color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                        color: theme.color.isDark
+                            ? theme.color.primaryColor6
+                            : theme.color.primaryColor5,
                       ),
                       onTap: () async {
                         Navigator.of(context).pop();
@@ -1109,7 +1180,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
 
                     if (inputBarController.mentionList.isNotEmpty) {
                       List<String> mentionList = [];
-                      List<ChatUIKitProfile> list = inputBarController.mentionList;
+                      List<ChatUIKitProfile> list =
+                          inputBarController.mentionList;
                       for (var element in list) {
                         if (text.contains('@${element.showName}')) {
                           mentionList.add(element.id);
@@ -1164,7 +1236,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           opacity: value ? 1 : 0,
           child: Container(
             padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-            color: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+            color: theme.color.isDark
+                ? theme.color.neutralColor1
+                : theme.color.neutralColor98,
             child: Row(children: [
               SizedBox(
                 width: 16,
@@ -1177,7 +1251,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 style: TextStyle(
                     fontWeight: theme.font.bodyExtraSmall.fontWeight,
                     fontSize: theme.font.bodyExtraSmall.fontSize,
-                    color: theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5),
+                    color: theme.color.isDark
+                        ? theme.color.neutralColor6
+                        : theme.color.neutralColor5),
               ),
             ]),
           ),
@@ -1205,9 +1281,10 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 bool? ret = await showChatUIKitDialog(
                     context: context,
                     items: [
-                      ChatUIKitDialogItem.cancel(label: '取消'),
+                      ChatUIKitDialogItem.cancel(
+                          label: ChatUIKitLocal.confirm.localString(context)),
                       ChatUIKitDialogItem.confirm(
-                        label: '确认',
+                        label: ChatUIKitLocal.cancel.localString(context),
                         onTap: () async {
                           Navigator.of(context).pop(true);
                         },
@@ -1219,9 +1296,12 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 }
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
                 child: ChatUIKitImageLoader.messageTrash(
-                  color: theme.color.isDark ? theme.color.errorColor6 : theme.color.errorColor5,
+                  color: theme.color.isDark
+                      ? theme.color.errorColor6
+                      : theme.color.errorColor5,
                 ),
               ),
             ),
@@ -1235,9 +1315,12 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 );
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
                 child: ChatUIKitImageLoader.messageLongPressForward(
-                  color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+                  color: theme.color.isDark
+                      ? theme.color.primaryColor6
+                      : theme.color.primaryColor5,
                 ),
               ),
             ),
@@ -1281,7 +1364,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
   void onItemLongPress(MessageModel model) async {
     final theme = ChatUIKitTheme.of(context);
     clearAllType();
-    List<ChatUIKitBottomSheetAction>? items = defaultItemLongPressed(model, theme);
+    List<ChatUIKitBottomSheetAction>? items =
+        defaultItemLongPressed(model, theme);
     if (items.isEmpty) return;
     if (widget.onItemLongPressHandler != null) {
       items = widget.onItemLongPressHandler!.call(
@@ -1344,12 +1428,19 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       );
     }
 
-    if (model.message.bodyType == MessageType.CUSTOM && model.message.isCardMessage) {
-      String? userId = (model.message.body as CustomMessageBody).params?[cardUserIdKey];
-      String avatar = (model.message.body as CustomMessageBody).params?[cardAvatarKey] ?? '';
-      String name = (model.message.body as CustomMessageBody).params?[cardNicknameKey] ?? '';
+    if (model.message.bodyType == MessageType.CUSTOM &&
+        model.message.isCardMessage) {
+      String? userId =
+          (model.message.body as CustomMessageBody).params?[cardUserIdKey];
+      String avatar =
+          (model.message.body as CustomMessageBody).params?[cardAvatarKey] ??
+              '';
+      String name =
+          (model.message.body as CustomMessageBody).params?[cardNicknameKey] ??
+              '';
       if (userId?.isNotEmpty == true) {
-        ChatUIKitProfile profile = ChatUIKitProfile.contact(id: userId!, avatarUrl: avatar, nickname: name);
+        ChatUIKitProfile profile = ChatUIKitProfile.contact(
+            id: userId!, avatarUrl: avatar, nickname: name);
         pushNextPage(profile);
       }
     }
@@ -1363,7 +1454,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     clearAllType();
     if (message.bodyType != MessageType.TXT) return;
     editMessage = message;
-    editBarTextEditingController = ChatUIKitInputBarController(text: editMessage?.textContent ?? "");
+    editBarTextEditingController =
+        ChatUIKitInputBarController(text: editMessage?.textContent ?? "");
     updateView();
   }
 
@@ -1376,18 +1468,22 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
 
   void deleteMessage(MessageModel model) async {
     final delete = await showChatUIKitDialog(
-      title: ChatUIKitLocal.messagesViewDeleteMessageAlertTitle.localString(context),
-      content: ChatUIKitLocal.messagesViewDeleteMessageAlertSubTitle.localString(context),
+      title: ChatUIKitLocal.messagesViewDeleteMessageAlertTitle
+          .localString(context),
+      content: ChatUIKitLocal.messagesViewDeleteMessageAlertSubTitle
+          .localString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal.messagesViewDeleteMessageAlertButtonCancel.localString(context),
+          label: ChatUIKitLocal.messagesViewDeleteMessageAlertButtonCancel
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
-          label: ChatUIKitLocal.messagesViewDeleteMessageAlertButtonConfirm.localString(context),
+          label: ChatUIKitLocal.messagesViewDeleteMessageAlertButtonConfirm
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },
@@ -1401,17 +1497,20 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
 
   void recallMessage(MessageModel model) async {
     final recall = await showChatUIKitDialog(
-      title: ChatUIKitLocal.messagesViewRecallMessageAlertTitle.localString(context),
+      title: ChatUIKitLocal.messagesViewRecallMessageAlertTitle
+          .localString(context),
       context: context,
       items: [
         ChatUIKitDialogItem.cancel(
-          label: ChatUIKitLocal.messagesViewRecallMessageAlertButtonCancel.localString(context),
+          label: ChatUIKitLocal.messagesViewRecallMessageAlertButtonCancel
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop();
           },
         ),
         ChatUIKitDialogItem.confirm(
-          label: ChatUIKitLocal.messagesViewRecallMessageAlertButtonConfirm.localString(context),
+          label: ChatUIKitLocal.messagesViewRecallMessageAlertButtonConfirm
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop(true);
           },
@@ -1481,24 +1580,30 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         return SizedBox(
           height: MediaQuery.sizeOf(context).height * 0.95,
           child: SelectContactView(
-            appBarModel:
-                ChatUIKitAppBarModel(title: ChatUIKitLocal.messagesViewSelectContactTitle.localString(context)),
+            appBarModel: ChatUIKitAppBarModel(
+                title: ChatUIKitLocal.messagesViewSelectContactTitle
+                    .localString(context)),
             onTap: (context, model) {
               showChatUIKitDialog(
-                title: ChatUIKitLocal.messagesViewShareContactAlertTitle.localString(context),
+                title: ChatUIKitLocal.messagesViewShareContactAlertTitle
+                    .localString(context),
                 content: Strings.format(
                     '${ChatUIKitLocal.messagesViewShareContactAlertSubTitle.localString(context)}"%a"${ChatUIKitLocal.messagesViewShareContactAlertSubTitleTo.localString(context)}"%a"?',
                     [model.profile.showName, controller.profile.showName]),
                 context: context,
                 items: [
                   ChatUIKitDialogItem.cancel(
-                    label: ChatUIKitLocal.messagesViewShareContactAlertButtonCancel.localString(context),
+                    label: ChatUIKitLocal
+                        .messagesViewShareContactAlertButtonCancel
+                        .localString(context),
                     onTap: () async {
                       Navigator.of(context).pop();
                     },
                   ),
                   ChatUIKitDialogItem.confirm(
-                    label: ChatUIKitLocal.messagesViewShareContactAlertButtonConfirm.localString(context),
+                    label: ChatUIKitLocal
+                        .messagesViewShareContactAlertButtonConfirm
+                        .localString(context),
                     onTap: () async {
                       Navigator.of(context).pop(model);
                     },
@@ -1528,7 +1633,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       File file = File(message.localPath!);
       if (!file.existsSync()) {
         await controller.downloadMessage(message);
-        ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.messageDownloading);
+        ChatUIKit.instance
+            .sendChatUIKitEvent(ChatUIKitEvent.messageDownloading);
       } else {
         try {
           controller.playMessage(message);
@@ -1573,7 +1679,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
 
   void reportMessage(MessageModel model) async {
     List<String> reasonKeys = ChatUIKitSettings.reportMessageTags;
-    List<String> reasons = reasonKeys.map((e) => e.localString(context)).toList();
+    List<String> reasons =
+        reasonKeys.map((e) => e.localString(context)).toList();
 
     final reportReason = await ChatUIKitRoute.pushOrPushNamed(
       context,
@@ -1609,7 +1716,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       List<String> contacts = await ChatUIKit.instance.getAllContactIds();
       // 是好友，不是当前聊天对象，跳转到好友页面，并可以发消息
       if (contacts.contains(profile.id)) {
-        ChatUIKitProfile? tmpProfile = ChatUIKitProvider.instance.profilesCache[profile.id];
+        ChatUIKitProfile? tmpProfile =
+            ChatUIKitProvider.instance.profilesCache[profile.id];
         pushContactDetail(tmpProfile ?? profile);
       }
       // 不是好友，跳转到添加好友页面
@@ -1655,7 +1763,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 },
               ),
               ChatUIKitDetailContentAction(
-                title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
+                title:
+                    ChatUIKitLocal.contactDetailViewSearch.localString(context),
                 icon: 'assets/images/search_history.png',
                 packageName: ChatUIKitImageLoader.packageName,
                 iconSize: const Size(32, 32),
@@ -1673,7 +1782,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                       Navigator.of(context).popUntil((route) {
                         count++;
                         if (count == 2) return true;
-                        return route.settings.name == ChatUIKitRouteNames.messagesView || route.isFirst;
+                        return route.settings.name ==
+                                ChatUIKitRouteNames.messagesView ||
+                            route.isFirst;
                       });
                       controller.jumpToSearchedMessage(value);
                     }
@@ -1705,7 +1816,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           actionsBuilder: (context, defaultList) {
             return [
               ChatUIKitDetailContentAction(
-                title: ChatUIKitLocal.contactDetailViewSend.localString(context),
+                title:
+                    ChatUIKitLocal.contactDetailViewSend.localString(context),
                 icon: 'assets/images/chat.png',
                 iconSize: const Size(32, 32),
                 packageName: ChatUIKitImageLoader.packageName,
@@ -1714,7 +1826,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 },
               ),
               ChatUIKitDetailContentAction(
-                title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
+                title:
+                    ChatUIKitLocal.contactDetailViewSearch.localString(context),
                 icon: 'assets/images/search_history.png',
                 packageName: ChatUIKitImageLoader.packageName,
                 iconSize: const Size(32, 32),
@@ -1732,7 +1845,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                       Navigator.of(context).popUntil((route) {
                         count++;
                         if (count == 2) return true;
-                        return route.settings.name == ChatUIKitRouteNames.messagesView || route.isFirst;
+                        return route.settings.name ==
+                                ChatUIKitRouteNames.messagesView ||
+                            route.isFirst;
                       });
                       controller.jumpToSearchedMessage(value);
                     }
@@ -1758,21 +1873,28 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     );
   }
 
-  List<ChatUIKitBottomSheetAction> defaultItemLongPressed(MessageModel model, ChatUIKitTheme theme) {
+  List<ChatUIKitBottomSheetAction> defaultItemLongPressed(
+      MessageModel model, ChatUIKitTheme theme) {
     List<ChatUIKitBottomSheetAction> items = [];
     for (var element in ChatUIKitSettings.msgItemLongPressActions) {
       // 复制
-      if (model.message.bodyType == MessageType.TXT && element == ChatUIKitActionType.copy) {
+      if (model.message.bodyType == MessageType.TXT &&
+          element == ChatUIKitActionType.copy) {
         items.add(ChatUIKitBottomSheetAction.normal(
           actionType: ChatUIKitActionType.copy,
-          label: ChatUIKitLocal.messagesViewLongPressActionsTitleCopy.localString(context),
+          label: ChatUIKitLocal.messagesViewLongPressActionsTitleCopy
+              .localString(context),
           style: TextStyle(
-            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            color: theme.color.isDark
+                ? theme.color.neutralColor98
+                : theme.color.neutralColor1,
             fontWeight: theme.font.bodyLarge.fontWeight,
             fontSize: theme.font.bodyLarge.fontSize,
           ),
           icon: ChatUIKitImageLoader.messageLongPressCopy(
-            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+            color: theme.color.isDark
+                ? theme.color.neutralColor7
+                : theme.color.neutralColor3,
           ),
           onTap: () async {
             Clipboard.setData(ClipboardData(text: model.message.textContent));
@@ -1789,14 +1911,19 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         items.add(ChatUIKitBottomSheetAction.normal(
           actionType: ChatUIKitActionType.reply,
           icon: ChatUIKitImageLoader.messageLongPressReply(
-            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+            color: theme.color.isDark
+                ? theme.color.neutralColor7
+                : theme.color.neutralColor3,
           ),
           style: TextStyle(
-            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            color: theme.color.isDark
+                ? theme.color.neutralColor98
+                : theme.color.neutralColor1,
             fontWeight: theme.font.bodyLarge.fontWeight,
             fontSize: theme.font.bodyLarge.fontSize,
           ),
-          label: ChatUIKitLocal.messagesViewLongPressActionsTitleReply.localString(context),
+          label: ChatUIKitLocal.messagesViewLongPressActionsTitleReply
+              .localString(context),
           onTap: () async {
             Navigator.of(context).pop();
             replyMessaged(model);
@@ -1810,10 +1937,14 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         items.add(ChatUIKitBottomSheetAction.normal(
           actionType: ChatUIKitActionType.forward,
           icon: ChatUIKitImageLoader.messageLongPressForward(
-            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+            color: theme.color.isDark
+                ? theme.color.neutralColor7
+                : theme.color.neutralColor3,
           ),
           style: TextStyle(
-            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            color: theme.color.isDark
+                ? theme.color.neutralColor98
+                : theme.color.neutralColor1,
             fontWeight: theme.font.bodyLarge.fontWeight,
             fontSize: theme.font.bodyLarge.fontSize,
           ),
@@ -1835,14 +1966,19 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         items.add(ChatUIKitBottomSheetAction.normal(
           actionType: ChatUIKitActionType.multiSelect,
           icon: ChatUIKitImageLoader.messageLongPressMultiSelected(
-            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+            color: theme.color.isDark
+                ? theme.color.neutralColor7
+                : theme.color.neutralColor3,
           ),
           style: TextStyle(
-            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            color: theme.color.isDark
+                ? theme.color.neutralColor98
+                : theme.color.neutralColor1,
             fontWeight: theme.font.bodyLarge.fontWeight,
             fontSize: theme.font.bodyLarge.fontSize,
           ),
-          label: ChatUIKitLocal.messageListLongPressMenuMulti.localString(context),
+          label:
+              ChatUIKitLocal.messageListLongPressMenuMulti.localString(context),
           onTap: () async {
             Navigator.of(context).pop();
             controller.enableMultiSelectMode();
@@ -1858,16 +1994,22 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         items.add(ChatUIKitBottomSheetAction.normal(
           actionType: ChatUIKitActionType.translate,
           icon: ChatUIKitImageLoader.messageLongPressTranslate(
-            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+            color: theme.color.isDark
+                ? theme.color.neutralColor7
+                : theme.color.neutralColor3,
           ),
           style: TextStyle(
-            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            color: theme.color.isDark
+                ? theme.color.neutralColor98
+                : theme.color.neutralColor1,
             fontWeight: theme.font.bodyLarge.fontWeight,
             fontSize: theme.font.bodyLarge.fontSize,
           ),
           label: model.message.hasTranslate
-              ? ChatUIKitLocal.messageListLongPressMenuTranslateOrigin.localString(context)
-              : ChatUIKitLocal.messageListLongPressMenuTranslate.localString(context),
+              ? ChatUIKitLocal.messageListLongPressMenuTranslateOrigin
+                  .localString(context)
+              : ChatUIKitLocal.messageListLongPressMenuTranslate
+                  .localString(context),
           onTap: () async {
             Navigator.of(context).pop();
             controller.translateMessage(
@@ -1886,12 +2028,17 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           ChatUIKitSettings.enableMessageThread) {
         items.add(ChatUIKitBottomSheetAction.normal(
           actionType: ChatUIKitActionType.thread,
-          label: ChatUIKitLocal.messageListLongPressMenuCreateThread.localString(context),
+          label: ChatUIKitLocal.messageListLongPressMenuCreateThread
+              .localString(context),
           icon: ChatUIKitImageLoader.messageLongPressThread(
-            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+            color: theme.color.isDark
+                ? theme.color.neutralColor7
+                : theme.color.neutralColor3,
           ),
           style: TextStyle(
-            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            color: theme.color.isDark
+                ? theme.color.neutralColor98
+                : theme.color.neutralColor1,
             fontWeight: theme.font.bodyLarge.fontWeight,
             fontSize: theme.font.bodyLarge.fontSize,
           ),
@@ -1923,14 +2070,19 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           ChatUIKitSettings.enableMessageEdit) {
         items.add(ChatUIKitBottomSheetAction.normal(
           actionType: ChatUIKitActionType.edit,
-          label: ChatUIKitLocal.messagesViewLongPressActionsTitleEdit.localString(context),
+          label: ChatUIKitLocal.messagesViewLongPressActionsTitleEdit
+              .localString(context),
           style: TextStyle(
-            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            color: theme.color.isDark
+                ? theme.color.neutralColor98
+                : theme.color.neutralColor1,
             fontWeight: theme.font.bodyLarge.fontWeight,
             fontSize: theme.font.bodyLarge.fontSize,
           ),
           icon: ChatUIKitImageLoader.messageLongPressEdit(
-            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+            color: theme.color.isDark
+                ? theme.color.neutralColor7
+                : theme.color.neutralColor3,
           ),
           onTap: () async {
             Navigator.of(context).pop();
@@ -1939,18 +2091,24 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         ));
       }
 
-      if (element == ChatUIKitActionType.report && ChatUIKitSettings.enableMessageReport) {
+      if (element == ChatUIKitActionType.report &&
+          ChatUIKitSettings.enableMessageReport) {
         // 举报
         items.add(ChatUIKitBottomSheetAction.normal(
           actionType: ChatUIKitActionType.report,
-          label: ChatUIKitLocal.messagesViewLongPressActionsTitleReport.localString(context),
+          label: ChatUIKitLocal.messagesViewLongPressActionsTitleReport
+              .localString(context),
           style: TextStyle(
-            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            color: theme.color.isDark
+                ? theme.color.neutralColor98
+                : theme.color.neutralColor1,
             fontWeight: theme.font.bodyLarge.fontWeight,
             fontSize: theme.font.bodyLarge.fontSize,
           ),
           icon: ChatUIKitImageLoader.messageLongPressReport(
-            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+            color: theme.color.isDark
+                ? theme.color.neutralColor7
+                : theme.color.neutralColor3,
           ),
           onTap: () async {
             Navigator.of(context).pop();
@@ -1962,14 +2120,19 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         // 删除
         items.add(ChatUIKitBottomSheetAction.normal(
           actionType: ChatUIKitActionType.delete,
-          label: ChatUIKitLocal.messagesViewLongPressActionsTitleDelete.localString(context),
+          label: ChatUIKitLocal.messagesViewLongPressActionsTitleDelete
+              .localString(context),
           style: TextStyle(
-            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            color: theme.color.isDark
+                ? theme.color.neutralColor98
+                : theme.color.neutralColor1,
             fontWeight: theme.font.bodyLarge.fontWeight,
             fontSize: theme.font.bodyLarge.fontSize,
           ),
           icon: ChatUIKitImageLoader.messageLongPressDelete(
-            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+            color: theme.color.isDark
+                ? theme.color.neutralColor7
+                : theme.color.neutralColor3,
           ),
           onTap: () async {
             Navigator.of(context).pop();
@@ -1981,19 +2144,25 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       // 撤回
       if (model.message.direction == MessageDirection.SEND &&
           model.message.serverTime >=
-              DateTime.now().millisecondsSinceEpoch - ChatUIKitSettings.recallExpandTime * 1000 &&
+              DateTime.now().millisecondsSinceEpoch -
+                  ChatUIKitSettings.recallExpandTime * 1000 &&
           element == ChatUIKitActionType.recall &&
           ChatUIKitSettings.enableMessageRecall) {
         items.add(ChatUIKitBottomSheetAction.normal(
           actionType: ChatUIKitActionType.recall,
-          label: ChatUIKitLocal.messagesViewLongPressActionsTitleRecall.localString(context),
+          label: ChatUIKitLocal.messagesViewLongPressActionsTitleRecall
+              .localString(context),
           style: TextStyle(
-            color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+            color: theme.color.isDark
+                ? theme.color.neutralColor98
+                : theme.color.neutralColor1,
             fontWeight: theme.font.bodyLarge.fontWeight,
             fontSize: theme.font.bodyLarge.fontSize,
           ),
           icon: ChatUIKitImageLoader.messageLongPressRecall(
-            color: theme.color.isDark ? theme.color.neutralColor7 : theme.color.neutralColor3,
+            color: theme.color.isDark
+                ? theme.color.neutralColor7
+                : theme.color.neutralColor3,
           ),
           onTap: () async {
             Navigator.of(context).pop();
@@ -2028,7 +2197,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
   }
 
   Widget? bottomSheetReactionsTitle(MessageModel model, ChatUIKitTheme theme) {
-    if (ChatUIKitSettings.msgItemLongPressActions.contains(ChatUIKitActionType.reaction) == false ||
+    if (ChatUIKitSettings.msgItemLongPressActions
+                .contains(ChatUIKitActionType.reaction) ==
+            false ||
         ChatUIKitSettings.enableMessageReaction == false) return null;
     List<MessageReaction>? reactions = model.reactions;
     return Padding(
@@ -2038,7 +2209,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           double width = constraints.maxWidth;
           int maxCount = width ~/ (36 + 12) - 1;
           List<Widget> items = [];
-          for (var i = 0; i < min(ChatUIKitSettings.favoriteReaction.length, maxCount); i++) {
+          for (var i = 0;
+              i < min(ChatUIKitSettings.favoriteReaction.length, maxCount);
+              i++) {
             String emoji = ChatUIKitSettings.favoriteReaction[i];
             bool highlight = reactions?.any((element) {
                   return element.reaction == emoji && element.isAddedBySelf;
@@ -2056,7 +2229,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 child: Container(
                   decoration: BoxDecoration(
                     color: highlight
-                        ? (theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5)
+                        ? (theme.color.isDark
+                            ? theme.color.primaryColor6
+                            : theme.color.primaryColor5)
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -2085,7 +2260,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           );
           bool full = ChatUIKitSettings.favoriteReaction.length + 1 < maxCount;
           return Row(
-            mainAxisAlignment: full ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
+            mainAxisAlignment:
+                full ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
             children: full
                 ? items
                     .map((e) => Padding(
@@ -2115,25 +2291,34 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     );
   }
 
+  void showPinMsgsView() {}
+
   void showAllReactionEmojis(MessageModel model, ChatUIKitTheme theme) {
     showChatUIKitBottomSheet(
       context: context,
       showCancel: false,
       body: ChatUIKitInputEmojiBar(
-        selectedEmojis: model.reactions?.where((e) => e.isAddedBySelf == true).map((e) => e.reaction).toList(),
-        selectedColor: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+        selectedEmojis: model.reactions
+            ?.where((e) => e.isAddedBySelf == true)
+            .map((e) => e.reaction)
+            .toList(),
+        selectedColor: theme.color.isDark
+            ? theme.color.primaryColor6
+            : theme.color.primaryColor5,
         emojiClicked: (emojiPath) async {
           var emoji = ChatUIKitEmojiData.getEmoji(emojiPath);
           bool needAdd = false;
           if (model.reactions == null) {
             needAdd = true;
           } else {
-            needAdd =
-                model.reactions?.indexWhere((element) => element.reaction == emoji && element.isAddedBySelf) == -1;
+            needAdd = model.reactions?.indexWhere((element) =>
+                    element.reaction == emoji && element.isAddedBySelf) ==
+                -1;
           }
 
           Navigator.of(context).pop();
-          await controller.updateReaction(model.message.msgId, ChatUIKitEmojiData.emojiMap[emojiPath]!, needAdd);
+          await controller.updateReaction(model.message.msgId,
+              ChatUIKitEmojiData.emojiMap[emojiPath]!, needAdd);
         },
       ),
     );
@@ -2180,7 +2365,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           label: Text(
             "${controller.cacheMessages.length} 条未读消息",
             style: TextStyle(
-              color: theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+              color: theme.color.isDark
+                  ? theme.color.primaryColor6
+                  : theme.color.primaryColor5,
               fontWeight: theme.font.labelMedium.fontWeight,
               fontSize: theme.font.labelMedium.fontSize,
             ),
@@ -2188,17 +2375,23 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           style: ButtonStyle(
             splashFactory: NoSplash.splashFactory,
             backgroundColor: MaterialStateProperty.all(
-              theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor98,
+              theme.color.isDark
+                  ? theme.color.neutralColor2
+                  : theme.color.neutralColor98,
             ),
             overlayColor: MaterialStateProperty.all(Colors.transparent),
             elevation: MaterialStateProperty.all(0),
             shadowColor: MaterialStateProperty.all(Colors.transparent),
             foregroundColor: MaterialStateProperty.all(
-              theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5,
+              theme.color.isDark
+                  ? theme.color.primaryColor6
+                  : theme.color.primaryColor5,
             ),
             side: MaterialStatePropertyAll<BorderSide>(
               BorderSide(
-                color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor9,
+                color: theme.color.isDark
+                    ? theme.color.neutralColor3
+                    : theme.color.neutralColor9,
               ),
             ),
             shape: MaterialStatePropertyAll<RoundedRectangleBorder>(

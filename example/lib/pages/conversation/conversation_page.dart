@@ -10,8 +10,6 @@ class ConversationPage extends StatefulWidget {
 }
 
 class _ConversationPageState extends State<ConversationPage> {
-  final TextEditingController textController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return const ConversationsView();

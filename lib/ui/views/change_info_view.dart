@@ -35,7 +35,8 @@ class ChangeInfoView extends StatefulWidget {
   State<ChangeInfoView> createState() => _ChangeInfoViewState();
 }
 
-class _ChangeInfoViewState extends State<ChangeInfoView> with ChatUIKitRouteHelper {
+class _ChangeInfoViewState extends State<ChangeInfoView>
+    with ChatUIKitRouteHelper {
   final TextEditingController controller = TextEditingController();
 
   String? originalStr;
@@ -49,7 +50,9 @@ class _ChangeInfoViewState extends State<ChangeInfoView> with ChatUIKitRouteHelp
     super.initState();
 
     controller.addListener(() {
-      controller.text != originalStr ? isChanged.value = true : isChanged.value = false;
+      controller.text != originalStr
+          ? isChanged.value = true
+          : isChanged.value = false;
     });
 
     widget.inputTextCallback?.call().then((value) {
@@ -65,8 +68,8 @@ class _ChangeInfoViewState extends State<ChangeInfoView> with ChatUIKitRouteHelp
       titleTextStyle: widget.appBarModel?.titleTextStyle,
       subtitle: widget.appBarModel?.subtitle,
       subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
-      leadingActions:
-          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      leadingActions: widget.appBarModel?.leadingActions ??
+          widget.appBarModel?.leadingActionsBuilder?.call(context, null),
       trailingActions: widget.appBarModel?.trailingActions ??
           () {
             List<ChatUIKitAppBarAction> actions = [
@@ -81,29 +84,38 @@ class _ChangeInfoViewState extends State<ChangeInfoView> with ChatUIKitRouteHelp
                   valueListenable: isChanged,
                   builder: (context, value, child) {
                     return Text(
-                      widget.saveButtonTitle ?? ChatUIKitLocal.changInfoViewSave.localString(context),
+                      widget.saveButtonTitle ??
+                          ChatUIKitLocal.changInfoViewSave.localString(context),
                       textScaler: TextScaler.noScaling,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontWeight: theme.font.labelMedium.fontWeight,
                         fontSize: theme.font.labelMedium.fontSize,
                         color: value
-                            ? (theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5)
-                            : (theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor6),
+                            ? (theme.color.isDark
+                                ? theme.color.primaryColor6
+                                : theme.color.primaryColor5)
+                            : (theme.color.isDark
+                                ? theme.color.neutralColor5
+                                : theme.color.neutralColor6),
                       ),
                     );
                   },
                 ),
               )
             ];
-            return widget.appBarModel?.trailingActionsBuilder?.call(context, actions) ?? actions;
+            return widget.appBarModel?.trailingActionsBuilder
+                    ?.call(context, actions) ??
+                actions;
           }(),
       showBackButton: widget.appBarModel?.showBackButton ?? true,
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
       centerTitle: widget.appBarModel?.centerTitle ?? false,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       backgroundColor: widget.appBarModel?.backgroundColor ??
-          (theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98),
+          (theme.color.isDark
+              ? theme.color.neutralColor1
+              : theme.color.neutralColor98),
     );
   }
 
@@ -118,10 +130,14 @@ class _ChangeInfoViewState extends State<ChangeInfoView> with ChatUIKitRouteHelp
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor95,
+            color: theme.color.isDark
+                ? theme.color.neutralColor3
+                : theme.color.neutralColor95,
           ),
           child: TextField(
-            keyboardAppearance: ChatUIKitTheme.of(context).color.isDark ? Brightness.dark : Brightness.light,
+            keyboardAppearance: ChatUIKitTheme.of(context).color.isDark
+                ? Brightness.dark
+                : Brightness.light,
             maxLines: 4,
             minLines: 1,
             buildCounter: (
@@ -138,8 +154,10 @@ class _ChangeInfoViewState extends State<ChangeInfoView> with ChatUIKitRouteHelp
                       "$currentLength/$maxLength",
                       overflow: TextOverflow.ellipsis,
                       textScaler: TextScaler.noScaling,
-                      style:
-                          TextStyle(color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7),
+                      style: TextStyle(
+                          color: theme.color.isDark
+                              ? theme.color.neutralColor5
+                              : theme.color.neutralColor7),
                     )),
               );
             },
@@ -148,15 +166,20 @@ class _ChangeInfoViewState extends State<ChangeInfoView> with ChatUIKitRouteHelp
             style: TextStyle(
               fontWeight: theme.font.titleMedium.fontWeight,
               fontSize: theme.font.titleMedium.fontSize,
-              color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+              color: theme.color.isDark
+                  ? theme.color.neutralColor98
+                  : theme.color.neutralColor1,
             ),
             textAlign: TextAlign.start,
             decoration: InputDecoration(
-              hintText: widget.hint ?? ChatUIKitLocal.changInfoViewInputHint.localString(context),
+              hintText: widget.hint ??
+                  ChatUIKitLocal.changInfoViewInputHint.localString(context),
               hintStyle: TextStyle(
                 fontWeight: theme.font.titleMedium.fontWeight,
                 fontSize: theme.font.titleMedium.fontSize,
-                color: theme.color.isDark ? theme.color.neutralColor5 : theme.color.neutralColor7,
+                color: theme.color.isDark
+                    ? theme.color.neutralColor5
+                    : theme.color.neutralColor7,
               ),
               border: InputBorder.none,
             ),
@@ -167,7 +190,9 @@ class _ChangeInfoViewState extends State<ChangeInfoView> with ChatUIKitRouteHelp
 
     content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: SafeArea(child: content),
     );

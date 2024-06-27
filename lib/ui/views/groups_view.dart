@@ -101,7 +101,9 @@ class _GroupsViewState extends State<GroupsView> {
                 style: TextStyle(
                   fontWeight: theme.font.titleMedium.fontWeight,
                   fontSize: theme.font.titleMedium.fontSize,
-                  color: theme.color.isDark ? theme.color.neutralColor98 : theme.color.neutralColor1,
+                  color: theme.color.isDark
+                      ? theme.color.neutralColor98
+                      : theme.color.neutralColor1,
                 ),
               );
             },
@@ -109,10 +111,10 @@ class _GroupsViewState extends State<GroupsView> {
       titleTextStyle: widget.appBarModel?.titleTextStyle,
       subtitle: widget.appBarModel?.subtitle,
       subTitleTextStyle: widget.appBarModel?.subTitleTextStyle,
-      leadingActions:
-          widget.appBarModel?.leadingActions ?? widget.appBarModel?.leadingActionsBuilder?.call(context, null),
-      trailingActions:
-          widget.appBarModel?.trailingActions ?? widget.appBarModel?.trailingActionsBuilder?.call(context, null),
+      leadingActions: widget.appBarModel?.leadingActions ??
+          widget.appBarModel?.leadingActionsBuilder?.call(context, null),
+      trailingActions: widget.appBarModel?.trailingActions ??
+          widget.appBarModel?.trailingActionsBuilder?.call(context, null),
       showBackButton: widget.appBarModel?.showBackButton ?? true,
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
       centerTitle: widget.appBarModel?.centerTitle ?? false,
@@ -127,7 +129,9 @@ class _GroupsViewState extends State<GroupsView> {
     updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98,
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: SafeArea(
         child: GroupListView(
@@ -158,7 +162,8 @@ class _GroupsViewState extends State<GroupsView> {
       if (model != null) {
         if (model.type == ChatUIKitRouteBackType.remove) {
           controller.list.removeWhere((element) {
-            return element is GroupItemModel && element.profile.id == model.profileId;
+            return element is GroupItemModel &&
+                element.profile.id == model.profileId;
           });
           controller.refresh();
         }

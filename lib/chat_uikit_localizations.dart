@@ -2,30 +2,52 @@ import 'package:em_chat_uikit/universal/inner_headers.dart';
 import 'package:flutter/widgets.dart';
 
 mixin ChatUIKitLocal {
-  static const String conversationsViewMenuAddContact = 'new_chat_button_click_menu_add_contacts';
-  static const String conversationsViewMenuCreateGroup = 'new_chat_button_click_menu_create_group';
-  static const String conversationsViewMenuCreateNewChat = 'new_chat_button_click_menu_create_new_chat';
-  static const String conversationsViewMenuSelectContacts = 'new_chat_button_click_menu_select_contacts';
-  static const String conversationsViewMenuCancel = 'new_chat_button_click_menu_cancel';
-  static const String conversationsViewSearchHint = 'conversations_view_search_hint';
+  static const String conversationsViewMenuAddContact =
+      'new_chat_button_click_menu_add_contacts';
+  static const String conversationsViewMenuCreateGroup =
+      'new_chat_button_click_menu_create_group';
+  static const String conversationsViewMenuCreateNewChat =
+      'new_chat_button_click_menu_create_new_chat';
+  static const String conversationsViewMenuSelectContacts =
+      'new_chat_button_click_menu_select_contacts';
+  static const String conversationsViewMenuCancel =
+      'new_chat_button_click_menu_cancel';
+  static const String conversationsViewSearchHint =
+      'conversations_view_search_hint';
 
-  static const String conversationListLongPressMenuDelete = 'conversation_list_long_pressed_menu_delete';
-  static const String conversationListLongPressMenuPin = 'conversation_list_long_pressed_menu_pin';
-  static const String conversationListLongPressMenuUnPin = 'conversation_list_long_pressed_menu_unpin';
-  static const String conversationListLongPressMenuMute = 'conversation_list_long_pressed_menu_mute';
-  static const String conversationListLongPressMenuUnmute = 'conversation_list_long_pressed_menu_unmute';
-  static const String conversationListLongPressMenuRead = 'conversation_list_long_pressed_menu_read';
-  static const String conversationListLongPressMenuCancel = 'conversation_list_long_pressed_menu_cancel';
+  static const String conversationListLongPressMenuDelete =
+      'conversation_list_long_pressed_menu_delete';
+  static const String conversationListLongPressMenuPin =
+      'conversation_list_long_pressed_menu_pin';
+  static const String conversationListLongPressMenuUnPin =
+      'conversation_list_long_pressed_menu_unpin';
+  static const String conversationListLongPressMenuMute =
+      'conversation_list_long_pressed_menu_mute';
+  static const String conversationListLongPressMenuUnmute =
+      'conversation_list_long_pressed_menu_unmute';
+  static const String conversationListLongPressMenuRead =
+      'conversation_list_long_pressed_menu_read';
+  static const String conversationListLongPressMenuCancel =
+      'conversation_list_long_pressed_menu_cancel';
 
-  static const String messageListLongPressMenuCopy = 'message_list_long_pressed_menu_copy';
-  static const String messageListLongPressMenuReply = 'message_list_long_pressed_menu_reply';
-  static const String messageListLongPressMenuEdit = 'message_list_long_pressed_menu_edit';
-  static const String messageListLongPressMenuDelete = 'message_list_long_pressed_menu_delete';
-  static const String messageListLongPressMenuRecall = 'message_list_long_pressed_menu_recall';
-  static const String messageListLongPressMenuMulti = 'message_list_long_pressed_menu_multi';
-  static const String messageListLongPressMenuTranslate = 'message_list_long_pressed_menu_translate';
-  static const String messageListLongPressMenuTranslateOrigin = 'message_list_long_pressed_menu_translate_origin';
-  static const String messageListLongPressMenuCreateThread = 'message_list_long_pressed_menu_create_thread';
+  static const String messageListLongPressMenuCopy =
+      'message_list_long_pressed_menu_copy';
+  static const String messageListLongPressMenuReply =
+      'message_list_long_pressed_menu_reply';
+  static const String messageListLongPressMenuEdit =
+      'message_list_long_pressed_menu_edit';
+  static const String messageListLongPressMenuDelete =
+      'message_list_long_pressed_menu_delete';
+  static const String messageListLongPressMenuRecall =
+      'message_list_long_pressed_menu_recall';
+  static const String messageListLongPressMenuMulti =
+      'message_list_long_pressed_menu_multi';
+  static const String messageListLongPressMenuTranslate =
+      'message_list_long_pressed_menu_translate';
+  static const String messageListLongPressMenuTranslateOrigin =
+      'message_list_long_pressed_menu_translate_origin';
+  static const String messageListLongPressMenuCreateThread =
+      'message_list_long_pressed_menu_create_thread';
   static const recordBarRecord = 'record_bar_record';
   static const recordBarRecording = 'record_bar_recording';
   static const recordBarPlay = 'record_bar_play';
@@ -40,26 +62,35 @@ mixin ChatUIKitLocal {
   static const historyMessages = 'history_messages';
   static const createGroupViewTitle = 'create_group_view_title';
   static const createGroupViewCreate = 'create_group_view_create';
-  static const createGroupViewSearchContact = 'create_group_view_search_contact';
+  static const createGroupViewSearchContact =
+      'create_group_view_search_contact';
   static const createGroupViewCancel = 'create_group_view_cancel';
 
   static const contactsViewNewRequests = 'contacts_view_new_request';
   static const contactsViewGroups = 'contacts_view_groups';
   static const contactsViewSearch = 'contacts_view_search';
-  static const contactsAddContactAlertTitle = 'contacts_add_contact_alert_title';
-  static const contactsAddContactAlertSubTitle = 'contacts_add_contact_alert_sub_title';
-  static const contactsAddContactAlertHintText = 'contacts_add_contact_alert_hint_text';
-  static const contactsAddContactAlertButtonConfirm = 'contacts_add_contact_alert_button_confirm';
-  static const contactsAddContactAlertButtonCancel = 'contacts_add_contact_alert_button_cancel';
+  static const contactsAddContactAlertTitle =
+      'contacts_add_contact_alert_title';
+  static const contactsAddContactAlertSubTitle =
+      'contacts_add_contact_alert_sub_title';
+  static const contactsAddContactAlertHintText =
+      'contacts_add_contact_alert_hint_text';
+  static const contactsAddContactAlertButtonConfirm =
+      'contacts_add_contact_alert_button_confirm';
+  static const contactsAddContactAlertButtonCancel =
+      'contacts_add_contact_alert_button_cancel';
 
   static const contactDetailViewSend = 'contact_detail_view_send';
   static const contactDetailViewSearch = 'contact_detail_view_search';
   static const contactDetailViewRemark = 'contact_detail_view_remark';
   static const contactDetailViewPhone = 'contact_detail_view_phone';
-  static const contactDetailViewDoNotDisturb = 'contact_detail_view_do_not_disturb';
+  static const contactDetailViewDoNotDisturb =
+      'contact_detail_view_do_not_disturb';
   static const contactDetailViewBlock = 'contact_detail_view_block';
-  static const contactDetailViewClearChatHistory = 'contact_detail_view_clear_chat_history';
-  static const contactDetailViewClearChatHistoryAlertTitle = 'contact_detail_view_clear_chat_history_alert_title';
+  static const contactDetailViewClearChatHistory =
+      'contact_detail_view_clear_chat_history';
+  static const contactDetailViewClearChatHistoryAlertTitle =
+      'contact_detail_view_clear_chat_history_alert_title';
   static const contactDetailViewClearChatHistoryAlertSubTitle =
       'contact_detail_view_clear_chat_history_alert_sub_title';
   static const contactDetailViewClearChatHistoryAlertButtonConfirm =
@@ -68,21 +99,27 @@ mixin ChatUIKitLocal {
       'contact_detail_view_clear_chat_history_alert_button_cancel';
   static const contactDetailViewDelete = 'contact_detail_view_delete';
   static const contactDetailViewCancel = 'contact_detail_view_cancel';
-  static const contactDetailViewDeleteAlertTitle = 'contact_detail_view_delete_alert_title';
-  static const contactDetailViewDeleteAlertSubTitle = 'contact_detail_view_delete_alert_sub_title';
-  static const contactDetailViewDeleteAlertButtonConfirm = 'contact_detail_view_delete_alert_button_confirm';
-  static const contactDetailViewDeleteAlertButtonCancel = 'contact_detail_view_delete_alert_button_cancel';
+  static const contactDetailViewDeleteAlertTitle =
+      'contact_detail_view_delete_alert_title';
+  static const contactDetailViewDeleteAlertSubTitle =
+      'contact_detail_view_delete_alert_sub_title';
+  static const contactDetailViewDeleteAlertButtonConfirm =
+      'contact_detail_view_delete_alert_button_confirm';
+  static const contactDetailViewDeleteAlertButtonCancel =
+      'contact_detail_view_delete_alert_button_cancel';
 
   static const forwardMessageViewTitle = 'forward_message_view_title';
   static const forwardMessage = 'forward_message';
   static const forwardedMessage = 'forwarded_message';
-  static const forwardedMessageDownloadError = 'forwarded_message_download_error';
+  static const forwardedMessageDownloadError =
+      'forwarded_message_download_error';
   static const forwardSelectContacts = 'forward_select_contact';
   static const forwardSelectGroups = 'forward_select_group';
 
   static const groupDetailViewSend = 'group_detail_view_send';
   static const groupDetailViewDoNotDisturb = 'group_detail_view_do_not_disturb';
-  static const groupDetailViewClearChatHistory = 'group_detail_view_clear_chat_history';
+  static const groupDetailViewClearChatHistory =
+      'group_detail_view_clear_chat_history';
   static const groupDetailViewClearChatHistoryAlertButtonConfirm =
       'group_detail_view_clear_chat_history_alert_button_confirm';
   static const groupDetailViewClearChatHistoryAlertButtonCancel =
@@ -92,44 +129,65 @@ mixin ChatUIKitLocal {
   static const groupDetailViewGroupName = 'group_detail_view_group_name';
   static const groupDetailViewDescription = 'group_detail_view_description';
   static const groupDetailViewSwitchPublic = 'group_detail_view_switch_public';
-  static const groupDetailViewTransferGroup = 'group_detail_view_transfer_group';
+  static const groupDetailViewTransferGroup =
+      'group_detail_view_transfer_group';
   static const groupDetailViewDisbandGroup = 'group_detail_view_disband_group';
-  static const groupDetailViewDisbandAlertTitle = 'group_detail_view_disband_alert_title';
-  static const groupDetailViewDisbandAlertSubTitle = 'group_detail_view_disband_alert_sub_title';
-  static const groupDetailViewDisbandAlertButtonConfirm = 'group_detail_view_disband_alert_button_confirm';
-  static const groupDetailViewDisbandAlertButtonCancel = 'group_detail_view_disband_alert_button_cancel';
+  static const groupDetailViewDisbandAlertTitle =
+      'group_detail_view_disband_alert_title';
+  static const groupDetailViewDisbandAlertSubTitle =
+      'group_detail_view_disband_alert_sub_title';
+  static const groupDetailViewDisbandAlertButtonConfirm =
+      'group_detail_view_disband_alert_button_confirm';
+  static const groupDetailViewDisbandAlertButtonCancel =
+      'group_detail_view_disband_alert_button_cancel';
   static const groupDetailViewLeaveGroup = 'group_detail_view_leave_group';
-  static const groupDetailViewLeaveAlertTitle = 'group_detail_view_leave_alert_title';
-  static const groupDetailViewLeaveAlertSubTitle = 'group_detail_view_leave_alert_sub_title';
-  static const groupDetailViewLeaveAlertButtonConfirm = 'group_detail_view_leave_alert_button_confirm';
-  static const groupDetailViewLeaveAlertButtonCancel = 'group_detail_view_leave_alert_button_cancel';
+  static const groupDetailViewLeaveAlertTitle =
+      'group_detail_view_leave_alert_title';
+  static const groupDetailViewLeaveAlertSubTitle =
+      'group_detail_view_leave_alert_sub_title';
+  static const groupDetailViewLeaveAlertButtonConfirm =
+      'group_detail_view_leave_alert_button_confirm';
+  static const groupDetailViewLeaveAlertButtonCancel =
+      'group_detail_view_leave_alert_button_cancel';
   static const groupDetailChangeGroupName = 'group_detail_change_group_name';
-  static const groupDetailChangeGroupDescription = 'group_detail_change_group_description';
+  static const groupDetailChangeGroupDescription =
+      'group_detail_change_group_description';
 
   static const groupMentionViewMentionAll = 'group_mention_view_mention_all';
   static const groupMentionViewTitle = 'group_mention_view_title';
   static const groupMentionViewSearchHint = 'group_mention_view_search_hint';
 
   static const groupAddMembersViewTitle = 'group_add_member_view_title';
-  static const groupAddMembersViewSearchContact = 'group_add_member_view_search_contact';
+  static const groupAddMembersViewSearchContact =
+      'group_add_member_view_search_contact';
   static const groupAddMembersViewAdd = 'group_add_member_view_add';
 
   static const groupDeleteMembersViewTitle = 'group_delete_member_view_title';
-  static const groupDeleteMembersViewSearchMember = 'group_delete_member_view_search_member';
+  static const groupDeleteMembersViewSearchMember =
+      'group_delete_member_view_search_member';
   static const groupDeleteMembersViewDelete = 'group_delete_member_view_delete';
 
-  static const groupDeleteMembersViewAlertTitle = 'group_delete_member_view_alert_title';
-  static const groupDeleteMembersViewAlertSubTitle = 'group_delete_member_view_alert_sub_title';
-  static const groupDeleteMembersViewAlertButtonConfirm = 'group_delete_member_view_alert_button_confirm';
-  static const groupDeleteMembersViewAlertButtonCancel = 'group_delete_member_view_alert_button_cancel';
+  static const groupDeleteMembersViewAlertTitle =
+      'group_delete_member_view_alert_title';
+  static const groupDeleteMembersViewAlertSubTitle =
+      'group_delete_member_view_alert_sub_title';
+  static const groupDeleteMembersViewAlertButtonConfirm =
+      'group_delete_member_view_alert_button_confirm';
+  static const groupDeleteMembersViewAlertButtonCancel =
+      'group_delete_member_view_alert_button_cancel';
   static const groupMembersViewTitle = 'group_members_view_title';
   static const groupMembersSearch = 'group_members_view_search';
-  static const groupMembersMentionViewTitle = 'group_members_mention_view_title';
+  static const groupMembersMentionViewTitle =
+      'group_members_mention_view_title';
   static const groupChangeOwnerViewTitle = 'group_change_owner_view_title';
-  static const groupChangeOwnerViewAlertTitle = 'group_change_owner_view_alert_title';
-  static const groupChangeOwnerViewAlertSubTitle = 'group_change_owner_view_alert_sub_title';
-  static const groupChangeOwnerViewAlertButtonConfirm = 'group_change_owner_view_alert_button_confirm';
-  static const groupChangeOwnerViewAlertButtonCancel = 'group_change_owner_view_alert_button_cancel';
+  static const groupChangeOwnerViewAlertTitle =
+      'group_change_owner_view_alert_title';
+  static const groupChangeOwnerViewAlertSubTitle =
+      'group_change_owner_view_alert_sub_title';
+  static const groupChangeOwnerViewAlertButtonConfirm =
+      'group_change_owner_view_alert_button_confirm';
+  static const groupChangeOwnerViewAlertButtonCancel =
+      'group_change_owner_view_alert_button_cancel';
 
   static const groupsViewTitle = 'groups_view_title';
 
@@ -140,37 +198,68 @@ mixin ChatUIKitLocal {
   static const alertKickedInfo = 'messages_view_group_kicked_info';
   static const alertRecallInfo = 'messages_view_recall_info';
   static const alertYou = 'messages_view_recall_info_you';
-  static const messagesViewAlertGroupInfoTitle = 'messages_view_alert_group_info_title';
-  static const messagesViewAlertThreadInfoTitle = 'messages_view_alert_thread_info_title';
-  static const messagesViewEditMessageTitle = 'messages_view_edit_message_title';
-  static const messagesViewMoreActionsTitleAlbum = 'messages_view_more_actions_title_album';
-  static const messagesViewMoreActionsTitleCamera = 'messages_view_more_actions_title_camera';
-  static const messagesViewMoreActionsTitleFile = 'messages_view_more_actions_title_file';
-  static const messagesViewMoreActionsTitleLocation = 'messages_view_more_actions_title_location';
-  static const messagesViewMoreActionsTitleVideo = 'messages_view_more_actions_title_video';
-  static const messagesViewMoreActionsTitleVoice = 'messages_view_more_actions_title_voice';
-  static const messagesViewMoreActionsTitleContact = 'messages_view_more_actions_title_contact';
-  static const messagesViewLongPressActionsTitleCopy = 'messages_view_long_press_actions_title_copy';
-  static const messagesViewLongPressActionsTitleRecall = 'messages_view_long_press_actions_title_recall';
-  static const messagesViewLongPressActionsTitleDelete = 'messages_view_long_press_actions_title_delete';
-  static const messagesViewLongPressActionsTitleReply = 'messages_view_long_press_actions_title_reply';
-  static const messagesViewLongPressActionsTitleEdit = 'messages_view_long_press_actions_title_edit';
-  static const messagesViewLongPressActionsTitleReport = 'messages_view_long_press_actions_title_report';
-  static const messagesViewDeleteMessageAlertTitle = 'messages_view_delete_message_alert_title';
-  static const messagesViewDeleteMessageAlertSubTitle = 'messages_view_delete_message_alert_sub_title';
-  static const messagesViewDeleteMessageAlertButtonConfirm = 'messages_view_delete_message_alert_confirm';
-  static const messagesViewDeleteMessageAlertButtonCancel = 'messages_view_delete_message_alert_cancel';
-  static const messagesViewRecallMessageAlertTitle = 'messages_view_recall_message_alert_title';
-  static const messagesViewRecallMessageAlertSubTitle = 'messages_view_recall_message_alert_sub_title';
-  static const messagesViewRecallMessageAlertButtonConfirm = 'messages_view_recall_message_alert_confirm';
-  static const messagesViewRecallMessageAlertButtonCancel = 'messages_view_recall_message_alert_cancel';
-  static const messagesViewSelectContactTitle = 'messages_view_select_contact_title';
-  static const messagesViewSelectContactCancel = 'messages_view_select_contact_cancel';
-  static const messagesViewShareContactAlertTitle = 'messages_view_share_contact_alert_title';
-  static const messagesViewShareContactAlertSubTitle = 'messages_view_share_contact_alert_sub_title';
-  static const messagesViewShareContactAlertSubTitleTo = 'messages_view_share_contact_alert_sub_title_to';
-  static const messagesViewShareContactAlertButtonConfirm = 'messages_view_share_contact_alert_confirm';
-  static const messagesViewShareContactAlertButtonCancel = 'messages_view_share_contact_alert_cancel';
+  static const messagesViewAlertGroupInfoTitle =
+      'messages_view_alert_group_info_title';
+  static const messagesViewAlertThreadInfoTitle =
+      'messages_view_alert_thread_info_title';
+  static const messagesViewEditMessageTitle =
+      'messages_view_edit_message_title';
+  static const messagesViewMoreActionsTitleAlbum =
+      'messages_view_more_actions_title_album';
+  static const messagesViewMoreActionsTitleCamera =
+      'messages_view_more_actions_title_camera';
+  static const messagesViewMoreActionsTitleFile =
+      'messages_view_more_actions_title_file';
+  static const messagesViewMoreActionsTitleLocation =
+      'messages_view_more_actions_title_location';
+  static const messagesViewMoreActionsTitleVideo =
+      'messages_view_more_actions_title_video';
+  static const messagesViewMoreActionsTitleVoice =
+      'messages_view_more_actions_title_voice';
+  static const messagesViewMoreActionsTitleContact =
+      'messages_view_more_actions_title_contact';
+  static const messagesViewLongPressActionsTitleCopy =
+      'messages_view_long_press_actions_title_copy';
+  static const messagesViewLongPressActionsTitleRecall =
+      'messages_view_long_press_actions_title_recall';
+  static const messagesViewLongPressActionsTitleDelete =
+      'messages_view_long_press_actions_title_delete';
+  static const messagesViewLongPressActionsTitleReply =
+      'messages_view_long_press_actions_title_reply';
+  static const messagesViewLongPressActionsTitleEdit =
+      'messages_view_long_press_actions_title_edit';
+  static const messagesViewLongPressActionsTitleReport =
+      'messages_view_long_press_actions_title_report';
+  static const messagesViewDeleteMessageAlertTitle =
+      'messages_view_delete_message_alert_title';
+  static const messagesViewDeleteMessageAlertSubTitle =
+      'messages_view_delete_message_alert_sub_title';
+  static const messagesViewDeleteMessageAlertButtonConfirm =
+      'messages_view_delete_message_alert_confirm';
+  static const messagesViewDeleteMessageAlertButtonCancel =
+      'messages_view_delete_message_alert_cancel';
+  static const messagesViewRecallMessageAlertTitle =
+      'messages_view_recall_message_alert_title';
+  static const messagesViewRecallMessageAlertSubTitle =
+      'messages_view_recall_message_alert_sub_title';
+  static const messagesViewRecallMessageAlertButtonConfirm =
+      'messages_view_recall_message_alert_confirm';
+  static const messagesViewRecallMessageAlertButtonCancel =
+      'messages_view_recall_message_alert_cancel';
+  static const messagesViewSelectContactTitle =
+      'messages_view_select_contact_title';
+  static const messagesViewSelectContactCancel =
+      'messages_view_select_contact_cancel';
+  static const messagesViewShareContactAlertTitle =
+      'messages_view_share_contact_alert_title';
+  static const messagesViewShareContactAlertSubTitle =
+      'messages_view_share_contact_alert_sub_title';
+  static const messagesViewShareContactAlertSubTitleTo =
+      'messages_view_share_contact_alert_sub_title_to';
+  static const messagesViewShareContactAlertButtonConfirm =
+      'messages_view_share_contact_alert_confirm';
+  static const messagesViewShareContactAlertButtonCancel =
+      'messages_view_share_contact_alert_cancel';
   static const messagesViewTyping = 'messages_view_typing';
 
   static const messageCellCombineText = 'message_cell_combine_text';
@@ -182,11 +271,13 @@ mixin ChatUIKitLocal {
   static const messageCellCombineLocation = 'message_cell_combine_location';
   static const messageCellCombineCombine = 'message_cell_combine_combine';
 
-  static const newRequestDetailsViewAddContact = 'new_request_details_view_add_contact';
+  static const newRequestDetailsViewAddContact =
+      'new_request_details_view_add_contact';
   static const newRequestsViewTitle = 'new_requests_view_title';
 
   static const reportMessageViewTitle = 'report_message_view_title';
-  static const reportMessageViewReportReasons = 'report_message_view_report_reasons';
+  static const reportMessageViewReportReasons =
+      'report_message_view_report_reasons';
   static const reportMessageViewConfirm = 'report_message_view_confirm';
   static const reportMessageViewCancel = 'report_message_view_cancel';
 
@@ -231,6 +322,9 @@ mixin ChatUIKitLocal {
   static const replayBarTitleVideo = 'replay_bar_title_video';
   static const replayBarTitleImage = 'replay_bar_title_image';
   static const replayBarTitle = 'replay_bar_title';
+
+  static const confirm = 'confirm';
+  static const cancel = 'cancel';
 
   static const bottomSheetCancel = 'bottom_sheet_cancel';
 
@@ -448,6 +542,8 @@ mixin ChatUIKitLocal {
     replayBarTitleVideo: '视频',
     replayBarTitleImage: '图片',
     replayBarTitle: '正在回复 ',
+    confirm: '确认',
+    cancel: '取消',
     bottomSheetCancel: '取消',
     threadsViewTitle: '所有话题',
     threadNoLastMessage: '暂无消息',
@@ -522,7 +618,8 @@ mixin ChatUIKitLocal {
     contactDetailViewDelete: 'Delete Contact',
     contactDetailViewCancel: 'Cancel',
     contactDetailViewDeleteAlertTitle: 'Delete this contact?',
-    contactDetailViewDeleteAlertSubTitle: 'Deleting the contact will clear the chat history.',
+    contactDetailViewDeleteAlertSubTitle:
+        'Deleting the contact will clear the chat history.',
     contactDetailViewDeleteAlertButtonConfirm: 'Confirm',
     contactDetailViewDeleteAlertButtonCancel: 'Cancel',
     forwardMessageViewTitle: 'Forward to',
@@ -544,12 +641,14 @@ mixin ChatUIKitLocal {
     groupDetailViewTransferGroup: 'Transfer Ownership',
     groupDetailViewDisbandGroup: 'Disband Group',
     groupDetailViewDisbandAlertTitle: 'Disband this group?',
-    groupDetailViewDisbandAlertSubTitle: 'Disbanding the group will clear the chat history.',
+    groupDetailViewDisbandAlertSubTitle:
+        'Disbanding the group will clear the chat history.',
     groupDetailViewDisbandAlertButtonConfirm: 'Confirm',
     groupDetailViewDisbandAlertButtonCancel: 'Cancel',
     groupDetailViewLeaveGroup: 'Leave Group',
     groupDetailViewLeaveAlertTitle: 'Leave Group',
-    groupDetailViewLeaveAlertSubTitle: 'Leaving a group will also delete the chat history.',
+    groupDetailViewLeaveAlertSubTitle:
+        'Leaving a group will also delete the chat history.',
     groupDetailViewLeaveAlertButtonConfirm: 'Confirm',
     groupDetailViewLeaveAlertButtonCancel: 'Cancel',
     groupDetailChangeGroupName: 'Change Group Name',
@@ -564,7 +663,8 @@ mixin ChatUIKitLocal {
     groupDeleteMembersViewSearchMember: 'Search Members',
     groupDeleteMembersViewDelete: 'Delete',
     groupDeleteMembersViewAlertTitle: 'Remove these %a members?',
-    groupDeleteMembersViewAlertSubTitle: 'Are you sure you want to remove this group member(s)?',
+    groupDeleteMembersViewAlertSubTitle:
+        'Are you sure you want to remove this group member(s)?',
     groupDeleteMembersViewAlertButtonConfirm: 'Confirm',
     groupDeleteMembersViewAlertButtonCancel: 'Cancel',
     groupMembersViewTitle: 'Group Members',
@@ -572,7 +672,8 @@ mixin ChatUIKitLocal {
     groupMembersMentionViewTitle: 'Mentions',
     groupChangeOwnerViewTitle: 'Transfer Ownership',
     groupChangeOwnerViewAlertTitle: 'Transfer group ownership to ',
-    groupChangeOwnerViewAlertSubTitle: 'After the transfer, the other party will become the owner.',
+    groupChangeOwnerViewAlertSubTitle:
+        'After the transfer, the other party will become the owner.',
     groupChangeOwnerViewAlertButtonConfirm: 'Confirm',
     groupChangeOwnerViewAlertButtonCancel: 'Cancel',
     groupsViewTitle: 'Groups',
@@ -605,7 +706,8 @@ mixin ChatUIKitLocal {
     messagesViewDeleteMessageAlertButtonConfirm: 'Confirm',
     messagesViewDeleteMessageAlertButtonCancel: 'Cancel',
     messagesViewRecallMessageAlertTitle: 'Recall this message?',
-    messagesViewRecallMessageAlertSubTitle: 'After the recall, the message will be deleted.',
+    messagesViewRecallMessageAlertSubTitle:
+        'After the recall, the message will be deleted.',
     messagesViewRecallMessageAlertButtonConfirm: 'Recall',
     messagesViewRecallMessageAlertButtonCancel: 'Cancel',
     messagesViewSelectContactTitle: 'Select Contact',
@@ -666,6 +768,8 @@ mixin ChatUIKitLocal {
     replayBarTitleVideo: 'Video',
     replayBarTitleImage: 'Image',
     replayBarTitle: 'Replying ',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
     bottomSheetCancel: 'Cancel',
     threadsViewTitle: 'All topics',
     threadNoLastMessage: 'No message',
@@ -740,7 +844,8 @@ class ChatUIKitLocalizations {
 
   Iterable<Locale> get supportedLocales => _localization.supportedLocales;
 
-  Iterable<LocalizationsDelegate<dynamic>> get localizationsDelegates => _localization.localizationsDelegates;
+  Iterable<LocalizationsDelegate<dynamic>> get localizationsDelegates =>
+      _localization.localizationsDelegates;
 
   void addLocales({required List<ChatLocal> locales}) {
     defaultLocale = defaultLocale + locales;
@@ -768,7 +873,8 @@ class ChatUIKitLocalizations {
     Iterable<Locale> supportedLocales,
   ) {
     Locale? ret;
-    int index = supportedLocales.toList().lastIndexWhere((element) => element.languageCode == locale?.languageCode);
+    int index = supportedLocales.toList().lastIndexWhere(
+        (element) => element.languageCode == locale?.languageCode);
     if (index == -1) {
       ret = displayLanguageWhenNotSupported;
     } else {

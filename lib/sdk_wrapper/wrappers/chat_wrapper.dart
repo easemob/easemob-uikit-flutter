@@ -132,15 +132,18 @@ mixin ChatWrapper on ChatUIKitWrapperBase {
   }
 
   @protected
-  void onMessageContentChanged(Message message, String operatorId, int operationTime) async {
+  void onMessageContentChanged(
+      Message message, String operatorId, int operationTime) async {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
         // clear message's preview.
         if (message.bodyType == MessageType.TXT) {
           message.removePreview();
-          String? url = ChatUIKitURLHelper().getUrlFromText(message.textContent);
+          String? url =
+              ChatUIKitURLHelper().getUrlFromText(message.textContent);
           if (url?.isNotEmpty == true) {
-            ChatUIKitPreviewObj? obj = await ChatUIKitURLHelper().fetchPreview(url!);
+            ChatUIKitPreviewObj? obj =
+                await ChatUIKitURLHelper().fetchPreview(url!);
             if (obj != null) {
               message.addPreview(obj);
             }
@@ -201,7 +204,8 @@ mixin ChatWrapper on ChatUIKitWrapperBase {
   ) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
-        observer.onMessagePinChanged(messageId, conversationId, pinOperation, pinInfo);
+        observer.onMessagePinChanged(
+            messageId, conversationId, pinOperation, pinInfo);
       }
     }
   }

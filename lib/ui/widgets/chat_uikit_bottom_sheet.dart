@@ -148,13 +148,17 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
     TextStyle? normalStyle = TextStyle(
       fontWeight: theme.font.bodyLarge.fontWeight,
       fontSize: theme.font.bodyLarge.fontSize,
-      color: (theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5),
+      color: (theme.color.isDark
+          ? theme.color.primaryColor6
+          : theme.color.primaryColor5),
     );
 
     TextStyle? destructive = TextStyle(
       fontWeight: theme.font.bodyLarge.fontWeight,
       fontSize: theme.font.bodyLarge.fontSize,
-      color: (theme.color.isDark ? theme.color.errorColor6 : theme.color.errorColor5),
+      color: (theme.color.isDark
+          ? theme.color.errorColor6
+          : theme.color.errorColor5),
     );
 
     List<Widget> titleWidgets = [
@@ -162,7 +166,9 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(3)),
-            color: (theme.color.isDark ? theme.color.neutralColor3 : theme.color.neutralColor8),
+            color: (theme.color.isDark
+                ? theme.color.neutralColor3
+                : theme.color.neutralColor8),
           ),
           margin: const EdgeInsets.symmetric(vertical: 6),
           height: 5,
@@ -182,7 +188,9 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
                 TextStyle(
                   fontWeight: theme.font.labelMedium.fontWeight,
                   fontSize: theme.font.labelMedium.fontSize,
-                  color: (theme.color.isDark ? theme.color.neutralColor6 : theme.color.neutralColor5),
+                  color: (theme.color.isDark
+                      ? theme.color.neutralColor6
+                      : theme.color.neutralColor5),
                 ),
           ),
         ),
@@ -207,7 +215,9 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
               child: Divider(
                 height: .5,
                 thickness: .5,
-                color: (theme.color.isDark ? theme.color.neutralColor2 : theme.color.neutralColor9),
+                color: (theme.color.isDark
+                    ? theme.color.neutralColor2
+                    : theme.color.neutralColor9),
               ),
             ),
           );
@@ -238,7 +248,10 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
                             textScaler: TextScaler.noScaling,
                             overflow: TextOverflow.ellipsis,
                             style: element.style ??
-                                (element.type == ChatUIKitBottomSheetItemType.normal ? normalStyle : destructive),
+                                (element.type ==
+                                        ChatUIKitBottomSheetItemType.normal
+                                    ? normalStyle
+                                    : destructive),
                           ),
                         )
                       ],
@@ -248,7 +261,9 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
                       textScaler: TextScaler.noScaling,
                       overflow: TextOverflow.ellipsis,
                       style: element.style ??
-                          (element.type == ChatUIKitBottomSheetItemType.normal ? normalStyle : destructive),
+                          (element.type == ChatUIKitBottomSheetItemType.normal
+                              ? normalStyle
+                              : destructive),
                     ),
             ),
           ),
@@ -259,7 +274,9 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
     if (showCancel) {
       list.add(Container(
         height: 8,
-        color: (theme.color.isDark ? theme.color.neutralColor0 : theme.color.neutralColor95),
+        color: (theme.color.isDark
+            ? theme.color.neutralColor0
+            : theme.color.neutralColor95),
       ));
       String? str = cancelLabel;
       str ??= ChatUIKitLocal.bottomSheetCancel.localString(context);
@@ -281,7 +298,9 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
                   TextStyle(
                     fontWeight: theme.font.titleMedium.fontWeight,
                     fontSize: theme.font.titleMedium.fontSize,
-                    color: (theme.color.isDark ? theme.color.primaryColor6 : theme.color.primaryColor5),
+                    color: (theme.color.isDark
+                        ? theme.color.primaryColor6
+                        : theme.color.primaryColor5),
                   ),
             ),
           ),
@@ -327,7 +346,9 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
     content = Container(
         height: height,
         decoration: BoxDecoration(
-          color: (theme.color.isDark ? theme.color.neutralColor1 : theme.color.neutralColor98),
+          color: (theme.color.isDark
+              ? theme.color.neutralColor1
+              : theme.color.neutralColor98),
         ),
         child: content);
 
