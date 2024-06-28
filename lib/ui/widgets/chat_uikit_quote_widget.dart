@@ -7,10 +7,9 @@ class ChatUIKitQuoteWidget extends StatefulWidget {
   const ChatUIKitQuoteWidget({
     required this.model,
     this.isLeft = false,
-    this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     super.key,
   });
-  final ChatUIKitMessageListViewBubbleStyle? bubbleStyle;
+
   final QuoteModel model;
   final bool isLeft;
   @override
@@ -49,7 +48,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
 
   Widget _buildContext(BuildContext context, {Message? message}) {
     BorderRadiusGeometry? borderRadius;
-    if (widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow) {
+    if (ChatUIKitSettings.messageBubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow) {
       borderRadius = const BorderRadius.all(Radius.circular(4));
     } else {
       borderRadius = BorderRadius.only(

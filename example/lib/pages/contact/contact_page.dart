@@ -18,7 +18,6 @@ class _ContactPageState extends State<ContactPage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('ContactPage build');
     return const ContactsView();
   }
 }

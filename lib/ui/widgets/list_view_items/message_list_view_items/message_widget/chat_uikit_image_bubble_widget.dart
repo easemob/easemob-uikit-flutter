@@ -10,14 +10,13 @@ double maxImageHeight = 300;
 class ChatUIKitImageBubbleWidget extends StatefulWidget {
   const ChatUIKitImageBubbleWidget({
     required this.model,
-    this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     this.progressIndicatorColor,
     this.isCombine = false,
     this.isLeft,
     super.key,
   });
   final MessageModel model;
-  final ChatUIKitMessageListViewBubbleStyle? bubbleStyle;
+
   final Color? progressIndicatorColor;
   final bool? isLeft;
   final bool isCombine;
@@ -30,6 +29,7 @@ class ChatUIKitImageBubbleWidget extends StatefulWidget {
 class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget>
     with MessageObserver {
   late MessageModel model;
+
   bool downloading = false;
   bool downloadError = false;
 
@@ -191,7 +191,8 @@ class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget>
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
-            widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow
+            ChatUIKitSettings.messageBubbleStyle ==
+                    ChatUIKitMessageListViewBubbleStyle.arrow
                 ? 4
                 : 16),
         border: Border.all(
@@ -207,7 +208,8 @@ class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget>
       ),
       foregroundDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
-            widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow
+            ChatUIKitSettings.messageBubbleStyle ==
+                    ChatUIKitMessageListViewBubbleStyle.arrow
                 ? 4
                 : 16),
         border: Border.all(

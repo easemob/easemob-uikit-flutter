@@ -7,14 +7,13 @@ import 'package:flutter/material.dart';
 class ChatUIKitVideoBubbleWidget extends StatefulWidget {
   const ChatUIKitVideoBubbleWidget({
     required this.model,
-    this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     this.progressIndicatorColor,
     this.forceLeft,
     this.isCombine = false,
     super.key,
   });
   final MessageModel model;
-  final ChatUIKitMessageListViewBubbleStyle? bubbleStyle;
+
   final Color? progressIndicatorColor;
   final bool? forceLeft;
   final bool isCombine;
@@ -175,7 +174,8 @@ class _ChatUIKitVideoBubbleWidgetState extends State<ChatUIKitVideoBubbleWidget>
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
-            widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow
+            ChatUIKitSettings.messageBubbleStyle ==
+                    ChatUIKitMessageListViewBubbleStyle.arrow
                 ? 4
                 : 16),
         border: Border.all(
@@ -191,7 +191,8 @@ class _ChatUIKitVideoBubbleWidgetState extends State<ChatUIKitVideoBubbleWidget>
       ),
       foregroundDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
-            widget.bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow
+            ChatUIKitSettings.messageBubbleStyle ==
+                    ChatUIKitMessageListViewBubbleStyle.arrow
                 ? 4
                 : 16),
         border: Border.all(

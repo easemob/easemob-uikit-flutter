@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/ui/controllers/pin_message_list_view_controller.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -21,7 +23,6 @@ class MessagesView extends StatefulWidget {
         onDoubleTap = arguments.onDoubleTap,
         onAvatarTap = arguments.onAvatarTap,
         onNicknameTap = arguments.onNicknameTap,
-        bubbleStyle = arguments.bubbleStyle,
         emojiWidget = arguments.emojiWidget,
         itemBuilder = arguments.itemBuilder,
         alertItemBuilder = arguments.alertItemBuilder,
@@ -64,7 +65,6 @@ class MessagesView extends StatefulWidget {
     this.emojiWidget,
     this.itemBuilder,
     this.alertItemBuilder,
-    this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     this.morePressActions,
     this.onMoreActionsItemsHandler,
     this.replyBarBuilder,
@@ -119,9 +119,6 @@ class MessagesView extends StatefulWidget {
 
   /// 昵称点击事件， 如果设置后昵称点击事件将直接回调，如果不处理可以返回 `false`。
   final MessageItemTapHandler? onNicknameTap;
-
-  /// 气泡样式，默认为 [ChatUIKitSettings.messageBubbleStyle]。
-  final ChatUIKitMessageListViewBubbleStyle? bubbleStyle;
 
   /// 消息 `item` 构建器, 如果设置后需要显示消息时会直接回调，如果不处理可以返回 `null`。
   final MessageItemBuilder? itemBuilder;
@@ -202,8 +199,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
   Message? _playingMessage;
   final ValueNotifier<bool> _remoteTyping = ValueNotifier(false);
   Timer? _typingTimer;
-
   ChatUIKitAppBarModel? appBarModel;
+
+  PinMessageListViewController? pinMessageController;
 
   @override
   void initState() {
@@ -239,33 +237,35 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     });
 
     controller = widget.controller ?? MessagesViewController(profile: profile!);
-    controller.addListener(() {
-      updateView();
-      if (controller.lastActionType == MessageLastActionType.topPosition) {
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-          int index = controller.msgModelList.indexWhere((element) =>
-              element.message.msgId == controller.searchedMsg?.msgId);
-          if (index != -1) {
-            await _scrollController.scrollToIndex(
-              index,
-              duration: Durations.short1,
-            );
-            await _scrollController.highlight(
-              index,
-              highlightDuration: Durations.long4,
-            );
-          }
-        });
-      }
+    controller.addListener(
+      () {
+        updateView();
+        if (controller.lastActionType == MessageLastActionType.topPosition) {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+            int index = controller.msgModelList.indexWhere((element) =>
+                element.message.msgId == controller.searchedMsg?.msgId);
+            if (index != -1) {
+              await _scrollController.scrollToIndex(
+                index,
+                duration: Durations.short1,
+              );
+              await _scrollController.highlight(
+                index,
+                highlightDuration: Durations.long4,
+              );
+            }
+          });
+        }
 
-      if (controller.lastActionType == MessageLastActionType.bottomPosition) {
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          if (_scrollController.positions.isNotEmpty) {
-            _scrollController.jumpTo(0);
-          }
-        });
-      }
-    });
+        if (controller.lastActionType == MessageLastActionType.bottomPosition) {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            if (_scrollController.positions.isNotEmpty) {
+              _scrollController.jumpTo(0);
+            }
+          });
+        }
+      },
+    );
 
     _picker = ImagePicker();
     _player = AudioPlayer();
@@ -273,6 +273,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     controller.fetchItemList();
     controller.sendConversationsReadAck();
     controller.clearMentionIfNeed();
+
+    pinMessageController = PinMessageListViewController(profile!);
   }
 
   void updateAppBarModel(ChatUIKitTheme theme) {
@@ -417,6 +419,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     ChatUIKit.instance.removeObserver(this);
     editBarTextEditingController?.dispose();
     inputBarController.dispose();
+    pinMessageController?.dispose();
     _player.dispose();
 
     super.dispose();
@@ -472,7 +475,6 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         if (ret != true) {}
         return ret;
       },
-      bubbleStyle: widget.bubbleStyle,
       itemBuilder: widget.itemBuilder ?? itemBuilder,
       alertItemBuilder: widget.alertItemBuilder ?? alertItem,
       onErrorBtnTap: (model) {
@@ -559,7 +561,20 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           ? theme.color.neutralColor1
           : theme.color.neutralColor98,
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
-      body: SafeArea(child: content),
+      body: SafeArea(
+        bottom: false,
+        child: ChatUIKitSettings.enablePinMsg
+            ? Stack(
+                children: [
+                  content,
+                  PinMessageListView(
+                    maxHeight: MediaQuery.of(context).size.height / 5 * 3,
+                    pinMessagesController: pinMessageController!,
+                  ),
+                ],
+              )
+            : content,
+      ),
     );
 
     content = Stack(
@@ -639,6 +654,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         await controller.markAllMessageAsRead();
       },
     );
+
     return content;
   }
 
@@ -669,7 +685,6 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
               updateView();
             }
           : null,
-      bubbleStyle: widget.bubbleStyle,
       key: ValueKey(model.message.localTime),
       showAvatar: widget.showMessageItemAvatar,
       quoteBuilder: widget.quoteBuilder,
@@ -2291,7 +2306,9 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     );
   }
 
-  void showPinMsgsView() {}
+  void showPinMsgsView() async {
+    await pinMessageController?.fetchPinMessages();
+  }
 
   void showAllReactionEmojis(MessageModel model, ChatUIKitTheme theme) {
     showChatUIKitBottomSheet(

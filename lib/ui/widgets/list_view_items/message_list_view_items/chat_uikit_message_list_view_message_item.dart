@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   const ChatUIKitMessageListViewMessageItem({
     required this.model,
-    this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     this.showAvatar,
     this.showNickname,
     this.messageWidget,
@@ -37,7 +36,6 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     super.key,
   });
 
-  final ChatUIKitMessageListViewBubbleStyle? bubbleStyle;
   final MessageModel model;
   final List<MessageReaction>? reactions;
   final MessageItemShowHandler? showAvatar;
@@ -126,7 +124,6 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
           ChatUIKitMessageBubbleWidget(
             key: ValueKey(model.message.localTime),
             needSmallCorner: model.message.getQuote == null,
-            style: bubbleStyle,
             isLeft: left,
             child: msgWidget,
           );
@@ -264,7 +261,6 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     return bubbleContentBuilder?.call(context, model) ??
         ChatUIKitImageBubbleWidget(
           model: model,
-          bubbleStyle: bubbleStyle,
           isLeft: isLeft,
         );
   }
@@ -289,7 +285,6 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     return bubbleContentBuilder?.call(context, model) ??
         ChatUIKitVideoBubbleWidget(
           model: model,
-          bubbleStyle: bubbleStyle,
           forceLeft: isLeft,
         );
   }
@@ -299,7 +294,6 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     return bubbleContentBuilder?.call(context, model) ??
         ChatUIKitFileBubbleWidget(
           model: model,
-          bubbleStyle: bubbleStyle,
           forceLeft: isLeft,
         );
   }
@@ -512,5 +506,5 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   }
 
   double get getArrowWidth =>
-      bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow ? arrowWidth : 0;
+      ChatUIKitSettings.messageBubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow ? arrowWidth : 0;
 }

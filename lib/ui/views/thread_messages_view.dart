@@ -42,7 +42,6 @@ class ThreadMessagesView extends StatefulWidget {
         onAvatarTap = arguments.onAvatarTap,
         onAvatarLongPress = arguments.onAvatarLongPress,
         onNicknameTap = arguments.onNicknameTap,
-        bubbleStyle = arguments.bubbleStyle,
         inputBar = arguments.inputBar,
         itemBuilder = arguments.itemBuilder,
         rightTopMoreActionsBuilder = arguments.rightTopMoreActionsBuilder;
@@ -72,7 +71,6 @@ class ThreadMessagesView extends StatefulWidget {
     this.onAvatarTap,
     this.onAvatarLongPress,
     this.onNicknameTap,
-    this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     this.itemBuilder,
     this.alertItemBuilder,
     this.onErrorBtnTapHandler,
@@ -121,9 +119,6 @@ class ThreadMessagesView extends StatefulWidget {
 
   /// 昵称点击事件， 如果设置后昵称点击事件将直接回调，如果不处理可以返回 `false`。
   final MessageItemTapHandler? onNicknameTap;
-
-  /// 气泡样式，默认为 [ChatUIKitSettings.messageBubbleStyle]。
-  final ChatUIKitMessageListViewBubbleStyle? bubbleStyle;
 
   /// 消息 `item` 构建器, 如果设置后需要显示消息时会直接回调，如果不处理可以返回 `null`。
   final MessageItemBuilder? itemBuilder;
@@ -371,7 +366,6 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                     if (ret != true) {}
                     return ret;
                   },
-                  bubbleStyle: widget.bubbleStyle,
                   itemBuilder: widget.itemBuilder ?? itemBuilder,
                   alertItemBuilder: widget.alertItemBuilder ?? alertItem,
                   onErrorBtnTap: (model) {
@@ -500,7 +494,6 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           widget.onErrorBtnTapHandler!.call(context, model);
         }
       },
-      bubbleStyle: widget.bubbleStyle,
       key: ValueKey(model.message.localTime),
       showAvatar: widget.showMessageItemAvatar,
       quoteBuilder: widget.quoteBuilder,

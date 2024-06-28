@@ -16,7 +16,6 @@ class ThreadMessageListView extends StatefulWidget {
     this.showNickname,
     this.itemBuilder,
     this.alertItemBuilder,
-    this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     this.quoteBuilder,
     this.onErrorBtnTap,
     this.bubbleBuilder,
@@ -39,7 +38,7 @@ class ThreadMessageListView extends StatefulWidget {
   final MessageItemTapHandler? onAvatarTap;
   final MessageItemTapHandler? onAvatarLongPressed;
   final MessageItemTapHandler? onNicknameTap;
-  final ChatUIKitMessageListViewBubbleStyle? bubbleStyle;
+
   final MessageItemBuilder? itemBuilder;
   final MessageItemBuilder? alertItemBuilder;
   final MessageItemShowHandler? showAvatar;
@@ -219,7 +218,6 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView> {
       onErrorBtnTap: () {
         widget.onErrorBtnTap?.call(model);
       },
-      bubbleStyle: widget.bubbleStyle,
       showAvatar: widget.showAvatar,
       quoteBuilder: (context, quoteModel) {
         Widget? content = widget.quoteBuilder?.call(context, quoteModel);
@@ -352,7 +350,6 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView> {
       },
       child: ChatUIKitQuoteWidget(
         model: model,
-        bubbleStyle: widget.bubbleStyle,
       ),
     );
   }

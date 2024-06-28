@@ -98,6 +98,7 @@ export 'ui/components/group_member_list_view.dart';
 export 'ui/components/message_list_view.dart';
 export 'ui/components/new_requests_list_view.dart';
 export 'ui/components/thread_message_list_view.dart';
+export 'ui/components/pin_message_list_view.dart';
 
 export 'ui/views/change_info_view.dart';
 export 'ui/views/create_group_view.dart';

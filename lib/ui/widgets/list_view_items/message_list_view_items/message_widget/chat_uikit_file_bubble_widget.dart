@@ -6,7 +6,6 @@ class ChatUIKitFileBubbleWidget extends StatelessWidget {
     required this.model,
     this.titleStyle,
     this.subTitleStyle,
-    this.bubbleStyle = ChatUIKitMessageListViewBubbleStyle.arrow,
     this.icon,
     this.forceLeft,
     super.key,
@@ -15,7 +14,7 @@ class ChatUIKitFileBubbleWidget extends StatelessWidget {
   final TextStyle? subTitleStyle;
   final MessageModel model;
   final Widget? icon;
-  final ChatUIKitMessageListViewBubbleStyle? bubbleStyle;
+
   final bool? forceLeft;
 
   @override
@@ -70,7 +69,8 @@ class ChatUIKitFileBubbleWidget extends StatelessWidget {
     fileIcon = Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(
-              bubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow
+              ChatUIKitSettings.messageBubbleStyle ==
+                      ChatUIKitMessageListViewBubbleStyle.arrow
                   ? 4
                   : 8)),
           color: theme.color.isDark

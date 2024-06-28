@@ -32,7 +32,6 @@ class ChatRouteFilter {
       viewObserver: viewObserver,
     );
     Future(() async {
-      debugPrint('groupDetail: ${arguments.profile.id}');
       Group group = await ChatUIKit.instance
           .fetchGroupInfo(groupId: arguments.profile.id);
       ChatUIKitProfile profile = arguments.profile

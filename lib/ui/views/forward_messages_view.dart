@@ -285,7 +285,10 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
               isCombine: true,
             ));
       },
-      child: ChatUIKitImageBubbleWidget(model: model, isCombine: true),
+      child: ChatUIKitImageBubbleWidget(
+        model: model,
+        isCombine: true,
+      ),
     );
   }
 
