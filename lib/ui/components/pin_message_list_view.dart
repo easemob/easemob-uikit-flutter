@@ -204,27 +204,23 @@ class _PinMessageListViewState extends State<PinMessageListView>
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
                               Message msg = items[index].message;
-                              return AnimatedContainer(
-                                duration: const Duration(milliseconds: 1000),
-                                child: InkWell(
-                                  onTap: () {
-                                    widget.pinMessagesController.hide();
-                                    widget.onTap?.call(msg);
+                              return InkWell(
+                                onTap: () {
+                                  widget.pinMessagesController.hide();
+                                  widget.onTap?.call(msg);
+                                },
+                                child: PinListItem(
+                                  model: items[index],
+                                  isConfirming: confirmMsgId == msg.msgId,
+                                  onDeleteTap: (confirm) {
+                                    if (confirm) {
+                                      widget.pinMessagesController
+                                          .unPinMsg(items[index].message.msgId);
+                                    } else {
+                                      confirmMsgId = items[index].message.msgId;
+                                      setState(() {});
+                                    }
                                   },
-                                  child: PinListItem(
-                                    model: items[index],
-                                    isConfirming: confirmMsgId == msg.msgId,
-                                    onDeleteTap: (confirm) {
-                                      if (confirm) {
-                                        widget.pinMessagesController.unPinMsg(
-                                            items[index].message.msgId);
-                                      } else {
-                                        confirmMsgId =
-                                            items[index].message.msgId;
-                                        setState(() {});
-                                      }
-                                    },
-                                  ),
                                 ),
                               );
                             },
