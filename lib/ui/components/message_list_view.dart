@@ -327,27 +327,29 @@ class _MessageListViewState extends State<MessageListView> {
     );
   }
 
-  void jumpToMessage(String messageId) async {
+  void jumpToMessage(String? messageId) async {
     int index = controller.msgModelList
         .indexWhere((element) => element.message.msgId == messageId);
-
-    if (index != -1) {
-      _scrollController.scrollToIndex(
-        index,
-        preferPosition: AutoScrollPosition.end,
-        duration: const Duration(milliseconds: 10),
-      );
-      await _scrollController.scrollToIndex(
-        index,
-        preferPosition: AutoScrollPosition.end,
-        duration: const Duration(milliseconds: 100),
-      );
-
-      await _scrollController.highlight(
-        index,
-        highlightDuration: const Duration(milliseconds: 500),
-      );
+    if (index == -1 || messageId == null) {
+      ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.targetMessageNotFound);
+      return;
     }
+
+    _scrollController.scrollToIndex(
+      index,
+      preferPosition: AutoScrollPosition.end,
+      duration: const Duration(milliseconds: 10),
+    );
+    await _scrollController.scrollToIndex(
+      index,
+      preferPosition: AutoScrollPosition.end,
+      duration: const Duration(milliseconds: 100),
+    );
+
+    await _scrollController.highlight(
+      index,
+      highlightDuration: const Duration(milliseconds: 500),
+    );
   }
 
   @override

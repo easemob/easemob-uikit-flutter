@@ -23,4 +23,10 @@ enum ChatUIKitEvent {
 
   /// Message downloading
   messageDownloading,
+
+  /// Message not found
+  targetMessageNotFound,
+
+  /// pin messages empty
+  pinMessagesEmpty,
 }

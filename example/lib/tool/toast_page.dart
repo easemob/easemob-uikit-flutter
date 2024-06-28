@@ -42,6 +42,8 @@ class _ToastPageState extends State<ToastPage>
       EasyLoading.showError('权限不足');
     } else if (event == ChatUIKitEvent.voiceTypeNotSupported) {
       EasyLoading.showError('语音格式不支持');
+    } else if (event == ChatUIKitEvent.targetMessageNotFound) {
+      EasyLoading.showError('原消息未找到');
     }
   }
 
