@@ -563,7 +563,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: SafeArea(
         bottom: false,
-        child: ChatUIKitSettings.enablePinMsg
+        child: ChatUIKitSettings.enablePinMsg &&
+                controller.chatType == ChatType.GroupChat
             ? Stack(
                 children: [
                   content,
@@ -1997,6 +1998,34 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           onTap: () async {
             Navigator.of(context).pop();
             controller.enableMultiSelectMode();
+          },
+        ));
+      }
+
+      // 置顶
+      if (model.message.status == MessageStatus.SUCCESS &&
+          element == ChatUIKitActionType.multiSelect &&
+          model.message.chatType == ChatType.GroupChat &&
+          ChatUIKitSettings.enablePinMsg) {
+        items.add(ChatUIKitBottomSheetAction.normal(
+          actionType: ChatUIKitActionType.multiSelect,
+          icon: ChatUIKitImageLoader.pinMessage(
+            color: theme.color.isDark
+                ? theme.color.neutralColor7
+                : theme.color.neutralColor3,
+          ),
+          style: TextStyle(
+            color: theme.color.isDark
+                ? theme.color.neutralColor98
+                : theme.color.neutralColor1,
+            fontWeight: theme.font.bodyLarge.fontWeight,
+            fontSize: theme.font.bodyLarge.fontSize,
+          ),
+          label:
+              ChatUIKitLocal.messageListLongPressMenuPin.localString(context),
+          onTap: () async {
+            Navigator.of(context).pop();
+            pinMessageController?.pinMsg(model.message);
           },
         ));
       }

@@ -42,6 +42,8 @@ mixin ChatUIKitLocal {
       'message_list_long_pressed_menu_recall';
   static const String messageListLongPressMenuMulti =
       'message_list_long_pressed_menu_multi';
+  static const String messageListLongPressMenuPin =
+      'message_list_long_pressed_menu_pin';
   static const String messageListLongPressMenuTranslate =
       'message_list_long_pressed_menu_translate';
   static const String messageListLongPressMenuTranslateOrigin =
@@ -360,6 +362,7 @@ mixin ChatUIKitLocal {
     messageListLongPressMenuDelete: '删除',
     messageListLongPressMenuRecall: '撤回',
     messageListLongPressMenuMulti: '多选',
+    messageListLongPressMenuPin: '置顶',
     messageListLongPressMenuTranslate: '翻译',
     messageListLongPressMenuTranslateOrigin: '显示原文',
     messageListLongPressMenuCreateThread: '创建话题',
@@ -577,6 +580,7 @@ mixin ChatUIKitLocal {
     messageListLongPressMenuDelete: 'Delete',
     messageListLongPressMenuRecall: 'Recall',
     messageListLongPressMenuMulti: 'Select',
+    messageListLongPressMenuPin: 'Pin',
     messageListLongPressMenuTranslate: 'Translate',
     messageListLongPressMenuTranslateOrigin: 'Hide Translation',
     messageListLongPressMenuCreateThread: 'Create a Thread',

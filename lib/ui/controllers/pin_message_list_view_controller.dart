@@ -1,18 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/foundation.dart';
 
-class PinListItem {
-  final Message message;
-  final MessagePinInfo pinInfo;
-  final VoidCallback? onTap;
-
-  const PinListItem({
-    required this.message,
-    required this.pinInfo,
-    this.onTap,
-  });
-}
-
 class PinMessageListViewController extends ChangeNotifier
     with ChatObserver, ChatUIKitProviderObserver {
   PinMessageListViewController(this.profile) {
@@ -21,6 +9,7 @@ class PinMessageListViewController extends ChangeNotifier
   }
 
   final ChatUIKitProfile profile;
+  bool needReload = false;
 
   @override
   void dispose() {
@@ -31,7 +20,7 @@ class PinMessageListViewController extends ChangeNotifier
 
   bool isShow = false;
 
-  ValueNotifier<List<PinListItem>> list = ValueNotifier([]);
+  ValueNotifier<List<PinListItemModel>> list = ValueNotifier([]);
 
   void show() {
     if (list.value.isEmpty) return;
@@ -44,9 +33,12 @@ class PinMessageListViewController extends ChangeNotifier
     notifyListeners();
   }
 
-  Future<void> pinMsg(String msgId) async {
+  Future<void> pinMsg(Message message) async {
     try {
-      await ChatUIKit.instance.pinMessage(messageId: msgId);
+      await ChatUIKit.instance.pinMessage(messageId: message.msgId);
+      MessagePinInfo? info = await message.pinInfo();
+      list.value = [PinListItemModel(message: message, pinInfo: info!)] +
+          list.value.toList();
     } catch (e) {
       debugPrint('Error pinning message: $e');
     }
@@ -55,6 +47,9 @@ class PinMessageListViewController extends ChangeNotifier
   Future<void> unPinMsg(String msgId) async {
     try {
       await ChatUIKit.instance.unpinMessage(messageId: msgId);
+      List<PinListItemModel> models = list.value.toList();
+      models.removeWhere((element) => element.message.msgId == msgId);
+      list.value = models;
     } catch (e) {
       debugPrint('Error unpinning message: $e');
     }
@@ -62,17 +57,18 @@ class PinMessageListViewController extends ChangeNotifier
 
   bool isFetching = false;
   Future<void> fetchPinMessages() async {
-    if (isFetching) return;
+    if (isFetching || isShow) return;
     isFetching = true;
     try {
       final messages = await ChatUIKit.instance.fetchPinnedMessages(
         conversationId: profile.id,
       );
-      List<PinListItem> items = [];
+      List<PinListItemModel> items = [];
+
       for (var msg in messages) {
         MessagePinInfo? pinInfo = await msg.pinInfo();
         if (pinInfo == null) continue;
-        items.add(PinListItem(message: msg, pinInfo: pinInfo));
+        items.add(PinListItemModel(message: msg, pinInfo: pinInfo));
       }
 
       if (items.isNotEmpty) {
@@ -86,7 +82,19 @@ class PinMessageListViewController extends ChangeNotifier
   }
 
   @override
-  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {}
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+    List<PinListItemModel> models = list.value.toList();
+    List<String> updateIds = map.keys.toList();
+
+    needReload = updateIds.any(
+      (element) => models.any((model) =>
+          model.message.from == element || model.pinInfo.operatorId == element),
+    );
+    if (needReload) {
+      notifyListeners();
+      needReload = false;
+    }
+  }
 
   @override
   void onMessagePinChanged(
@@ -94,17 +102,17 @@ class PinMessageListViewController extends ChangeNotifier
     String conversationId,
     MessagePinOperation pinOperation,
     MessagePinInfo pinInfo,
-  ) {}
-
-  void addItem(PinListItem item) {
-    list.value = [item] + list.value.toList();
-    if (hasListeners) notifyListeners();
-  }
-
-  void removeItem(PinListItem item) {
-    if (list.value.toList().isEmpty) return;
-    // list.value = list.value.toList()..remove(item);
-    list.value = list.value.toList()..removeLast();
-    if (hasListeners) notifyListeners();
+  ) async {
+    List<PinListItemModel> models = list.value.toList();
+    models.removeWhere((element) => element.message.msgId == messageId);
+    if (pinOperation == MessagePinOperation.Pin) {
+      Message? msg = await ChatUIKit.instance.loadMessage(messageId: messageId);
+      if (msg != null) {
+        models.insert(0, PinListItemModel(message: msg, pinInfo: pinInfo));
+        list.value = models;
+      }
+    } else {
+      list.value = models;
+    }
   }
 }

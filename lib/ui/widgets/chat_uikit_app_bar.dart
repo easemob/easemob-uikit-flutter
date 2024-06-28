@@ -18,7 +18,7 @@ class ChatUIKitAppBarModel {
     this.centerTitle = false,
     this.systemOverlayStyle,
     this.backgroundColor,
-    this.bottomLine = false,
+    this.bottomLine,
   });
 
   bool showBackButton;
@@ -35,7 +35,7 @@ class ChatUIKitAppBarModel {
   bool centerTitle;
   Color? backgroundColor;
   SystemUiOverlayStyle? systemOverlayStyle;
-  bool bottomLine;
+  bool? bottomLine;
 }
 
 class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -54,7 +54,7 @@ class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
       centerTitle: model.centerTitle,
       systemOverlayStyle: model.systemOverlayStyle,
       backgroundColor: model.backgroundColor,
-      bottomLine: model.bottomLine,
+      bottomLine: model.bottomLine ?? false,
     );
   }
 
