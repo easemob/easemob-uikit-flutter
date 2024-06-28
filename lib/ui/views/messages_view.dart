@@ -242,18 +242,19 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         updateView();
         if (controller.lastActionType == MessageLastActionType.topPosition) {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-            int index = controller.msgModelList.indexWhere((element) =>
-                element.message.msgId == controller.searchedMsg?.msgId);
-            if (index != -1) {
-              await _scrollController.scrollToIndex(
-                index,
-                duration: Durations.short1,
-              );
-              await _scrollController.highlight(
-                index,
-                highlightDuration: Durations.long4,
-              );
-            }
+            jumpToMessage(controller.searchedMsg?.msgId);
+            // int index = controller.msgModelList.indexWhere((element) =>
+            //     element.message.msgId == controller.searchedMsg?.msgId);
+            // if (index != -1) {
+            //   await _scrollController.scrollToIndex(
+            //     index,
+            //     duration: Durations.short1,
+            //   );
+            //   await _scrollController.highlight(
+            //     index,
+            //     highlightDuration: Durations.long4,
+            //   );
+            // }
           });
         }
 
@@ -275,6 +276,30 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     controller.clearMentionIfNeed();
 
     pinMessageController = PinMessageListViewController(profile!);
+  }
+
+  void jumpToMessage(String? messageId) async {
+    if (messageId == null) return;
+    int index = controller.msgModelList
+        .indexWhere((element) => element.message.msgId == messageId);
+
+    if (index != -1) {
+      _scrollController.scrollToIndex(
+        index,
+        preferPosition: AutoScrollPosition.end,
+        duration: const Duration(milliseconds: 10),
+      );
+      await _scrollController.scrollToIndex(
+        index,
+        preferPosition: AutoScrollPosition.end,
+        duration: const Duration(milliseconds: 100),
+      );
+
+      await _scrollController.highlight(
+        index,
+        highlightDuration: const Duration(milliseconds: 500),
+      );
+    }
   }
 
   void updateAppBarModel(ChatUIKitTheme theme) {
@@ -571,6 +596,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                   PinMessageListView(
                     maxHeight: MediaQuery.of(context).size.height / 5 * 3,
                     pinMessagesController: pinMessageController!,
+                    onTap: (message) => jumpToMessage(message.msgId),
                   ),
                 ],
               )

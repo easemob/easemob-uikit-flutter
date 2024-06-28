@@ -319,9 +319,7 @@ class _MessageListViewState extends State<MessageListView> {
     return InkWell(
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-      onTap: () {
-        jumpToQuoteModel(model);
-      },
+      onTap: () => jumpToMessage(model.msgId),
       child: ChatUIKitQuoteWidget(
         model: model,
         isLeft: left,
@@ -329,9 +327,9 @@ class _MessageListViewState extends State<MessageListView> {
     );
   }
 
-  void jumpToQuoteModel(QuoteModel model) async {
+  void jumpToMessage(String messageId) async {
     int index = controller.msgModelList
-        .indexWhere((element) => element.message.msgId == model.msgId);
+        .indexWhere((element) => element.message.msgId == messageId);
 
     if (index != -1) {
       _scrollController.scrollToIndex(

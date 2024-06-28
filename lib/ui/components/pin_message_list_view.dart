@@ -46,6 +46,7 @@ class PinMessageListView extends StatefulWidget {
     this.maxHeight = 300,
     this.duration = const Duration(milliseconds: 100),
     this.barrierColor,
+    this.onTap,
     super.key,
   });
 
@@ -53,6 +54,8 @@ class PinMessageListView extends StatefulWidget {
   final Duration duration;
   final Color? barrierColor;
   final PinMessageListViewController pinMessagesController;
+
+  final void Function(Message message)? onTap;
 
   @override
   State<PinMessageListView> createState() => _PinMessageListViewState();
@@ -203,18 +206,25 @@ class _PinMessageListViewState extends State<PinMessageListView>
                               Message msg = items[index].message;
                               return AnimatedContainer(
                                 duration: const Duration(milliseconds: 1000),
-                                child: PinListItem(
-                                  model: items[index],
-                                  isConfirming: confirmMsgId == msg.msgId,
-                                  onTap: (confirm) {
-                                    if (confirm) {
-                                      widget.pinMessagesController
-                                          .unPinMsg(items[index].message.msgId);
-                                    } else {
-                                      confirmMsgId = items[index].message.msgId;
-                                      setState(() {});
-                                    }
+                                child: InkWell(
+                                  onTap: () {
+                                    widget.pinMessagesController.hide();
+                                    widget.onTap?.call(msg);
                                   },
+                                  child: PinListItem(
+                                    model: items[index],
+                                    isConfirming: confirmMsgId == msg.msgId,
+                                    onDeleteTap: (confirm) {
+                                      if (confirm) {
+                                        widget.pinMessagesController.unPinMsg(
+                                            items[index].message.msgId);
+                                      } else {
+                                        confirmMsgId =
+                                            items[index].message.msgId;
+                                        setState(() {});
+                                      }
+                                    },
+                                  ),
                                 ),
                               );
                             },
@@ -242,9 +252,13 @@ class _PinMessageListViewState extends State<PinMessageListView>
 }
 
 class PinListItem extends StatelessWidget {
-  const PinListItem(
-      {required this.model, this.isConfirming = false, this.onTap, super.key});
-  final void Function(bool confirm)? onTap;
+  const PinListItem({
+    required this.model,
+    this.isConfirming = false,
+    this.onDeleteTap,
+    super.key,
+  });
+  final void Function(bool confirm)? onDeleteTap;
   final PinListItemModel model;
   final bool isConfirming;
 
@@ -321,7 +335,7 @@ class PinListItem extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                    onTap: () => onTap?.call(isConfirming),
+                    onTap: () => onDeleteTap?.call(isConfirming),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 6,

@@ -115,4 +115,15 @@ class PinMessageListViewController extends ChangeNotifier
       list.value = models;
     }
   }
+
+  @override
+  void onMessagesRecalled(List<Message> recalled, List<Message> replaces) {
+    List<PinListItemModel> models = list.value.toList();
+    int index = models.indexWhere(
+        (element) => recalled.any((msg) => msg.msgId == element.message.msgId));
+    if (index != -1) {
+      models.removeAt(index);
+      list.value = models;
+    }
+  }
 }
