@@ -589,7 +589,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           : theme.color.neutralColor98,
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: SafeArea(
-        bottom: false,
+        // bottom: false,
         child: ChatUIKitSettings.enablePinMsg &&
                 controller.chatType == ChatType.GroupChat
             ? Stack(

@@ -301,6 +301,8 @@ mixin ChatUIKitLocal {
 
   static const listViewLoadFailed = 'list_view_load_failed';
   static const listViewReload = 'list_view_reload';
+  static const messageTextWidgetURLPreviewParsing =
+      'message_text_widget_url_preview_parsing';
   static const quoteWidgetTitleImage = 'quote_widget_title_image';
   static const quoteWidgetTitleVideo = 'quote_widget_title_video';
   static const quoteWidgetTitleVoice = 'quote_widget_title_voice';
@@ -525,6 +527,7 @@ mixin ChatUIKitLocal {
     conversationListItemMention: '有人@我',
     listViewLoadFailed: '加载失败',
     listViewReload: '重新加载',
+    messageTextWidgetURLPreviewParsing: '解析中...',
     quoteWidgetTitleImage: '图片',
     quoteWidgetTitleVideo: '视频',
     quoteWidgetTitleVoice: '语音 ',
@@ -752,6 +755,7 @@ mixin ChatUIKitLocal {
     conversationListItemMention: 'Mentioned',
     listViewLoadFailed: 'Load Failed',
     listViewReload: 'Reload',
+    messageTextWidgetURLPreviewParsing: 'Parsing...',
     quoteWidgetTitleImage: 'Image',
     quoteWidgetTitleVideo: 'Video',
     quoteWidgetTitleVoice: 'Voice ',

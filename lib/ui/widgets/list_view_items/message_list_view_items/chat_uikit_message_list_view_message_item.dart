@@ -1,5 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/tools/chat_uikit_url_helper.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
 import 'package:flutter/material.dart';
 
 class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
@@ -86,7 +87,8 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
           children: [
             textWidget,
             Text(
-              'Parsing...',
+              ChatUIKitLocal.messageTextWidgetURLPreviewParsing
+                  .getString(context),
               style: TextStyle(
                   color: theme.color.isDark
                       ? theme.color.neutralColor7
@@ -505,6 +507,8 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     );
   }
 
-  double get getArrowWidth =>
-      ChatUIKitSettings.messageBubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow ? arrowWidth : 0;
+  double get getArrowWidth => ChatUIKitSettings.messageBubbleStyle ==
+          ChatUIKitMessageListViewBubbleStyle.arrow
+      ? arrowWidth
+      : 0;
 }

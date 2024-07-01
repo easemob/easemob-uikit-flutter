@@ -90,7 +90,6 @@ class _PinMessageListViewState extends State<PinMessageListView>
     });
 
     _controller.addListener(() {
-      debugPrint('value: ${animation!.value}');
       setState(() {});
     });
 
@@ -139,19 +138,27 @@ class _PinMessageListViewState extends State<PinMessageListView>
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.of(context);
     return Stack(
+      clipBehavior: Clip.none,
       children: [
+        Container(),
         animation?.status == AnimationStatus.dismissed
             ? const SizedBox()
-            : InkWell(
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                child: AnimatedContainer(
-                  duration: widget.duration,
-                  color: isShow ? barrierColor : Colors.transparent,
+            : Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: -100,
+                child: InkWell(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  child: AnimatedContainer(
+                    duration: widget.duration,
+                    color: isShow ? barrierColor : Colors.transparent,
+                  ),
+                  onTap: () {
+                    widget.pinMessagesController.hide();
+                  },
                 ),
-                onTap: () {
-                  widget.pinMessagesController.hide();
-                },
               ),
         Container(
           constraints: BoxConstraints(
@@ -242,7 +249,6 @@ class _PinMessageListViewState extends State<PinMessageListView>
   @override
   void dispose() {
     super.dispose();
-    widget.pinMessagesController.dispose();
     _controller.dispose();
   }
 }

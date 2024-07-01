@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit_example/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -14,14 +15,20 @@ class _DebugLoginPageState extends State<DebugLoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DebugLoginPage'),
+        title: const Text('当前AppKey: $appKey'),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            showDialog(context);
-          },
-          child: const Text('Login'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('如果没有设置Appkey，请在main.dart中设置'),
+            ElevatedButton(
+              onPressed: () {
+                showDialog(context);
+              },
+              child: const Text('Login'),
+            ),
+          ],
         ),
       ),
     );

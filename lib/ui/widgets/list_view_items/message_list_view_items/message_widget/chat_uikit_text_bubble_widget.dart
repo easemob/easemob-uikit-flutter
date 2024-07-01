@@ -70,7 +70,8 @@ class ChatUIKitTextBubbleWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 8),
           child: Text(
-            'Parsing...',
+            ChatUIKitLocal.messageTextWidgetURLPreviewParsing
+                .localString(context),
             style: TextStyle(
               fontWeight: theme.font.bodySmall.fontWeight,
               fontSize: theme.font.bodySmall.fontSize,
