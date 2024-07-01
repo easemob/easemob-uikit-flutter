@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/tools/chat_uikit_url_helper.dart';
-import 'package:em_chat_uikit/universal/inner_headers.dart';
+import '../../chat_uikit.dart';
+import '../../universal/inner_headers.dart';
 
 import 'package:flutter/material.dart';
 

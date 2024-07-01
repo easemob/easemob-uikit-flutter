@@ -1,5 +1,5 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/universal/inner_headers.dart';
+import '../../chat_uikit.dart';
+import '../../universal/inner_headers.dart';
 
 /// 会话列表控制器
 class ConversationListViewController

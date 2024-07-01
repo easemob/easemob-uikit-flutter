@@ -1,6 +1,8 @@
 import 'dart:math';
-import 'package:em_chat_uikit/chat_uikit.dart';
+
 import 'package:flutter/material.dart';
+
+import '../../../../../chat_uikit.dart';
 
 class ChatUIKitVoiceBubbleWidget extends StatefulWidget {
   const ChatUIKitVoiceBubbleWidget({

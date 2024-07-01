@@ -1,5 +1,5 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/tools/chat_uikit_highlight_tool.dart';
+import '../../chat_uikit.dart';
+import '../../tools/chat_uikit_highlight_tool.dart';
 
 import 'package:flutter/material.dart';
 

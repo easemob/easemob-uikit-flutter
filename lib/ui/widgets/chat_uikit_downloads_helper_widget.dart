@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:em_chat_uikit/chat_uikit.dart';
+import '../../../chat_uikit.dart';
 import 'package:flutter/widgets.dart';
 
 typedef ChatUIKitDownloadBuilder = Widget Function(

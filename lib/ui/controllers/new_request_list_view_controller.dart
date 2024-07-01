@@ -1,5 +1,4 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
-// import 'package:username/username.dart';
+import '../../chat_uikit.dart';
 
 class NewRequestListViewController
     with ChatUIKitListViewControllerBase, ChatUIKitProviderObserver {

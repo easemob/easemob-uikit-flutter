@@ -1,4 +1,4 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
+import '../../chat_uikit.dart';
 
 import 'package:flutter/material.dart';
 
@@ -35,8 +35,7 @@ class ChangeInfoView extends StatefulWidget {
   State<ChangeInfoView> createState() => _ChangeInfoViewState();
 }
 
-class _ChangeInfoViewState extends State<ChangeInfoView>
-    with ChatUIKitRouteHelper {
+class _ChangeInfoViewState extends State<ChangeInfoView> {
   final TextEditingController controller = TextEditingController();
 
   String? originalStr;
@@ -199,7 +198,4 @@ class _ChangeInfoViewState extends State<ChangeInfoView>
 
     return content;
   }
-
-  @override
-  String get getRouteName => ChatUIKitRouteNames.changeInfoView;
 }

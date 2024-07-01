@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/universal/inner_headers.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../../chat_uikit.dart';
+import '../../universal/inner_headers.dart';
 
 class ThreadMessagesView extends StatefulWidget {
   ThreadMessagesView.arguments(

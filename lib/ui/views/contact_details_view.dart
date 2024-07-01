@@ -1,4 +1,4 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
+import '../../chat_uikit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,7 +50,7 @@ class ContactDetailsView extends StatefulWidget {
 }
 
 class _ContactDetailsViewState extends State<ContactDetailsView>
-    with ChatUIKitProviderObserver, ChatUIKitRouteHelper {
+    with ChatUIKitProviderObserver {
   ValueNotifier<bool> isNotDisturb = ValueNotifier<bool>(false);
   ChatUIKitProfile? profile;
 
@@ -540,7 +540,4 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
       }).catchError((e) {});
     }
   }
-
-  @override
-  String get getRouteName => ChatUIKitRouteNames.contactDetailsView;
 }

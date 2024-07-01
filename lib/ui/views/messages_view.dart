@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
-import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/ui/controllers/pin_message_list_view_controller.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../chat_uikit.dart';
 import '../../universal/inner_headers.dart';
 
 /// 消息页面

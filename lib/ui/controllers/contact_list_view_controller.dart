@@ -1,5 +1,4 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
-// import 'package:username/username.dart';
+import '../../chat_uikit.dart';
 
 /// 联系人列表控制器
 class ContactListViewController

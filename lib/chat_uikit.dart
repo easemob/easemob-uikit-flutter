@@ -61,7 +61,6 @@ export 'ui/widgets/chat_uikit_emoji_rich_text_widget.dart';
 export 'ui/widgets/chat_uikit_list_view.dart';
 export 'ui/widgets/chat_uikit_search_widget.dart';
 export 'ui/widgets/chat_uikit_input_bar.dart';
-export 'ui/widgets/chat_uikit_message_sliver.dart';
 export 'ui/widgets/chat_uikit_input_emoji_bar.dart';
 export 'ui/widgets/chat_uikit_record_bar.dart';
 export 'ui/widgets/chat_uikit_show_image_widget.dart';
@@ -81,6 +80,7 @@ export 'ui/controllers/messages_view_controller.dart';
 export 'ui/controllers/thread_messages_view_controller.dart';
 export 'ui/controllers/thread_members_view_controller.dart';
 export 'ui/controllers/block_list_view_controller.dart';
+export 'ui/controllers/pin_message_list_view_controller.dart';
 
 export 'ui/models/chat_uikit_list_item_model_base.dart';
 export 'ui/models/conversation_item_model.dart';
@@ -163,7 +163,6 @@ export 'ui/route/view_arguments/threads_view_arguments.dart';
 export 'ui/route/view_arguments/search_history_view_arguments.dart';
 
 export 'ui/route/chat_uikit_view_observer.dart';
-export 'ui/route/chat_uikit_route_helper.dart';
 export 'universal/chat_uikit_action_model.dart';
 
 export 'chat_uikit_emoji_data.dart';

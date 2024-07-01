@@ -1,5 +1,4 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/universal/inner_headers.dart';
+import '../../chat_uikit.dart';
 
 mixin ChatUIKitChatActions on ChatSDKWrapper {
   @override
@@ -15,7 +14,6 @@ mixin ChatUIKitChatActions on ChatSDKWrapper {
 
       if (!ChatUIKitContext.instance.conversationIsMute(conversation.id)) {
         int count = await conversation.unreadCount();
-        chatPrint('conversation.id: ${conversation.id}, count: $count');
         unreadCount += count;
       }
     }

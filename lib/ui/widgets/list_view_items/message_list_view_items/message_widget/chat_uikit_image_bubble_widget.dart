@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:em_chat_uikit/chat_uikit.dart';
+import '../../../../../chat_uikit.dart';
 import 'package:flutter/material.dart';
 
 double maxImageWidth = 225;

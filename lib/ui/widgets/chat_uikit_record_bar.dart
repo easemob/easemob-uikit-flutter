@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/ui/widgets/chat_uikit_water_ripple.dart';
-import 'package:em_chat_uikit/universal/inner_headers.dart';
+import '../../../chat_uikit.dart';
+import 'chat_uikit_water_ripple.dart';
+import '../../../universal/inner_headers.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sound_record/flutter_sound_record.dart' as audio_record;

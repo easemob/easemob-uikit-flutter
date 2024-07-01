@@ -1,5 +1,4 @@
-import 'package:em_chat_uikit/sdk_wrapper/chat_sdk_wrapper.dart';
-import 'package:em_chat_uikit/sdk_wrapper/sdk_wrapper_tools.dart';
+import '../chat_sdk_wrapper.dart';
 
 mixin GroupActions on GroupWrapper {
   Future<Group?> getGroup({required String groupId}) {

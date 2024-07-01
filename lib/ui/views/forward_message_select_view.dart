@@ -1,5 +1,5 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/ui/custom/custom_tab_indicator.dart';
+import '../../chat_uikit.dart';
+import '../../ui/custom/custom_tab_indicator.dart';
 
 import 'package:flutter/material.dart';
 

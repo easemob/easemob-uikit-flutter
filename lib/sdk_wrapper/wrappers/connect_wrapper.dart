@@ -1,4 +1,4 @@
-import '../../sdk_wrapper/chat_sdk_wrapper.dart';
+import '../chat_sdk_wrapper.dart';
 import 'package:flutter/foundation.dart';
 
 mixin ConnectWrapper on ChatUIKitWrapperBase {

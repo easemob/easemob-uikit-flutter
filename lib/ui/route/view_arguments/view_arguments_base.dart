@@ -1,4 +1,4 @@
-import 'package:em_chat_uikit/ui/route/chat_uikit_view_observer.dart';
+import '../../../chat_uikit.dart';
 
 class ChatUIKitViewArguments {
   String? attributes;

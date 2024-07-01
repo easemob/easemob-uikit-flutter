@@ -1,5 +1,6 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../chat_uikit.dart';
 
 const double arrowWidth = 4.2;
 const double arrowPadding = 8.0;

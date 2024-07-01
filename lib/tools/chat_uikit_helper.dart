@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:em_chat_uikit/chat_uikit.dart';
+import '../chat_uikit.dart';
 
 extension CornerRadiusHelper on CornerRadius {
   static double searchBarRadius(double height, {CornerRadius? cornerRadius}) {

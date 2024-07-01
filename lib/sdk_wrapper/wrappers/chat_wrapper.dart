@@ -1,6 +1,4 @@
-import 'dart:async';
-
-import '../../chat_uikit.dart';
+import '../chat_sdk_wrapper.dart';
 import 'package:flutter/foundation.dart';
 
 mixin ChatWrapper on ChatUIKitWrapperBase {
@@ -134,20 +132,6 @@ mixin ChatWrapper on ChatUIKitWrapperBase {
       Message message, String operatorId, int operationTime) async {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
-        // clear message's preview.
-        if (message.bodyType == MessageType.TXT) {
-          message.removePreview();
-          String? url =
-              ChatUIKitURLHelper().getUrlFromText(message.textContent);
-          if (url?.isNotEmpty == true) {
-            ChatUIKitPreviewObj? obj =
-                await ChatUIKitURLHelper().fetchPreview(url!);
-            if (obj != null) {
-              message.addPreview(obj);
-            }
-            Future.value({ChatUIKit.instance.updateMessage(message: message)});
-          }
-        }
         observer.onMessageContentChanged(message, operatorId, operationTime);
       }
     }
@@ -155,25 +139,6 @@ mixin ChatWrapper on ChatUIKitWrapperBase {
 
   @protected
   void onMessagesReceived(List<Message> messages) async {
-    List<Conversation>? needMentionConversations;
-    for (var msg in messages) {
-      if (msg.hasMention) {
-        needMentionConversations ??= [];
-        Conversation? conversation = await ChatUIKit.instance.getConversation(
-          conversationId: msg.conversationId!,
-          type: ConversationType.values[msg.chatType.index],
-        );
-        needMentionConversations.add(conversation!);
-      }
-    }
-    if (needMentionConversations?.isNotEmpty == true) {
-      List<Future> futures = [];
-      for (var conversation in needMentionConversations!) {
-        futures.add(conversation.addMention());
-      }
-      Future.wait(futures);
-    }
-
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
         observer.onMessagesReceived(messages);

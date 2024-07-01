@@ -1,4 +1,4 @@
-import 'package:em_chat_uikit/provider/chat_uikit_profile.dart';
+import '../../chat_uikit.dart';
 import 'package:flutter/widgets.dart';
 
 abstract mixin class ChatUIKitListItemModelBase {

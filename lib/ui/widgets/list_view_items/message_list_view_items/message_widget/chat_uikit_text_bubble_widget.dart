@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/tools/chat_uikit_url_helper.dart';
-
-import 'package:em_chat_uikit/ui/widgets/chat_uikit_reg_exp_text.dart';
-
 import 'package:flutter/material.dart';
+
+import '../../../../../chat_uikit.dart';
+import '../../../../../ui/widgets/chat_uikit_reg_exp_text.dart';
+
+
 
 class ChatUIKitTextBubbleWidget extends StatelessWidget {
   const ChatUIKitTextBubbleWidget({

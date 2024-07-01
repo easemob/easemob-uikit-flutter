@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:em_chat_uikit/chat_uikit_settings.dart';
+import '../chat_uikit_settings.dart';
 import 'package:html/parser.dart';
 
 int maxRedirects = 5;

@@ -1,9 +1,8 @@
 import 'dart:math';
 
-import 'package:em_chat_uikit/chat_uikit.dart';
+import '../../chat_uikit.dart';
+import '../../universal/inner_headers.dart';
 
-import 'package:em_chat_uikit/ui/controllers/pin_message_list_view_controller.dart';
-import 'package:em_chat_uikit/universal/inner_headers.dart';
 import 'package:flutter/material.dart';
 
 double itemHeight = 64;

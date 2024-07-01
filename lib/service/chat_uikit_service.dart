@@ -1,10 +1,11 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/service/actions/chat_uikit_chat_actions.dart';
-import 'package:em_chat_uikit/service/actions/chat_uikit_contact_actions.dart';
-import 'package:em_chat_uikit/service/actions/chat_uikit_events_actions.dart';
-import 'package:em_chat_uikit/service/actions/chat_uikit_notification_actions.dart';
+import '../../chat_uikit.dart';
+import 'actions/chat_uikit_chat_actions.dart';
+import 'actions/chat_uikit_contact_actions.dart';
+import 'actions/chat_uikit_events_actions.dart';
+import 'actions/chat_uikit_notification_actions.dart';
+import 'observers/chat_uikit_chat_observers.dart';
 
-import 'package:em_chat_uikit/service/observers/chat_uikit_contact_observers.dart';
+import '../../service/observers/chat_uikit_contact_observers.dart';
 import 'package:flutter/widgets.dart';
 
 class ChatUIKit extends ChatSDKWrapper
@@ -13,6 +14,7 @@ class ChatUIKit extends ChatSDKWrapper
         ChatUIKitContactActions,
         ChatUIKitEventsActions,
         ChatUIKitNotificationActions,
+        ChatUIKitChatObservers,
         ChatUIKitContactObservers,
         ChatUIKitEventsObservers {
   static ChatUIKit? _instance;
