@@ -344,6 +344,11 @@ mixin ChatUIKitLocal {
 
   static const searchHistory = 'search_history';
 
+  static const hasPined = 'has_pined';
+  static const byPined = 'by_pined';
+  static const unPinInquire = 'un_pin_confirm';
+  static const unPinConfirmed = 'un_pin_confirmed';
+
   static const Map<String, String> zh = {
     conversationsViewMenuAddContact: '添加联系人',
     conversationsViewMenuCreateGroup: '创建群组',
@@ -561,6 +566,10 @@ mixin ChatUIKitLocal {
     threadNewName: '新话题名称',
     threadMembers: '话题成员',
     searchHistory: '搜索历史',
+    hasPined: ' 置顶了 ',
+    byPined: ' 的消息',
+    unPinInquire: '移除',
+    unPinConfirmed: '确认移除',
   };
 
   static const Map<String, String> en = {
@@ -789,6 +798,10 @@ mixin ChatUIKitLocal {
     threadNewName: 'New Topic Name',
     threadMembers: 'Topic Members',
     searchHistory: 'Search History',
+    hasPined: ' pinned ',
+    byPined: " 's message",
+    unPinInquire: 'Remove',
+    unPinConfirmed: 'Confirm',
   };
 }
 

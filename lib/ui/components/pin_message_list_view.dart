@@ -3,10 +3,12 @@ import 'dart:math';
 import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:em_chat_uikit/ui/controllers/pin_message_list_view_controller.dart';
+import 'package:em_chat_uikit/universal/inner_headers.dart';
 import 'package:flutter/material.dart';
 
 double itemHeight = 64;
 double appBarHeight = 56;
+double bottomBarHeight = 16;
 
 class PinListItemModel {
   final Message message;
@@ -97,10 +99,12 @@ class _PinMessageListViewState extends State<PinMessageListView>
       if (items != widget.pinMessagesController.list.value) {
         items = widget.pinMessagesController.list.value;
         animation = Tween<double>(
-                begin: 0, end: items.length * itemHeight + appBarHeight)
+                begin: 0,
+                end: items.length * itemHeight + appBarHeight + bottomBarHeight)
             .animate(cure);
         if (widget.pinMessagesController.isShow) {
-          _controller.animateTo(items.length * itemHeight + appBarHeight,
+          _controller.animateTo(
+              items.length * itemHeight + appBarHeight + bottomBarHeight,
               duration: widget.duration);
           setState(() {});
         }
@@ -110,9 +114,10 @@ class _PinMessageListViewState extends State<PinMessageListView>
       }
     });
 
-    animation =
-        Tween<double>(begin: 0, end: items.length * itemHeight + appBarHeight)
-            .animate(cure);
+    animation = Tween<double>(
+            begin: 0,
+            end: items.length * itemHeight + appBarHeight + bottomBarHeight)
+        .animate(cure);
 
     widget.pinMessagesController.addListener(() {
       if (widget.pinMessagesController.needReload) {
@@ -155,7 +160,7 @@ class _PinMessageListViewState extends State<PinMessageListView>
                     duration: widget.duration,
                     color: isShow ? barrierColor : Colors.transparent,
                   ),
-                  onTap: () {
+                  onTapUp: (details) {
                     widget.pinMessagesController.hide();
                   },
                 ),
@@ -173,69 +178,100 @@ class _PinMessageListViewState extends State<PinMessageListView>
                       : theme.color.neutralColor98,
                   height: min(constraints.maxHeight, animation!.value),
                   duration: widget.duration,
-                  child: Scrollbar(
-                    child: CustomScrollView(
-                      slivers: [
-                        SliverAppBar(
-                          pinned: true,
-                          floating: false,
-                          elevation: 0,
-                          leading: const SizedBox(),
-                          leadingWidth: 0,
-                          backgroundColor: theme.color.isDark
-                              ? theme.color.neutralColor1
-                              : theme.color.neutralColor98,
-                          scrolledUnderElevation: 0,
-                          title: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: ChatUIKitImageLoader.pinMessage(
-                                    color: theme.color.isDark
-                                        ? theme.color.neutralColor9
-                                        : theme.color.neutralColor3,
-                                    width: 18,
-                                    height: 18),
-                              ),
-                              Text(
-                                '${items.length} 条消息置顶',
-                                style: TextStyle(
-                                  fontWeight: theme.font.bodyMedium.fontWeight,
-                                  fontSize: theme.font.bodyMedium.fontSize,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Scrollbar(
+                          child: CustomScrollView(
+                            slivers: [
+                              SliverAppBar(
+                                pinned: true,
+                                floating: false,
+                                elevation: 0,
+                                leading: const SizedBox(),
+                                leadingWidth: 0,
+                                backgroundColor: theme.color.isDark
+                                    ? theme.color.neutralColor1
+                                    : theme.color.neutralColor98,
+                                scrolledUnderElevation: 0,
+                                title: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: ChatUIKitImageLoader.pinMessage(
+                                          color: theme.color.isDark
+                                              ? theme.color.neutralColor9
+                                              : theme.color.neutralColor3,
+                                          width: 18,
+                                          height: 18),
+                                    ),
+                                    Text(
+                                      '${items.length} 条消息置顶',
+                                      style: TextStyle(
+                                        fontWeight:
+                                            theme.font.bodyMedium.fontWeight,
+                                        fontSize:
+                                            theme.font.bodyMedium.fontSize,
+                                      ),
+                                    )
+                                  ],
                                 ),
-                              )
+                              ),
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    Message msg = items[index].message;
+                                    return InkWell(
+                                      onTap: () {
+                                        widget.pinMessagesController.hide();
+                                        widget.onTap?.call(msg);
+                                      },
+                                      child: PinListItem(
+                                        model: items[index],
+                                        isConfirming: confirmMsgId == msg.msgId,
+                                        onDeleteTap: (confirm) {
+                                          if (confirm) {
+                                            widget.pinMessagesController
+                                                .unPinMsg(
+                                                    items[index].message.msgId);
+                                          } else {
+                                            confirmMsgId =
+                                                items[index].message.msgId;
+                                            setState(() {});
+                                          }
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  childCount: items.length,
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              Message msg = items[index].message;
-                              return InkWell(
-                                onTap: () {
-                                  widget.pinMessagesController.hide();
-                                  widget.onTap?.call(msg);
-                                },
-                                child: PinListItem(
-                                  model: items[index],
-                                  isConfirming: confirmMsgId == msg.msgId,
-                                  onDeleteTap: (confirm) {
-                                    if (confirm) {
-                                      widget.pinMessagesController
-                                          .unPinMsg(items[index].message.msgId);
-                                    } else {
-                                      confirmMsgId = items[index].message.msgId;
-                                      setState(() {});
-                                    }
-                                  },
-                                ),
-                              );
-                            },
-                            childCount: items.length,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                      animation!.status != AnimationStatus.completed
+                          ? const SizedBox()
+                          : SizedBox(
+                              height: bottomBarHeight,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 36,
+                                    height: 5,
+                                    decoration: BoxDecoration(
+                                      color: theme.color.isDark
+                                          ? theme.color.neutralColor1
+                                          : theme.color.neutralColor8,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                    ],
                   ),
                 );
               },
@@ -285,14 +321,41 @@ class PinListItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(
-                      '${model.operatorShowName} 置顶了 ${model.senderShowName} 的消息',
-                      style: TextStyle(
-                        fontWeight: theme.font.bodyMedium.fontWeight,
-                        fontSize: theme.font.bodyMedium.fontSize,
-                        color: theme.color.isDark
-                            ? theme.color.neutralColor7
-                            : theme.color.neutralColor4,
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontWeight: theme.font.bodySmall.fontWeight,
+                          fontSize: theme.font.bodySmall.fontSize,
+                          color: theme.color.isDark
+                              ? theme.color.neutralColor98
+                              : theme.color.neutralColor1,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: model.operatorShowName,
+                            style: TextStyle(
+                              fontWeight: theme.font.labelSmall.fontWeight,
+                              fontSize: theme.font.labelSmall.fontSize,
+                              color: theme.color.isDark
+                                  ? theme.color.neutralColor98
+                                  : theme.color.neutralColor1,
+                            ),
+                          ),
+                          TextSpan(
+                              text: ChatUIKitLocal.hasPined.getString(context)),
+                          TextSpan(
+                            text: model.senderShowName,
+                            style: TextStyle(
+                              fontWeight: theme.font.labelSmall.fontWeight,
+                              fontSize: theme.font.labelSmall.fontSize,
+                              color: theme.color.isDark
+                                  ? theme.color.neutralColor98
+                                  : theme.color.neutralColor1,
+                            ),
+                          ),
+                          TextSpan(
+                              text: ChatUIKitLocal.byPined.getString(context)),
+                        ],
                       ),
                     ),
                   ),
@@ -354,7 +417,7 @@ class PinListItem extends StatelessWidget {
                       child: () {
                         if (isConfirming) {
                           return Text(
-                            '确认移除',
+                            ChatUIKitLocal.unPinConfirmed.getString(context),
                             style: TextStyle(
                               fontWeight: theme.font.labelMedium.fontWeight,
                               fontSize: theme.font.labelMedium.fontSize,
@@ -365,7 +428,7 @@ class PinListItem extends StatelessWidget {
                           );
                         } else {
                           return Text(
-                            '移除',
+                            ChatUIKitLocal.unPinInquire.getString(context),
                             style: TextStyle(
                               fontWeight: theme.font.labelMedium.fontWeight,
                               fontSize: theme.font.labelMedium.fontSize,

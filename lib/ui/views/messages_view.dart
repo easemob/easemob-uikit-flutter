@@ -278,7 +278,8 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     pinMessageController = PinMessageListViewController(profile!);
   }
 
-  void jumpToMessage(String? messageId) async {
+  void jumpToMessage(String? messageId,
+      {AutoScrollPosition position = AutoScrollPosition.end}) async {
     int index = controller.msgModelList
         .indexWhere((element) => element.message.msgId == messageId);
     if (index == -1 || messageId == null) {
@@ -289,12 +290,13 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
 
     _scrollController.scrollToIndex(
       index,
-      preferPosition: AutoScrollPosition.end,
+      preferPosition: position,
       duration: const Duration(milliseconds: 10),
     );
+
     await _scrollController.scrollToIndex(
       index,
-      preferPosition: AutoScrollPosition.end,
+      preferPosition: position,
       duration: const Duration(milliseconds: 100),
     );
 
@@ -598,7 +600,10 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                   PinMessageListView(
                     maxHeight: MediaQuery.of(context).size.height / 5 * 3,
                     pinMessagesController: pinMessageController!,
-                    onTap: (message) => jumpToMessage(message.msgId),
+                    onTap: (message) => jumpToMessage(
+                      message.msgId,
+                      position: AutoScrollPosition.begin,
+                    ),
                   ),
                 ],
               )
