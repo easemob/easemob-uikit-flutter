@@ -1,4 +1,4 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
+import 'chat_uikit.dart';
 
 /// 用来表示当前时间是消息时间还是会话时间
 enum ChatUIKitTimeType { conversation, message, messagePinTime }

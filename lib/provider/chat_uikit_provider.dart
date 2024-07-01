@@ -1,4 +1,4 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
+import '../chat_uikit.dart';
 
 /// 用户信息更新观察者，当用户信息更新时，会通知所有的观察者。
 abstract mixin class ChatUIKitProviderObserver {

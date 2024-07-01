@@ -1,4 +1,4 @@
-import 'package:em_chat_uikit/universal/inner_headers.dart';
+import 'universal/inner_headers.dart';
 import 'package:flutter/widgets.dart';
 
 mixin ChatUIKitLocal {
@@ -344,6 +344,7 @@ mixin ChatUIKitLocal {
 
   static const searchHistory = 'search_history';
 
+  static const pinMessages = 'pinMessages';
   static const hasPined = 'has_pined';
   static const byPined = 'by_pined';
   static const unPinInquire = 'un_pin_confirm';
@@ -566,6 +567,7 @@ mixin ChatUIKitLocal {
     threadNewName: '新话题名称',
     threadMembers: '话题成员',
     searchHistory: '搜索历史',
+    pinMessages: '条置顶消息',
     hasPined: ' 置顶了 ',
     byPined: ' 的消息',
     unPinInquire: '移除',
@@ -798,6 +800,7 @@ mixin ChatUIKitLocal {
     threadNewName: 'New Topic Name',
     threadMembers: 'Topic Members',
     searchHistory: 'Search History',
+    pinMessages: ' Pin message',
     hasPined: ' pinned ',
     byPined: " 's message",
     unPinInquire: 'Remove',

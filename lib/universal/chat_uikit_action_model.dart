@@ -1,4 +1,4 @@
-import 'package:em_chat_uikit/universal/defines.dart';
+import '../universal/defines.dart';
 import 'package:flutter/widgets.dart';
 
 typedef ChatUIKitActionItemOnTap = void Function(BuildContext context);

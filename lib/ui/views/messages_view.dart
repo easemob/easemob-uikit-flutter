@@ -243,18 +243,6 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
         if (controller.lastActionType == MessageLastActionType.topPosition) {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
             jumpToMessage(controller.searchedMsg?.msgId);
-            // int index = controller.msgModelList.indexWhere((element) =>
-            //     element.message.msgId == controller.searchedMsg?.msgId);
-            // if (index != -1) {
-            //   await _scrollController.scrollToIndex(
-            //     index,
-            //     duration: Durations.short1,
-            //   );
-            //   await _scrollController.highlight(
-            //     index,
-            //     highlightDuration: Durations.long4,
-            //   );
-            // }
           });
         }
 
@@ -329,9 +317,20 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                 ),
               ),
             ];
-            return widget.appBarModel?.leadingActionsBuilder
+
+            actions = widget.appBarModel?.leadingActionsBuilder
                     ?.call(context, actions) ??
                 actions;
+            List<ChatUIKitAppBarAction> newActions = [];
+            for (var action in actions) {
+              newActions.add(action.copyWith(
+                onTap: (context) {
+                  clearAllType();
+                  action.onTap?.call(context);
+                },
+              ));
+            }
+            return newActions;
           }(),
       trailingActions: widget.appBarModel?.trailingActions ??
           () {
@@ -361,7 +360,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                     if (controller.conversationType ==
                             ConversationType.GroupChat &&
                         ChatUIKitSettings.enableMessageThread) {
-                      showBottom();
+                      pushThread();
                     }
                   }
                 },
@@ -387,9 +386,20 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
                         : const SizedBox(),
               )
             ];
-            return widget.appBarModel?.trailingActionsBuilder
+
+            actions = widget.appBarModel?.trailingActionsBuilder
                     ?.call(context, actions) ??
                 actions;
+            List<ChatUIKitAppBarAction> newActions = [];
+            for (var action in actions) {
+              newActions.add(action.copyWith(
+                onTap: (context) {
+                  clearAllType();
+                  action.onTap?.call(context);
+                },
+              ));
+            }
+            return newActions;
           }(),
       backgroundColor: widget.appBarModel?.backgroundColor,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
@@ -536,7 +546,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       onThreadItemTap: (context, model) {
         bool ret = widget.onThreadItemTap?.call(context, model) ?? false;
         if (ret == false) {
-          showThread(context, model);
+          showThread(context, model); 
         }
         return ret;
       },
@@ -2358,7 +2368,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
     await controller.updateReaction(model.message.msgId, emoji, isAdd);
   }
 
-  void showBottom() {
+  void pushThread() {
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.threadsView,

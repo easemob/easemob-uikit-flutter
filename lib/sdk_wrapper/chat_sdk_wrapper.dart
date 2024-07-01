@@ -2,9 +2,31 @@
 
 library chat_sdk_wrapper;
 
-import 'package:em_chat_uikit/chat_uikit.dart';
+import 'typedef_define.dart';
 
 import 'package:flutter/material.dart';
+
+import 'chat_sdk_wrapper_action_events.dart';
+import 'observers/action_event_observer.dart';
+
+import 'actions/chat_actions.dart';
+import 'actions/group_actions.dart';
+import 'actions/notification_actions.dart';
+import 'actions/contact_actions.dart';
+import 'actions/presence_actions.dart';
+import 'actions/thread_actions.dart';
+import 'actions/user_info_actions.dart';
+
+import 'wrappers/chat_wrapper.dart';
+import 'wrappers/connect_wrapper.dart';
+import 'wrappers/contact_wrapper.dart';
+import 'wrappers/group_wrapper.dart';
+import 'wrappers/message_wrapper.dart';
+import 'wrappers/multi_wrapper.dart';
+import 'wrappers/presence_wrapper.dart';
+import 'wrappers/notification_wrapper.dart';
+import 'wrappers/thread_wrapper.dart';
+import 'wrappers/user_info_wrapper.dart';
 
 export 'actions/chat_actions.dart';
 export 'actions/group_actions.dart';
@@ -40,6 +62,7 @@ export 'observers/thread_observer.dart';
 export 'chat_sdk_wrapper_action_events.dart';
 export 'typedef_define.dart';
 export 'chat_sdk_wrapper_action_events.dart';
+export 'sdk_wrapper_tools.dart';
 
 const String sdkEventKey = 'chat_uikit';
 

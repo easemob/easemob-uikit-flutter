@@ -206,12 +206,15 @@ class _PinMessageListViewState extends State<PinMessageListView>
                                           height: 18),
                                     ),
                                     Text(
-                                      '${items.length} 条消息置顶',
+                                      '${items.length} ${ChatUIKitLocal.pinMessages.getString(context)}',
                                       style: TextStyle(
                                         fontWeight:
                                             theme.font.bodyMedium.fontWeight,
                                         fontSize:
                                             theme.font.bodyMedium.fontSize,
+                                        color: theme.color.isDark
+                                            ? theme.color.neutralColor98
+                                            : theme.color.neutralColor1,
                                       ),
                                     )
                                   ],
@@ -263,7 +266,7 @@ class _PinMessageListViewState extends State<PinMessageListView>
                                     height: 5,
                                     decoration: BoxDecoration(
                                       color: theme.color.isDark
-                                          ? theme.color.neutralColor1
+                                          ? theme.color.neutralColor3
                                           : theme.color.neutralColor8,
                                       borderRadius: BorderRadius.circular(10),
                                     ),

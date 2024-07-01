@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/universal/inner_headers.dart';
+import 'chat_uikit.dart';
+import 'universal/inner_headers.dart';
 
 const String convLoadFinishedKey =
     'EaseChatUIKit_conversation_load_more_finished';
