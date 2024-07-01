@@ -337,6 +337,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
           () {
             List<ChatUIKitAppBarAction> actions = [
               if (ChatUIKitSettings.enablePinMsg &&
+                  !controller.isMultiSelectMode &&
                   controller.conversationType == ConversationType.GroupChat)
                 ChatUIKitAppBarAction(
                   actionType: ChatUIKitActionType.pinMessage,
