@@ -6,6 +6,7 @@ abstract mixin class ChatUIKitListViewControllerBase {
       ValueNotifier(ChatUIKitListViewType.normal);
 
   bool hasMore = true;
+  bool hasDisposed = false;
 
   Future<void> fetchItemList({bool force = false}) async {
     return;
@@ -16,6 +17,7 @@ abstract mixin class ChatUIKitListViewControllerBase {
   }
 
   Future<void> refresh() async {
+    if (hasDisposed) return;
     loadingType.value = ChatUIKitListViewType.refresh;
     if (list.isEmpty) {
       loadingType.value = ChatUIKitListViewType.empty;
@@ -27,6 +29,7 @@ abstract mixin class ChatUIKitListViewControllerBase {
   Future<void> reload() async {}
 
   void dispose() {
+    hasDisposed = true;
     loadingType.dispose();
   }
 

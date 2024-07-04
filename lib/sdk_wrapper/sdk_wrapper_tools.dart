@@ -1,4 +1,4 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
+import '../chat_uikit.dart';
 
 class SDKWrapperTools {
   static Message insertRecallMessage({

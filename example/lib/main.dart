@@ -54,6 +54,7 @@ class _MyAppState extends State<MyApp> {
     ];
     // 添加语言后需要进行resetLocales操作
     _localization.resetLocales();
+    ChatUIKitSettings.inputBarRadius = CornerRadius.medium;
   }
 
   @override
