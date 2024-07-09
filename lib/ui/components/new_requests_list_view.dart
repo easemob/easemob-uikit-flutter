@@ -84,7 +84,12 @@ class _NewRequestsListViewState extends State<NewRequestsListView>
                 onLongPress: () {
                   widget.onLongPress?.call(context, model);
                 },
-                child: ChatUIKitNewRequestListViewItem(model),
+                child: ChatUIKitNewRequestListViewItem(
+                  model,
+                  onAcceptTap: () {
+                    controller.acceptRequest(model.profile.id);
+                  },
+                ),
               );
 
               return item;
@@ -107,5 +112,8 @@ class _NewRequestsListViewState extends State<NewRequestsListView>
   @override
   void onContactAdded(String userId) {
     controller.fetchItemList();
+
+    // Message.createCustomSendMessage(targetId: userId, event: );
+    // ChatUIKit.instance.insertMessage(message: message);
   }
 }

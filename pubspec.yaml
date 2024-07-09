@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  im_flutter_sdk: ^4.6.1
+  im_flutter_sdk: ^4.6.1+1
   # im_flutter_sdk:
   #   path: ../../../im_flutter_sdk/
 
@@ -20,7 +20,7 @@ dependencies:
 
   shared_preferences: ^2.2.2
 
-  chat_uikit_theme: ^0.0.5
+  chat_uikit_theme: 0.0.8
   # chat_uikit_theme:
   #   path: ../chat_uikit_theme/
 

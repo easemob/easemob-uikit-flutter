@@ -8,10 +8,4 @@ mixin ChatUIKitContactObservers on ChatSDKWrapper {
       super.onContactRequestReceived(userId, reason);
     }
   }
-
-  @override
-  void onContactAdded(String userId) {
-    ChatUIKitContext.instance.removeRequest(userId);
-    super.onContactAdded(userId);
-  }
 }

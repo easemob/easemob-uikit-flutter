@@ -7,7 +7,7 @@ export 'chat_uikit_localizations.dart';
 export 'provider/chat_uikit_provider.dart';
 
 export 'sdk_wrapper/chat_sdk_wrapper.dart';
-export 'sdk_wrapper/chat_sdk_wrapper_action_events.dart';
+export 'sdk_wrapper/sdk_wrapper_defines.dart';
 
 export 'service/chat_uikit_service.dart';
 export 'provider/chat_uikit_profile.dart';
@@ -17,8 +17,8 @@ export 'package:em_chat_uikit/universal/chat_string_extension.dart';
 
 export 'tools/chat_uikit_helper.dart';
 export 'tools/chat_uikit_image_loader.dart';
-export 'tools/chat_uikit_message_helper.dart';
-export 'tools/chat_uikit_conversation_helper.dart';
+export 'tools/chat_uikit_message_extension.dart';
+export 'tools/chat_uikit_conversation_extension.dart';
 export 'tools/chat_uikit_file_size_tool.dart';
 export 'tools/chat_uikit_time_tool.dart';
 export 'tools/chat_uikit_url_helper.dart';

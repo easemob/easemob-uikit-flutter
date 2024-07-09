@@ -95,6 +95,8 @@ mixin DemoLocalizations {
   static String featureSettingsThreadDesc = 'featureSettingsThreadDesc';
   static String featureSettingsReaction = 'featureSettingsReaction';
   static String featureSettingsReactionDesc = 'featureSettingsReactionDesc';
+  static String featureSettingsTypingIndicator =
+      'featureSettingsTypingIndicator';
 
   // notification
   static String offlineMessagePush = 'offlineMessagePush';
@@ -201,6 +203,7 @@ mixin DemoLocalizations {
     featureSettingsThreadDesc: '通过长按群内的一条消息创建一个话题',
     featureSettingsReaction: '消息表情回应',
     featureSettingsReactionDesc: '通过长按消息为消息添加表情回应',
+    featureSettingsTypingIndicator: '输入状态',
 
     // general translate target language
     translateTargetLanguageChinese: '简体中文',
@@ -314,6 +317,7 @@ mixin DemoLocalizations {
         'Long press a message in a group to create a thread',
     featureSettingsReaction: 'Reaction',
     featureSettingsReactionDesc: 'Long press a message to add emoji reactions',
+    featureSettingsTypingIndicator: 'Typing indicator',
 
     // general translate target language
     translateTargetLanguageChinese: 'Simplified Chinese',

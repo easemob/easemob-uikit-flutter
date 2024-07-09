@@ -1,4 +1,4 @@
-import '../chat_sdk_wrapper.dart';
+import 'package:em_chat_uikit/chat_uikit.dart';
 
 mixin ChatActions on ChatWrapper {
   Future<Message> sendMessage({required Message message}) {
@@ -14,7 +14,7 @@ mixin ChatActions on ChatWrapper {
     return checkResult(ChatSDKEvent.sendTypingMessage, () async {
       Message msg = Message.createCmdSendMessage(
         targetId: userId,
-        action: 'TypingBegin',
+        action: typingKey,
         deliverOnlineOnly: true,
       );
       await Client.getInstance.chatManager.sendMessage(msg);
@@ -161,9 +161,23 @@ mixin ChatActions on ChatWrapper {
     });
   }
 
-  Future<void> updateMessage({required Message message}) {
-    return checkResult(ChatSDKEvent.updateMessage, () {
-      return Client.getInstance.chatManager.updateMessage(message);
+  Future<void> updateMessage({
+    required Message message,
+    bool runMessageUpdate = false,
+    bool needUpdateConversationList = false,
+  }) {
+    return checkResult(ChatSDKEvent.updateMessage, () async {
+      final oldMsg =
+          await Client.getInstance.chatManager.loadMessage(message.msgId);
+      await Client.getInstance.chatManager.updateMessage(message);
+
+      if (runMessageUpdate) {
+        super.onMessageUpdate(message, oldMsg);
+      }
+
+      if (needUpdateConversationList) {
+        super.onConversationsUpdate();
+      }
     });
   }
 
@@ -173,7 +187,11 @@ mixin ChatActions on ChatWrapper {
     });
   }
 
-  Future<void> insertMessage({required Message message}) {
+  Future<void> insertMessage({
+    required Message message,
+    bool runMessageReceived = false,
+    bool needUpdateConversationList = false,
+  }) {
     return checkResult(ChatSDKEvent.importMessages, () async {
       Conversation? conversation =
           await Client.getInstance.chatManager.getConversation(
@@ -182,6 +200,12 @@ mixin ChatActions on ChatWrapper {
         createIfNeed: true,
       );
       await conversation!.insertMessage(message);
+      if (runMessageReceived) {
+        super.onMessagesReceived([message]);
+      }
+      if (needUpdateConversationList) {
+        super.onConversationsUpdate();
+      }
     });
   }
 

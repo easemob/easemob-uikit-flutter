@@ -21,37 +21,6 @@ class _GeneralPageState extends State<GeneralPage> {
 
     Widget content = ListView(
       children: [
-        // ListItem(
-        //   title: '显示输入状态',
-        //   trailingWidget: CupertinoSwitch(
-        //       value: ChatUIKitSettings.enableInputStatus,
-        //       onChanged: (value) {
-        //         ChatUIKitSettings.enableInputStatus =
-        //             !ChatUIKitSettings.enableInputStatus;
-        //         setState(() {});
-        //       }),
-        // ),
-        // Container(
-        //   padding:
-        //       const EdgeInsets.only(top: 4, bottom: 4, left: 16, right: 16),
-        //   color: theme.color.isDark
-        //       ? theme.color.neutralColor3
-        //       : theme.color.neutralColor95,
-        //   child: Text(
-        //     '开启后，对方将看见你的输入状态',
-        //     textAlign: TextAlign.right,
-        //     // ignore: deprecated_member_use
-        //     textScaler: TextScaler.noScaling,
-        //     style: TextStyle(
-        //       height: 0.9,
-        //       fontSize: theme.font.bodyMedium.fontSize,
-        //       fontWeight: theme.font.bodyMedium.fontWeight,
-        //       color: theme.color.isDark
-        //           ? theme.color.neutralColor7
-        //           : theme.color.neutralColor5,
-        //     ),
-        //   ),
-        // ),
         ListItem(
           title: DemoLocalizations.darkMode.localString(context),
           trailingWidget: CupertinoSwitch(

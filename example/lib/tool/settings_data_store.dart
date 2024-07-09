@@ -8,6 +8,7 @@ const String threadKey = 'threadKey';
 const String translationKey = 'translationKey';
 const String reactionKey = 'reactionKey';
 const String targetLanguageKey = 'targetLanguageKey';
+const String typingIndicatorKey = 'typingIndicatorKey';
 
 class SettingsDataStore {
   static SettingsDataStore? _instance;
@@ -30,6 +31,7 @@ class SettingsDataStore {
     ChatUIKitSettings.enableMessageTranslation = enableTranslation;
     ChatUIKitSettings.enableMessageReaction = enableReaction;
     ChatUIKitSettings.translateTargetLanguage = translateTargetLanguage;
+    ChatUIKitSettings.enableTypingIndicator = enableTypingIndicator;
   }
 
   String get currentLanguage {
@@ -83,5 +85,15 @@ class SettingsDataStore {
     _sharedPreferences ??= await SharedPreferences.getInstance();
     _sharedPreferences?.setBool(reactionKey, enable);
     ChatUIKitSettings.enableMessageReaction = enable;
+  }
+
+  bool get enableTypingIndicator {
+    return _sharedPreferences?.getBool(typingIndicatorKey) ?? false;
+  }
+
+  Future<void> saveTypingIndicator(bool enable) async {
+    _sharedPreferences ??= await SharedPreferences.getInstance();
+    _sharedPreferences?.setBool(typingIndicatorKey, enable);
+    ChatUIKitSettings.enableTypingIndicator = enable;
   }
 }

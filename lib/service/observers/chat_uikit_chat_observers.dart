@@ -27,7 +27,10 @@ mixin ChatUIKitChatObservers on ChatSDKWrapper {
 
   @override
   void onMessageContentChanged(
-      Message message, String operatorId, int operationTime) async {
+    Message message,
+    String operatorId,
+    int operationTime,
+  ) async {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
         // clear message's preview.

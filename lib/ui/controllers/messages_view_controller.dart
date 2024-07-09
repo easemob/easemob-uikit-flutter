@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import '../../chat_uikit.dart';
+import '../../tools/safe_disposed.dart';
 import '../../universal/inner_headers.dart';
 
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ enum MessageLastActionType {
 /// 消息列表控制器
 class MessagesViewController extends ChangeNotifier
     with
+        SafeAreaDisposed,
         ChatObserver,
         MessageObserver,
         ThreadObserver,

@@ -35,7 +35,7 @@ class ChatUIKitSettings {
   static ImageProvider? conversationListMuteImage;
 
   // 消息输入状态
-  static bool enableTypingIndicator = true;
+  static bool enableTypingIndicator = false;
 
   /// 消息长按菜单
   static List<ChatUIKitActionType> msgItemLongPressActions = [

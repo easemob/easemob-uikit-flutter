@@ -108,6 +108,16 @@ class _AdvancedPageState extends State<AdvancedPage> {
             ),
           ),
         ),
+        ListItem(
+          title: DemoLocalizations.featureSettingsTypingIndicator
+              .localString(context),
+          trailingWidget: CupertinoSwitch(
+              value: SettingsDataStore().enableTypingIndicator,
+              onChanged: (value) async {
+                await SettingsDataStore().saveTypingIndicator(value);
+                setState(() {});
+              }),
+        ),
       ],
     );
     return Scaffold(

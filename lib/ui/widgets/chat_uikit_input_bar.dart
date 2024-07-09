@@ -1,7 +1,9 @@
 import '../../../chat_uikit.dart';
 import 'package:flutter/material.dart';
 
-class ChatUIKitInputBarController extends ChangeNotifier {
+import '../../tools/safe_disposed.dart';
+
+class ChatUIKitInputBarController extends ChangeNotifier with SafeAreaDisposed {
   late CustomTextEditingController _textEditingController;
   late FocusNode _focusNode;
 

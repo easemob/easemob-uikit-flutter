@@ -83,25 +83,20 @@ class _ShowImageViewState extends State<ShowImageView> {
     Widget content = ChatUIKitShowImageWidget(
       message: widget.message,
       onLongPressed: widget.onLongPressed,
-      onTap: widget.onTap,
+      onTap: widget.onTap ?? (context, message) => Navigator.of(context).pop(),
       isCombine: widget.isCombine,
     );
 
     content = Scaffold(
       backgroundColor: Colors.black,
+      extendBodyBehindAppBar: true,
+      appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: Stack(
         children: [
           content,
         ],
       ),
     );
-
-    content = Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
-      body: content,
-    );
-
     return content;
   }
 }

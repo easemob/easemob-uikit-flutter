@@ -408,6 +408,20 @@ extension MessageHelper on Message {
           if (isKickedGroupAlert) {
             return ChatUIKitLocal.alertKickedInfo.localString(context);
           }
+          if (isNewContactAlert) {
+            Map<String, String>? map = (body as CustomMessageBody).params;
+            String? operator = map![alertOperatorIdKey]!;
+            String? showName;
+            if (ChatUIKit.instance.currentUserId == operator) {
+              showName = ChatUIKitLocal.alertYou.localString(context);
+            } else {
+              ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
+                ChatUIKitProfile.contact(id: operator),
+              );
+              showName = profile.showName;
+            }
+            return '${ChatUIKitLocal.alertYouAlreadyAdd.localString(context)}$showName${ChatUIKitLocal.alertAsContact.localString(context)}';
+          }
 
           str = '[Custom]';
         }
@@ -511,6 +525,15 @@ extension MessageHelper on Message {
   bool get isLeaveGroupAlert {
     if (bodyType == MessageType.CUSTOM) {
       if ((body as CustomMessageBody).event == alertGroupLeaveKey) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool get isNewContactAlert {
+    if (bodyType == MessageType.CUSTOM) {
+      if ((body as CustomMessageBody).event == alertContactAddKey) {
         return true;
       }
     }

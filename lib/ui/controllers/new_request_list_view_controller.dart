@@ -62,4 +62,20 @@ class NewRequestListViewController
     }
     return list;
   }
+
+  Future<void> acceptRequest(String userId) async {
+    try {
+      await ChatUIKit.instance.acceptContactRequest(userId: userId);
+
+      list.removeWhere((element) {
+        if (element is NewRequestItemModel) {
+          return element.profile.id == userId;
+        } else {
+          return false;
+        }
+      });
+      // ignore: empty_catches
+    } catch (e) {}
+    refresh();
+  }
 }
