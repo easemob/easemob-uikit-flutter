@@ -1,6 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class DownloadFileWidget extends StatefulWidget {
   const DownloadFileWidget({required this.message, super.key});
@@ -24,14 +23,7 @@ class _DownloadFileWidgetState extends State<DownloadFileWidget> {
           debugPrint(
               'path: $path, name: $name, state: $state, progress: $progress');
           if (state == ChatUIKitMessageDownloadState.success) {
-            return Center(
-              child: TextButton(
-                onPressed: () {
-                  EasyLoading.showToast('需要你根据后缀，实现打开文件的逻辑');
-                },
-                child: const Text('打开文件'),
-              ),
-            );
+            return const SizedBox();
           } else if (state == ChatUIKitMessageDownloadState.error) {
             return Center(
               child: TextButton(
