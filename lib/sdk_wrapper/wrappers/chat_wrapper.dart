@@ -92,7 +92,7 @@ mixin ChatWrapper on ChatUIKitWrapperBase {
     List<Message> replaces = [];
     for (var msg in messages) {
       final replace =
-          InsertMessageTools.insertRecallMessage(recalledMessage: msg);
+          ChatUIKitInsertTools.insertRecallMessage(recalledMessage: msg);
       replaces.add(replace);
     }
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
@@ -173,7 +173,8 @@ mixin ChatWrapper on ChatUIKitWrapperBase {
       }
     }
   }
-    void onMessageUpdate(Message newMessage, [Message? oldMessage]) async {
+
+  void onMessageUpdate(Message newMessage, [Message? oldMessage]) async {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
         observer.onMessageUpdate(newMessage, oldMessage);

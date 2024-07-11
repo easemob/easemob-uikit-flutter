@@ -1,4 +1,4 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
+import '../chat_sdk_wrapper.dart';
 
 mixin ChatActions on ChatWrapper {
   Future<Message> sendMessage({required Message message}) {
@@ -650,13 +650,13 @@ mixin ChatActions on ChatWrapper {
   }
 
   Future<void> pinMessage({required String messageId}) {
-    return checkResult(ChatSDKEvent.pinMessage, () async {
+    return checkResult(ChatSDKEvent.pinMessage, () {
       return Client.getInstance.chatManager.pinMessage(messageId: messageId);
     });
   }
 
   Future<void> unpinMessage({required String messageId}) {
-    return checkResult(ChatSDKEvent.unpinMessage, () async {
+    return checkResult(ChatSDKEvent.unpinMessage, () {
       return Client.getInstance.chatManager.unpinMessage(messageId: messageId);
     });
   }

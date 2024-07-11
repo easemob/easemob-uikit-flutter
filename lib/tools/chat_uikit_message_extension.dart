@@ -354,73 +354,50 @@ extension MessageHelper on Message {
             ChatUIKitLocal.messageCellCombineContact.localString(context)
           ]}';
         } else {
-          if (isRecallAlert) {
-            Map<String, String>? map = (body as CustomMessageBody).params;
-
-            String? from = map?[alertOperatorIdKey];
-            String? showName;
-            if (ChatUIKit.instance.currentUserId == from) {
-              showName = ChatUIKitLocal.alertYou.localString(context);
-            } else {
+          Map<String, String>? map = (body as CustomMessageBody).params;
+          String? operator = map?[alertOperatorIdKey];
+          String? showName;
+          if (ChatUIKit.instance.currentUserId == operator) {
+            showName = ChatUIKitLocal.alertYou.localString(context);
+          } else {
+            if (operator?.isNotEmpty == true) {
               ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
-                ChatUIKitProfile.contact(id: from!),
+                ChatUIKitProfile.contact(id: operator!),
               );
               showName = profile.showName;
             }
+            showName ??= '';
+          }
+          if (isRecallAlert) {
             return '$showName${ChatUIKitLocal.alertRecallInfo.localString(context)}';
           }
           if (isCreateGroupAlert) {
-            Map<String, String>? map = (body as CustomMessageBody).params;
-            String? operator = map![alertOperatorIdKey]!;
-            String? showName;
-            if (ChatUIKit.instance.currentUserId == operator) {
-              showName = ChatUIKitLocal.alertYou.localString(context);
-            } else {
-              ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
-                ChatUIKitProfile.contact(id: from!),
-              );
-              showName = profile.showName;
-            }
-            return '$showName ${ChatUIKitLocal.messagesViewAlertGroupInfoTitle.localString(context)}';
+            return '$showName${ChatUIKitLocal.messagesViewAlertGroupInfoTitle.localString(context)}';
           }
           if (isCreateThreadAlert) {
-            Map<String, String>? map = (body as CustomMessageBody).params;
-            String? operator = map![alertOperatorIdKey]!;
-            String? showName;
-            if (ChatUIKit.instance.currentUserId == operator) {
-              showName = ChatUIKitLocal.alertYou.localString(context);
-            } else {
-              ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
-                ChatUIKitProfile.contact(id: operator),
-              );
-              showName = profile.showName;
-            }
-            return '$showName ${ChatUIKitLocal.messagesViewAlertThreadInfoTitle.localString(context)}';
+            return '$showName${ChatUIKitLocal.messagesViewAlertThreadInfoTitle.localString(context)}';
           }
           if (isDestroyGroupAlert) {
             return ChatUIKitLocal.alertDestroy.localString(context);
           }
 
           if (isLeaveGroupAlert) {
-            return ChatUIKitLocal.alertLeave.localString(context);
+            return '$showName${ChatUIKitLocal.alertLeave.localString(context)}';
           }
 
           if (isKickedGroupAlert) {
-            return ChatUIKitLocal.alertKickedInfo.localString(context);
+            return '$showName${ChatUIKitLocal.alertKickedInfo.localString(context)}';
           }
           if (isNewContactAlert) {
-            Map<String, String>? map = (body as CustomMessageBody).params;
-            String? operator = map![alertOperatorIdKey]!;
-            String? showName;
-            if (ChatUIKit.instance.currentUserId == operator) {
-              showName = ChatUIKitLocal.alertYou.localString(context);
-            } else {
-              ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
-                ChatUIKitProfile.contact(id: operator),
-              );
-              showName = profile.showName;
-            }
-            return '${ChatUIKitLocal.alertYouAlreadyAdd.localString(context)}$showName${ChatUIKitLocal.alertAsContact.localString(context)}';
+            return '${ChatUIKitLocal.alertYou.localString(context)}${ChatUIKitLocal.alertAlreadyAdd.localString(context)}$showName${ChatUIKitLocal.alertAsContact.localString(context)}';
+          }
+
+          if (isPinAlert) {
+            return '$showName${ChatUIKitLocal.alertPinTitle.localString(context)}';
+          }
+
+          if (isUnPinAlert) {
+            return '$showName${ChatUIKitLocal.alertUnpinTitle.localString(context)}';
           }
 
           str = '[Custom]';
@@ -534,6 +511,24 @@ extension MessageHelper on Message {
   bool get isNewContactAlert {
     if (bodyType == MessageType.CUSTOM) {
       if ((body as CustomMessageBody).event == alertContactAddKey) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool get isPinAlert {
+    if (bodyType == MessageType.CUSTOM) {
+      if ((body as CustomMessageBody).event == alertPinMessageKey) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool get isUnPinAlert {
+    if (bodyType == MessageType.CUSTOM) {
+      if ((body as CustomMessageBody).event == alertUnPinMessageKey) {
         return true;
       }
     }
