@@ -2,7 +2,6 @@ import '../chat_sdk_wrapper.dart';
 import 'package:flutter/foundation.dart';
 
 mixin ChatWrapper on ChatUIKitWrapperBase {
-  @protected
   @override
   void addListeners() {
     super.addListeners();
