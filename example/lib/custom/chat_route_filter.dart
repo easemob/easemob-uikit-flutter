@@ -73,6 +73,7 @@ class ChatRouteFilter {
                   ChatUIKitDialogInputContentItem(
                     hintText: DemoLocalizations.contactRemarkDesc
                         .localString(context),
+                    maxLength: 32,
                   )
                 ],
                 actionItems: [
@@ -212,6 +213,7 @@ class ChatRouteFilter {
           inputItems: [
             ChatUIKitDialogInputContentItem(
               hintText: DemoLocalizations.createGroupDesc.localString(context),
+              maxLength: 32,
             )
           ],
           actionItems: [

@@ -99,14 +99,16 @@ class ChatUIKitDialogInputContentItem {
   ChatUIKitDialogInputContentItem({
     this.hintText,
     this.maxLength = -1,
-    this.minLength = -1,
+    this.minLength = 1,
     this.clearOnTap = false,
+    this.inputFormatters,
   });
 
   final String? hintText;
   final bool clearOnTap;
   final int maxLength;
   final int minLength;
+  final List<TextInputFormatter>? inputFormatters;
 }
 
 class ChatUIKitDialog<T> extends StatefulWidget {
@@ -189,9 +191,9 @@ class _ChatUIKitDialogState extends State<ChatUIKitDialog> {
         borderRadius: BorderRadius.circular(() {
           switch (widget.borderType) {
             case ChatUIKitDialogRectangleType.circular:
-              return 20.0;
+              return 32.0;
             case ChatUIKitDialogRectangleType.filletCorner:
-              return 8.0;
+              return 16.0;
             case ChatUIKitDialogRectangleType.rightAngle:
               return 0.0;
           }
@@ -375,9 +377,10 @@ class _ChatUIKitDialogState extends State<ChatUIKitDialog> {
                   : Brightness.light,
               style: textStyle,
               controller: _controllers[i],
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(item.maxLength)
-              ],
+              inputFormatters: () {
+                return (item.inputFormatters ?? []) +
+                    [LengthLimitingTextInputFormatter(item.maxLength)];
+              }(),
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintStyle: hightLightStyle,
@@ -488,7 +491,7 @@ class _ChatUIKitDialogState extends State<ChatUIKitDialog> {
           final item = widget.inputItems![i];
           canTap = (_controllers[i].text.length <= item.maxLength ||
                   item.maxLength < 0) &&
-              _controllers[i].text.length > item.minLength;
+              _controllers[i].text.length >= item.minLength;
           if (canTap == false) break;
         }
         widgets.add(

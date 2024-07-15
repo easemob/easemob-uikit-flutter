@@ -627,7 +627,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                       )
                     ],
                   ),
-                  Row(children: [subWidget(theme, model)]),
+                  Row(children: [Expanded(child: subWidget(theme, model))]),
                   const SizedBox(height: 8),
                   Divider(
                     height: 0.5,
@@ -646,6 +646,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
   }
 
   Widget subWidget(ChatUIKitTheme theme, MessageModel model) {
+    final theme = ChatUIKitTheme.of(context);
     Widget? msgWidget;
     if (model.message.bodyType == MessageType.TXT) {
       msgWidget = Flexible(
@@ -672,7 +673,16 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       msgWidget = ChatUIKitCombineBubbleWidget(model: model);
     } else if (model.message.bodyType == MessageType.CUSTOM) {
       if (model.message.isCardMessage) {
-        msgWidget = ChatUIKitCardBubbleWidget(model: model);
+        msgWidget = Container(
+          decoration: BoxDecoration(
+            color: theme.color.isDark
+                ? theme.color.primaryColor95
+                : theme.color.primaryColor5,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: const EdgeInsets.all(8),
+          child: ChatUIKitCardBubbleWidget(model: model),
+        );
       }
     }
     msgWidget ??= ChatUIKitNonsupportMessageWidget(model: model);

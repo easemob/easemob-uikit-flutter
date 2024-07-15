@@ -1,6 +1,6 @@
 export 'package:chat_uikit_theme/chat_uikit_theme.dart';
 
-export 'chat_uikit_context.dart';
+export 'tools/chat_uikit_context.dart';
 export 'chat_uikit_settings.dart';
 export 'chat_uikit_localizations.dart';
 

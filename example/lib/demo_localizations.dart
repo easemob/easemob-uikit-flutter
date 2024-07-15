@@ -256,7 +256,7 @@ mixin DemoLocalizations {
 
     // home create group
     createGroupName: 'Create Group',
-    createGroupDesc: 'Please enter the group name',
+    createGroupDesc: 'Enter the group name',
     createGroupConfirm: 'Confirm',
     createGroupCancel: 'Cancel',
     createGroupFailed: 'Create failed',
