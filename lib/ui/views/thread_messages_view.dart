@@ -1199,8 +1199,8 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                 content: ChatUIKitLocal.messagesViewShareContactAlertSubTitle
                     .localString(context),
                 context: context,
-                items: [
-                  ChatUIKitDialogItem.cancel(
+                actionItems: [
+                  ChatUIKitDialogAction.cancel(
                     label: ChatUIKitLocal
                         .messagesViewShareContactAlertButtonCancel
                         .localString(context),
@@ -1208,7 +1208,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                       Navigator.of(context).pop();
                     },
                   ),
-                  ChatUIKitDialogItem.confirm(
+                  ChatUIKitDialogAction.confirm(
                     label: ChatUIKitLocal
                         .messagesViewShareContactAlertButtonConfirm
                         .localString(context),
@@ -1553,7 +1553,8 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       }
 
       // 编辑
-      if (model.message.bodyType == MessageType.TXT &&
+      if (model.message.status == MessageStatus.SUCCESS &&
+          model.message.bodyType == MessageType.TXT &&
           model.message.direction == MessageDirection.SEND &&
           element == ChatUIKitActionType.edit &&
           ChatUIKitSettings.enableMessageEdit) {
@@ -1580,7 +1581,8 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
         ));
       }
 
-      if (element == ChatUIKitActionType.report &&
+      if (model.message.status == MessageStatus.SUCCESS &&
+          element == ChatUIKitActionType.report &&
           ChatUIKitSettings.enableMessageReport) {
         // 举报
         items.add(ChatUIKitBottomSheetAction.normal(

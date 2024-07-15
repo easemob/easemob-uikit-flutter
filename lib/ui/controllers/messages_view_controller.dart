@@ -388,6 +388,7 @@ class MessagesViewController extends ChangeNotifier
   void onSuccess(String msgId, Message msg) {
     final index = msgModelList.indexWhere((element) =>
         element.message.msgId == msgId && msg.status != element.message.status);
+
     if (index != -1) {
       msgModelList[index] = msgModelList[index].copyWith(message: msg);
       refresh();
@@ -575,7 +576,9 @@ class MessagesViewController extends ChangeNotifier
         await ChatUIKit.instance.recallMessage(message: message);
         refresh();
         // ignore: empty_catches
-      } catch (e) {}
+      } catch (e) {
+        debugPrint('recallMessage err: $e');
+      }
     }
   }
 
