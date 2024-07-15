@@ -436,15 +436,15 @@ class _ChatUIKitDialogState extends State<ChatUIKitDialog> {
 
     // 取消按钮颜色
     Color cancelColor = themeColor.isDark
-        ? themeColor.neutralColor3
-        : themeColor.neutralColor95;
+        ? themeColor.neutralColor2
+        : themeColor.neutralColor98;
     // 取消按钮文字颜色
-    Color cancelTextColor =
-        themeColor.isDark ? themeColor.neutralColor5 : themeColor.neutralColor7;
+    Color cancelTextColor = themeColor.isDark
+        ? themeColor.neutralColor95
+        : themeColor.neutralColor3;
     // 取消按钮边框颜色
-    Color cancelBorderColor = themeColor.isDark
-        ? themeColor.neutralColor3
-        : themeColor.neutralColor95;
+    Color cancelBorderColor =
+        themeColor.isDark ? themeColor.neutralColor4 : themeColor.neutralColor7;
 
     // 破坏性按钮颜色
     Color destructiveColor =
@@ -473,10 +473,13 @@ class _ChatUIKitDialogState extends State<ChatUIKitDialog> {
         : theme.color.neutralColor95;
 
     // 确认按钮被禁止时文字颜色
-    Color confirmForbiddenTextColor = cancelTextColor;
+    Color confirmForbiddenTextColor =
+        themeColor.isDark ? themeColor.neutralColor5 : themeColor.neutralColor7;
 
     // 确认按钮被禁止时边框颜色
-    Color confirmForbiddenBorderColor = cancelBorderColor;
+    Color confirmForbiddenBorderColor = themeColor.isDark
+        ? themeColor.neutralColor3
+        : themeColor.neutralColor95;
 
     for (var action in widget.actionItems) {
       if (action.type == ChatUIKitDialogActionType.inputConfirm) {
