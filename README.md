@@ -25,7 +25,7 @@
   - [国际化](#国际化)
   - [主题](#主题)
   - [路由拦截与自定义](#路由拦截与自定义)
-  - [事件拦击和异常处理](#事件拦击和异常处理)
+  - [事件通知和异常处理](#事件通知和异常处理)
   - [连接状态变更和登录过期回调](#连接状态变更和登录过期回调)
   - [消息时间格式化](#消息时间格式化)
   - [联系人字母排序纠正](#联系人字母排序纠正)
@@ -735,9 +735,9 @@ return MaterialApp(
 
 ## 路由拦截与自定义
 
-UIKit 内部通过 `pushNamed` 进行跳转，同时会传递跳转页面对应的 `ChatUIKitViewArguments` 对象，可以通过拦截 `onGenerateRoute(RouteSettings settings)`, 并解析 `settings.name` 得到跳转的目标页面，之后从写 `ChatUIKitViewArguments` 参数实现跳转拦截和自定义页面的功能。 跳转页的名称在 `chat_uikit_route_names.dart` 文件中进行定义。 具体拦截方式可以参考 `example/lib/custom/chat_route_filter.dart` 文件。
+UIKit 内部通过 `pushNamed` 进行跳转，同时会传递跳转页面对应的 `ChatUIKitViewArguments` 对象，可以通过拦截 `onGenerateRoute(RouteSettings settings)`, 并解析 `settings.name` 得到跳转的目标页面，之后写 `ChatUIKitViewArguments` 参数实现跳转拦截和自定义页面的功能。 跳转页的名称在 `chat_uikit_route_names.dart` 文件中进行定义。 具体拦截方式可以参考 `example/lib/custom/chat_route_filter.dart` 文件。
 
-## 事件拦击和异常处理
+## 事件通知和异常处理
 
 UIKit 在调用 ChatSDK 时会通过 `ChatSDKEventsObserver.onChatSDKEventBegin` 进行回调，调用结束时会通过 `ChatSDKEventsObserver.onChatSDKEventEnd` 进行回调，如果存在错误会还会抛出对应的 `ChatError`。
 
