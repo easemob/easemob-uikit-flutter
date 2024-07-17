@@ -650,7 +650,7 @@ class ChatUIKitSettings {
 
 ## 国际化
 
-UIKit 提供了国际化功能, 在集成时需要将国际化信息设置到 `MaterialApp` 
+UIKit 提供了国际化功能, 在集成时需要将国际化信息设置到 `MaterialApp`
 
 ```dart
 final ChatUIKitLocalizations _localization = ChatUIKitLocalizations();
@@ -735,7 +735,7 @@ return MaterialApp(
 
 ## 路由拦截与自定义
 
-UIKit 内部通过 `pushNamed` 进行跳转，同时会传递跳转页面对应的 `ChatUIKitViewArguments` 对象，可以通过拦截 `onGenerateRoute(RouteSettings settings)`, 并解析 `settings.name` 得到跳转的目标页面，之后写 `ChatUIKitViewArguments` 参数实现跳转拦截和自定义页面的功能。 跳转页的名称在 `chat_uikit_route_names.dart` 文件中进行定义。 具体拦截方式可以参考 `example/lib/custom/chat_route_filter.dart` 文件。
+UIKit 内部通过 `pushNamed` 进行跳转，同时会传递跳转页面对应的 `ChatUIKitViewArguments` 对象，可以通过拦截 `onGenerateRoute(RouteSettings settings)`, 并解析 `settings.name` 得到跳转的目标页面，之后重写 `ChatUIKitViewArguments` 参数实现跳转拦截和自定义页面的功能。 跳转页的名称在 `chat_uikit_route_names.dart` 文件中进行定义。 具体拦截方式可以参考 `example/lib/custom/chat_route_filter.dart` 文件。
 
 ## 事件通知和异常处理
 
