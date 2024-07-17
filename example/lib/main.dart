@@ -27,6 +27,7 @@ void main() async {
     options: Options(
       appKey: appKey,
       deleteMessagesAsExitGroup: false,
+      debugMode: true,
     ),
   );
   SettingsDataStore().init();

@@ -231,6 +231,7 @@ class ChatRouteFilter {
 
         if (groupName != null) {
           return CreateGroupInfo(
+            inviteMembers: [selectedProfiles.first],
             groupName: groupName,
             onGroupCreateCallback: (group, error) {
               if (error != null) {

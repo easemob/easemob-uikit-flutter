@@ -1,6 +1,6 @@
 import '../../chat_uikit.dart';
 
-mixin ChatUIKitGroupActions on ChatSDKWrapper {
+mixin ChatUIKitGroupActions on ChatSDKService {
   @override
   Future<void> destroyGroup({required String groupId}) async {
     await super.destroyGroup(groupId: groupId);
@@ -23,7 +23,10 @@ mixin ChatUIKitGroupActions on ChatSDKWrapper {
   }) async {
     Group group = await super.createGroup(
       groupName: groupName,
+      desc: desc,
       options: options,
+      inviteMembers: inviteMembers,
+      inviteReason: inviteReason,
     );
     await ChatUIKitInsertTools.insertCreateGroupMessage(group: group);
     return group;

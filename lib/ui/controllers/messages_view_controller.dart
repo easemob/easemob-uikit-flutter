@@ -195,7 +195,7 @@ class MessagesViewController extends ChangeNotifier
         );
         // 先从缓存的profile中取
         ChatUIKitProfile? profile =
-            ChatUIKitProvider.instance.profilesCache[msg.from!];
+            ChatUIKitProvider.instance.getProfileById(msg.from!);
         if (profile != null) {
           userMap[msg.from!] = profile;
         } else {
@@ -249,7 +249,7 @@ class MessagesViewController extends ChangeNotifier
           MessageModel(message: element),
         );
         ChatUIKitProfile? profile =
-            ChatUIKitProvider.instance.profilesCache[element.from!];
+            ChatUIKitProvider.instance.getProfileById(element.from!);
         profile ??= element.fromProfile;
         userMap[element.from!] = profile;
       }
@@ -573,6 +573,7 @@ class MessagesViewController extends ChangeNotifier
         .indexWhere((element) => message.msgId == element.message.msgId);
     if (index != -1) {
       try {
+        if (Platform.isAndroid) {}
         await ChatUIKit.instance.recallMessage(message: message);
         refresh();
         // ignore: empty_catches
@@ -730,7 +731,6 @@ class MessagesViewController extends ChangeNotifier
       url = ChatUIKitURLHelper().getUrlFromText(willSendMsg.textContent);
       if (url?.isNotEmpty == true) {
         willSendMsg.status = MessageStatus.FAIL;
-        willSendMsg.fetchPreviewing();
         await ChatUIKit.instance.insertMessage(message: willSendMsg);
         willSendMsg.status = MessageStatus.PROGRESS;
         msgModelList.insert(0, MessageModel(message: willSendMsg));
@@ -739,9 +739,8 @@ class MessagesViewController extends ChangeNotifier
         refresh();
         ChatUIKitPreviewObj? obj = await ChatUIKitURLHelper()
             .fetchPreview(url!, messageId: willSendMsg.msgId);
-        willSendMsg.removePreviewing();
         willSendMsg.addPreview(obj);
-        await ChatUIKit.instance.sendMessage(message: willSendMsg);
+        ChatUIKit.instance.sendMessage(message: willSendMsg);
       }
     }
 

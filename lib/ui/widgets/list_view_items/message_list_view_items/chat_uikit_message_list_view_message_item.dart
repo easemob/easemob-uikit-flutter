@@ -158,7 +158,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
               size: 16,
               statusType: () {
                 if (model.message.status == MessageStatus.PROGRESS ||
-                    model.message.hasFetchingPreview()) {
+                    ChatUIKitURLHelper().isFetching(model.message.msgId)) {
                   return MessageStatusType.loading;
                 } else if (model.message.status == MessageStatus.CREATE ||
                     model.message.status == MessageStatus.FAIL) {

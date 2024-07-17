@@ -1,6 +1,6 @@
 typedef AlphabetSortHandler = String Function(String showName);
 
-/// 联系人字母排序, 如果有中文，可以用过 [ChatUIKitAlphabetSortHelper] 首字母重新定义, 如:
+/// Contact alphabet sorting, if there is Chinese, you can redefine the first letter using [ChatUIKitAlphabetSortHelper], for example:
 /// ```dart
 /// ChatUIKitAlphabetSortHelper.instance.sortHandler = (showName) {
 ///   /// 获取中文首字母

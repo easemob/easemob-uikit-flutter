@@ -31,8 +31,6 @@ dependencies:
 
   http_parser: ^4.0.2
 
-  lpinyin: ^2.0.2
-
   em_chat_uikit:
     # When depending on this package from a real application you should use:
     #   em_chat_uikit: ^x.y.z

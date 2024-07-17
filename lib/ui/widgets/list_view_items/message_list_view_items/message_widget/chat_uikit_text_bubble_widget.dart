@@ -20,6 +20,7 @@ class ChatUIKitTextBubbleWidget extends StatelessWidget {
   final TextStyle? style;
   final MessageModel model;
   final bool? forceLeft;
+
   // final RegExp? exp;
   final Color? expHighlightColor;
   final bool enableExpUnderline;

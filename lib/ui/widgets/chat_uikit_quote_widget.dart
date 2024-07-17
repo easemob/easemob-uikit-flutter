@@ -48,7 +48,8 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
 
   Widget _buildContext(BuildContext context, {Message? message}) {
     BorderRadiusGeometry? borderRadius;
-    if (ChatUIKitSettings.messageBubbleStyle == ChatUIKitMessageListViewBubbleStyle.arrow) {
+    if (ChatUIKitSettings.messageBubbleStyle ==
+        ChatUIKitMessageListViewBubbleStyle.arrow) {
       borderRadius = const BorderRadius.all(Radius.circular(4));
     } else {
       borderRadius = BorderRadius.only(
@@ -104,7 +105,7 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
         Text(
           () {
             ChatUIKitProfile? profile =
-                ChatUIKitProvider.instance.profilesCache[message.from!];
+                ChatUIKitProvider.instance.getProfileById(message.from!);
             profile ??= message.fromProfile;
             return profile.showName;
           }(),
@@ -170,8 +171,9 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       children: [
         Text(
           () {
-            return ChatUIKitProvider
-                    .instance.profilesCache[message.from!]?.showName ??
+            return ChatUIKitProvider.instance
+                    .getProfileById(message.from!)
+                    ?.showName ??
                 message.nickname ??
                 message.from!;
           }(),
@@ -334,8 +336,9 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       children: [
         Text(
           () {
-            return ChatUIKitProvider
-                    .instance.profilesCache[message.from!]?.showName ??
+            return ChatUIKitProvider.instance
+                    .getProfileById(message.from!)
+                    ?.showName ??
                 message.nickname ??
                 message.from!;
           }(),
@@ -518,8 +521,9 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       children: [
         Text(
           () {
-            return ChatUIKitProvider
-                    .instance.profilesCache[message.from!]?.showName ??
+            return ChatUIKitProvider.instance
+                    .getProfileById(message.from!)
+                    ?.showName ??
                 message.nickname ??
                 message.from!;
           }(),
@@ -594,8 +598,9 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
       children: [
         Text(
           () {
-            return ChatUIKitProvider
-                    .instance.profilesCache[message.from!]?.showName ??
+            return ChatUIKitProvider.instance
+                    .getProfileById(message.from!)
+                    ?.showName ??
                 message.nickname ??
                 message.from!;
           }(),
@@ -743,8 +748,9 @@ class _ChatUIKitQuoteWidgetState extends State<ChatUIKitQuoteWidget> {
         children: [
           Text(
             () {
-              return ChatUIKitProvider
-                      .instance.profilesCache[message.from!]?.showName ??
+              return ChatUIKitProvider.instance
+                      .getProfileById(message.from!)
+                      ?.showName ??
                   message.nickname ??
                   message.from!;
             }(),

@@ -1,4 +1,4 @@
-import '../chat_sdk_wrapper.dart';
+import '../chat_sdk_service.dart';
 
 mixin ChatActions on ChatWrapper {
   Future<Message> sendMessage({required Message message}) {
@@ -59,11 +59,12 @@ mixin ChatActions on ChatWrapper {
     return checkResult(ChatSDKEvent.recallMessage, () async {
       if (message.status == MessageStatus.SUCCESS &&
           message.direction == MessageDirection.SEND) {
-        await Client.getInstance.chatManager.updateMessage(message);
+        // await Client.getInstance.chatManager.updateMessage(message);
         await Client.getInstance.chatManager.recallMessage(message.msgId);
         onMessagesRecalled([message]);
       } else {
-        throw ChatError.fromJson({'code': 500, 'description': 'Message is invalid'});
+        throw ChatError.fromJson(
+            {'code': 500, 'description': 'Message is invalid'});
       }
     });
   }

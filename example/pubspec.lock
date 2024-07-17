@@ -385,10 +385,9 @@ packages:
   im_flutter_sdk:
     dependency: transitive
     description:
-      name: im_flutter_sdk
-      sha256: "3be8967db8ec08bdb691c4dc5c9b1a5f9f38d8672477100d9d62187857962169"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../../../../im_flutter_sdk"
+      relative: true
+    source: path
     version: "4.6.1+1"
   image_picker:
     dependency: transitive
@@ -507,14 +506,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
-  lpinyin:
-    dependency: "direct main"
-    description:
-      name: lpinyin
-      sha256: "0bb843363f1f65170efd09fbdfc760c7ec34fc6354f9fcb2f89e74866a0d814a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.3"
   matcher:
     dependency: transitive
     description:

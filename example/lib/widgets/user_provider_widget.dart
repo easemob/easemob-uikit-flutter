@@ -2,8 +2,6 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:em_chat_uikit_example/tool/user_data_store.dart';
 import 'package:flutter/material.dart';
-import 'package:lpinyin/lpinyin.dart';
-
 class UserProviderWidget extends StatefulWidget {
   const UserProviderWidget({required this.child, super.key});
 
@@ -14,17 +12,15 @@ class UserProviderWidget extends StatefulWidget {
 }
 
 class _UserProviderWidgetState extends State<UserProviderWidget>
-    with GroupObserver, ChatUIKitProviderObserver {
+    with GroupObserver {
   @override
   void initState() {
     super.initState();
     ChatUIKit.instance.addObserver(this);
-    // 打开db
+    // Open DB
     UserDataStore().init(onOpened: onOpened);
-    // 设置Provider回调
+    // Set Provider Handler
     ChatUIKitProvider.instance.profilesHandler = onProfilesRequest;
-    ChatUIKitAlphabetSortHelper.instance.sortHandler =
-        onAlphabetSortLetterRequest;
   }
 
   @override
@@ -39,19 +35,19 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
   }
 
   void onOpened() async {
-    // 1. 将所有存储的数据填充到uikit中。
+    // 1. Fill all stored data into uikit.
     await addAllUserInfoToProvider();
-    // 2. 加载群组信息, 并判断是否已经填充到uikit中。如果没有，从服务器获取数据，之后填充到uikit中。
+    // 2. Load group information, and check if it has been filled into uikit. If not, fetch data from the server and then fill it into uikit.
     await loadGroupInfos();
-    // 2. 加载用户信息, 并判断是否已经填充到uikit中。如果没有，从服务器获取数据，之后填充到uikit中。
+    // 2. Load user information, and check if it has been filled into uikit. If not, fetch data from the server and then fill it into uikit.
     await loadUserInfos();
-    // 3. 获取当前用户信息，之后填充到uikit中。
+    // 3. etch current user information, then fill it into uikit.
     await fetchCurrentUserInfo();
   }
 
   Future<void> fetchCurrentUserInfo() async {
     try {
-      // 自己的数据不从db中取，每次都从服务区获取最新数据。
+      // Do not retrieve own data from the db, always fetch the latest data from the server.
       Map<String, UserInfo> map = await ChatUIKit.instance
           .fetchUserInfoByIds([ChatUIKit.instance.currentUserId!]);
       ChatUIKitProfile profile = ChatUIKitProfile.contact(
@@ -66,14 +62,8 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
     }
   }
 
-  // 返回排序用首字母，比如中文显示时，可以返回首字母以便排序
-  String onAlphabetSortLetterRequest(String showName) {
-    return PinyinHelper.getPinyinE(showName,
-            defPinyin: '#', format: PinyinFormat.WITHOUT_TONE)
-        .substring(0, 1);
-  }
-
-  // uikit 需要展示用户信息时，而缓存不存在时会回调该方法，需要通过用户属性请求并存储到db；
+  // This method is called when uikit needs to display user information and the cache does not exist;
+  // it requires fetching and storing the information in the db based on user attributes.
   List<ChatUIKitProfile>? onProfilesRequest(List<ChatUIKitProfile> profiles) {
     List<String> userIds = profiles
         .where((e) => e.type == ChatUIKitProfileType.contact)
@@ -91,77 +81,47 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
     return profiles;
   }
 
+  // When a group is created by oneself, it is necessary to fill the group information into uikit.
   @override
   void onGroupCreatedByMyself(Group group) async {
-    ChatUIKitProfile? profile;
-    try {
-      profile = ChatUIKitProfile.group(
-        id: group.groupId,
-        groupName: group.name,
-      );
-    } catch (e) {
-      debugPrint('fetchGroupAvatar error: $e');
-    } finally {
-      profile ??=
-          ChatUIKitProfile.group(id: group.groupId, groupName: group.name);
-      ChatUIKitProvider.instance.addProfiles([profile]);
-      UserDataStore().saveUserData(profile);
-    }
+    ChatUIKitProfile profile =
+        ChatUIKitProfile.group(id: group.groupId, groupName: group.name);
+
+    ChatUIKitProvider.instance.addProfiles([profile]);
+    // save to db
+    UserDataStore().saveUserData(profile);
   }
 
+  // When the group name is changed by oneself, it is necessary to update the group information in uikit.
   @override
   void onGroupNameChangedByMeSelf(Group group) {
     ChatUIKitProfile? profile =
-        ChatUIKitProvider.instance.profilesCache[group.groupId];
-    if (profile != null) {
-      ChatUIKitProvider.instance.addProfiles(
-        [
-          ChatUIKitProfile.group(
-              id: group.groupId,
-              groupName: group.name,
-              avatarUrl: profile.avatarUrl)
-        ],
-      );
-    } else {
-      ChatUIKitProvider.instance.addProfiles(
-        [ChatUIKitProfile.group(id: group.groupId, groupName: group.name)],
-      );
-    }
-  }
+        ChatUIKitProvider.instance.getProfileById(group.groupId);
 
-  @override
-  void onSpecificationDidUpdate(Group group) async {
-    ChatUIKitProfile profile = ChatUIKitProfile.group(
-      id: group.groupId,
-      groupName: group.name,
-      avatarUrl: group.extension,
-    );
+    profile = profile?.copyWith(name: group.name) ??
+        ChatUIKitProfile.group(
+          id: group.groupId,
+          groupName: group.name,
+        );
+
     ChatUIKitProvider.instance.addProfiles([profile]);
+    // save to db
+    UserDataStore().saveUserData(profile);
   }
 
+  // Fill all stored data into uikit.
   Future<void> addAllUserInfoToProvider() async {
-    // 1. 从本地获取所有用户属性填充到uikit中。
     List<ChatUIKitProfile> list = await UserDataStore().loadAllProfiles();
     ChatUIKitProvider.instance.addProfiles(list);
   }
 
-  // 获取所有已加入的群组，并将缓存数据返回给 uikit 缓存。
+  // Load group information, and check if it has been filled into uikit. If not, fetch data from the server and then fill it into uikit.
   Future<void> loadGroupInfos() async {
     List<Group> groups = await ChatUIKit.instance.getJoinedGroups();
-    List<ChatUIKitProfile> profiles = [];
-    for (var group in groups) {
-      ChatUIKitProfile? profile =
-          ChatUIKitProvider.instance.profilesCache[group.groupId];
-      if (profile != null) {
-        profile = profile.copyWith(name: group.name);
-      } else {
-        profile = ChatUIKitProfile.group(
-            id: group.groupId,
-            groupName: group.name,
-            avatarUrl: group.extension);
-      }
-      profiles.add(profile);
-    }
+    List<ChatUIKitProfile> profiles = groups
+        .map((e) => ChatUIKitProfile.group(id: e.groupId, groupName: e.name))
+        .toList();
+
     if (profiles.isNotEmpty) {
       UserDataStore().saveUserDatas(profiles);
       ChatUIKitProvider.instance.addProfiles(profiles);
@@ -181,7 +141,7 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
         list.add(profile);
       } on ChatError catch (e) {
         if (e.code == 600) {
-          // 600 为群组不存在，无法获取到数据，提供默认数据
+          // 600 indicates the group does not exist, unable to fetch data, providing default data.
           ChatUIKitProfile profile = ChatUIKitProfile.group(id: groupId);
           list.add(profile);
         }
@@ -192,12 +152,11 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
     ChatUIKitProvider.instance.addProfiles(list);
   }
 
+  // Load user information, and check if it has been filled into uikit. If not, fetch data from the server and then fill it into uikit.
   Future<void> loadUserInfos() async {
     try {
-      // 1. 从本地获取所有用户属性填充到uikit中。
       Map<String, ChatUIKitProfile> map =
           ChatUIKitProvider.instance.profilesCache;
-      // 2. 从 sdk中获取所有好友，如果有新的好友从服务器获取新的好友属性保存到本地并填充到uikit中。
       List<Contact> contacts = await ChatUIKit.instance.getAllContacts();
       contacts.removeWhere((element) => map.keys.contains(element.userId));
       if (contacts.isNotEmpty) {
@@ -213,20 +172,15 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
     try {
       Map<String, UserInfo> map =
           await ChatUIKit.instance.fetchUserInfoByIds(userIds);
-      List<Contact> contacts = await ChatUIKit.instance.getAllContacts();
-      List<ChatUIKitProfile> list = [];
-      for (var element in map.values) {
-        int index = contacts.indexWhere((e) => e.userId == element.userId);
-        list.add(ChatUIKitProfile.contact(
-          id: element.userId,
-          nickname: element.nickName,
-          avatarUrl: element.avatarUrl,
-          remark: index != -1 ? contacts[index].remark : null,
-        ));
-      }
+      List<ChatUIKitProfile> list = map.values
+          .map((e) => ChatUIKitProfile.contact(
+              id: e.userId, nickname: e.nickName, avatarUrl: e.avatarUrl))
+          .toList();
 
-      UserDataStore().saveUserDatas(list);
-      ChatUIKitProvider.instance.addProfiles(list);
+      if (list.isNotEmpty) {
+        UserDataStore().saveUserDatas(list);
+        ChatUIKitProvider.instance.addProfiles(list);
+      }
     } catch (e) {
       debugPrint('fetchUserInfos error: $e');
     }
