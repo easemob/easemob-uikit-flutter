@@ -1,5 +1,3 @@
-# ChatUIKit for flutter
-
 # 单群聊 UIKit
 
 本产品主要旨在给用户打造一个良好体验的单群聊UIKit。主要为用户解决直接集成SDK繁琐，复杂度高等问题。致力于打造集成简单，自由度高，流程简单，文档说明足够详细的单群聊UIKit产品。
@@ -10,8 +8,7 @@
 
 本指南介绍了 ChatUIKit 框架在 flutter 开发中的概述和使用示例，并描述了该 UIKit 的各个组件和功能，使开发人员能够很好地了解 UIKit 并有效地使用它。
 
-<!-- ## 目录 
-- [ChatUIKit for flutter](#chatuikit-for-flutter)
+## 目录 
 - [单群聊 UIKit](#单群聊-uikit)
 - [单群聊 UIKit 指南](#单群聊-uikit-指南)
   - [简介](#简介)
@@ -21,8 +18,18 @@
 - [结构](#结构)
 - [快速开始](#快速开始)
 - [进阶用法](#进阶用法)
-- [自定义](#自定义)
-- [设计指南](#设计指南) -->
+  - [Provider](#provider)
+    - [示例](#示例)
+    - [用法讲解](#用法讲解)
+  - [配置项](#配置项)
+  - [国际化](#国际化)
+  - [主题](#主题)
+  - [路由拦截与自定义](#路由拦截与自定义)
+  - [事件拦击和异常处理](#事件拦击和异常处理)
+  - [连接状态变更和登录过期回调](#连接状态变更和登录过期回调)
+  - [消息时间格式化](#消息时间格式化)
+  - [联系人字母排序纠正](#联系人字母排序纠正)
+- [设计指南](#设计指南)
 
 # 前置开发环境要求
 
@@ -173,17 +180,21 @@ void main() {
   ChatUIKit.instance
       .init(options: Options(appKey: appKey, autoLogin: false))
       .then((value) {
-    runApp(const MyApp());
+    runApp(MyApp());
   });
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  MyApp({super.key});
+  final ChatUIKitLocalizations _localization = ChatUIKitLocalizations();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      supportedLocales: _localization.supportedLocales,
+      localizationsDelegates: _localization.localizationsDelegates,
+      localeResolutionCallback: _localization.localeResolutionCallback,
+      locale: _localization.currentLocale,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -275,7 +286,7 @@ class _ChatPageState extends State<ChatPage> {
 
 ## Provider
 
-Provider 是一个数据提供者，当需要展示用户或群组信息时 UIKit 会通过 Provider 向你请求数据，你需要将数据返回给 Provider, 当UIKit 得到你传入的数据时会根据你的数据进行刷新和显示。下面是 Provider 的具体实现示例(`example/lib/widgets/user_provider_widget.dart`)。
+Provider 是一个数据提供者，当需要展示用户或群组信息时 UIKit 会通过 Provider 向你请求数据，你需要将数据返回给 Provider, 当UIKit 得到你传入的数据时会根据你的数据进行刷新和显示。下面是 Provider 的具体实现示例(`example/lib/tool/user_provider_widget.dart`)。
 
 ### 示例
 
@@ -470,7 +481,7 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
 
 ### 用法讲解
 
-`ChatUIKitProvider` 在使用时需要先设置对应的handler `profilesHandler`, 设置之后，当 UIKit 需要展示对应的信息时，会通过 handler 返会给你一个默认的 `ChatUIKitProfile` 对象，之后需要你返回一个 `ChatUIKitProfile` 对象 建议先返回一个占位的 `ChatUIKitProfile` 对象，当你从你的服务器或者数据库中得到准确的 `ChatUIKitProfile` 对象后，再通过 `ChatUIKitProvider.instance.addProfiles(list)` 方法将其传递给 UIKit， UIKit 在收到后会自定进行页面刷新，并缓存你传入的数据，当再次需要展示时，则直接使用缓存数据。 根据以上描述和示例，在使用 ChatUIKitProvider 时，可以使用一下步骤
+`ChatUIKitProvider` 在使用时需要先设置对应的handler `profilesHandler`, 设置之后，当 UIKit 需要展示对应的信息时，会通过 handler 返会给你一个默认的 `ChatUIKitProfile` 对象，之后需要你返回一个 `ChatUIKitProfile` 对象, 建议先返回一个占位的 `ChatUIKitProfile` 对象，当你从你的服务器或者数据库中得到准确的 `ChatUIKitProfile` 对象后，再通过 `ChatUIKitProvider.instance.addProfiles(list)` 方法将其传递给 UIKit， UIKit 在收到后会自定进行页面刷新，并缓存你传入的数据，当再次需要展示时，则直接使用缓存数据。 根据以上描述和示例，在使用 ChatUIKitProvider 时，可以使用已下步骤
 
 1. App 启动并完成登录后，设置 `profilesHandler` 。
 
@@ -506,7 +517,7 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
   }
 ```
 
-## 自定义
+## 配置项
 
 ChatUIKit 允许通过 ChatUIKitSettings 进行快速的样式自定义。
 
@@ -564,19 +575,19 @@ class ChatUIKitSettings {
   ];
 
   /// Whether to enable the functionality of input status for one-on-one chat messages.
-  static bool enableTypingIndicator = false;
+  static bool enableTypingIndicator = true;
 
   /// Whether to enable the thread feature
-  static bool enableMessageThread = false;
+  static bool enableMessageThread = true;
 
   /// Whether to enable message translation feature
-  static bool enableMessageTranslation = false;
+  static bool enableMessageTranslation = true;
 
   /// Message translation target language
   static String translateTargetLanguage = 'zh-Hans';
 
   /// Whether to enable message reaction feature
-  static bool enableMessageReaction = false;
+  static bool enableMessageReaction = true;
 
   /// Message emoji reply bottom sheet title display content, this content needs to be included in the emoji list [ChatUIKitEmojiData.emojiList].
   static List<String> favoriteReaction = [
@@ -637,4 +648,219 @@ class ChatUIKitSettings {
 
 ```
 
+## 国际化
+
+UIKit 提供了国际化功能, 在集成时需要将国际化信息设置到 `MaterialApp` 
+
+```dart
+final ChatUIKitLocalizations _localization = ChatUIKitLocalizations();
+
+...
+
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    supportedLocales: _localization.supportedLocales,
+    localizationsDelegates: _localization.localizationsDelegates,
+    localeResolutionCallback: _localization.localeResolutionCallback,
+    locale: _localization.currentLocale,
+    ...
+  );
+}
+
+```
+
+当需要添加支持的语言时，可以使用 `ChatUIKitLocalizations.addLocales` 进行添加, 之后调用 `ChatUIKitLocalizations.resetLocales` 。如添加法语支持：
+
+```dart
+_localization.addLocales(locales: const [
+  ChatLocal('fr', {
+    ChatUIKitLocal.conversationsViewSearchHint: 'Recherche',
+  })
+]);
+
+_localization.resetLocales();
+```
+
+## 主题
+
+UIKit 提供了两种内置的主题样式，light 和 dark, 默认使用 light，如果需要设置主题，需要确保 `ChatUIKitTheme` 组件在 UIKit 的根节点，如
+
+```dart
+return MaterialApp(
+  title: 'Flutter Demo',
+  theme: ThemeData(
+    colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    useMaterial3: true,
+  ),
+  builder: (context, child) {
+    /// add theme support
+    return ChatUIKitTheme(
+      font: ChatUIKitFont(),
+      color: ChatUIKitColor.light(), // ChatUIKitColor.dark()
+      child: child!,
+    );
+  },
+  home: const MyHomePage(title: 'Flutter Demo Home Page'),
+);
+```
+
+`ChatUIKitColor` 可以通过调整 `hue` 的方式进行自定义，如修改亮色模式下的 `hue` 值。
+
+```dart
+return MaterialApp(
+  title: 'Flutter Demo',
+  theme: ThemeData(
+    colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    useMaterial3: true,
+  ),
+  builder: (context, child) {
+    return ChatUIKitTheme(
+      color: ChatUIKitColor.light(
+        primaryHue: 203,
+        secondaryHue: 155,
+        errorHue: 350,
+        neutralHue: 203,
+        neutralSpecialHue: 220,
+      ),
+      child: child!,
+    );
+  },
+  home: const MyHomePage(title: 'Flutter Demo Home Page'),
+);
+}
+```
+
+`ChatUIKitFont` 提供了设置字体大小的功能，可以通过修改 `ChatUIKitFont` 进行字体大小的调整, 如 `ChatUIKitFont.fontSize(fontSize: ChatUIKitFontSize.normal)`, 可以通过传入不同的 `ChatUIKitFontSize` 类型对整个 UIKit 中的字体进行放大和缩小的处理。
+
+## 路由拦截与自定义
+
+UIKit 内部通过 `pushNamed` 进行跳转，同时会传递跳转页面对应的 `ChatUIKitViewArguments` 对象，可以通过拦截 `onGenerateRoute(RouteSettings settings)`, 并解析 `settings.name` 得到跳转的目标页面，之后从写 `ChatUIKitViewArguments` 参数实现跳转拦截和自定义页面的功能。 跳转页的名称在 `chat_uikit_route_names.dart` 文件中进行定义。 具体拦截方式可以参考 `example/lib/custom/chat_route_filter.dart` 文件。
+
+## 事件拦击和异常处理
+
+UIKit 在调用 ChatSDK 时会通过 `ChatSDKEventsObserver.onChatSDKEventBegin` 进行回调，调用结束时会通过 `ChatSDKEventsObserver.onChatSDKEventEnd` 进行回调，如果存在错误会还会抛出对应的 `ChatError`。
+
+```dart
+class SDKEventHandlerPage extends StatefulWidget {
+  const SDKEventHandlerPage({super.key});
+
+  @override
+  State<SDKEventHandlerPage> createState() => _SDKEventHandlerPageState();
+}
+
+class _SDKEventHandlerPageState extends State<SDKEventHandlerPage>
+    with ChatSDKEventsObserver {
+  @override
+  void initState() {
+    ChatUIKit.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    ChatUIKit.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  /// Start calling the SDK method, you can display different prompt windows based on different events.
+  @override
+  void onChatSDKEventBegin(ChatSDKEvent event) {}
+
+  /// The SDK method call ends, you can end the prompt window display at this time. If there is an error, you can display the corresponding prompt message.
+  @override
+  void onChatSDKEventEnd(ChatSDKEvent event, ChatError? error) {}
+
+  ...
+}
+```
+更多信息可以参考 `example/lib/tool/toast_page.dart` 文件。
+
+同时在一些非 ChatSDK 的事件会通过 `ChatUIKitEventsObservers.onChatUIKitEventsReceived` 进行回调。
+
+```dart
+class UIKitEventHandlePage extends StatefulWidget {
+  const UIKitEventHandlePage({super.key});
+
+  @override
+  State<UIKitEventHandlePage> createState() => _UIKitEventHandlePageState();
+}
+
+class _UIKitEventHandlePageState extends State<UIKitEventHandlePage>
+    with ChatUIKitEventsObservers {
+  @override
+  void initState() {
+    ChatUIKit.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    ChatUIKit.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  /// This method is used to pass events from ChatUIKit to developers.
+  @override
+  void onChatUIKitEventsReceived(ChatUIKitEvent event) {}
+
+  ...
+}
+
+```
+
+更多信息可以参考 `example/lib/tool/toast_page.dart` 文件。
+
+## 连接状态变更和登录过期回调
+
+当连接状态或者登录状态变化时可以通过 `ChatUIKit.instance.connectHandler` 得到对应的回调。
+
+```dart
+ChatUIKit.instance.connectHandler(
+  onUserAuthenticationFailed: () {},
+  onUserDidChangePassword: () {},
+  onUserDidForbidByServer: () {},
+  onUserDidLoginFromOtherDevice: (deviceName) {},
+  onUserDidLoginTooManyDevice: () {},
+  onUserDidRemoveFromServer: () {},
+  onUserKickedByOtherDevice: () {},
+  onConnected: () {},
+  onDisconnected: () {},
+  onTokenWillExpire: () {},
+  onTokenDidExpire: () {},
+  onAppActiveNumberReachLimit: () {},
+);
+```
+
+更多信息可以参考 `example/lib/tool/token_status_handler_widget.dart` 文件。
+
+## 消息时间格式化
+
+UIKit 中在展示时间时使用了默认的格式，如果需要需要修改格式化方式，可以通过 `ChatUIKitTimeFormatter` 进行处理。
+
+```dart
+ChatUIKitTimeFormatter.instance.formatterHandler = (context, type, time) {
+  return 'formatter time'; // return formatted time, e.g. 12:00 PM
+};
+```
+
+## 联系人字母排序纠正
+
+当联系人名称中存在非英文时，如需要首字母排序可以通过 `ChatUIKitAlphabetSortHelper` 进行处理
+
+```dart
+ChatUIKitAlphabetSortHelper.instance.sortHandler = (String showName) {
+  // Return the first letter of the showName for sorting, especially useful for sorting Chinese characters
+  return PinyinHelper.getFirstWordPinyin(showName);
+};
+```
+
+
+
 # 设计指南
+
+如果您对设计指南和细节有任何疑问，您可以在 Figma 设计稿中添加评论并提及我们的设计师 Stevie Jiang。
+
+参见[设计图](https://www.figma.com/community/file/1327193019424263350/chat-uikit-for-mobile)。
+
+请参阅[UI设计指南](https://github.com/StevieJiang/Chat-UIkit-Design-Guide/blob/main/README.md)

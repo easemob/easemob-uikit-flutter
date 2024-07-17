@@ -2,6 +2,7 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:em_chat_uikit_example/tool/user_data_store.dart';
 import 'package:flutter/material.dart';
+
 class UserProviderWidget extends StatefulWidget {
   const UserProviderWidget({required this.child, super.key});
 
