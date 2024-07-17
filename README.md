@@ -39,8 +39,8 @@ environment:
   flutter: ">=3.3.0"
 ```
 
-- ios 13+
-- android api 21+
+- ios 12+
+- android minSDKVersion 21
 
 # 安装
 
