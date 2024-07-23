@@ -1,12 +1,12 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/demo_localizations.dart';
-import 'package:em_chat_uikit_example/pages/contact/contact_page.dart';
-import 'package:em_chat_uikit_example/pages/conversation/conversation_page.dart';
-import 'package:em_chat_uikit_example/pages/me/my_page.dart';
-import 'package:em_chat_uikit_example/tool/toast_page.dart';
-import 'package:em_chat_uikit_example/tool/token_status_handler_widget.dart';
-import 'package:em_chat_uikit_example/tool/user_provider_widget.dart';
 
+import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit_example/demo/demo_localizations.dart';
+import 'package:em_chat_uikit_example/demo/pages/contact/contact_page.dart';
+import 'package:em_chat_uikit_example/demo/pages/conversation/conversation_page.dart';
+import 'package:em_chat_uikit_example/demo/pages/me/my_page.dart';
+import 'package:em_chat_uikit_example/demo/tool/toast_page.dart';
+import 'package:em_chat_uikit_example/demo/tool/token_status_handler_widget.dart';
+import 'package:em_chat_uikit_example/demo/tool/user_provider_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

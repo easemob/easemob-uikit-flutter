@@ -1,9 +1,9 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/demo_localizations.dart';
-import 'package:em_chat_uikit_example/notifications/app_settings_notification.dart';
-import 'package:em_chat_uikit_example/tool/settings_data_store.dart';
+import 'package:em_chat_uikit_example/demo/demo_localizations.dart';
+import 'package:em_chat_uikit_example/demo/notifications/app_settings_notification.dart';
+import 'package:em_chat_uikit_example/demo/tool/settings_data_store.dart';
 
-import 'package:em_chat_uikit_example/widgets/list_item.dart';
+import 'package:em_chat_uikit_example/demo/widgets/list_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

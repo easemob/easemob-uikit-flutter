@@ -17,6 +17,9 @@ class GroupMemberListView extends StatefulWidget {
     this.onTap,
     this.onLongPress,
     this.enableSearchBar = false,
+    this.onSelectLetterChanged,
+    this.sortAlphabetical,
+    this.universalAlphabeticalLetter = '#',
     super.key,
   });
 
@@ -34,12 +37,21 @@ class GroupMemberListView extends StatefulWidget {
   final GroupMemberListViewController? controller;
   final String groupId;
   final bool enableSearchBar;
+  final void Function(BuildContext context, String? letter)?
+      onSelectLetterChanged;
+
+  /// 通讯录列表的字母排序默认字，默认为 '#'
+  final String universalAlphabeticalLetter;
+
+  /// 字母排序
+  final String? sortAlphabetical;
 
   @override
   State<GroupMemberListView> createState() => _GroupMemberListViewState();
 }
 
-class _GroupMemberListViewState extends State<GroupMemberListView> {
+class _GroupMemberListViewState extends State<GroupMemberListView>
+    with ChatUIKitProviderObserver {
   ScrollController scrollController = ScrollController();
   late final GroupMemberListViewController controller;
   bool enableSearchBar = true;
@@ -47,7 +59,7 @@ class _GroupMemberListViewState extends State<GroupMemberListView> {
   @override
   void initState() {
     super.initState();
-
+    ChatUIKitProvider.instance.addObserver(this);
     controller = widget.controller ??
         GroupMemberListViewController(
           groupId: widget.groupId,
@@ -57,9 +69,27 @@ class _GroupMemberListViewState extends State<GroupMemberListView> {
 
   @override
   void dispose() {
+    ChatUIKitProvider.instance.removeObserver(this);
     controller.dispose();
     scrollController.dispose();
     super.dispose();
+  }
+
+  @override
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+    if (controller.list.any((element) =>
+        map.keys.contains((element as ContactItemModel).profile.id))) {
+      for (var element in map.keys) {
+        int index = controller.list
+            .indexWhere((e) => (e as ContactItemModel).profile.id == element);
+        if (index != -1) {
+          controller.list[index] = (controller.list[index] as ContactItemModel)
+              .copyWith(profile: map[element]!);
+        }
+      }
+      setState(() {});
+      ();
+    }
   }
 
   @override
@@ -68,8 +98,10 @@ class _GroupMemberListViewState extends State<GroupMemberListView> {
       valueListenable: controller.loadingType,
       builder: (context, type, child) {
         return ChatUIKitAlphabeticalWidget(
-          onTapCancel: () {},
-          onTap: (context, alphabetical) {},
+          groupId: widget.groupId,
+          onSelectLetterChanged: widget.onSelectLetterChanged,
+          universalAlphabeticalLetter: widget.universalAlphabeticalLetter,
+          sortAlphabetical: widget.sortAlphabetical,
           beforeWidgets: widget.beforeWidgets,
           listViewHasSearchBar: enableSearchBar,
           list: controller.list,

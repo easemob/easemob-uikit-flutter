@@ -126,6 +126,7 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
         widget.title!,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
+        textAlign: TextAlign.end,
         textScaler: TextScaler.noScaling,
         style: widget.titleTextStyle ??
             TextStyle(
@@ -167,10 +168,7 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
       ],
     );
 
-    middle = Padding(
-      padding: const EdgeInsets.only(right: 12),
-      child: widget.centerWidget ?? middle,
-    );
+    middle = widget.centerWidget ?? middle;
 
     List<Widget> leadingWidgets = [];
     if (widget.showBackButton) {
@@ -246,14 +244,14 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar> {
             splashColor: Colors.transparent,
             onTap: () => e.onTap?.call(context),
             child: Container(
-              padding: const EdgeInsets.only(left: 8, right: 8),
+              padding: const EdgeInsets.only(left: 8),
               child: e.child,
             ),
           );
         }).toList(),
       );
       trailing = Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4),
+        padding: const EdgeInsets.only(right: 8),
         child: trailing,
       );
     }

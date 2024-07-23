@@ -15,6 +15,7 @@ class GroupListView extends StatefulWidget {
     this.reloadMessage,
     this.onTap,
     this.onLongPress,
+    this.enableSearch = false,
     super.key,
   });
   final void Function(List<GroupItemModel> data)? onSearchTap;
@@ -28,18 +29,20 @@ class GroupListView extends StatefulWidget {
   final String? errorMessage;
   final String? reloadMessage;
   final GroupListViewController? controller;
+  final bool enableSearch;
 
   @override
   State<GroupListView> createState() => _GroupListViewState();
 }
 
 class _GroupListViewState extends State<GroupListView>
-    with MultiObserver, GroupObserver {
+    with MultiObserver, GroupObserver, ChatUIKitProviderObserver {
   late final GroupListViewController controller;
 
   @override
   void initState() {
     super.initState();
+    ChatUIKitProvider.instance.addObserver(this);
     ChatUIKit.instance.addObserver(this);
     controller = widget.controller ?? GroupListViewController();
     controller.fetchItemList();
@@ -47,9 +50,26 @@ class _GroupListViewState extends State<GroupListView>
 
   @override
   void dispose() {
+    ChatUIKitProvider.instance.removeObserver(this);
     ChatUIKit.instance.removeObserver(this);
     controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+    if (controller.list.any((element) =>
+        map.keys.contains((element as GroupItemModel).profile.id))) {
+      for (var element in map.keys) {
+        int index = controller.list
+            .indexWhere((e) => (e as GroupItemModel).profile.id == element);
+        if (index != -1) {
+          controller.list[index] = (controller.list[index] as GroupItemModel)
+              .copyWith(profile: map[element]!);
+        }
+      }
+      setState(() {});
+    }
   }
 
   @override
@@ -75,7 +95,16 @@ class _GroupListViewState extends State<GroupListView>
           loadMore: () {
             controller.fetchMoreItemList();
           },
-          enableSearchBar: false,
+          enableSearchBar: widget.enableSearch,
+          onSearchTap: (data) {
+            List<GroupItemModel> list = [];
+            for (var item in data) {
+              if (item is GroupItemModel) {
+                list.add(item);
+              }
+            }
+            widget.onSearchTap?.call(list);
+          },
           errorMessage: widget.errorMessage,
           reloadMessage: widget.reloadMessage,
           background: widget.background,

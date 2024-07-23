@@ -17,6 +17,7 @@ class ConversationListView extends StatefulWidget {
     this.onLongPress,
     this.enableLongPress = true,
     this.enableSearchBar = true,
+    this.enablePinHighlight = true,
     super.key,
   });
 
@@ -35,17 +36,20 @@ class ConversationListView extends StatefulWidget {
   final ConversationListViewController? controller;
   final bool enableLongPress;
   final bool enableSearchBar;
+  final bool enablePinHighlight;
 
   @override
   State<ConversationListView> createState() => _ConversationListViewState();
 }
 
-class _ConversationListViewState extends State<ConversationListView> {
+class _ConversationListViewState extends State<ConversationListView>
+    with ChatUIKitProviderObserver {
   late ConversationListViewController controller;
 
   @override
   void initState() {
     super.initState();
+    ChatUIKitProvider.instance.addObserver(this);
     controller = widget.controller ?? ConversationListViewController();
     controller.fetchItemList();
     controller.loadingType.addListener(() {
@@ -55,13 +59,31 @@ class _ConversationListViewState extends State<ConversationListView> {
 
   @override
   void dispose() {
+    ChatUIKitProvider.instance.removeObserver(this);
     controller.dispose();
     super.dispose();
   }
 
   @override
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) async {
+    if (controller.list.any((element) =>
+        map.keys.contains((element as ConversationItemModel).profile.id))) {
+      for (var element in map.keys) {
+        int index = controller.list.indexWhere(
+            (e) => (e as ConversationItemModel).profile.id == element);
+        if (index != -1) {
+          controller.list[index] =
+              (controller.list[index] as ConversationItemModel)
+                  .copyWith(profile: map[element]!);
+        }
+      }
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = ChatUIKitTheme.of(context);
     return ChatUIKitListView(
       type: controller.loadingType.value,
       list: controller.list,
@@ -105,7 +127,23 @@ class _ConversationListViewState extends State<ConversationListView> {
           if (widget.itemBuilder != null) {
             item = widget.itemBuilder!(context, model);
           }
-          item ??= InkWell(
+
+          item ??= ChatUIKitConversationListViewItem(model);
+
+          if (widget.enablePinHighlight) {
+            item = Container(
+              color: model.pinned
+                  ? (theme.color.isDark
+                      ? theme.color.neutralColor2
+                      : theme.color.neutralColor95)
+                  : (theme.color.isDark
+                      ? theme.color.neutralColor1
+                      : theme.color.neutralColor98),
+              child: item,
+            );
+          }
+
+          item = InkWell(
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
@@ -116,9 +154,7 @@ class _ConversationListViewState extends State<ConversationListView> {
                 widget.onLongPress?.call(context, model);
               }
             },
-            child: ChatUIKitConversationListViewItem(
-              model,
-            ),
+            child: item,
           );
 
           item = SizedBox(

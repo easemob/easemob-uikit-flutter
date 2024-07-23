@@ -1,23 +1,30 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/demo_localizations.dart';
-import 'package:em_chat_uikit_example/tool/settings_data_store.dart';
-import 'package:em_chat_uikit_example/widgets/list_item.dart';
+import 'package:em_chat_uikit_example/demo/demo_localizations.dart';
+import 'package:em_chat_uikit_example/demo/notifications/app_settings_notification.dart';
+import 'package:em_chat_uikit_example/demo/tool/settings_data_store.dart';
+import 'package:em_chat_uikit_example/demo/widgets/list_item.dart';
 import 'package:flutter/material.dart';
 
-class TranslatePage extends StatefulWidget {
-  const TranslatePage({super.key});
+class LanguagePage extends StatefulWidget {
+  const LanguagePage({super.key});
 
   @override
-  State<TranslatePage> createState() => _TranslatePageState();
+  State<LanguagePage> createState() => _LanguagePageState();
 }
 
-class _TranslatePageState extends State<TranslatePage> {
-  String? translate;
+class _LanguagePageState extends State<LanguagePage> {
+  ValueNotifier<String> language =
+      ValueNotifier<String>(SettingsDataStore().currentLanguage);
 
   @override
   void initState() {
     super.initState();
-    translate = SettingsDataStore().translateTargetLanguage;
+
+    language.addListener(() {
+      SettingsDataStore().saveLanguage(language.value);
+      ChatUIKitLocalizations().translate(language.value);
+      AppSettingsNotification().dispatch(context);
+    });
   }
 
   @override
@@ -26,9 +33,8 @@ class _TranslatePageState extends State<TranslatePage> {
     Widget content = ListView(
       children: [
         ListItem(
-          title: DemoLocalizations.translateTargetLanguageChinese
-              .localString(context),
-          trailingWidget: translate == 'zh-Hans'
+          title: '中文',
+          trailingWidget: language.value == 'zh'
               ? Icon(
                   Icons.check_box,
                   size: 28,
@@ -43,16 +49,13 @@ class _TranslatePageState extends State<TranslatePage> {
                       ? theme.color.neutralColor4
                       : theme.color.neutralColor7,
                 ),
-          onTap: () async {
-            await SettingsDataStore().saveTranslateTargetLanguage('zh-Hans');
-            translate = 'zh-Hans';
-            setState(() {});
+          onTap: () {
+            language.value = 'zh';
           },
         ),
         ListItem(
-          title: DemoLocalizations.translateTargetLanguageEnglish
-              .localString(context),
-          trailingWidget: translate == 'en'
+          title: 'English',
+          trailingWidget: language.value == 'en'
               ? Icon(
                   Icons.check_box,
                   size: 28,
@@ -67,10 +70,8 @@ class _TranslatePageState extends State<TranslatePage> {
                       ? theme.color.neutralColor4
                       : theme.color.neutralColor7,
                 ),
-          onTap: () async {
-            await SettingsDataStore().saveTranslateTargetLanguage('en');
-            translate = 'en';
-            setState(() {});
+          onTap: () {
+            language.value = 'en';
           },
         ),
       ],
@@ -84,7 +85,7 @@ class _TranslatePageState extends State<TranslatePage> {
         backgroundColor: theme.color.isDark
             ? theme.color.neutralColor1
             : theme.color.neutralColor98,
-        title: DemoLocalizations.translateTargetLanguage.localString(context),
+        title: DemoLocalizations.languageSettings.localString(context),
         centerTitle: false,
       ),
       body: SafeArea(child: content),

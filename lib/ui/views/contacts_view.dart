@@ -20,6 +20,9 @@ class ContactsView extends StatefulWidget {
         loadErrorMessage = arguments.loadErrorMessage,
         enableSearchBar = arguments.enableSearchBar,
         viewObserver = arguments.viewObserver,
+        universalAlphabeticalLetter = arguments.universalAlphabetical,
+        sortAlphabetical = arguments.sortAlphabetical,
+        onSelectLetterChanged = arguments.onSelectLetterChanged,
         attributes = arguments.attributes;
 
   const ContactsView({
@@ -38,8 +41,20 @@ class ContactsView extends StatefulWidget {
     this.afterItems,
     this.attributes,
     this.viewObserver,
+    this.universalAlphabeticalLetter = '#',
+    this.sortAlphabetical,
+    this.onSelectLetterChanged,
     super.key,
   });
+
+  final void Function(BuildContext context, String? letter)?
+      onSelectLetterChanged;
+
+  /// 通讯录列表的字母排序默认字，默认为 '#'
+  final String universalAlphabeticalLetter;
+
+  /// 字母排序
+  final String? sortAlphabetical;
 
   /// 联系人列表控制器，用于控制联系人列表数据，如果不设置将会自动创建。详细参考 [ContactListViewController]。
   final ContactListViewController? controller;
@@ -187,6 +202,9 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
         child: ContactListView(
           controller: controller,
           itemBuilder: widget.listViewItemBuilder,
+          onSelectLetterChanged: widget.onSelectLetterChanged,
+          sortAlphabetical: widget.sortAlphabetical,
+          universalAlphabetical: widget.universalAlphabeticalLetter,
           beforeWidgets: widget.beforeItems ?? beforeWidgets(),
           afterWidgets: widget.afterItems,
           searchHideText: widget.searchHideText,
@@ -247,7 +265,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
 
     ChatUIKitRoute.pushOrPushNamed(
       context,
-      ChatUIKitRouteNames.searchUsersView,
+      ChatUIKitRouteNames.searchView,
       SearchViewArguments(
           onTap: (ctx, profile) {
             Navigator.of(ctx).pop(profile);

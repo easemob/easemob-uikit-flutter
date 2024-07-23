@@ -29,6 +29,7 @@ abstract mixin class ChatUIKitListViewControllerBase {
   Future<void> reload() async {}
 
   void dispose() {
+    if (hasDisposed) return;
     hasDisposed = true;
     loadingType.dispose();
   }

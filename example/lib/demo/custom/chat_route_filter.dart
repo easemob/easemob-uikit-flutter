@@ -1,10 +1,8 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/custom/demo_helper.dart';
-import 'package:em_chat_uikit_example/demo_localizations.dart';
+import 'package:em_chat_uikit_example/demo/demo_localizations.dart';
 
-import 'package:em_chat_uikit_example/pages/help/download_page.dart';
-import 'package:em_chat_uikit_example/tool/user_data_store.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:em_chat_uikit_example/demo/pages/help/download_page.dart';
+import 'package:em_chat_uikit_example/demo/tool/user_data_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -106,25 +104,7 @@ class ChatRouteFilter {
               }
             },
           ),
-          ...() {
-            bool isBlocked = DemoHelper.blockList.contains(profile!.id);
-            List<ChatUIKitDetailsListViewItemModel> list = [];
-            list.add(models.first);
-            list.add(
-              ChatUIKitDetailsListViewItemModel(
-                title: '拉黑',
-                trailing: CupertinoSwitch(
-                  value: isBlocked,
-                  onChanged: (value) async {
-                    await DemoHelper.blockUsers(profile.id, !isBlocked);
-                    viewObserver.refresh();
-                  },
-                ),
-              ),
-            );
-            list.addAll(models.sublist(1));
-            return list;
-          }(),
+          ...models,
         ];
       },
     );

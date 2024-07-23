@@ -1,5 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/demo_localizations.dart';
+import 'package:em_chat_uikit_example/demo/demo_localizations.dart';
 
 import 'package:flutter/material.dart';
 
@@ -19,8 +19,10 @@ class _WelcomePageState extends State<WelcomePage> {
 
   void startShowTimer() async {
     await Future.delayed(const Duration(seconds: 2)).then((value) {
-      if (ChatUIKit.instance.isLogged()) {
-        Navigator.of(context).pushReplacementNamed('/home');
+      return ChatUIKit.instance.isLoginBefore();
+    }).then((value) {
+      if (value) {
+        Navigator.of(context).pushReplacementNamed('/sample_demo');
       } else {
         Navigator.of(context).pushReplacementNamed('/login');
       }

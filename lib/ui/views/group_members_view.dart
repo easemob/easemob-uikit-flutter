@@ -17,6 +17,9 @@ class GroupMembersView extends StatefulWidget {
         enableAppBar = arguments.enableAppBar,
         attributes = arguments.attributes,
         viewObserver = arguments.viewObserver,
+        onSelectLetterChanged = arguments.onSelectLetterChanged,
+        sortAlphabetical = arguments.sortAlphabetical,
+        universalAlphabeticalLetter = arguments.universalAlphabeticalLetter,
         super(key: key);
 
   const GroupMembersView({
@@ -33,11 +36,21 @@ class GroupMembersView extends StatefulWidget {
     this.enableAppBar = true,
     this.attributes,
     this.viewObserver,
+    this.onSelectLetterChanged,
+    this.sortAlphabetical,
+    this.universalAlphabeticalLetter = '#',
     super.key,
   });
 
   final ChatUIKitProfile profile;
+  final void Function(BuildContext context, String? letter)?
+      onSelectLetterChanged;
 
+  /// 通讯录列表的字母排序默认字，默认为 '#'
+  final String universalAlphabeticalLetter;
+
+  /// 字母排序
+  final String? sortAlphabetical;
   final GroupMemberListViewController? controller;
   final ChatUIKitAppBarModel? appBarModel;
   final void Function(List<ContactItemModel> data)? onSearchTap;
@@ -210,6 +223,9 @@ class _GroupMembersViewState extends State<GroupMembersView>
         child: GroupMemberListView(
           groupId: widget.profile.id,
           controller: controller,
+          onSelectLetterChanged: widget.onSelectLetterChanged,
+          universalAlphabeticalLetter: widget.universalAlphabeticalLetter,
+          sortAlphabetical: widget.sortAlphabetical,
           itemBuilder: widget.listViewItemBuilder,
           searchHideText: widget.searchBarHideText,
           background: widget.listViewBackground,

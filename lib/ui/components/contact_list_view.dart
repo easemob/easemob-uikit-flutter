@@ -16,6 +16,9 @@ class ContactListView extends StatefulWidget {
     this.enableSearchBar = true,
     this.onTap,
     this.onLongPress,
+    this.sortAlphabetical,
+    this.universalAlphabetical = '#',
+    this.onSelectLetterChanged,
     super.key,
   });
   final bool enableSearchBar;
@@ -31,18 +34,28 @@ class ContactListView extends StatefulWidget {
   final String? errorMessage;
   final String? reloadMessage;
   final ContactListViewController? controller;
+  final void Function(BuildContext context, String? letter)?
+      onSelectLetterChanged;
+
+  /// 通讯录列表的字母排序默认字，默认为 '#'
+  final String universalAlphabetical;
+
+  /// 字母排序
+  final String? sortAlphabetical;
 
   @override
   State<ContactListView> createState() => _ContactListViewState();
 }
 
-class _ContactListViewState extends State<ContactListView> {
+class _ContactListViewState extends State<ContactListView>
+    with ChatUIKitProviderObserver {
   ScrollController scrollController = ScrollController();
   late final ContactListViewController controller;
 
   @override
   void initState() {
     super.initState();
+    ChatUIKitProvider.instance.addObserver(this);
     controller = widget.controller ?? ContactListViewController();
     controller.fetchItemList();
     controller.loadingType.addListener(() {
@@ -52,18 +65,36 @@ class _ContactListViewState extends State<ContactListView> {
 
   @override
   void dispose() {
+    ChatUIKitProvider.instance.removeObserver(this);
     scrollController.dispose();
     controller.dispose();
     super.dispose();
   }
 
   @override
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+    if (controller.list.any((element) =>
+        map.keys.contains((element as ContactItemModel).profile.id))) {
+      for (var element in map.keys) {
+        int index = controller.list
+            .indexWhere((e) => (e as ContactItemModel).profile.id == element);
+        if (index != -1) {
+          controller.list[index] = (controller.list[index] as ContactItemModel)
+              .copyWith(profile: map[element]!);
+        }
+      }
+      setState(() {});
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ChatUIKitAlphabeticalWidget(
-      onTapCancel: () {},
-      onTap: (context, alphabetical) {},
+      onSelectLetterChanged: widget.onSelectLetterChanged,
       beforeWidgets: widget.beforeWidgets,
       listViewHasSearchBar: widget.enableSearchBar,
+      universalAlphabeticalLetter: widget.universalAlphabetical,
+      sortAlphabetical: widget.sortAlphabetical,
       list: controller.list,
       scrollController: scrollController,
       builder: (context, list) {

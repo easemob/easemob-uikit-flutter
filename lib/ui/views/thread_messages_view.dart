@@ -185,7 +185,7 @@ class ThreadMessagesView extends StatefulWidget {
 }
 
 class _ThreadMessagesViewState extends State<ThreadMessagesView>
-    with ThreadObserver {
+    with ThreadObserver, ChatUIKitProviderObserver {
   String? title;
   late ThreadMessagesViewController controller;
   late final ChatUIKitInputBarController inputBarController;
@@ -205,6 +205,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
   @override
   void initState() {
     super.initState();
+    ChatUIKitProvider.instance.addObserver(this);
     ChatUIKit.instance.addObserver(this);
     controller = widget.controller;
     controller.addListener(() {
@@ -243,10 +244,17 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
 
   @override
   void dispose() {
+    ChatUIKitProvider.instance.removeObserver(this);
     ChatUIKit.instance.removeObserver(this);
     editBarTextEditingController?.dispose();
     widget.viewObserver?.dispose();
     super.dispose();
+  }
+
+  @override
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+    controller.userMap.addAll(map);
+    setState(() {});
   }
 
   void updateAppBarModel(ChatUIKitTheme theme) {

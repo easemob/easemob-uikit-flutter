@@ -18,6 +18,7 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
     this.enableSearchBar = true,
     this.viewObserver,
     this.moreActionsBuilder,
+    this.enablePinHighlight = true,
     this.attributes,
   });
 
@@ -56,6 +57,8 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
   /// 是否显示AppBar, 默认为 `true`。 当为 `false` 时将不会显示AppBar。同时也会影响到是否显示标题。
   final bool enableAppBar;
 
+  final bool enablePinHighlight;
+
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   @override
   String? attributes;
@@ -80,6 +83,7 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
     ChatUIKitViewObserver? viewObserver,
     ChatUIKitMoreActionsBuilder? moreActionsBuilder,
     String? attributes,
+    bool? enablePinHighlight 
   }) {
     return ConversationsViewArguments(
       controller: controller ?? this.controller,
@@ -97,6 +101,7 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
       moreActionsBuilder: moreActionsBuilder ?? this.moreActionsBuilder,
+      enablePinHighlight: enablePinHighlight ?? this.enablePinHighlight,
     );
   }
 }

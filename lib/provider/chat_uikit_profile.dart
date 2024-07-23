@@ -5,6 +5,9 @@ enum ChatUIKitProfileType {
 
   /// 群类型。
   group,
+
+  /// 自定义类型。
+  custom,
 }
 
 /// ChatUIKitProfile 类，用于存储联系人或群组的信息。
@@ -89,6 +92,24 @@ class ChatUIKitProfile {
           avatarUrl: avatarUrl,
           type: ChatUIKitProfileType.group,
           extension: extension,
+          timestamp: timestamp,
+        );
+
+  /// 自定义 profile 类型，用于开发者自定义 profile 类型。
+  ChatUIKitProfile.custom({
+    required String id,
+    String? nickname,
+    String? avatarUrl,
+    String? remark,
+    Map<String, String>? extension,
+    int timestamp = 0,
+  }) : this(
+          id: id,
+          name: nickname,
+          avatarUrl: avatarUrl,
+          type: ChatUIKitProfileType.contact,
+          extension: extension,
+          remark: remark,
           timestamp: timestamp,
         );
 

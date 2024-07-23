@@ -1,22 +1,23 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/debug_login_page.dart';
-import 'package:em_chat_uikit_example/demo_localizations.dart';
-import 'package:em_chat_uikit_example/home_page.dart';
-import 'package:em_chat_uikit_example/notifications/app_settings_notification.dart';
-import 'package:em_chat_uikit_example/pages/me/about_page.dart';
-import 'package:em_chat_uikit_example/pages/me/settings/general_page.dart';
-import 'package:em_chat_uikit_example/pages/me/settings/language_page.dart';
-import 'package:em_chat_uikit_example/pages/me/settings/translate_page.dart';
-import 'package:em_chat_uikit_example/custom/chat_route_filter.dart';
-import 'package:em_chat_uikit_example/tool/settings_data_store.dart';
+import 'package:em_chat_uikit_example/demo/debug_login_page.dart';
+import 'package:em_chat_uikit_example/demo/demo_localizations.dart';
+import 'package:em_chat_uikit_example/demo/home_page.dart';
+import 'package:em_chat_uikit_example/demo/notifications/app_settings_notification.dart';
+
+import 'package:em_chat_uikit_example/demo/custom/chat_route_filter.dart';
+import 'package:em_chat_uikit_example/demo/pages/me/about_page.dart';
+import 'package:em_chat_uikit_example/demo/pages/me/settings/advanced_page.dart';
+import 'package:em_chat_uikit_example/demo/pages/me/settings/general_page.dart';
+import 'package:em_chat_uikit_example/demo/pages/me/settings/language_page.dart';
+import 'package:em_chat_uikit_example/demo/pages/me/settings/translate_page.dart';
+import 'package:em_chat_uikit_example/demo/tool/settings_data_store.dart';
 import 'package:em_chat_uikit_example/welcome_page.dart';
+import 'package:em_chat_uikit_example/sample_demo/custom_home_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-
-import 'pages/me/settings/advanced_page.dart';
 
 const appKey = 'easemob#easeim';
 
@@ -27,7 +28,6 @@ void main() async {
     options: Options(
       appKey: appKey,
       deleteMessagesAsExitGroup: false,
-      debugMode: true,
     ),
   );
   SettingsDataStore().init();
@@ -83,16 +83,7 @@ class _MyAppState extends State<MyApp> {
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
         ),
-        builder: EasyLoading.init(
-          builder: (context, child) {
-            return ChatUIKitTheme(
-              color: AppSettingsNotification.isLight
-                  ? ChatUIKitColor.light()
-                  : ChatUIKitColor.dark(),
-              child: child!,
-            );
-          },
-        ),
+        builder: EasyLoading.init(),
         home: const WelcomePage(),
         onGenerateRoute: (settings) {
           RouteSettings newSettings =
@@ -100,7 +91,9 @@ class _MyAppState extends State<MyApp> {
           return ChatUIKitRoute().generateRoute(newSettings) ??
               MaterialPageRoute(
                 builder: (context) {
-                  if (settings.name == '/home') {
+                  if (settings.name == '/sample_demo') {
+                    return const CustomHomePage();
+                  } else if (settings.name == '/home') {
                     return const HomePage();
                   } else if (settings.name == '/login') {
                     return const DebugLoginPage();

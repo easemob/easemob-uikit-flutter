@@ -485,9 +485,8 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
       ChatUIKitBottomSheetAction.destructive(
         actionType: ChatUIKitActionType.delete,
         label: ChatUIKitLocal.contactDetailViewDelete.localString(context),
-        onTap: () async {
+        onTap: () {
           Navigator.of(context).pop(true);
-          return true;
         },
       ),
     ];
