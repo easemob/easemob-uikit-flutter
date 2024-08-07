@@ -24,12 +24,6 @@ const appKey = 'easemob#easeim';
 const bool appDebug = false;
 
 void main() async {
-  await ChatUIKit.instance.init(
-    options: Options(
-      appKey: appKey,
-      deleteMessagesAsExitGroup: false,
-    ),
-  );
   SettingsDataStore().init();
   return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MyApp()));
@@ -48,6 +42,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    init();
     _localization.defaultLocale = [
       ChatLocal(
         'zh',
@@ -61,6 +56,15 @@ class _MyAppState extends State<MyApp> {
     // 添加语言后需要进行resetLocales操作
     _localization.resetLocales();
     ChatUIKitSettings.inputBarRadius = CornerRadius.medium;
+  }
+
+  void init() async {
+    await ChatUIKit.instance.init(
+      options: Options(
+        appKey: appKey,
+        deleteMessagesAsExitGroup: false,
+      ),
+    );
   }
 
   @override

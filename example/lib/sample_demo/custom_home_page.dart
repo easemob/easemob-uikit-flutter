@@ -172,18 +172,23 @@ class _CustomHomePageState extends State<CustomHomePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('修改字号(Switch font size) ${() {
-          switch (size) {
-            case ChatUIKitFontSize.small:
-              return 'small';
-            case ChatUIKitFontSize.normal:
-              return 'normal';
-            case ChatUIKitFontSize.large:
-              return 'large';
-            case ChatUIKitFontSize.superLarge:
-              return 'superLarge';
-          }
-        }()}'),
+        Expanded(
+          child: Text(
+            '修改字号(Set font size) ${() {
+              switch (size) {
+                case ChatUIKitFontSize.small:
+                  return 'small';
+                case ChatUIKitFontSize.normal:
+                  return 'normal';
+                case ChatUIKitFontSize.large:
+                  return 'large';
+                case ChatUIKitFontSize.superLarge:
+                  return 'superLarge';
+              }
+            }()}',
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
         SizedBox(
           width: 150,
           child: Slider(
