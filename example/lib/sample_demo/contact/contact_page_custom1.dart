@@ -49,7 +49,12 @@ class _ContactAndGroupPageState extends State<ContactAndGroupPage>
           GroupListView(
             enableSearch: true,
             onSearchTap: onSearchGroupTap,
-            onTap: (context, model) => toGroupDetail(model.profile),
+            onTap: (context, model) async {
+              Group? group = await getGroupDetail(model.profile);
+              if (group != null) {
+                toGroupDetail(group, model.profile);
+              }
+            },
           ),
         ],
       ),
@@ -97,24 +102,29 @@ class _ContactAndGroupPageState extends State<ContactAndGroupPage>
             ChatUIKitLocal.conversationsViewSearchHint.localString(context),
         searchData: data,
       ),
-    ).then((value) {
+    ).then((value) async {
       if (value != null && value is ChatUIKitProfile) {
-        toGroupDetail(value);
+        Group? group = await getGroupDetail(value);
+        if (group != null) {
+          toGroupDetail(group, value);
+        }
       }
     });
   }
 
-  void toGroupDetail(ChatUIKitProfile profile) {
-    ChatUIKit.instance.getGroup(groupId: profile.id).then((group) {
-      ChatUIKitRoute.pushOrPushNamed(
-        context,
-        ChatUIKitRouteNames.groupDetailsView,
-        GroupDetailsViewArguments(
-          profile: profile,
-          group: group,
-        ),
-      );
-    });
+  Future<Group?> getGroupDetail(ChatUIKitProfile profile) async {
+    return await ChatUIKit.instance.getGroup(groupId: profile.id);
+  }
+
+  void toGroupDetail(Group group, ChatUIKitProfile profile) {
+    ChatUIKitRoute.pushOrPushNamed(
+      context,
+      ChatUIKitRouteNames.groupDetailsView,
+      GroupDetailsViewArguments(
+        profile: profile,
+        group: group,
+      ),
+    );
   }
 }
 
