@@ -385,9 +385,10 @@ packages:
   im_flutter_sdk:
     dependency: transitive
     description:
-      path: "../../../../im_flutter_sdk"
-      relative: true
-    source: path
+      name: im_flutter_sdk
+      sha256: "90c572133e7a932a26cbce8aea9f5c4fd68f7d9f3a99459bf4a42a9ac1afa0de"
+      url: "https://pub.dev"
+    source: hosted
     version: "4.6.1+2"
   image_picker:
     dependency: transitive
