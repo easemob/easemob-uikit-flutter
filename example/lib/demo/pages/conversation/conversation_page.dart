@@ -12,8 +12,6 @@ class ConversationPage extends StatefulWidget {
 class _ConversationPageState extends State<ConversationPage> {
   @override
   Widget build(BuildContext context) {
-    return ConversationsView(
-      appBarModel: ChatUIKitAppBarModel(),
-    );
+    return const ConversationsView();
   }
 }
