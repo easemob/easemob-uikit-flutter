@@ -67,24 +67,23 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
 
   final ChatUIKitMoreActionsBuilder? moreActionsBuilder;
 
-  ConversationsViewArguments copyWith({
-    ConversationListViewController? controller,
-    ChatUIKitAppBarModel? appBarModel,
-    void Function(List<ConversationItemModel> data)? onSearchTap,
-    List<NeedAlphabeticalWidget>? beforeWidgets,
-    List<NeedAlphabeticalWidget>? afterWidgets,
-    ChatUIKitListItemBuilder? listViewItemBuilder,
-    void Function(BuildContext context, ConversationItemModel model)? onTap,
-    ConversationsViewItemLongPressHandler? onLongPressHandler,
-    String? searchBarHideText,
-    Widget? listViewBackground,
-    bool? enableAppBar,
-    bool? enableSearchBar,
-    ChatUIKitViewObserver? viewObserver,
-    ChatUIKitMoreActionsBuilder? moreActionsBuilder,
-    String? attributes,
-    bool? enablePinHighlight 
-  }) {
+  ConversationsViewArguments copyWith(
+      {ConversationListViewController? controller,
+      ChatUIKitAppBarModel? appBarModel,
+      void Function(List<ConversationItemModel> data)? onSearchTap,
+      List<NeedAlphabeticalWidget>? beforeWidgets,
+      List<NeedAlphabeticalWidget>? afterWidgets,
+      ChatUIKitListItemBuilder? listViewItemBuilder,
+      void Function(BuildContext context, ConversationItemModel model)? onTap,
+      ConversationsViewItemLongPressHandler? onLongPressHandler,
+      String? searchBarHideText,
+      Widget? listViewBackground,
+      bool? enableAppBar,
+      bool? enableSearchBar,
+      ChatUIKitViewObserver? viewObserver,
+      ChatUIKitMoreActionsBuilder? moreActionsBuilder,
+      String? attributes,
+      bool? enablePinHighlight}) {
     return ConversationsViewArguments(
       controller: controller ?? this.controller,
       appBarModel: appBarModel ?? this.appBarModel,

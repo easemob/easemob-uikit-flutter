@@ -1,5 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit_example/demo/home_page.dart';
+import 'package:em_chat_uikit_example/demo/notifications/app_settings_notification.dart';
 import 'package:em_chat_uikit_example/sample_demo/contact/contact_depth_custom_page.dart';
 import 'package:em_chat_uikit_example/sample_demo/contact/contact_page_custom1.dart';
 import 'package:em_chat_uikit_example/sample_demo/conversation/merge_conversation_page.dart';
@@ -38,98 +39,58 @@ class _CustomHomePageState extends State<CustomHomePage> {
           itemWidget(
             name: '默认会话列表(Default Conversation list)',
             title: 'ConversationPage',
-            widget: ChatUIKitTheme(
-              font: ChatUIKitFont.fontSize(fontSize: size),
-              color:
-                  isLightTheme ? ChatUIKitColor.light() : ChatUIKitColor.dark(),
-              child: const ConversationPage(),
-            ),
+            widget: const ConversationPage(),
           ),
           itemWidget(
             name: '合并会话列表(Merge Conversation list)',
             title: 'MergeConversationPage',
-            widget: ChatUIKitTheme(
-              font: ChatUIKitFont.fontSize(fontSize: size),
-              color:
-                  isLightTheme ? ChatUIKitColor.light() : ChatUIKitColor.dark(),
-              child: const MergeConversationPage(),
-            ),
+            widget: const MergeConversationPage(),
           ),
           itemWidget(
             name: '默认通讯录列表(Default Contact list)',
             title: 'ContactPage',
-            widget: ChatUIKitTheme(
-              font: ChatUIKitFont.fontSize(fontSize: size),
-              color:
-                  isLightTheme ? ChatUIKitColor.light() : ChatUIKitColor.dark(),
-              child: const ContactPage(),
-            ),
+            widget: const ContactPage(),
           ),
           itemWidget(
             name: '通讯录和群列表(Contact list and group list)',
             title: 'ContactAndGroupPage',
-            widget: ChatUIKitTheme(
-              font: ChatUIKitFont.fontSize(fontSize: size),
-              color:
-                  isLightTheme ? ChatUIKitColor.light() : ChatUIKitColor.dark(),
-              child: const ContactAndGroupPage(),
-            ),
+            widget: const ContactAndGroupPage(),
           ),
           itemWidget(
             name: '通讯录自定义AppBar(custom contacts app bar)',
             title: 'CustomContactAppBarPage',
-            widget: ChatUIKitTheme(
-              font: ChatUIKitFont.fontSize(fontSize: size),
-              color:
-                  isLightTheme ? ChatUIKitColor.light() : ChatUIKitColor.dark(),
-              child: const CustomContactAppBarPage(),
-            ),
+            widget: const CustomContactAppBarPage(),
           ),
           itemWidget(
             name: '通讯录深度自定义(depth custom contacts)',
             title: 'ContactDepthCustomPage',
-            widget: ChatUIKitTheme(
-              font: ChatUIKitFont.fontSize(fontSize: size),
-              color:
-                  isLightTheme ? ChatUIKitColor.light() : ChatUIKitColor.dark(),
-              child: const ContactDepthCustomPage(),
-            ),
+            widget: const ContactDepthCustomPage(),
           ),
           itemWidget(
-            name: '默认群组列表(Default group list)',
-            title: 'Groups View',
-            widget: ChatUIKitTheme(
-                font: ChatUIKitFont.fontSize(fontSize: size),
-                color: isLightTheme
-                    ? ChatUIKitColor.light()
-                    : ChatUIKitColor.dark(),
-                child: const GroupPage()),
-          ),
+              name: '默认群组列表(Default group list)',
+              title: 'Groups View',
+              widget: const GroupPage()),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '修改主题颜色(Switch theme color): ${(isLightTheme ? 'Light' : 'Dark')}',
+                '修改主题颜色(Switch theme color): ${(AppSettingsNotification.isLight ? 'Light' : 'Dark')}',
               ),
               CupertinoSwitch(
-                value: isLightTheme,
-                onChanged: (value) {
-                  isLightTheme = value;
-                  setState(() {});
-                },
-              ),
+                  value: !AppSettingsNotification.isLight,
+                  onChanged: (value) {
+                    AppSettingsNotification.isLight =
+                        !AppSettingsNotification.isLight;
+                    AppSettingsNotification().dispatch(context);
+                    setState(() {});
+                  }),
             ],
           ),
           fontSizeSettingsWidget(),
           itemWidget(
             name: '演示Demo',
             title: 'Demo',
-            widget: ChatUIKitTheme(
-              font: ChatUIKitFont.fontSize(fontSize: size),
-              color:
-                  isLightTheme ? ChatUIKitColor.light() : ChatUIKitColor.dark(),
-              child: const HomePage(),
-            ),
+            widget: const HomePage(),
           ),
         ],
       ),
