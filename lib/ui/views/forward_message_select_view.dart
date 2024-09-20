@@ -145,6 +145,8 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
       centerTitle: widget.appBarModel?.centerTitle ?? false,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       backgroundColor: widget.appBarModel?.backgroundColor,
+      bottomLine: widget.appBarModel?.bottomLine,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
     );
   }
 
@@ -195,7 +197,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
               onSearchTap: (data) {
                 onSearchTap(data, context, theme);
               },
-              listViewItemBuilder: (context, model) {
+              itemBuilder: (context, model) {
                 Widget item = Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -217,7 +219,7 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
             ),
             GroupsView(
                 enableAppBar: false,
-                listViewItemBuilder: (context, model) {
+                itemBuilder: (context, model) {
                   Widget item = Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

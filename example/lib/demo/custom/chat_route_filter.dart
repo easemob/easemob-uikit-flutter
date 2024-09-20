@@ -14,14 +14,14 @@ class ChatRouteFilter {
     } else if (settings.name == ChatUIKitRouteNames.createGroupView) {
       return createGroupView(settings);
     } else if (settings.name == ChatUIKitRouteNames.contactDetailsView) {
-      return contactDetail(settings);
+      return contactDetails(settings);
     } else if (settings.name == ChatUIKitRouteNames.groupDetailsView) {
-      return groupDetail(settings);
+      return groupDetails(settings);
     }
     return settings;
   }
 
-  static RouteSettings groupDetail(RouteSettings settings) {
+  static RouteSettings groupDetails(RouteSettings settings) {
     ChatUIKitViewObserver? viewObserver = ChatUIKitViewObserver();
     GroupDetailsViewArguments arguments =
         settings.arguments as GroupDetailsViewArguments;
@@ -46,7 +46,7 @@ class ChatRouteFilter {
   }
 
   // 自定义 contact detail view
-  static RouteSettings contactDetail(RouteSettings settings) {
+  static RouteSettings contactDetails(RouteSettings settings) {
     ChatUIKitViewObserver? viewObserver = ChatUIKitViewObserver();
     ContactDetailsViewArguments arguments =
         settings.arguments as ContactDetailsViewArguments;
@@ -55,7 +55,7 @@ class ChatRouteFilter {
       viewObserver: viewObserver,
 
       // 添加 remark 实现
-      detailsListViewItemsBuilder: (context, profile, models) {
+      itemsBuilder: (context, profile, models) {
         return [
           ChatUIKitDetailsListViewItemModel(
             title: DemoLocalizations.contactRemark.localString(context),

@@ -6,7 +6,7 @@ class CreateGroupView extends StatefulWidget {
   CreateGroupView.arguments(
     CreateGroupViewArguments arguments, {
     super.key,
-  })  : listViewItemBuilder = arguments.listViewItemBuilder,
+  })  : itemBuilder = arguments.itemBuilder,
         onSearchTap = arguments.onSearchTap,
         searchBarHideText = arguments.searchBarHideText,
         listViewBackground = arguments.listViewBackground,
@@ -21,7 +21,7 @@ class CreateGroupView extends StatefulWidget {
         attributes = arguments.attributes;
 
   const CreateGroupView({
-    this.listViewItemBuilder,
+    this.itemBuilder,
     this.onSearchTap,
     this.createGroupInfo,
     this.searchBarHideText,
@@ -42,7 +42,7 @@ class CreateGroupView extends StatefulWidget {
   final void Function(List<ContactItemModel> data)? onSearchTap;
   final CreateGroupInfo? createGroupInfo;
 
-  final ChatUIKitContactItemBuilder? listViewItemBuilder;
+  final ChatUIKitContactItemBuilder? itemBuilder;
   final void Function(ContactItemModel model)? onItemTap;
   final void Function(ContactItemModel model)? onItemLongPress;
   final String? searchBarHideText;
@@ -125,6 +125,8 @@ class _CreateGroupViewState extends State<CreateGroupView> {
       centerTitle: widget.appBarModel?.centerTitle ?? false,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       backgroundColor: widget.appBarModel?.backgroundColor,
+      bottomLine: widget.appBarModel?.bottomLine,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
     );
   }
 
@@ -140,7 +142,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: ContactListView(
         controller: controller,
-        itemBuilder: widget.listViewItemBuilder ??
+        itemBuilder: widget.itemBuilder ??
             (context, model) {
               return InkWell(
                 highlightColor: Colors.transparent,

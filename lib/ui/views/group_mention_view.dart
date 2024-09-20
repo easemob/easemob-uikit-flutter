@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class GroupMentionView extends StatefulWidget {
   GroupMentionView.arguments(GroupMentionViewArguments arguments, {super.key})
-      : listViewItemBuilder = arguments.listViewItemBuilder,
+      : itemBuilder = arguments.itemBuilder,
         onSearchTap = arguments.onSearchTap,
         searchBarHideText = arguments.searchBarHideText,
         listViewBackground = arguments.listViewBackground,
@@ -21,7 +21,7 @@ class GroupMentionView extends StatefulWidget {
 
   const GroupMentionView({
     required this.groupId,
-    this.listViewItemBuilder,
+    this.itemBuilder,
     this.onSearchTap,
     this.searchBarHideText,
     this.listViewBackground,
@@ -42,7 +42,7 @@ class GroupMentionView extends StatefulWidget {
   final ChatUIKitAppBarModel? appBarModel;
   final void Function(List<ContactItemModel> data)? onSearchTap;
 
-  final ChatUIKitContactItemBuilder? listViewItemBuilder;
+  final ChatUIKitContactItemBuilder? itemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
   final void Function(BuildContext context, ContactItemModel model)?
       onLongPress;
@@ -98,6 +98,8 @@ class _GroupMentionViewState extends State<GroupMentionView> {
       centerTitle: widget.appBarModel?.centerTitle ?? false,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       backgroundColor: widget.appBarModel?.backgroundColor,
+      bottomLine: widget.appBarModel?.bottomLine,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
     );
   }
 
@@ -127,7 +129,7 @@ class _GroupMentionViewState extends State<GroupMentionView> {
             ],
             groupId: widget.groupId,
             controller: controller,
-            itemBuilder: widget.listViewItemBuilder ??
+            itemBuilder: widget.itemBuilder ??
                 (context, model) {
                   return InkWell(
                     highlightColor: Colors.transparent,

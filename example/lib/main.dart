@@ -59,11 +59,12 @@ class _MyAppState extends State<MyApp> {
   }
 
   void init() async {
+
     await ChatUIKit.instance.init(
       options: Options(
         appKey: appKey,
         deleteMessagesAsExitGroup: false,
-      ),
+      ), 
     );
   }
 

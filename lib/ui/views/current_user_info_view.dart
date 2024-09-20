@@ -82,6 +82,8 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView>
       centerTitle: widget.appBarModel?.centerTitle ?? true,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       backgroundColor: widget.appBarModel?.backgroundColor,
+      bottomLine: widget.appBarModel?.bottomLine,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
     );
   }
 

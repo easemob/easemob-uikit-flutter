@@ -12,41 +12,41 @@ class GroupDetailsView extends StatefulWidget {
   })  : profile = arguments.profile,
         appBarModel = arguments.appBarModel,
         enableAppBar = arguments.enableAppBar,
-        contentActionsBuilder = arguments.actionsBuilder,
+        actionsBuilder = arguments.actionsBuilder,
         onMessageDidClear = arguments.onMessageDidClear,
         viewObserver = arguments.viewObserver,
-        detailsListViewItemsBuilder = arguments.detailsListViewItemsBuilder,
-        rightTopMoreActionsBuilder = arguments.moreActionsBuilder,
+        itemsBuilder = arguments.itemsBuilder,
+        moreActionsBuilder = arguments.moreActionsBuilder,
         group = arguments.group,
         attributes = arguments.attributes;
 
   const GroupDetailsView({
     required this.profile,
-    this.contentActionsBuilder,
+    this.actionsBuilder,
     this.appBarModel,
     this.enableAppBar = true,
     this.attributes,
     this.onMessageDidClear,
-    this.detailsListViewItemsBuilder,
-    this.rightTopMoreActionsBuilder,
+    this.itemsBuilder,
+    this.moreActionsBuilder,
     this.viewObserver,
     this.group,
     super.key,
   });
-  final ChatUIKitDetailContentActionsBuilder? contentActionsBuilder;
+  final ChatUIKitDetailContentActionsBuilder? actionsBuilder;
   final ChatUIKitProfile profile;
   final ChatUIKitAppBarModel? appBarModel;
   final bool enableAppBar;
   final String? attributes;
   final VoidCallback? onMessageDidClear;
-  final ChatUIKitDetailItemBuilder? detailsListViewItemsBuilder;
+  final ChatUIKitDetailItemBuilder? itemsBuilder;
   final Group? group;
 
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
 
   /// 更多操作构建器，用于构建更多操作的菜单，如果不设置将会使用默认的菜单。
-  final ChatUIKitMoreActionsBuilder? rightTopMoreActionsBuilder;
+  final ChatUIKitMoreActionsBuilder? moreActionsBuilder;
 
   @override
   State<GroupDetailsView> createState() => _GroupDetailsViewState();
@@ -215,6 +215,8 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       centerTitle: widget.appBarModel?.centerTitle ?? false,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       backgroundColor: widget.appBarModel?.backgroundColor,
+      bottomLine: widget.appBarModel?.bottomLine,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
     );
   }
 
@@ -341,7 +343,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     ];
 
     List<ChatUIKitDetailContentAction> actions =
-        widget.contentActionsBuilder?.call(context, defaultList) ?? defaultList;
+        widget.actionsBuilder?.call(context, defaultList) ?? defaultList;
     assert(actions.length <= 5, 'The maximum number of actions is 5');
 
     Widget content = Column(
@@ -595,9 +597,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       );
     }
 
-    models =
-        widget.detailsListViewItemsBuilder?.call(context, profile, models) ??
-            models;
+    models = widget.itemsBuilder?.call(context, profile, models) ?? models;
 
     List<Widget> list = models.map((e) {
       if (e.type == ChatUIKitDetailsListViewItemModelType.normal) {
@@ -712,7 +712,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       );
     }
 
-    list = widget.rightTopMoreActionsBuilder?.call(context, list) ?? list;
+    list = widget.moreActionsBuilder?.call(context, list) ?? list;
 
     showChatUIKitBottomSheet(
       cancelLabel: ChatUIKitLocal.groupDetailViewCancel.localString(context),

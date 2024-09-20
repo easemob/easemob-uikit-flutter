@@ -73,6 +73,8 @@ class _ShowImageViewState extends State<ShowImageView> {
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       backgroundColor:
           widget.appBarModel?.backgroundColor ?? Colors.transparent,
+      bottomLine: widget.appBarModel?.bottomLine,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
     );
   }
 

@@ -81,7 +81,7 @@ class _MergeConversationPageState extends State<MergeConversationPage> {
   @override
   Widget build(BuildContext context) {
     return ConversationsView(
-      onLongPressHandler: (context, model, defaultActions) {
+      onItemLongPressHandler: (context, model, defaultActions) {
         if (model is CustomConversationItemModel) {
           return [];
         } else {
@@ -103,7 +103,7 @@ class _MergeConversationPageState extends State<MergeConversationPage> {
         }
       },
       enableAppBar: false,
-      listViewItemBuilder: (context, model) {
+      itemBuilder: (context, model) {
         return ChatUIKitConversationListViewItem(
           model,
           beforeSubtitle:
@@ -112,7 +112,7 @@ class _MergeConversationPageState extends State<MergeConversationPage> {
                   : null,
         );
       },
-      onTap: (context, info) {
+      onItemTap: (context, info) {
         if (info is CustomConversationItemModel) {
           Navigator.of(context)
               .push(
@@ -251,7 +251,7 @@ class _MergedConversationsViewState extends State<MergedConversationsView> {
         body: ConversationsView(
           enableAppBar: false,
           controller: controller,
-          onLongPressHandler: (context, model, defaultActions) {
+          onItemLongPressHandler: (context, model, defaultActions) {
             return [
                   ChatUIKitBottomSheetAction.normal(
                     label: '取消合并',

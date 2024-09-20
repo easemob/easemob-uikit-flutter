@@ -7,7 +7,7 @@ class NewRequestsView extends StatefulWidget {
       : controller = arguments.controller,
         appBarModel = arguments.appBarModel,
         onSearchTap = arguments.onSearchTap,
-        listViewItemBuilder = arguments.listViewItemBuilder,
+        itemBuilder = arguments.itemBuilder,
         onTap = arguments.onTap,
         onLongPress = arguments.onLongPress,
         searchBarHideText = arguments.searchBarHideText,
@@ -21,7 +21,7 @@ class NewRequestsView extends StatefulWidget {
     this.controller,
     this.appBarModel,
     this.onSearchTap,
-    this.listViewItemBuilder,
+    this.itemBuilder,
     this.onTap,
     this.onLongPress,
     this.searchBarHideText,
@@ -36,7 +36,7 @@ class NewRequestsView extends StatefulWidget {
   final NewRequestListViewController? controller;
   final ChatUIKitAppBarModel? appBarModel;
   final void Function(List<NewRequestItemModel> data)? onSearchTap;
-  final ChatUIKitNewRequestItemBuilder? listViewItemBuilder;
+  final ChatUIKitNewRequestItemBuilder? itemBuilder;
   final void Function(BuildContext context, NewRequestItemModel model)? onTap;
   final void Function(BuildContext context, NewRequestItemModel model)?
       onLongPress;
@@ -91,6 +91,8 @@ class _NewRequestsViewState extends State<NewRequestsView>
       centerTitle: widget.appBarModel?.centerTitle ?? false,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       backgroundColor: widget.appBarModel?.backgroundColor,
+      bottomLine: widget.appBarModel?.bottomLine,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
     );
   }
 
@@ -109,7 +111,7 @@ class _NewRequestsViewState extends State<NewRequestsView>
         body: SafeArea(
           child: NewRequestsListView(
             controller: controller,
-            itemBuilder: widget.listViewItemBuilder,
+            itemBuilder: widget.itemBuilder,
             searchHideText: widget.searchBarHideText,
             background: widget.listViewBackground,
             errorMessage: widget.loadErrorMessage,

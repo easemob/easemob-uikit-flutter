@@ -8,7 +8,7 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
     this.enableAppBar = true,
     this.enableSearchBar = true,
     this.onSearchTap,
-    this.listViewItemBuilder,
+    this.itemBuilder,
     this.onTap,
     this.onLongPress,
     this.searchHideText,
@@ -53,7 +53,7 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
   final List<ChatUIKitListViewMoreItem>? afterItems;
 
   /// 联系人列表的 `item` 构建器，如果设置后需要显示联系人时会直接回调，如果不处理可以返回 `null`。
-  final ChatUIKitContactItemBuilder? listViewItemBuilder;
+  final ChatUIKitContactItemBuilder? itemBuilder;
 
   /// 点击联系人列表的回调，点击后会把当前的联系人数据传递过来。具体参考 [ContactItemModel]。 如果不是设置默认会跳转到联系人详情页面。具体参考 [ContactDetailsView]。
   final void Function(BuildContext context, ContactItemModel model)? onTap;
@@ -81,7 +81,7 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
     ContactListViewController? controller,
     ChatUIKitAppBarModel? appBarModel,
     void Function(List<ContactItemModel> data)? onSearchTap,
-    ChatUIKitContactItemBuilder? listViewItemBuilder,
+    ChatUIKitContactItemBuilder? itemBuilder,
     void Function(BuildContext context, ContactItemModel model)? onTap,
     void Function(BuildContext context, ContactItemModel model)? onLongPress,
     String? searchHideText,
@@ -103,7 +103,7 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
       appBarModel: appBarModel ?? this.appBarModel,
       enableSearchBar: enableSearchBar ?? this.enableSearchBar,
       onSearchTap: onSearchTap ?? this.onSearchTap,
-      listViewItemBuilder: listViewItemBuilder ?? this.listViewItemBuilder,
+      itemBuilder: itemBuilder ?? this.itemBuilder,
       onTap: onTap ?? this.onTap,
       onLongPress: onLongPress ?? this.onLongPress,
       searchHideText: searchHideText ?? this.searchHideText,

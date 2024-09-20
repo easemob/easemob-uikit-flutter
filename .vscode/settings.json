@@ -8,5 +8,6 @@
     ],
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.dependency.syncWithFolderExplorer": false,
-    "java.project.explorer.showNonJavaResources": false
+    "java.project.explorer.showNonJavaResources": false,
+    "CodeGPT.apiKey": "Ollama"
 }

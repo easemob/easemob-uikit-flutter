@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class GroupMembersView extends StatefulWidget {
   GroupMembersView.arguments(GroupMembersViewArguments arguments, {Key? key})
       : profile = arguments.profile,
-        listViewItemBuilder = arguments.listViewItemBuilder,
+        itemBuilder = arguments.itemBuilder,
         onSearchTap = arguments.onSearchTap,
         searchBarHideText = arguments.searchBarHideText,
         listViewBackground = arguments.listViewBackground,
@@ -24,7 +24,7 @@ class GroupMembersView extends StatefulWidget {
 
   const GroupMembersView({
     required this.profile,
-    this.listViewItemBuilder,
+    this.itemBuilder,
     this.onSearchTap,
     this.searchBarHideText,
     this.listViewBackground,
@@ -55,7 +55,7 @@ class GroupMembersView extends StatefulWidget {
   final ChatUIKitAppBarModel? appBarModel;
   final void Function(List<ContactItemModel> data)? onSearchTap;
 
-  final ChatUIKitContactItemBuilder? listViewItemBuilder;
+  final ChatUIKitContactItemBuilder? itemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
   final void Function(BuildContext context, ContactItemModel model)?
       onLongPress;
@@ -206,6 +206,8 @@ class _GroupMembersViewState extends State<GroupMembersView>
       centerTitle: widget.appBarModel?.centerTitle ?? false,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       backgroundColor: widget.appBarModel?.backgroundColor,
+      bottomLine: widget.appBarModel?.bottomLine,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
     );
   }
 
@@ -226,7 +228,7 @@ class _GroupMembersViewState extends State<GroupMembersView>
           onSelectLetterChanged: widget.onSelectLetterChanged,
           universalAlphabeticalLetter: widget.universalAlphabeticalLetter,
           sortAlphabetical: widget.sortAlphabetical,
-          itemBuilder: widget.listViewItemBuilder,
+          itemBuilder: widget.itemBuilder,
           searchHideText: widget.searchBarHideText,
           background: widget.listViewBackground,
           onTap: widget.onTap ??

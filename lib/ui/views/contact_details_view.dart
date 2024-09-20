@@ -9,8 +9,8 @@ class ContactDetailsView extends StatefulWidget {
       : profile = arguments.profile,
         onMessageDidClear = arguments.onMessageDidClear,
         appBarModel = arguments.appBarModel,
-        contentActionsBuilder = arguments.actionsBuilder,
-        detailsListViewItemsBuilder = arguments.detailsListViewItemsBuilder,
+        actionsBuilder = arguments.actionsBuilder,
+        itemsBuilder = arguments.itemsBuilder,
         moreActionsBuilder = arguments.moreActionsBuilder,
         viewObserver = arguments.viewObserver,
         enableAppBar = arguments.enableAppBar,
@@ -19,25 +19,25 @@ class ContactDetailsView extends StatefulWidget {
 
   const ContactDetailsView({
     required this.profile,
-    this.contentActionsBuilder,
+    this.actionsBuilder,
     this.onMessageDidClear,
     this.appBarModel,
     this.attributes,
     this.viewObserver,
     this.onContactDeleted,
-    this.detailsListViewItemsBuilder,
+    this.itemsBuilder,
     this.moreActionsBuilder,
     this.enableAppBar = true,
     super.key,
   });
 
   final ChatUIKitProfile profile;
-  final ChatUIKitDetailContentActionsBuilder? contentActionsBuilder;
+  final ChatUIKitDetailContentActionsBuilder? actionsBuilder;
   final VoidCallback? onMessageDidClear;
   final VoidCallback? onContactDeleted;
   final ChatUIKitAppBarModel? appBarModel;
   final String? attributes;
-  final ChatUIKitDetailItemBuilder? detailsListViewItemsBuilder;
+  final ChatUIKitDetailItemBuilder? itemsBuilder;
   final ChatUIKitViewObserver? viewObserver;
 
   /// 更多操作构建器，用于构建更多操作的菜单，如果不设置将会使用默认的菜单。
@@ -143,6 +143,8 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
       centerTitle: widget.appBarModel?.centerTitle ?? true,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       backgroundColor: widget.appBarModel?.backgroundColor,
+      bottomLine: widget.appBarModel?.bottomLine,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
     );
   }
 
@@ -274,8 +276,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
     ];
 
     List<ChatUIKitDetailContentAction> actions =
-        widget.contentActionsBuilder?.call(context, defaultActions) ??
-            defaultActions;
+        widget.actionsBuilder?.call(context, defaultActions) ?? defaultActions;
     assert(actions.length <= 5, 'The maximum number of actions is 5');
 
     Widget content = Column(
@@ -402,9 +403,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
       onTap: clearAllHistory,
     ));
 
-    models =
-        widget.detailsListViewItemsBuilder?.call(context, profile, models) ??
-            models;
+    models = widget.itemsBuilder?.call(context, profile, models) ?? models;
 
     List<Widget> list = models.map((e) {
       if (e.type == ChatUIKitDetailsListViewItemModelType.normal) {

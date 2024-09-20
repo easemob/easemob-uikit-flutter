@@ -164,14 +164,19 @@ class MessagesView extends StatefulWidget {
   /// 多选时显示的 bottom bar
   final Widget? multiSelectBottomBar;
 
+  /// reaction 点击事件，如果设置后将会替换默认的反应点击事件。详细参考 [MessageReactionItemTapHandler]。
   final MessageReactionItemTapHandler? onReactionItemTap;
 
+  /// reaction 点击事件，如果设置后将会替换默认的反应信息点击事件。详细参考 [MessageItemTapHandler]。
   final MessageItemTapHandler? onReactionInfoTap;
 
+  /// reaction 构建器，如果设置后将会替换默认的反应构建器。详细参考 [MessageItemBuilder]。
   final MessageItemBuilder? reactionItemsBuilder;
 
+  /// thread 点击事件，如果设置后将会替换默认的线程点击事件。详细参考 [MessageItemTapHandler]。
   final MessageItemTapHandler? onThreadItemTap;
 
+  /// thread 构建器，如果设置后将会替换默认的线程构建器。详细参考 [MessageItemBuilder]。
   final MessageItemBuilder? threadItemBuilder;
 
   /// 用于刷新页面的Observer
@@ -399,6 +404,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
       bottomLine: widget.appBarModel?.bottomLine ?? true,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
     );
   }
 

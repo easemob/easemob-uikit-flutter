@@ -6,7 +6,7 @@ class ContactsView extends StatefulWidget {
   ContactsView.arguments(
     ContactsViewArguments arguments, {
     super.key,
-  })  : listViewItemBuilder = arguments.listViewItemBuilder,
+  })  : itemBuilder = arguments.itemBuilder,
         onSearchTap = arguments.onSearchTap,
         searchHideText = arguments.searchHideText,
         listViewBackground = arguments.listViewBackground,
@@ -34,7 +34,7 @@ class ContactsView extends StatefulWidget {
     this.listViewBackground,
     this.onTap,
     this.onLongPress,
-    this.listViewItemBuilder,
+    this.itemBuilder,
     this.controller,
     this.loadErrorMessage,
     this.beforeItems,
@@ -77,7 +77,7 @@ class ContactsView extends StatefulWidget {
   final List<ChatUIKitListViewMoreItem>? afterItems;
 
   /// 联系人列表的 `item` 构建器，如果设置后需要显示联系人时会直接回调，如果不处理可以返回 `null`。
-  final ChatUIKitContactItemBuilder? listViewItemBuilder;
+  final ChatUIKitContactItemBuilder? itemBuilder;
 
   /// 点击联系人列表的回调，点击后会把当前的联系人数据传递过来。具体参考 [ContactItemModel]。 如果不是设置默认会跳转到联系人详情页面。具体参考 [ContactDetailsView]。
   final void Function(BuildContext context, ContactItemModel model)? onTap;
@@ -185,6 +185,8 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
       backgroundColor: widget.appBarModel?.backgroundColor,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
+      bottomLine: widget.appBarModel?.bottomLine,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
     );
   }
 
@@ -201,7 +203,7 @@ class _ContactsViewState extends State<ContactsView> with ContactObserver {
       body: SafeArea(
         child: ContactListView(
           controller: controller,
-          itemBuilder: widget.listViewItemBuilder,
+          itemBuilder: widget.itemBuilder,
           onSelectLetterChanged: widget.onSelectLetterChanged,
           sortAlphabetical: widget.sortAlphabetical,
           universalAlphabetical: widget.universalAlphabeticalLetter,

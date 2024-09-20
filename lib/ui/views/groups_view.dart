@@ -7,7 +7,7 @@ class GroupsView extends StatefulWidget {
       : controller = arguments.controller,
         appBarModel = arguments.appBarModel,
         onSearchTap = arguments.onSearchTap,
-        listViewItemBuilder = arguments.listViewItemBuilder,
+        itemBuilder = arguments.itemBuilder,
         onTap = arguments.onTap,
         onLongPress = arguments.onLongPress,
         searchBarHideText = arguments.searchBarHideText,
@@ -21,7 +21,7 @@ class GroupsView extends StatefulWidget {
     this.controller,
     this.appBarModel,
     this.onSearchTap,
-    this.listViewItemBuilder,
+    this.itemBuilder,
     this.onTap,
     this.onLongPress,
     this.searchBarHideText,
@@ -36,7 +36,7 @@ class GroupsView extends StatefulWidget {
   final GroupListViewController? controller;
   final ChatUIKitAppBarModel? appBarModel;
   final void Function(List<GroupItemModel> data)? onSearchTap;
-  final ChatUIKitGroupItemBuilder? listViewItemBuilder;
+  final ChatUIKitGroupItemBuilder? itemBuilder;
   final void Function(BuildContext context, GroupItemModel model)? onTap;
   final void Function(BuildContext context, GroupItemModel model)? onLongPress;
   final String? searchBarHideText;
@@ -120,6 +120,8 @@ class _GroupsViewState extends State<GroupsView> {
       centerTitle: widget.appBarModel?.centerTitle ?? false,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       backgroundColor: widget.appBarModel?.backgroundColor,
+      bottomLine: widget.appBarModel?.bottomLine,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
     );
   }
 
@@ -136,7 +138,7 @@ class _GroupsViewState extends State<GroupsView> {
       body: SafeArea(
         child: GroupListView(
           controller: controller,
-          itemBuilder: widget.listViewItemBuilder,
+          itemBuilder: widget.itemBuilder,
           searchHideText: widget.searchBarHideText,
           background: widget.listViewBackground,
           errorMessage: widget.loadErrorMessage,

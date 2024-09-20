@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class SelectContactView extends StatefulWidget {
   SelectContactView.arguments(SelectContactViewArguments arguments, {super.key})
-      : listViewItemBuilder = arguments.listViewItemBuilder,
+      : itemBuilder = arguments.itemBuilder,
         onSearchTap = arguments.onSearchTap,
         searchBarHideText = arguments.searchBarHideText,
         listViewBackground = arguments.listViewBackground,
@@ -17,7 +17,7 @@ class SelectContactView extends StatefulWidget {
         attributes = arguments.attributes;
 
   const SelectContactView({
-    this.listViewItemBuilder,
+    this.itemBuilder,
     this.onSearchTap,
     this.searchBarHideText,
     this.listViewBackground,
@@ -35,7 +35,7 @@ class SelectContactView extends StatefulWidget {
   final ChatUIKitAppBarModel? appBarModel;
   final void Function(List<ContactItemModel> data)? onSearchTap;
 
-  final ChatUIKitContactItemBuilder? listViewItemBuilder;
+  final ChatUIKitContactItemBuilder? itemBuilder;
   final void Function(BuildContext context, ContactItemModel model)? onTap;
   final void Function(BuildContext context, ContactItemModel model)?
       onLongPress;
@@ -110,6 +110,8 @@ class _SelectContactViewState extends State<SelectContactView> {
       centerTitle: widget.appBarModel?.centerTitle ?? false,
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       backgroundColor: widget.appBarModel?.backgroundColor,
+      bottomLine: widget.appBarModel?.bottomLine,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
     );
   }
 
@@ -125,7 +127,7 @@ class _SelectContactViewState extends State<SelectContactView> {
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: ContactListView(
         controller: controller,
-        itemBuilder: widget.listViewItemBuilder,
+        itemBuilder: widget.itemBuilder,
         searchHideText: widget.searchBarHideText,
         background: widget.listViewBackground,
         onTap: widget.onTap ?? tapContactInfo,
