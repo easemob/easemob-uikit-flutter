@@ -126,7 +126,13 @@ class _CustomHomePageState extends State<CustomHomePage>
   }) {
     return Column(
       children: [
-        Text(name),
+        Text(
+          name,
+          style: TextStyle(
+              color: theme.color.isDark
+                  ? theme.color.neutralColor98
+                  : theme.color.neutralColor0),
+        ),
         Container(
           color: theme.color.isDark
               ? theme.color.neutralColor3
