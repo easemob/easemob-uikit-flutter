@@ -53,7 +53,7 @@ class GroupsView extends StatefulWidget {
   State<GroupsView> createState() => _GroupsViewState();
 }
 
-class _GroupsViewState extends State<GroupsView> {
+class _GroupsViewState extends State<GroupsView> with ChatUIKitThemeMixin {
   late final GroupListViewController controller;
   ValueNotifier<int> joinedCount = ValueNotifier(0);
   ChatUIKitAppBarModel? appBarModel;
@@ -126,8 +126,7 @@ class _GroupsViewState extends State<GroupsView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,

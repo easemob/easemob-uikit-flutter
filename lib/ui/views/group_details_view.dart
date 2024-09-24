@@ -53,7 +53,11 @@ class GroupDetailsView extends StatefulWidget {
 }
 
 class _GroupDetailsViewState extends State<GroupDetailsView>
-    with GroupObserver, MultiObserver, ChatUIKitProviderObserver {
+    with
+        GroupObserver,
+        MultiObserver,
+        ChatUIKitProviderObserver,
+        ChatUIKitThemeMixin {
   ValueNotifier<bool> isNotDisturb = ValueNotifier<bool>(false);
   int memberCount = 0;
   Group? group;
@@ -221,8 +225,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     updateAppBarModel(theme);
     Widget content = Scaffold(
         resizeToAvoidBottomInset: false,
@@ -237,7 +240,6 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   }
 
   Widget _buildContent() {
-    final theme = ChatUIKitTheme.of(context);
     Widget avatar = statusAvatar();
 
     Widget name = Text(

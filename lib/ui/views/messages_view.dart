@@ -186,7 +186,8 @@ class MessagesView extends StatefulWidget {
   State<MessagesView> createState() => _MessagesViewState();
 }
 
-class _MessagesViewState extends State<MessagesView> with ChatObserver {
+class _MessagesViewState extends State<MessagesView>
+    with ChatObserver, ChatUIKitThemeMixin {
   late final MessagesViewController controller;
   late final ChatUIKitInputBarController inputBarController;
   late final ImagePicker _picker;
@@ -467,8 +468,7 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     updateAppBarModel(theme);
     Widget content = MessageListView(
       scrollController: _scrollController,
@@ -1482,7 +1482,6 @@ class _MessagesViewState extends State<MessagesView> with ChatObserver {
   }
 
   void onItemLongPress(MessageModel model) async {
-    final theme = ChatUIKitTheme.of(context);
     clearAllType();
     List<ChatUIKitBottomSheetAction>? items =
         defaultItemLongPressed(model, theme);

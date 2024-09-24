@@ -2,7 +2,6 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit_example/demo/debug_login_page.dart';
 import 'package:em_chat_uikit_example/demo/demo_localizations.dart';
 import 'package:em_chat_uikit_example/demo/home_page.dart';
-import 'package:em_chat_uikit_example/demo/notifications/app_settings_notification.dart';
 
 import 'package:em_chat_uikit_example/demo/custom/chat_route_filter.dart';
 import 'package:em_chat_uikit_example/demo/pages/me/about_page.dart';
@@ -43,6 +42,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     init();
+
     _localization.defaultLocale = [
       ChatLocal(
         'zh',
@@ -59,77 +59,58 @@ class _MyAppState extends State<MyApp> {
   }
 
   void init() async {
-
     await ChatUIKit.instance.init(
       options: Options(
         appKey: appKey,
         deleteMessagesAsExitGroup: false,
-      ), 
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener(
-      onNotification: (notification) {
-        if (notification is AppSettingsNotification) {
-          setState(() {});
-        }
-        return false;
-      },
-      child: MaterialApp(
-        supportedLocales: _localization.supportedLocales,
-        localizationsDelegates: _localization.localizationsDelegates,
-        localeResolutionCallback: _localization.localeResolutionCallback,
-        locale: _localization.currentLocale,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-        ),
-        builder: EasyLoading.init(
-          builder: (context, child) {
-            return ChatUIKitTheme(
-              color: AppSettingsNotification.isLight
-                  ? ChatUIKitColor.light()
-                  : ChatUIKitColor.dark(),
-              child: child!,
-            );
-          },
-        ),
-        home: const WelcomePage(),
-        onGenerateRoute: (settings) {
-          RouteSettings newSettings =
-              ChatRouteFilter.chatRouteSettings(settings);
-          return ChatUIKitRoute().generateRoute(newSettings) ??
-              MaterialPageRoute(
-                builder: (context) {
-                  if (settings.name == '/sample_demo') {
-                    return const CustomHomePage();
-                  } else if (settings.name == '/home') {
-                    return const HomePage();
-                  } else if (settings.name == '/login') {
-                    return const DebugLoginPage();
-                  } else if (settings.name == '/debug_login') {
-                    return const DebugLoginPage();
-                  } else if (settings.name == '/general_page') {
-                    return const GeneralPage();
-                  } else if (settings.name == '/language_page') {
-                    return const LanguagePage();
-                  } else if (settings.name == '/translate_page') {
-                    return const TranslatePage();
-                  } else if (settings.name == '/advanced_page') {
-                    return const AdvancedPage();
-                  } else if (settings.name == '/about_page') {
-                    return const AboutPage();
-                  } else {
-                    return const SizedBox();
-                  }
-                },
-              );
-        },
+    return MaterialApp(
+      supportedLocales: _localization.supportedLocales,
+      localizationsDelegates: _localization.localizationsDelegates,
+      localeResolutionCallback: _localization.localeResolutionCallback,
+      locale: _localization.currentLocale,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
       ),
+      builder: EasyLoading.init(),
+      home: const WelcomePage(),
+      onGenerateRoute: (settings) {
+        RouteSettings newSettings = ChatRouteFilter.chatRouteSettings(settings);
+        return ChatUIKitRoute().generateRoute(newSettings) ??
+            MaterialPageRoute(
+              builder: (context) {
+                if (settings.name == '/sample_demo') {
+                  return const CustomHomePage();
+                } else if (settings.name == '/home') {
+                  return const HomePage();
+                } else if (settings.name == '/login') {
+                  return const DebugLoginPage();
+                } else if (settings.name == '/debug_login') {
+                  return const DebugLoginPage();
+                } else if (settings.name == '/general_page') {
+                  return const GeneralPage();
+                } else if (settings.name == '/language_page') {
+                  return const LanguagePage();
+                } else if (settings.name == '/translate_page') {
+                  return const TranslatePage();
+                } else if (settings.name == '/advanced_page') {
+                  return const AdvancedPage();
+                } else if (settings.name == '/about_page') {
+                  return const AboutPage();
+                } else {
+                  return const SizedBox();
+                }
+              },
+            );
+      },
     );
   }
 }

@@ -57,19 +57,19 @@ class ChatUIKitSettings {
   ];
 
   /// Whether to enable the functionality of input status for one-on-one chat messages.
-  static bool enableTypingIndicator = false;
+  static bool enableTypingIndicator = true;
 
   /// Whether to enable the thread feature
-  static bool enableMessageThread = false;
+  static bool enableMessageThread = true;
 
   /// Whether to enable message translation feature
-  static bool enableMessageTranslation = false;
+  static bool enableMessageTranslation = true;
 
   /// Message translation target language
   static String translateTargetLanguage = 'zh-Hans';
 
   /// Whether to enable message reaction feature
-  static bool enableMessageReaction = false;
+  static bool enableMessageReaction = true;
 
   /// Message emoji reply bottom sheet title display content, this content needs to be included in the emoji list [ChatUIKitEmojiData.emojiList].
   static List<String> favoriteReaction = [

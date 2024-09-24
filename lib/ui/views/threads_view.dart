@@ -35,7 +35,8 @@ class ThreadsView extends StatefulWidget {
   State<ThreadsView> createState() => _ThreadsViewState();
 }
 
-class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
+class _ThreadsViewState extends State<ThreadsView>
+    with ThreadObserver, ChatUIKitThemeMixin {
   bool fetching = false;
   bool hasMore = true;
   String? cursor;
@@ -116,8 +117,7 @@ class _ThreadsViewState extends State<ThreadsView> with ThreadObserver {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     updateAppBarModel(theme);
     return Scaffold(
       backgroundColor: theme.color.isDark

@@ -61,7 +61,8 @@ class GroupChangeOwnerView extends StatefulWidget {
   State<GroupChangeOwnerView> createState() => _GroupChangeOwnerViewState();
 }
 
-class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
+class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView>
+    with ChatUIKitThemeMixin {
   late final GroupMemberListViewController controller;
   ChatUIKitAppBarModel? appBarModel;
   @override
@@ -106,8 +107,7 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,

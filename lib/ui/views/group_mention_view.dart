@@ -59,7 +59,8 @@ class GroupMentionView extends StatefulWidget {
   State<GroupMentionView> createState() => _GroupMentionViewState();
 }
 
-class _GroupMentionViewState extends State<GroupMentionView> {
+class _GroupMentionViewState extends State<GroupMentionView>
+    with ChatUIKitThemeMixin {
   final ValueNotifier<List<ChatUIKitProfile>> selectedProfiles =
       ValueNotifier<List<ChatUIKitProfile>>([]);
   late final GroupMemberListViewController controller;
@@ -104,8 +105,7 @@ class _GroupMentionViewState extends State<GroupMentionView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
@@ -199,7 +199,7 @@ class MentionAllItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+    final theme = ChatUIKitTheme.instance;
 
     TextStyle normalStyle = TextStyle(
       color: theme.color.isDark

@@ -43,7 +43,8 @@ class SearchGroupMembersView extends StatefulWidget {
   State<SearchGroupMembersView> createState() => _SearchGroupMembersViewState();
 }
 
-class _SearchGroupMembersViewState extends State<SearchGroupMembersView> {
+class _SearchGroupMembersViewState extends State<SearchGroupMembersView>
+    with ChatUIKitThemeMixin {
   ChatUIKitAppBarModel? appBarModel;
   @override
   void initState() {
@@ -81,8 +82,7 @@ class _SearchGroupMembersViewState extends State<SearchGroupMembersView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     updateAppBarModel(theme);
     Widget content = ChatUIKitSearchWidget(
       searchHideText: widget.searchHideText,

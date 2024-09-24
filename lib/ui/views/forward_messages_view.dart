@@ -36,7 +36,7 @@ class ForwardMessagesView extends StatefulWidget {
 }
 
 class _ForwardMessagesViewState extends State<ForwardMessagesView>
-    with ChatObserver {
+    with ChatObserver, ChatUIKitThemeMixin {
   late final Message message;
   bool downloading = false;
   ChatUIKitAppBarModel? appBarModel;
@@ -96,8 +96,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     updateAppBarModel(theme);
     Widget? content;
     if (downloading == true) {

@@ -9,7 +9,7 @@ class ContactAndGroupPage extends StatefulWidget {
 }
 
 class _ContactAndGroupPageState extends State<ContactAndGroupPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, ChatUIKitThemeMixin {
   late TabController mController;
 
   final List<Tab> titleTabs = const [
@@ -24,15 +24,27 @@ class _ContactAndGroupPageState extends State<ContactAndGroupPage>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98,
         automaticallyImplyLeading: false,
         title: TabBar(
           controller: mController,
-          labelColor: Colors.green,
-          labelStyle: const TextStyle(fontSize: 16),
-          unselectedLabelColor: Colors.black,
+          labelColor: theme.color.isDark
+              ? theme.color.primaryColor5
+              : theme.color.primaryColor6,
+          labelStyle: TextStyle(
+            fontSize: 16,
+            color: theme.color.isDark
+                ? theme.color.primaryColor5
+                : theme.color.primaryColor6,
+          ),
+          unselectedLabelColor: theme.color.isDark
+              ? theme.color.neutralColor4
+              : theme.color.neutralColor7,
           unselectedLabelStyle: const TextStyle(fontSize: 14),
           indicatorColor: Colors.green,
           isScrollable: false,

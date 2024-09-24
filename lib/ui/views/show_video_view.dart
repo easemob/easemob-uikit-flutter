@@ -40,7 +40,8 @@ class ShowVideoView extends StatefulWidget {
   State<ShowVideoView> createState() => _ShowVideoViewState();
 }
 
-class _ShowVideoViewState extends State<ShowVideoView> {
+class _ShowVideoViewState extends State<ShowVideoView>
+    with ChatUIKitThemeMixin {
   ChatUIKitAppBarModel? appBarModel;
   @override
   void initState() {
@@ -79,8 +80,7 @@ class _ShowVideoViewState extends State<ShowVideoView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     updateAppBarModel(theme);
     Widget content = ChatUIKitShowVideoWidget(
       message: widget.message,

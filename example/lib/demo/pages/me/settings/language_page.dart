@@ -1,6 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit_example/demo/demo_localizations.dart';
-import 'package:em_chat_uikit_example/demo/notifications/app_settings_notification.dart';
+
 import 'package:em_chat_uikit_example/demo/tool/settings_data_store.dart';
 import 'package:em_chat_uikit_example/demo/widgets/list_item.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ class LanguagePage extends StatefulWidget {
   State<LanguagePage> createState() => _LanguagePageState();
 }
 
-class _LanguagePageState extends State<LanguagePage> {
+class _LanguagePageState extends State<LanguagePage> with ChatUIKitThemeMixin {
   ValueNotifier<String> language =
       ValueNotifier<String>(SettingsDataStore().currentLanguage);
 
@@ -23,13 +23,11 @@ class _LanguagePageState extends State<LanguagePage> {
     language.addListener(() {
       SettingsDataStore().saveLanguage(language.value);
       ChatUIKitLocalizations().translate(language.value);
-      AppSettingsNotification().dispatch(context);
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     Widget content = ListView(
       children: [
         ListItem(

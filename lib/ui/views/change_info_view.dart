@@ -35,7 +35,8 @@ class ChangeInfoView extends StatefulWidget {
   State<ChangeInfoView> createState() => _ChangeInfoViewState();
 }
 
-class _ChangeInfoViewState extends State<ChangeInfoView> {
+class _ChangeInfoViewState extends State<ChangeInfoView>
+    with ChatUIKitThemeMixin {
   final TextEditingController controller = TextEditingController();
 
   String? originalStr;
@@ -119,8 +120,7 @@ class _ChangeInfoViewState extends State<ChangeInfoView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     updateAppBarModel(theme);
     Widget content = Column(
       children: [
@@ -134,9 +134,8 @@ class _ChangeInfoViewState extends State<ChangeInfoView> {
                 : theme.color.neutralColor95,
           ),
           child: TextField(
-            keyboardAppearance: ChatUIKitTheme.of(context).color.isDark
-                ? Brightness.dark
-                : Brightness.light,
+            keyboardAppearance:
+                theme.color.isDark ? Brightness.dark : Brightness.light,
             maxLines: 4,
             minLines: 1,
             buildCounter: (

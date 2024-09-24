@@ -1,6 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit_example/demo/home_page.dart';
-import 'package:em_chat_uikit_example/demo/notifications/app_settings_notification.dart';
+
 import 'package:em_chat_uikit_example/sample_demo/contact/contact_depth_custom_page.dart';
 import 'package:em_chat_uikit_example/sample_demo/contact/contact_page_custom1.dart';
 import 'package:em_chat_uikit_example/sample_demo/conversation/merge_conversation_page.dart';
@@ -18,7 +18,8 @@ class CustomHomePage extends StatefulWidget {
   State<CustomHomePage> createState() => _CustomHomePageState();
 }
 
-class _CustomHomePageState extends State<CustomHomePage> {
+class _CustomHomePageState extends State<CustomHomePage>
+    with ChatUIKitThemeMixin {
   @override
   void initState() {
     super.initState();
@@ -29,10 +30,23 @@ class _CustomHomePageState extends State<CustomHomePage> {
   String fontSize = '1';
   ChatUIKitFontSize size = ChatUIKitFontSize.normal;
   @override
-  Widget build(BuildContext context) {
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     Widget content = Scaffold(
+      backgroundColor: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
       appBar: AppBar(
-        title: const Text('Sample Demo'),
+        title: Text(
+          'Sample Demo',
+          style: TextStyle(
+            color: theme.color.isDark
+                ? theme.color.neutralColor98
+                : theme.color.neutralColor0,
+          ),
+        ),
+        backgroundColor: theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98,
       ),
       body: ListView(
         children: [
@@ -74,15 +88,21 @@ class _CustomHomePageState extends State<CustomHomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '修改主题颜色(Switch theme color): ${(AppSettingsNotification.isLight ? 'Light' : 'Dark')}',
+                '修改主题颜色(Switch theme color)',
+                style: TextStyle(
+                  color: theme.color.isDark
+                      ? theme.color.neutralColor98
+                      : theme.color.neutralColor0,
+                ),
               ),
               CupertinoSwitch(
-                  value: !AppSettingsNotification.isLight,
+                  value: theme.color.isDark,
                   onChanged: (value) {
-                    AppSettingsNotification.isLight =
-                        !AppSettingsNotification.isLight;
-                    AppSettingsNotification().dispatch(context);
-                    setState(() {});
+                    if (value) {
+                      ChatUIKitTheme.instance.setColor(ChatUIKitColor.dark());
+                    } else {
+                      ChatUIKitTheme.instance.setColor(ChatUIKitColor.light());
+                    }
                   }),
             ],
           ),
@@ -108,19 +128,50 @@ class _CustomHomePageState extends State<CustomHomePage> {
       children: [
         Text(name),
         Container(
-          color: Colors.grey,
+          color: theme.color.isDark
+              ? theme.color.neutralColor3
+              : theme.color.neutralColor7,
           height: 44,
           child: InkWell(
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (context) {
                 return Scaffold(
-                    appBar: AppBar(title: Text(title)), body: widget);
+                  appBar: AppBar(
+                      backgroundColor: theme.color.isDark
+                          ? theme.color.neutralColor1
+                          : theme.color.neutralColor98,
+                      title: Text(
+                        title,
+                        style: TextStyle(
+                          color: theme.color.isDark
+                              ? theme.color.neutralColor98
+                              : theme.color.neutralColor0,
+                        ),
+                      ),
+                      leading: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          color: theme.color.isDark
+                              ? theme.color.neutralColor98
+                              : theme.color.neutralColor0,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )),
+                  body: widget,
+                );
               }),
             ),
             child: Center(
               child: Text(
                 title,
                 textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: theme.color.isDark
+                      ? theme.color.neutralColor98
+                      : theme.color.neutralColor0,
+                ),
               ),
             ),
           ),
@@ -148,6 +199,11 @@ class _CustomHomePageState extends State<CustomHomePage> {
               }
             }()}',
             overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: theme.color.isDark
+                  ? theme.color.neutralColor98
+                  : theme.color.neutralColor0,
+            ),
           ),
         ),
         SizedBox(

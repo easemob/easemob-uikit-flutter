@@ -185,7 +185,7 @@ class ThreadMessagesView extends StatefulWidget {
 }
 
 class _ThreadMessagesViewState extends State<ThreadMessagesView>
-    with ThreadObserver, ChatUIKitProviderObserver {
+    with ThreadObserver, ChatUIKitProviderObserver, ChatUIKitThemeMixin {
   String? title;
   late ThreadMessagesViewController controller;
   late final ChatUIKitInputBarController inputBarController;
@@ -311,8 +311,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     updateAppBarModel(theme);
     Widget content = Scaffold(
       backgroundColor: theme.color.isDark
@@ -656,7 +655,6 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
   }
 
   Widget subWidget(ChatUIKitTheme theme, MessageModel model) {
-    final theme = ChatUIKitTheme.of(context);
     Widget? msgWidget;
     if (model.message.bodyType == MessageType.TXT) {
       msgWidget = ChatUIKitTextBubbleWidget(
@@ -698,7 +696,6 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
   }
 
   void showBottoms() {
-    final theme = ChatUIKitTheme.of(context);
     List<ChatUIKitBottomSheetAction> items = [];
     if (controller.hasPermission) {
       items.add(
@@ -1405,7 +1402,6 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
   }
 
   void onItemLongPress(MessageModel model) async {
-    final theme = ChatUIKitTheme.of(context);
     clearAllType();
     List<ChatUIKitBottomSheetAction>? items = widget.longPressActions;
     items ??= defaultItemLongPressed(model, theme);

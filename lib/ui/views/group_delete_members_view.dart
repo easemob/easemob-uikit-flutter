@@ -56,7 +56,8 @@ class GroupDeleteMembersView extends StatefulWidget {
   State<GroupDeleteMembersView> createState() => _GroupDeleteMembersViewState();
 }
 
-class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
+class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView>
+    with ChatUIKitThemeMixin {
   List<ChatUIKitProfile> selectedProfiles = [];
   late final GroupMemberListViewController controller;
   ChatUIKitAppBarModel? appBarModel;
@@ -137,8 +138,7 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,

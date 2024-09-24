@@ -8,7 +8,8 @@ class ContactDepthCustomPage extends StatefulWidget {
   State<ContactDepthCustomPage> createState() => _ContactDepthCustomPageState();
 }
 
-class _ContactDepthCustomPageState extends State<ContactDepthCustomPage> {
+class _ContactDepthCustomPageState extends State<ContactDepthCustomPage>
+    with ChatUIKitThemeMixin {
   ContactListViewController controller = ContactListViewController();
   ScrollController scrollController = ScrollController();
 
@@ -38,7 +39,7 @@ class _ContactDepthCustomPageState extends State<ContactDepthCustomPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     return Stack(
       children: [
         ChatUIKitAlphabeticalWidget(
@@ -107,16 +108,20 @@ class _ContactDepthCustomPageState extends State<ContactDepthCustomPage> {
                   width: 80,
                   height: 80,
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.1),
+                    color: theme.color.isDark
+                        ? theme.color.neutralColor3
+                        : theme.color.neutralColor7,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
                     child: Text(
                       value.toUpperCase(),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 40,
-                        color: Colors.black,
+                        color: theme.color.isDark
+                            ? theme.color.neutralColor98
+                            : theme.color.neutralColor0,
                       ),
                     ),
                   ),

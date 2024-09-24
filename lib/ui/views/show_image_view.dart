@@ -40,7 +40,8 @@ class ShowImageView extends StatefulWidget {
   State<ShowImageView> createState() => _ShowImageViewState();
 }
 
-class _ShowImageViewState extends State<ShowImageView> {
+class _ShowImageViewState extends State<ShowImageView>
+    with ChatUIKitThemeMixin {
   ChatUIKitAppBarModel? appBarModel;
   @override
   void initState() {
@@ -79,8 +80,7 @@ class _ShowImageViewState extends State<ShowImageView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     updateAppBarModel(theme);
     Widget content = ChatUIKitShowImageWidget(
       message: widget.message,

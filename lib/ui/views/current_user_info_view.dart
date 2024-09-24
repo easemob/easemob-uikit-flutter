@@ -32,7 +32,7 @@ class CurrentUserInfoView extends StatefulWidget {
 }
 
 class _CurrentUserInfoViewState extends State<CurrentUserInfoView>
-    with ChatUIKitProviderObserver {
+    with ChatUIKitProviderObserver, ChatUIKitThemeMixin {
   ChatUIKitProfile? profile;
 
   ChatUIKitAppBarModel? appBarModel;
@@ -88,8 +88,7 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView>
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     updateAppBarModel(theme);
     Widget content = Scaffold(
         resizeToAvoidBottomInset: false,
@@ -104,7 +103,6 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView>
   }
 
   Widget _buildContent() {
-    final theme = ChatUIKitTheme.of(context);
     Widget avatar = ChatUIKitAvatar(
       avatarUrl: ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
       size: 100,

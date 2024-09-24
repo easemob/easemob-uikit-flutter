@@ -54,7 +54,7 @@ class NewRequestsView extends StatefulWidget {
 }
 
 class _NewRequestsViewState extends State<NewRequestsView>
-    with ContactObserver, ChatSDKEventsObserver {
+    with ContactObserver, ChatSDKEventsObserver, ChatUIKitThemeMixin {
   late final NewRequestListViewController controller;
   ChatUIKitAppBarModel? appBarModel;
   @override
@@ -97,9 +97,9 @@ class _NewRequestsViewState extends State<NewRequestsView>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     Future(() => {ChatUIKitContext.instance.markAllRequestsAsRead()});
-    final theme = ChatUIKitTheme.of(context);
+
     updateAppBarModel(theme);
     Widget content = Scaffold(
         resizeToAvoidBottomInset: false,
