@@ -19,6 +19,8 @@ class BlockListView extends StatefulWidget {
     this.onSelectLetterChanged,
     this.sortAlphabetical,
     this.universalAlphabeticalLetter = '#',
+    this.enableSorting = true,
+    this.showAlphabeticalIndicator = true,
   });
 
   final bool enableSearchBar;
@@ -42,6 +44,9 @@ class BlockListView extends StatefulWidget {
 
   /// 字母排序
   final String? sortAlphabetical;
+
+  final bool enableSorting;
+  final bool showAlphabeticalIndicator;
 
   @override
   State<BlockListView> createState() => _BlockListViewState();
@@ -90,8 +95,10 @@ class _BlockListViewState extends State<BlockListView>
   @override
   Widget build(BuildContext context) {
     return ChatUIKitAlphabeticalWidget(
+      enableSorting: widget.enableSorting,
+      showAlphabeticalIndicator: widget.showAlphabeticalIndicator,
       onSelectLetterChanged: widget.onSelectLetterChanged,
-      universalAlphabeticalLetter: widget.universalAlphabeticalLetter,
+      specialAlphabeticalLetter: widget.universalAlphabeticalLetter,
       sortAlphabetical: widget.sortAlphabetical,
       beforeWidgets: widget.beforeWidgets,
       listViewHasSearchBar: widget.enableSearchBar,

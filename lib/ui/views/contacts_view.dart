@@ -20,9 +20,11 @@ class ContactsView extends StatefulWidget {
         loadErrorMessage = arguments.loadErrorMessage,
         enableSearchBar = arguments.enableSearchBar,
         viewObserver = arguments.viewObserver,
-        universalAlphabeticalLetter = arguments.universalAlphabetical,
+        specialAlphabeticalLetter = arguments.universalAlphabetical,
         sortAlphabetical = arguments.sortAlphabetical,
         onSelectLetterChanged = arguments.onSelectLetterChanged,
+        enableSorting = arguments.enableSorting,
+        showAlphabeticalIndicator = arguments.showAlphabeticalIndicator,
         attributes = arguments.attributes;
 
   const ContactsView({
@@ -41,9 +43,11 @@ class ContactsView extends StatefulWidget {
     this.afterItems,
     this.attributes,
     this.viewObserver,
-    this.universalAlphabeticalLetter = '#',
+    this.specialAlphabeticalLetter = '#',
     this.sortAlphabetical,
     this.onSelectLetterChanged,
+    this.enableSorting = true,
+    this.showAlphabeticalIndicator = true,
     super.key,
   });
 
@@ -51,10 +55,16 @@ class ContactsView extends StatefulWidget {
       onSelectLetterChanged;
 
   /// 通讯录列表的字母排序默认字，默认为 '#'
-  final String universalAlphabeticalLetter;
+  final String specialAlphabeticalLetter;
 
   /// 字母排序
   final String? sortAlphabetical;
+
+  /// 是否进行首字母排序
+  final bool enableSorting;
+
+  /// 是否显示字母索引
+  final bool showAlphabeticalIndicator;
 
   /// 联系人列表控制器，用于控制联系人列表数据，如果不设置将会自动创建。详细参考 [ContactListViewController]。
   final ContactListViewController? controller;
@@ -204,9 +214,11 @@ class _ContactsViewState extends State<ContactsView>
         child: ContactListView(
           controller: controller,
           itemBuilder: widget.itemBuilder,
+          enableSorting: widget.enableSorting,
+          showAlphabeticalIndicator: widget.showAlphabeticalIndicator,
           onSelectLetterChanged: widget.onSelectLetterChanged,
           sortAlphabetical: widget.sortAlphabetical,
-          universalAlphabetical: widget.universalAlphabeticalLetter,
+          specialAlphabeticalLetter: widget.specialAlphabeticalLetter,
           beforeWidgets: widget.beforeItems ?? beforeWidgets(),
           afterWidgets: widget.afterItems,
           searchHideText: widget.searchHideText,

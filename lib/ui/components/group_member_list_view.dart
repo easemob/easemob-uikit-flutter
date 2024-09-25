@@ -16,10 +16,12 @@ class GroupMemberListView extends StatefulWidget {
     this.reloadMessage,
     this.onTap,
     this.onLongPress,
-    this.enableSearchBar = false,
+    this.enableSearchBar = true,
     this.onSelectLetterChanged,
     this.sortAlphabetical,
     this.universalAlphabeticalLetter = '#',
+    this.enableSorting = true,
+    this.showAlphabeticalIndicator = true,
     super.key,
   });
 
@@ -45,6 +47,8 @@ class GroupMemberListView extends StatefulWidget {
 
   /// 字母排序
   final String? sortAlphabetical;
+  final bool enableSorting;
+  final bool showAlphabeticalIndicator;
 
   @override
   State<GroupMemberListView> createState() => _GroupMemberListViewState();
@@ -54,7 +58,6 @@ class _GroupMemberListViewState extends State<GroupMemberListView>
     with ChatUIKitProviderObserver {
   ScrollController scrollController = ScrollController();
   late final GroupMemberListViewController controller;
-  bool enableSearchBar = true;
 
   @override
   void initState() {
@@ -98,12 +101,14 @@ class _GroupMemberListViewState extends State<GroupMemberListView>
       valueListenable: controller.loadingType,
       builder: (context, type, child) {
         return ChatUIKitAlphabeticalWidget(
+          enableSorting: widget.enableSorting,
+          showAlphabeticalIndicator: widget.showAlphabeticalIndicator,
           groupId: widget.groupId,
           onSelectLetterChanged: widget.onSelectLetterChanged,
-          universalAlphabeticalLetter: widget.universalAlphabeticalLetter,
+          specialAlphabeticalLetter: widget.universalAlphabeticalLetter,
           sortAlphabetical: widget.sortAlphabetical,
           beforeWidgets: widget.beforeWidgets,
-          listViewHasSearchBar: enableSearchBar,
+          listViewHasSearchBar: widget.enableSearchBar,
           list: controller.list,
           scrollController: scrollController,
           builder: (context, list) {
@@ -114,7 +119,7 @@ class _GroupMemberListViewState extends State<GroupMemberListView>
               refresh: () {
                 controller.fetchItemList();
               },
-              enableSearchBar: enableSearchBar,
+              enableSearchBar: widget.enableSearchBar,
               errorMessage: widget.errorMessage,
               reloadMessage: widget.reloadMessage,
               beforeWidgets: widget.beforeWidgets,
