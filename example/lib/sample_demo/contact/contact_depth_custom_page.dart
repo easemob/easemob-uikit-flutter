@@ -43,7 +43,9 @@ class _ContactDepthCustomPageState extends State<ContactDepthCustomPage>
     return Stack(
       children: [
         ChatUIKitAlphabeticalWidget(
-          universalAlphabeticalLetter: '#',
+          enableSorting: true,
+          showAlphabeticalIndicator: true,
+          specialAlphabeticalLetter: '#',
           sortAlphabetical: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#',
           highlightColor: Colors.red,
           onSelectLetterChanged: (context, alphabetical) {
