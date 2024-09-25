@@ -37,8 +37,6 @@ class ChatUIKitSettings {
   /// Contact item list height
   static double contactItemListItemHeight = 60;
 
-  /// Contact item more list item height
-  static double contactItemMoreListItemHeight = 58;
 
   /// Message long press menu
   static List<ChatUIKitActionType> msgItemLongPressActions = [
