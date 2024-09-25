@@ -109,10 +109,10 @@ packages:
     dependency: transitive
     description:
       name: chat_uikit_theme
-      sha256: c9ffd2090ef37cc3274fe6cb91016784691f81b5ca9bc43cb132e05d0b81f458
+      sha256: a25ae9f2294ab00883f9dfbc8c506e6034b8605e2fdd12082ccd9411c25fecca
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.9"
+    version: "1.0.4"
   clock:
     dependency: transitive
     description:
@@ -183,7 +183,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.0.3"
+    version: "2.1.0"
   fake_async:
     dependency: transitive
     description:

@@ -28,7 +28,7 @@ class _CustomHomePageState extends State<CustomHomePage>
   bool isLightTheme = true;
   List<String> fontSizeList = ['0', '1', '2', '3'];
   String fontSize = '1';
-  ChatUIKitFontSize size = ChatUIKitFontSize.normal;
+
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     Widget content = Scaffold(
@@ -129,6 +129,7 @@ class _CustomHomePageState extends State<CustomHomePage>
         Text(
           name,
           style: TextStyle(
+              fontSize: theme.font.bodyLarge.fontSize,
               color: theme.color.isDark
                   ? theme.color.neutralColor98
                   : theme.color.neutralColor0),
@@ -149,6 +150,7 @@ class _CustomHomePageState extends State<CustomHomePage>
                       title: Text(
                         title,
                         style: TextStyle(
+                          fontSize: theme.font.bodyLarge.fontSize,
                           color: theme.color.isDark
                               ? theme.color.neutralColor98
                               : theme.color.neutralColor0,
@@ -174,6 +176,7 @@ class _CustomHomePageState extends State<CustomHomePage>
                 title,
                 textAlign: TextAlign.center,
                 style: TextStyle(
+                  fontSize: theme.font.bodyLarge.fontSize,
                   color: theme.color.isDark
                       ? theme.color.neutralColor98
                       : theme.color.neutralColor0,
@@ -192,53 +195,28 @@ class _CustomHomePageState extends State<CustomHomePage>
       children: [
         Expanded(
           child: Text(
-            '修改字号(Set font size) ${() {
-              switch (size) {
-                case ChatUIKitFontSize.small:
-                  return 'small';
-                case ChatUIKitFontSize.normal:
-                  return 'normal';
-                case ChatUIKitFontSize.large:
-                  return 'large';
-                case ChatUIKitFontSize.superLarge:
-                  return 'superLarge';
-              }
-            }()}',
+            '修改字号',
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: theme.color.isDark
                   ? theme.color.neutralColor98
                   : theme.color.neutralColor0,
+              fontSize: theme.font.bodyLarge.fontSize,
             ),
           ),
         ),
         SizedBox(
           width: 150,
           child: Slider(
-            value: double.parse(fontSize).toInt().toDouble(),
+            value: ChatUIKitTheme.instance.font.fontSize.index.toDouble(),
             min: 0,
             max: 3,
             // 设置分割数量
             divisions: 3,
-            // 设置标签
-            label: () {
-              ChatUIKitFontSize size =
-                  ChatUIKitFontSize.values[double.parse(fontSize).toInt()];
-              switch (size) {
-                case ChatUIKitFontSize.small:
-                  return 'small';
-                case ChatUIKitFontSize.normal:
-                  return 'normal';
-                case ChatUIKitFontSize.large:
-                  return 'large';
-                case ChatUIKitFontSize.superLarge:
-                  return 'superLarge';
-              }
-            }(),
             onChanged: (value) {
-              fontSize = value.toString();
-              size = ChatUIKitFontSize.values[double.parse(fontSize).toInt()];
-              setState(() {});
+              ChatUIKitTheme.instance.setFont(
+                ChatUIKitFont.fontSize(ChatUIKitFontSize.values[value.toInt()]),
+              );
             },
           ),
         ),
