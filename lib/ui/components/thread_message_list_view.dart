@@ -32,9 +32,9 @@ class ThreadMessageListView extends StatefulWidget {
   });
 
   final ThreadMessagesViewController controller;
-  final MessageItemTapHandler? onItemTap;
-  final MessageItemTapHandler? onItemLongPress;
-  final MessageItemTapHandler? onItemDoubleTap;
+  final MessageItemGlobalPositionTapHandler? onItemTap;
+  final MessageItemGlobalPositionTapHandler? onItemLongPress;
+  final MessageItemGlobalPositionTapHandler? onItemDoubleTap;
   final MessageItemTapHandler? onAvatarTap;
   final MessageItemTapHandler? onAvatarLongPressed;
   final MessageItemTapHandler? onNicknameTap;
@@ -235,14 +235,14 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView>
       onAvatarLongPressed: () {
         widget.onAvatarLongPressed?.call(context, model);
       },
-      onBubbleDoubleTap: () {
-        widget.onItemDoubleTap?.call(context, model);
+      onBubbleDoubleTap: (rect) {
+        widget.onItemDoubleTap?.call(context, model, rect);
       },
-      onBubbleLongPressed: () {
-        widget.onItemLongPress?.call(context, model);
+      onBubbleLongPressed: (rect) {
+        widget.onItemLongPress?.call(context, model, rect);
       },
-      onBubbleTap: () {
-        widget.onItemTap?.call(context, model);
+      onBubbleTap: (rect) {
+        widget.onItemTap?.call(context, model, rect);
       },
       onNicknameTap: () {
         widget.onNicknameTap?.call(context, model);

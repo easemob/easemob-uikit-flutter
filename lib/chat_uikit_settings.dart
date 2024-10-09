@@ -37,7 +37,6 @@ class ChatUIKitSettings {
   /// Contact item list height
   static double contactItemListItemHeight = 60;
 
-
   /// Message long press menu
   static List<ChatUIKitActionType> msgItemLongPressActions = [
     ChatUIKitActionType.reaction,
@@ -124,4 +123,7 @@ class ChatUIKitSettings {
 
   /// Contact alphabetical sorting order, if there are Chinese characters, you can redefine the initials using [ChatUIKitAlphabetSortHelper].
   static String sortAlphabetical = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#';
+
+  static ChatUIKitMessageLongPressType messageLongPressType =
+      ChatUIKitMessageLongPressType.popupMenu;
 }

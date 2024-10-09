@@ -677,10 +677,10 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   }
 
   void showBottom() async {
-    List<ChatUIKitBottomSheetAction> list = [];
+    List<ChatUIKitEventAction> list = [];
     if (group?.permissionType == GroupPermissionType.Owner) {
       list.add(
-        ChatUIKitBottomSheetAction.normal(
+        ChatUIKitEventAction.normal(
           actionType: ChatUIKitActionType.transferOwner,
           label:
               ChatUIKitLocal.groupDetailViewTransferGroup.localString(context),
@@ -691,7 +691,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
         ),
       );
       list.add(
-        ChatUIKitBottomSheetAction.destructive(
+        ChatUIKitEventAction.destructive(
           actionType: ChatUIKitActionType.disbandGroup,
           label:
               ChatUIKitLocal.groupDetailViewDisbandGroup.localString(context),
@@ -703,7 +703,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       );
     } else {
       list.add(
-        ChatUIKitBottomSheetAction.destructive(
+        ChatUIKitEventAction.destructive(
           actionType: ChatUIKitActionType.leave,
           label: ChatUIKitLocal.groupDetailViewLeaveGroup.localString(context),
           onTap: () async {

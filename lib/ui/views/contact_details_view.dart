@@ -482,8 +482,8 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
   }
 
   void showBottom() async {
-    List<ChatUIKitBottomSheetAction<bool>>? list = [
-      ChatUIKitBottomSheetAction.destructive(
+    List<ChatUIKitEventAction<bool>>? list = [
+      ChatUIKitEventAction.destructive(
         actionType: ChatUIKitActionType.delete,
         label: ChatUIKitLocal.contactDetailViewDelete.localString(context),
         onTap: () {

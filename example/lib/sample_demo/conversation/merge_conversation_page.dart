@@ -86,7 +86,7 @@ class _MergeConversationPageState extends State<MergeConversationPage> {
           return [];
         } else {
           return [
-                ChatUIKitBottomSheetAction.normal(
+                ChatUIKitEventAction.normal(
                   label: '合并会话',
                   onTap: () async {
                     Navigator.of(context).pop();
@@ -253,7 +253,7 @@ class _MergedConversationsViewState extends State<MergedConversationsView> {
           controller: controller,
           onItemLongPressHandler: (context, model, defaultActions) {
             return [
-                  ChatUIKitBottomSheetAction.normal(
+                  ChatUIKitEventAction.normal(
                     label: '取消合并',
                     onTap: () async {
                       Navigator.of(context).pop();

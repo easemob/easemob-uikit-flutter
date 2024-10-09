@@ -53,9 +53,9 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   final VoidCallback? onAvatarTap;
   final VoidCallback? onAvatarLongPressed;
   final VoidCallback? onNicknameTap;
-  final VoidCallback? onBubbleTap;
-  final VoidCallback? onBubbleLongPressed;
-  final VoidCallback? onBubbleDoubleTap;
+  final ChatUIKitPositionWidgetHandler? onBubbleTap;
+  final ChatUIKitPositionWidgetHandler? onBubbleLongPressed;
+  final ChatUIKitPositionWidgetHandler? onBubbleDoubleTap;
   final VoidCallback? enableSelected;
   final Widget Function(BuildContext context, QuoteModel model)? quoteBuilder;
   final VoidCallback? onErrorBtnTap;
@@ -98,19 +98,15 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
 
     Widget bubbleWidget;
 
-    if (model.message.bodyType == MessageType.VIDEO ||
-        model.message.bodyType == MessageType.IMAGE) {
-      bubbleWidget =
-          bubbleBuilder?.call(context, msgWidget, model) ?? msgWidget;
-    } else {
-      bubbleWidget = bubbleBuilder?.call(context, msgWidget, model) ??
-          ChatUIKitMessageBubbleWidget(
-            key: ValueKey(model.message.localTime),
-            needSmallCorner: model.message.getQuote == null,
-            isLeft: left,
-            child: msgWidget,
-          );
-    }
+    bubbleWidget = bubbleBuilder?.call(context, msgWidget, model) ??
+        ChatUIKitMessageBubbleWidget(
+          key: ValueKey(model.message.localTime),
+          needSmallCorner: model.message.getQuote == null,
+          isLeft: left,
+          isVisible: !(model.message.bodyType == MessageType.VIDEO ||
+              model.message.bodyType == MessageType.IMAGE),
+          child: msgWidget,
+        );
 
     if (model.message.bodyType == MessageType.VOICE) {
       bubbleWidget = Row(
@@ -132,14 +128,16 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
         ],
       );
     }
-    bubbleWidget = InkWell(
-      highlightColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      onTap: enableSelected != null ? null : onBubbleTap,
-      onDoubleTap: enableSelected != null ? null : onBubbleDoubleTap,
-      onLongPress: enableSelected != null ? null : onBubbleLongPressed,
+
+    bubbleWidget = ChatUIKitPositionWidget(
+      onTapPositionHandler: enableSelected != null ? null : onBubbleTap,
+      onLongPressPositionHandler:
+          enableSelected != null ? null : onBubbleLongPressed,
+      onDoubleTapPositionHandler:
+          enableSelected != null ? null : onBubbleDoubleTap,
       child: bubbleWidget,
     );
+
     bool showAvatar = this.showAvatar?.call(model) ?? true;
     Widget avatar = _avatarWidget(theme, context, showAvatar);
 

@@ -11,6 +11,7 @@ class ChatUIKitVideoBubbleWidget extends StatefulWidget {
     this.progressIndicatorColor,
     this.forceLeft,
     this.isCombine = false,
+    this.style,
     super.key,
   });
   final MessageModel model;
@@ -18,6 +19,7 @@ class ChatUIKitVideoBubbleWidget extends StatefulWidget {
   final Color? progressIndicatorColor;
   final bool? forceLeft;
   final bool isCombine;
+  final ChatUIKitMessageListViewBubbleStyle? style;
   @override
   State<ChatUIKitVideoBubbleWidget> createState() =>
       _ChatUIKitVideoBubbleWidgetState();
@@ -169,15 +171,14 @@ class _ChatUIKitVideoBubbleWidgetState extends State<ChatUIKitVideoBubbleWidget>
         ],
       );
     }
-
+    bool isArrow = widget.style != null
+        ? widget.style == ChatUIKitMessageListViewBubbleStyle.arrow
+        : ChatUIKitSettings.messageBubbleStyle ==
+            ChatUIKitMessageListViewBubbleStyle.arrow;
     content = Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-            ChatUIKitSettings.messageBubbleStyle ==
-                    ChatUIKitMessageListViewBubbleStyle.arrow
-                ? 4
-                : 16),
+        borderRadius: BorderRadius.circular(isArrow ? 4 : 16),
         border: Border.all(
           width: 1,
           color: theme.color.isDark
@@ -190,11 +191,7 @@ class _ChatUIKitVideoBubbleWidgetState extends State<ChatUIKitVideoBubbleWidget>
         ),
       ),
       foregroundDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-            ChatUIKitSettings.messageBubbleStyle ==
-                    ChatUIKitMessageListViewBubbleStyle.arrow
-                ? 4
-                : 16),
+        borderRadius: BorderRadius.circular(isArrow ? 4 : 16),
         border: Border.all(
           width: 1,
           color: theme.color.isDark

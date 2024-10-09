@@ -64,13 +64,13 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
   final MessageItemShowHandler? showMessageItemNickname;
 
   /// 消息点击事件, 如果设置后消息点击事件将直接回调，如果不处理可以返回 `false`。
-  final MessageItemTapHandler? onItemTap;
+  final MessageItemGlobalPositionTapHandler? onItemTap;
 
   /// 消息长按事件, 如果设置后消息长按事件将直接回调，返回 `true` 表示处理你需要处理，返回 `false` 则会执行默认的长按事件。
-  final MessageItemTapHandler? onItemLongPress;
+  final MessageItemGlobalPositionTapHandler? onItemLongPress;
 
   /// 消息双击事件,如果设置后消息双击事件将直接回调，如果不处理可以返回 `false`。
-  final MessageItemTapHandler? onDoubleTap;
+  final MessageItemGlobalPositionTapHandler? onDoubleTap;
 
   /// 头像点击事件，如果设置后头像点击事件将直接回调，如果不处理可以返回 `false`。
   final MessageItemTapHandler? onAvatarTap;
@@ -87,17 +87,17 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
   /// 提示消息构建器， 如果设置后需要显示提示消息时会直接回调，如果不处理可以返回 `null`。
   final MessageItemBuilder? alertItemBuilder;
 
-  /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitBottomSheetAction]。
-  final List<ChatUIKitBottomSheetAction>? morePressActions;
+  /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitEventAction]。
+  final List<ChatUIKitEventAction>? morePressActions;
 
-  /// 更多按钮点击事件， 如果设置后将会替换默认的更多按钮点击事件。详细参考 [ChatUIKitBottomSheetAction]。
+  /// 更多按钮点击事件， 如果设置后将会替换默认的更多按钮点击事件。详细参考 [ChatUIKitEventAction]。
   final MessagesViewMorePressHandler? onMoreActionsItemsHandler;
 
-  /// 消息长按事件列表，如果设置后将会替换默认的消息长按事件列表。详细参考 [ChatUIKitBottomSheetAction]。
-  final List<ChatUIKitBottomSheetAction>? longPressActions;
+  /// 消息长按事件列表，如果设置后将会替换默认的消息长按事件列表。详细参考 [ChatUIKitEventAction]。
+  final List<ChatUIKitEventAction>? longPressActions;
 
   /// 消息长按事件回调， 如果设置后将会替换默认的消息长按事件回调。当长按时会回调 [longPressActions] 中设置的事件，需要返回一个列表用于替换，如果不返回则不会显示长按。
-  final MessagesViewItemLongPressHandler? onItemLongPressHandler;
+  final MessagesViewItemLongPressPositionHandler? onItemLongPressHandler;
 
   /// 强制消息靠左，默认为 `false`， 设置后自己发的消息也会在左侧显示。
   final bool? forceLeft;
@@ -143,18 +143,18 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
     Widget? inputBar,
     MessageItemShowHandler? showMessageItemAvatar,
     MessageItemShowHandler? showMessageItemNickname,
-    MessageItemTapHandler? onItemTap,
-    MessageItemTapHandler? onItemLongPress,
-    MessageItemTapHandler? onDoubleTap,
+    MessageItemGlobalPositionTapHandler? onItemTap,
+    MessageItemGlobalPositionTapHandler? onItemLongPress,
+    MessageItemGlobalPositionTapHandler? onDoubleTap,
     MessageItemTapHandler? onAvatarTap,
     MessageItemTapHandler? onAvatarLongPress,
     MessageItemTapHandler? onNicknameTap,
     MessageItemBuilder? itemBuilder,
     MessageItemBuilder? alertItemBuilder,
-    List<ChatUIKitBottomSheetAction>? morePressActions,
+    List<ChatUIKitEventAction>? morePressActions,
     MessagesViewMorePressHandler? onMoreActionsItemsHandler,
-    List<ChatUIKitBottomSheetAction>? longPressActions,
-    MessagesViewItemLongPressHandler? onItemLongPressHandler,
+    List<ChatUIKitEventAction>? longPressActions,
+    MessagesViewItemLongPressPositionHandler? onItemLongPressHandler,
     bool? forceLeft,
     Widget? emojiWidget,
     MessageItemBuilder? replyBarBuilder,

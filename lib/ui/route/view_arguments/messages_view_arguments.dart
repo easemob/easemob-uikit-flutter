@@ -61,10 +61,10 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   final MessageItemShowHandler? showMessageItemNickname;
 
   /// 消息点击事件, 如果设置后消息点击事件将直接回调，如果不处理可以返回 `false`。
-  final MessageItemTapHandler? onItemTap;
+  final MessageItemGlobalPositionTapHandler? onItemTap;
 
   /// 消息双击事件,如果设置后消息双击事件将直接回调，如果不处理可以返回 `false`。
-  final MessageItemTapHandler? onDoubleTap;
+  final MessageItemGlobalPositionTapHandler? onDoubleTap;
 
   /// 头像点击事件，如果设置后头像点击事件将直接回调，如果不处理可以返回 `false`。
   final MessageItemTapHandler? onAvatarTap;
@@ -81,14 +81,14 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   /// 提示消息构建器， 如果设置后需要显示提示消息时会直接回调，如果不处理可以返回 `null`。
   final MessageItemBuilder? alertItemBuilder;
 
-  /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitBottomSheetAction]。
-  final List<ChatUIKitBottomSheetAction>? morePressActions;
+  /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitEventAction]。
+  final List<ChatUIKitEventAction>? morePressActions;
 
-  /// 更多按钮点击事件， 如果设置后将会替换默认的更多按钮点击事件。详细参考 [ChatUIKitBottomSheetAction]。
+  /// 更多按钮点击事件， 如果设置后将会替换默认的更多按钮点击事件。详细参考 [ChatUIKitEventAction]。
   final MessagesViewMorePressHandler? onMoreActionsItemsHandler;
 
   /// 消息长按事件回调， 如果设置后将会替换默认的消息长按事件回调。
-  final MessagesViewItemLongPressHandler? onItemLongPressHandler;
+  final MessagesViewItemLongPressPositionHandler? onItemLongPressHandler;
 
   /// 强制消息靠左，默认为 `false`， 设置后自己发的消息也会在左侧显示。
   final bool? forceLeft;
@@ -152,10 +152,10 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     MessageItemShowHandler? showMessageItemNickname,
 
     /// 消息点击事件, 如果设置后消息点击事件将直接回调，如果不处理可以返回 `false`。
-    MessageItemTapHandler? onItemTap,
+    MessageItemGlobalPositionTapHandler? onItemTap,
 
     /// 消息双击事件,如果设置后消息双击事件将直接回调，如果不处理可以返回 `false`。
-    MessageItemTapHandler? onDoubleTap,
+    MessageItemGlobalPositionTapHandler? onDoubleTap,
 
     /// 头像点击事件，如果设置后头像点击事件将直接回调，如果不处理可以返回 `false`。
     MessageItemTapHandler? onAvatarTap,
@@ -166,8 +166,8 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     /// 昵称点击事件， 如果设置后昵称点击事件将直接回调，如果不处理可以返回 `false`。
     MessageItemTapHandler? onNicknameTap,
 
-    /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitBottomSheetAction]。
-    List<ChatUIKitBottomSheetAction>? morePressActions,
+    /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitEventAction]。
+    List<ChatUIKitEventAction>? morePressActions,
     MessageItemBuilder? itemBuilder,
     MessageItemBuilder? alertItemBuilder,
     FocusNode? focusNode,
@@ -179,7 +179,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     MessageItemBubbleBuilder? bubbleBuilder,
     MessageItemBuilder? bubbleContentBuilder,
     MessagesViewMorePressHandler? onMoreActionsItemsHandler,
-    MessagesViewItemLongPressHandler? onItemLongPressHandler,
+    MessagesViewItemLongPressPositionHandler? onItemLongPressHandler,
     ChatUIKitInputBarController? inputBarTextEditingController,
     bool? enableAppBar,
     bool? forceLeft,

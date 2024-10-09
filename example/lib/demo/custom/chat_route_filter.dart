@@ -163,7 +163,7 @@ class ChatRouteFilter {
         }
         return null;
       },
-      onItemTap: (ctx, messageModel) {
+      onItemTap: (ctx, messageModel, rect) {
         if (messageModel.message.bodyType == MessageType.FILE) {
           Navigator.of(ctx).push(
             MaterialPageRoute(

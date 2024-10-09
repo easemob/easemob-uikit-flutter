@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 Future<T?> showChatUIKitBottomSheet<T>({
   required BuildContext context,
-  List<ChatUIKitBottomSheetAction<T>>? items,
+  List<ChatUIKitEventAction<T>>? items,
   Color? backgroundColor,
   Color? barrierColor,
   bool enableRadius = true,
@@ -59,8 +59,8 @@ enum ChatUIKitBottomSheetItemType {
   destructive,
 }
 
-class ChatUIKitBottomSheetAction<T> {
-  ChatUIKitBottomSheetAction.normal({
+class ChatUIKitEventAction<T> {
+  ChatUIKitEventAction.normal({
     required this.label,
     this.actionType = ChatUIKitActionType.custom,
     this.style,
@@ -68,7 +68,7 @@ class ChatUIKitBottomSheetAction<T> {
     this.icon,
   }) : type = ChatUIKitBottomSheetItemType.normal;
 
-  ChatUIKitBottomSheetAction.destructive({
+  ChatUIKitEventAction.destructive({
     required this.label,
     this.actionType = ChatUIKitActionType.custom,
     this.style,
@@ -76,7 +76,7 @@ class ChatUIKitBottomSheetAction<T> {
     this.icon,
   }) : type = ChatUIKitBottomSheetItemType.destructive;
 
-  ChatUIKitBottomSheetAction({
+  ChatUIKitEventAction({
     required this.type,
     required this.label,
     required this.actionType,
@@ -92,14 +92,14 @@ class ChatUIKitBottomSheetAction<T> {
   final VoidCallback? onTap;
   final ChatUIKitActionType actionType;
 
-  ChatUIKitBottomSheetAction copyWith({
+  ChatUIKitEventAction copyWith({
     ChatUIKitBottomSheetItemType? type,
     String? label,
     TextStyle? style,
     Widget? icon,
     T? Function()? onTap,
   }) {
-    return ChatUIKitBottomSheetAction(
+    return ChatUIKitEventAction(
       actionType: this.actionType,
       type: type ?? this.type,
       label: label ?? this.label,
@@ -123,7 +123,7 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
     this.height,
     super.key,
   });
-  final List<ChatUIKitBottomSheetAction>? items;
+  final List<ChatUIKitEventAction>? items;
   final String? title;
   final Widget? titleWidget;
   final TextStyle? titleStyle;

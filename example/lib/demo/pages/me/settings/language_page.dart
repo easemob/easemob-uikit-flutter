@@ -49,6 +49,7 @@ class _LanguagePageState extends State<LanguagePage> with ChatUIKitThemeMixin {
                 ),
           onTap: () {
             language.value = 'zh';
+            setState(() {});
           },
         ),
         ListItem(
@@ -70,6 +71,7 @@ class _LanguagePageState extends State<LanguagePage> with ChatUIKitThemeMixin {
                 ),
           onTap: () {
             language.value = 'en';
+            setState(() {});
           },
         ),
       ],

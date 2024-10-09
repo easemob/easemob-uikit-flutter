@@ -251,7 +251,7 @@ class _ConversationsViewState extends State<ConversationsView>
   }
 
   void longPressed(ConversationItemModel info) async {
-    List<ChatUIKitBottomSheetAction>? list;
+    List<ChatUIKitEventAction>? list;
     if (widget.onItemLongPressHandler != null) {
       list = widget.onItemLongPressHandler
           ?.call(context, info, defaultLongPressActions(info));
@@ -269,10 +269,10 @@ class _ConversationsViewState extends State<ConversationsView>
     }
   }
 
-  List<ChatUIKitBottomSheetAction> defaultLongPressActions(
+  List<ChatUIKitEventAction> defaultLongPressActions(
       ConversationItemModel info) {
     return [
-      ChatUIKitBottomSheetAction.normal(
+      ChatUIKitEventAction.normal(
         actionType: ChatUIKitActionType.mute,
         label: info.noDisturb
             ? ChatUIKitLocal.conversationListLongPressMenuUnmute
@@ -303,7 +303,7 @@ class _ConversationsViewState extends State<ConversationsView>
           Navigator.of(context).pop();
         },
       ),
-      ChatUIKitBottomSheetAction.normal(
+      ChatUIKitEventAction.normal(
         actionType: ChatUIKitActionType.pinConversation,
         label: info.pinned
             ? ChatUIKitLocal.conversationListLongPressMenuUnPin
@@ -319,7 +319,7 @@ class _ConversationsViewState extends State<ConversationsView>
         },
       ),
       if (info.unreadCount > 0)
-        ChatUIKitBottomSheetAction.normal(
+        ChatUIKitEventAction.normal(
           actionType: ChatUIKitActionType.read,
           label: ChatUIKitLocal.conversationListLongPressMenuRead
               .localString(context),
@@ -330,7 +330,7 @@ class _ConversationsViewState extends State<ConversationsView>
             Navigator.of(context).pop();
           },
         ),
-      ChatUIKitBottomSheetAction.destructive(
+      ChatUIKitEventAction.destructive(
         actionType: ChatUIKitActionType.delete,
         label: ChatUIKitLocal.conversationListLongPressMenuDelete
             .localString(context),
@@ -345,7 +345,7 @@ class _ConversationsViewState extends State<ConversationsView>
   }
 
   void showMoreInfo() {
-    List<ChatUIKitBottomSheetAction> list = defaultItems();
+    List<ChatUIKitEventAction> list = defaultItems();
     list = widget.moreActionsBuilder?.call(context, list) ?? list;
     showChatUIKitBottomSheet(
       cancelLabel:
@@ -355,9 +355,9 @@ class _ConversationsViewState extends State<ConversationsView>
     );
   }
 
-  List<ChatUIKitBottomSheetAction> defaultItems() {
+  List<ChatUIKitEventAction> defaultItems() {
     return [
-      ChatUIKitBottomSheetAction.normal(
+      ChatUIKitEventAction.normal(
         actionType: ChatUIKitActionType.newChat,
         label: ChatUIKitLocal.conversationsViewMenuCreateNewChat
             .localString(context),
@@ -372,7 +372,7 @@ class _ConversationsViewState extends State<ConversationsView>
           newConversations();
         },
       ),
-      ChatUIKitBottomSheetAction.normal(
+      ChatUIKitEventAction.normal(
         actionType: ChatUIKitActionType.addContact,
         label:
             ChatUIKitLocal.conversationsViewMenuAddContact.localString(context),
@@ -387,7 +387,7 @@ class _ConversationsViewState extends State<ConversationsView>
           addContact();
         },
       ),
-      ChatUIKitBottomSheetAction.normal(
+      ChatUIKitEventAction.normal(
         actionType: ChatUIKitActionType.create,
         label: ChatUIKitLocal.conversationsViewMenuCreateGroup
             .localString(context),

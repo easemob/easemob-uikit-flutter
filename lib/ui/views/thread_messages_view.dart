@@ -103,13 +103,13 @@ class ThreadMessagesView extends StatefulWidget {
   final MessageItemShowHandler? showMessageItemNickname;
 
   /// 消息点击事件, 如果设置后消息点击事件将直接回调，如果不处理可以返回 `false`。
-  final MessageItemTapHandler? onItemTap;
+  final MessageItemGlobalPositionTapHandler? onItemTap;
 
   /// 消息长按事件, 如果设置后消息长按事件将直接回调，返回 `true` 表示处理你需要处理，返回 `false` 则会执行默认的长按事件。
-  final MessageItemTapHandler? onItemLongPress;
+  final MessageItemGlobalPositionTapHandler? onItemLongPress;
 
   /// 消息双击事件,如果设置后消息双击事件将直接回调，如果不处理可以返回 `false`。
-  final MessageItemTapHandler? onDoubleTap;
+  final MessageItemGlobalPositionTapHandler? onDoubleTap;
 
   /// 头像点击事件，如果设置后头像点击事件将直接回调，如果不处理可以返回 `false`。
   final MessageItemTapHandler? onAvatarTap;
@@ -126,17 +126,17 @@ class ThreadMessagesView extends StatefulWidget {
   /// 提示消息构建器， 如果设置后需要显示提示消息时会直接回调，如果不处理可以返回 `null`。
   final MessageItemBuilder? alertItemBuilder;
 
-  /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitBottomSheetAction]。
-  final List<ChatUIKitBottomSheetAction>? morePressActions;
+  /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitEventAction]。
+  final List<ChatUIKitEventAction>? morePressActions;
 
-  /// 更多按钮点击事件， 如果设置后将会替换默认的更多按钮点击事件。详细参考 [ChatUIKitBottomSheetAction]。
+  /// 更多按钮点击事件， 如果设置后将会替换默认的更多按钮点击事件。详细参考 [ChatUIKitEventAction]。
   final MessagesViewMorePressHandler? onMoreActionsItemsHandler;
 
-  /// 消息长按事件列表，如果设置后将会替换默认的消息长按事件列表。详细参考 [ChatUIKitBottomSheetAction]。
-  final List<ChatUIKitBottomSheetAction>? longPressActions;
+  /// 消息长按事件列表，如果设置后将会替换默认的消息长按事件列表。详细参考 [ChatUIKitEventAction]。
+  final List<ChatUIKitEventAction>? longPressActions;
 
   /// 消息长按事件回调， 如果设置后将会替换默认的消息长按事件回调。当长按时会回调 [longPressActions] 中设置的事件，需要返回一个列表用于替换，如果不返回则不会显示长按。
-  final MessagesViewItemLongPressHandler? onItemLongPressHandler;
+  final MessagesViewItemLongPressPositionHandler? onItemLongPressHandler;
 
   /// 更多操作构建器，用于构建更多操作的菜单，如果不设置将会使用默认的菜单。
   final ChatUIKitMoreActionsBuilder? rightTopMoreActionsBuilder;
@@ -334,24 +334,25 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                   quoteBuilder: widget.quoteBuilder,
                   showAvatar: widget.showMessageItemAvatar,
                   showNickname: widget.showMessageItemNickname,
-                  onItemTap: (ctx, msg) {
+                  onItemTap: (ctx, msg, rect) {
                     stopVoice();
-                    bool? ret = widget.onItemTap?.call(context, msg);
+                    bool? ret = widget.onItemTap?.call(context, msg, rect);
                     if (ret != true) {
-                      bubbleTab(msg);
+                      bubbleTab(msg, rect);
                     }
                     return ret;
                   },
-                  onItemLongPress: (context, model) {
-                    bool? ret = widget.onItemLongPress?.call(context, model);
+                  onItemLongPress: (context, model, rect) {
+                    bool? ret =
+                        widget.onItemLongPress?.call(context, model, rect);
                     stopVoice();
                     if (ret != true) {
-                      onItemLongPress(model);
+                      onItemLongPress(model, rect);
                     }
                     return ret;
                   },
-                  onItemDoubleTap: (context, model) {
-                    bool? ret = widget.onDoubleTap?.call(context, model);
+                  onItemDoubleTap: (context, model, rect) {
+                    bool? ret = widget.onDoubleTap?.call(context, model, rect);
                     stopVoice();
                     return ret;
                   },
@@ -531,19 +532,19 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       onAvatarLongPressed: () {
         widget.onAvatarLongPress?.call(context, model);
       },
-      onBubbleDoubleTap: () {
-        widget.onDoubleTap?.call(context, model);
+      onBubbleDoubleTap: (rect) {
+        widget.onDoubleTap?.call(context, model, rect);
       },
-      onBubbleLongPressed: () {
-        bool? ret = widget.onItemLongPress?.call(context, model);
+      onBubbleLongPressed: (rect) {
+        bool? ret = widget.onItemLongPress?.call(context, model, rect);
         if (ret != true) {
-          onItemLongPress(model);
+          onItemLongPress(model, rect);
         }
       },
-      onBubbleTap: () {
-        bool? ret = widget.onItemTap?.call(context, model);
+      onBubbleTap: (rect) {
+        bool? ret = widget.onItemTap?.call(context, model, rect);
         if (ret != true) {
-          bubbleTab(model);
+          bubbleTab(model, rect);
         }
       },
       onNicknameTap: () {
@@ -696,10 +697,10 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
   }
 
   void showBottoms() {
-    List<ChatUIKitBottomSheetAction> items = [];
+    List<ChatUIKitEventAction> items = [];
     if (controller.hasPermission) {
       items.add(
-        ChatUIKitBottomSheetAction.normal(
+        ChatUIKitEventAction.normal(
           actionType: ChatUIKitActionType.edit,
           label: ChatUIKitLocal.threadsMessageEdit.localString(context),
           onTap: () async {
@@ -739,7 +740,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       );
     }
     items.add(
-      ChatUIKitBottomSheetAction.normal(
+      ChatUIKitEventAction.normal(
         actionType: ChatUIKitActionType.members,
         label: ChatUIKitLocal.threadsMessageMembers.localString(context),
         onTap: () async {
@@ -768,7 +769,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       ),
     );
     items.add(
-      ChatUIKitBottomSheetAction.destructive(
+      ChatUIKitEventAction.destructive(
         actionType: ChatUIKitActionType.leave,
         label: ChatUIKitLocal.threadsMessageLeave.localString(context),
         onTap: () async {
@@ -798,7 +799,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     );
     if (controller.hasPermission) {
       items.add(
-        ChatUIKitBottomSheetAction.destructive(
+        ChatUIKitEventAction.destructive(
           actionType: ChatUIKitActionType.destroy,
           label: ChatUIKitLocal.threadsMessageDestroy.localString(context),
           onTap: () async {
@@ -985,11 +986,10 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                 splashColor: Colors.transparent,
                 onTap: () {
                   clearAllType();
-                  List<ChatUIKitBottomSheetAction>? items =
-                      widget.morePressActions;
+                  List<ChatUIKitEventAction>? items = widget.morePressActions;
                   if (items == null) {
                     items = [];
-                    items.add(ChatUIKitBottomSheetAction.normal(
+                    items.add(ChatUIKitEventAction.normal(
                       actionType: ChatUIKitActionType.photos,
                       label: ChatUIKitLocal.messagesViewMoreActionsTitleAlbum
                           .localString(context),
@@ -1003,7 +1003,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                         selectImage();
                       },
                     ));
-                    items.add(ChatUIKitBottomSheetAction.normal(
+                    items.add(ChatUIKitEventAction.normal(
                       actionType: ChatUIKitActionType.video,
                       label: ChatUIKitLocal.messagesViewMoreActionsTitleVideo
                           .localString(context),
@@ -1017,7 +1017,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                         selectVideo();
                       },
                     ));
-                    items.add(ChatUIKitBottomSheetAction.normal(
+                    items.add(ChatUIKitEventAction.normal(
                       actionType: ChatUIKitActionType.camera,
                       label: ChatUIKitLocal.messagesViewMoreActionsTitleCamera
                           .localString(context),
@@ -1031,7 +1031,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                         selectCamera();
                       },
                     ));
-                    items.add(ChatUIKitBottomSheetAction.normal(
+                    items.add(ChatUIKitEventAction.normal(
                       actionType: ChatUIKitActionType.file,
                       label: ChatUIKitLocal.messagesViewMoreActionsTitleFile
                           .localString(context),
@@ -1045,7 +1045,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                         selectFile();
                       },
                     ));
-                    items.add(ChatUIKitBottomSheetAction.normal(
+                    items.add(ChatUIKitEventAction.normal(
                       actionType: ChatUIKitActionType.contactCard,
                       label: ChatUIKitLocal.messagesViewMoreActionsTitleContact
                           .localString(context),
@@ -1401,15 +1401,16 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     );
   }
 
-  void onItemLongPress(MessageModel model) async {
+  void onItemLongPress(MessageModel model, Rect rect) async {
     clearAllType();
-    List<ChatUIKitBottomSheetAction>? items = widget.longPressActions;
+    List<ChatUIKitEventAction>? items = widget.longPressActions;
     items ??= defaultItemLongPressed(model, theme);
 
     if (widget.onItemLongPressHandler != null) {
       items = widget.onItemLongPressHandler!.call(
         context,
         model,
+        rect,
         items,
       );
     }
@@ -1423,14 +1424,14 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     }
   }
 
-  List<ChatUIKitBottomSheetAction> defaultItemLongPressed(
+  List<ChatUIKitEventAction> defaultItemLongPressed(
       MessageModel model, ChatUIKitTheme theme) {
-    List<ChatUIKitBottomSheetAction> items = [];
+    List<ChatUIKitEventAction> items = [];
     for (var element in ChatUIKitSettings.msgItemLongPressActions) {
       // 复制
       if (model.message.bodyType == MessageType.TXT &&
           element == ChatUIKitActionType.copy) {
-        items.add(ChatUIKitBottomSheetAction.normal(
+        items.add(ChatUIKitEventAction.normal(
           actionType: ChatUIKitActionType.copy,
           label: ChatUIKitLocal.messagesViewLongPressActionsTitleCopy
               .localString(context),
@@ -1458,7 +1459,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       if (model.message.status == MessageStatus.SUCCESS &&
           element == ChatUIKitActionType.reply &&
           ChatUIKitSettings.enableMessageReply) {
-        items.add(ChatUIKitBottomSheetAction.normal(
+        items.add(ChatUIKitEventAction.normal(
           actionType: ChatUIKitActionType.reply,
           icon: ChatUIKitImageLoader.messageLongPressReply(
             color: theme.color.isDark
@@ -1484,7 +1485,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       if (model.message.status == MessageStatus.SUCCESS &&
           element == ChatUIKitActionType.forward &&
           ChatUIKitSettings.enableMessageForward) {
-        items.add(ChatUIKitBottomSheetAction.normal(
+        items.add(ChatUIKitEventAction.normal(
           actionType: ChatUIKitActionType.forward,
           icon: ChatUIKitImageLoader.messageLongPressForward(
             color: theme.color.isDark
@@ -1513,7 +1514,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       if (model.message.status == MessageStatus.SUCCESS &&
           element == ChatUIKitActionType.multiSelect &&
           ChatUIKitSettings.enableMessageMultiSelect) {
-        items.add(ChatUIKitBottomSheetAction.normal(
+        items.add(ChatUIKitEventAction.normal(
           actionType: ChatUIKitActionType.multiSelect,
           icon: ChatUIKitImageLoader.messageLongPressMultiSelected(
             color: theme.color.isDark
@@ -1541,7 +1542,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           model.message.bodyType == MessageType.TXT &&
           element == ChatUIKitActionType.translate &&
           ChatUIKitSettings.enableMessageTranslation) {
-        items.add(ChatUIKitBottomSheetAction.normal(
+        items.add(ChatUIKitEventAction.normal(
           actionType: ChatUIKitActionType.translate,
           icon: ChatUIKitImageLoader.messageLongPressTranslate(
             color: theme.color.isDark
@@ -1576,7 +1577,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           model.message.direction == MessageDirection.SEND &&
           element == ChatUIKitActionType.edit &&
           ChatUIKitSettings.enableMessageEdit) {
-        items.add(ChatUIKitBottomSheetAction.normal(
+        items.add(ChatUIKitEventAction.normal(
           actionType: ChatUIKitActionType.edit,
           label: ChatUIKitLocal.messagesViewLongPressActionsTitleEdit
               .localString(context),
@@ -1603,7 +1604,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           element == ChatUIKitActionType.report &&
           ChatUIKitSettings.enableMessageReport) {
         // 举报
-        items.add(ChatUIKitBottomSheetAction.normal(
+        items.add(ChatUIKitEventAction.normal(
           actionType: ChatUIKitActionType.report,
           label: ChatUIKitLocal.messagesViewLongPressActionsTitleReport
               .localString(context),
@@ -1771,7 +1772,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     );
   }
 
-  void bubbleTab(MessageModel model) async {
+  void bubbleTab(MessageModel model, Rect rect) async {
     if (model.message.bodyType == MessageType.IMAGE) {
       ChatUIKitRoute.pushOrPushNamed(
         context,
