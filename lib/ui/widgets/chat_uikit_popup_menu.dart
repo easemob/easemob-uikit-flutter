@@ -148,16 +148,13 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu> {
             menuWidth / 2 +
             widget.controller.rect!.width / 2;
 
-        if (menuWidth < widget.controller.rect!.width) {
-          dx = widget.controller.rect!.left +
-              widget.controller.rect!.width / 2 -
-              menuWidth / 2;
-        } else if (dx - menuWidth / 2 <= 0) {
-          offset = _kHorizontalPadding - dx;
-          dx = _kHorizontalPadding;
-        } else if (dx + menuWidth > maxWidth + _kHorizontalPadding) {
-          double x = maxWidth + _kHorizontalPadding - menuWidth;
+        if (dx + menuWidth > maxWidth) {
+          double x = maxWidth - menuWidth;
           offset = x - dx;
+          dx = x;
+        } else if (dx < 0) {
+          double x = 0;
+          offset = x - dx + _kHorizontalPadding;
           dx = x;
         }
       }

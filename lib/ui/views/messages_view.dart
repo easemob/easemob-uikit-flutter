@@ -725,6 +725,10 @@ class _MessagesViewState extends State<MessagesView>
           dividerColor: theme.color.isDark
               ? theme.color.neutralColor3
               : theme.color.neutralColor9,
+          radiusCircular: ChatUIKitSettings.messageBubbleStyle ==
+                  ChatUIKitMessageListViewBubbleStyle.arrow
+              ? 4
+              : 16,
         ),
         child: content,
       );
@@ -2067,9 +2071,9 @@ class _MessagesViewState extends State<MessagesView>
                 : theme.color.neutralColor3,
           ),
           onTap: () async {
+            closeMenu();
             Clipboard.setData(ClipboardData(text: model.message.textContent));
             ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.messageCopied);
-            closeMenu();
           },
         ));
       }
@@ -2095,8 +2099,8 @@ class _MessagesViewState extends State<MessagesView>
           label: ChatUIKitLocal.messagesViewLongPressActionsTitleReply
               .localString(context),
           onTap: () async {
-            replyMessaged(model);
             closeMenu();
+            replyMessaged(model);
           },
         ));
       }
@@ -2120,11 +2124,11 @@ class _MessagesViewState extends State<MessagesView>
           ),
           label: ChatUIKitLocal.forwardMessage.localString(context),
           onTap: () async {
+            closeMenu();
             forwardMessage(
               [model.message],
               isMultiSelect: false,
             );
-            closeMenu();
           },
         ));
       }
@@ -2150,8 +2154,8 @@ class _MessagesViewState extends State<MessagesView>
           label:
               ChatUIKitLocal.messageListLongPressMenuMulti.localString(context),
           onTap: () async {
-            controller.enableMultiSelectMode();
             closeMenu();
+            controller.enableMultiSelectMode();
           },
         ));
       }
@@ -2178,8 +2182,8 @@ class _MessagesViewState extends State<MessagesView>
           label:
               ChatUIKitLocal.messageListLongPressMenuPin.localString(context),
           onTap: () async {
-            pinMessageController?.pinMsg(model.message);
             closeMenu();
+            pinMessageController?.pinMsg(model.message);
           },
         ));
       }
@@ -2209,11 +2213,11 @@ class _MessagesViewState extends State<MessagesView>
               : ChatUIKitLocal.messageListLongPressMenuTranslate
                   .localString(context),
           onTap: () async {
+            closeMenu();
             controller.translateMessage(
               model.message,
               showTranslate: !model.message.hasTranslate,
             );
-            closeMenu();
           },
         ));
       }
