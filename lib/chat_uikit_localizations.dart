@@ -608,7 +608,7 @@ mixin ChatUIKitLocal {
     messageListLongPressMenuMulti: 'Select',
     messageListLongPressMenuPin: 'Pin',
     messageListLongPressMenuTranslate: 'Trans',
-    messageListLongPressMenuTranslateOrigin: 'Hide Translation',
+    messageListLongPressMenuTranslateOrigin: 'Hide',
     messageListLongPressMenuCreateThread: 'Thread',
     recordBarRecord: 'Tap to Record',
     recordBarRecording: 'Recording',

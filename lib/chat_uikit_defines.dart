@@ -117,3 +117,8 @@ enum ChatUIKitMessageLongPressType {
   popupMenu,
   bottomSheet,
 }
+
+enum ChatUIKitMessageMoreActionType {
+  menu,
+  bottomSheet,
+}

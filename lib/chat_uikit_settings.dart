@@ -126,4 +126,7 @@ class ChatUIKitSettings {
 
   static ChatUIKitMessageLongPressType messageLongPressType =
       ChatUIKitMessageLongPressType.popupMenu;
+
+  static ChatUIKitMessageMoreActionType messageMoreActionType =
+      ChatUIKitMessageMoreActionType.menu;
 }

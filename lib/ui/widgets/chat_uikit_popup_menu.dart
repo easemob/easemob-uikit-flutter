@@ -298,6 +298,8 @@ class _PopupMenuWidgetState extends State<_PopUpMenuWidget> {
                 const SizedBox(height: 4),
                 Text(
                   item.label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: widget.style.foregroundColor,
                     fontSize: 12,
@@ -496,7 +498,7 @@ class _TrianglePainter extends CustomPainter {
     }
 
     path.close();
-    canvas.drawShadow(path.shift(const Offset(0, -8)), shadowColor, 8.0, false);
+    canvas.drawShadow(path.shift(const Offset(0, 0)), shadowColor, 4.0, false);
 
     canvas.drawPath(path, paint);
   }
