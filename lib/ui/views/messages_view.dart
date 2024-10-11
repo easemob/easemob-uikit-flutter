@@ -1431,18 +1431,21 @@ class _MessagesViewState extends State<MessagesView>
                   return;
                 }
                 bool? ret = await showChatUIKitDialog(
-                    context: context,
-                    actionItems: [
-                      ChatUIKitDialogAction.cancel(
-                          label: ChatUIKitLocal.confirm.localString(context)),
-                      ChatUIKitDialogAction.confirm(
-                        label: ChatUIKitLocal.cancel.localString(context),
-                        onTap: () async {
-                          Navigator.of(context).pop(true);
-                        },
-                      )
-                    ],
-                    title: '删除${controller.selectedMessages.length}条消息?');
+                  context: context,
+                  actionItems: [
+                    ChatUIKitDialogAction.cancel(
+                        label: ChatUIKitLocal.confirm.localString(context)),
+                    ChatUIKitDialogAction.confirm(
+                      label: ChatUIKitLocal.cancel.localString(context),
+                      onTap: () async {
+                        Navigator.of(context).pop(true);
+                      },
+                    )
+                  ],
+                  title: Strings.format(
+                      ChatUIKitLocal.deleteSomeMessages.localString(context),
+                      [controller.selectedMessages.length]),
+                );
                 if (ret == true) {
                   controller.deleteSelectedMessages();
                 }
@@ -2587,7 +2590,7 @@ class _MessagesViewState extends State<MessagesView>
           },
           icon: const Icon(Icons.arrow_downward),
           label: Text(
-            "${controller.cacheMessages.length} 条未读消息",
+            "${controller.cacheMessages.length} ${ChatUIKitLocal.floatingUnreadMessage.localString(context)}",
             textScaler: TextScaler.noScaling,
             style: TextStyle(
               color: theme.color.isDark

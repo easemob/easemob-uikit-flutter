@@ -606,10 +606,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
   Widget originMsgWidget(ChatUIKitTheme theme) {
     MessageModel? model = controller.model;
     if (model == null) {
-      return const Text(
-        'No data',
-        textScaler: TextScaler.noScaling,
-      );
+      return const SizedBox.shrink();
     }
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 10, 12, 10),

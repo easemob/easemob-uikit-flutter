@@ -357,6 +357,9 @@ mixin ChatUIKitLocal {
   static const unPinInquire = 'un_pin_confirm';
   static const unPinConfirmed = 'un_pin_confirmed';
 
+  static const floatingUnreadMessage = 'floating_unread_message';
+  static const deleteSomeMessages = 'delete_some_messages';
+
   static const Map<String, String> zh = {
     conversationsViewMenuAddContact: '添加联系人',
     conversationsViewMenuCreateGroup: '创建群组',
@@ -584,6 +587,8 @@ mixin ChatUIKitLocal {
     byPined: ' 的消息',
     unPinInquire: '移除',
     unPinConfirmed: '确认移除',
+    floatingUnreadMessage: '条未读消息',
+    deleteSomeMessages: '删除%a条消息?',
   };
 
   static const Map<String, String> en = {
@@ -822,6 +827,8 @@ mixin ChatUIKitLocal {
     byPined: " 's message",
     unPinInquire: 'Remove',
     unPinConfirmed: 'Confirm',
+    floatingUnreadMessage: 'unread messages',
+    deleteSomeMessages: 'Delete %a messages?',
   };
 }
 
