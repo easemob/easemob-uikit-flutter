@@ -8,7 +8,7 @@ const double _kHorizontalPadding = 21;
 const double _verticalPadding = 50;
 const double _kMenuArrowHeight = 10.0;
 const double _kMenuArrowWidth = 16.0;
-const double kMenuHorizontalPadding = 12.0;
+const double kMenuHorizontalPadding = 8.0;
 const double _kMenuDividerHeight = 0.5;
 
 class ChatUIKitPopupMenuStyle {
@@ -282,7 +282,8 @@ class _PopupMenuWidgetState extends State<_PopUpMenuWidget> {
             widget.close?.call();
             item.onTap?.call();
           },
-          child: SizedBox(
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 4),
             width: itemWidth,
             height: itemHeight,
             child: Column(
@@ -291,8 +292,8 @@ class _PopupMenuWidgetState extends State<_PopUpMenuWidget> {
               children: [
                 if (item.icon != null)
                   SizedBox(
-                    height: 32,
-                    width: 32,
+                    height: 28,
+                    width: 28,
                     child: item.icon!,
                   ),
                 const SizedBox(height: 4),
@@ -300,6 +301,7 @@ class _PopupMenuWidgetState extends State<_PopUpMenuWidget> {
                   item.label,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                  textScaler: TextScaler.noScaling,
                   style: TextStyle(
                     color: widget.style.foregroundColor,
                     fontSize: 12,

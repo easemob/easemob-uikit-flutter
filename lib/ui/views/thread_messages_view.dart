@@ -286,6 +286,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
             child: controller.isMultiSelectMode
                 ? Text(
                     ChatUIKitLocal.bottomSheetCancel.localString(context),
+                    textScaler: TextScaler.noScaling,
                     style: TextStyle(
                       color: theme.color.isDark
                           ? theme.color.primaryColor6
@@ -605,7 +606,10 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
   Widget originMsgWidget(ChatUIKitTheme theme) {
     MessageModel? model = controller.model;
     if (model == null) {
-      return const Text('No data');
+      return const Text(
+        'No data',
+        textScaler: TextScaler.noScaling,
+      );
     }
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 10, 12, 10),
@@ -645,6 +649,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                               ? theme.color.neutralSpecialColor6
                               : theme.color.neutralSpecialColor5,
                         ),
+                        textScaler: TextScaler.noScaling,
                       ),
                       Text(
                         ChatUIKitTimeFormatter.instance.formatterHandler?.call(
@@ -662,6 +667,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                               ? theme.color.neutralColor6
                               : theme.color.neutralColor5,
                         ),
+                        textScaler: TextScaler.noScaling,
                       )
                     ],
                   ),
@@ -1738,8 +1744,8 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                     borderRadius: BorderRadius.circular(8),
                   ),
                   padding: const EdgeInsets.all(3.6),
-                  width: 40,
-                  height: 40,
+                  width: 36,
+                  height: 36,
                   child: Image.asset(
                     ChatUIKitEmojiData.getEmojiImagePath(emoji)!,
                     package: ChatUIKitEmojiData.packageName,

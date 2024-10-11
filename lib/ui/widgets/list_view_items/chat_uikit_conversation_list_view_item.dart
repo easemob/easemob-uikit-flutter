@@ -136,6 +136,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
               style: style,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
+              textScaler: TextScaler.noScaling,
             )
           : Row(
               children: [
@@ -165,6 +166,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
                 ),
                 Expanded(
                   child: ChatUIKitEmojiRichText(
+                    textScaler: TextScaler.noScaling,
                     text: info.lastMessage?.showInfoTranslate(
                           context,
                           needShowName: true,

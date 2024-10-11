@@ -117,7 +117,9 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
     } else {
       content = Center(
         child: Text(
-            ChatUIKitLocal.forwardedMessageDownloadError.localString(context)),
+          ChatUIKitLocal.forwardedMessageDownloadError.localString(context),
+          textScaler: TextScaler.noScaling,
+        ),
       );
     }
 
@@ -260,6 +262,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
     final body = model.message.body as TextMessageBody;
     return ChatUIKitEmojiRichText(
       emojiSize: const Size(16, 16),
+      textScaler: TextScaler.noScaling,
       text: body.content,
       selectable: true,
       style: TextStyle(

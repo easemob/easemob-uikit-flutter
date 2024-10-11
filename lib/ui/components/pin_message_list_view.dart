@@ -215,6 +215,7 @@ class _PinMessageListViewState extends State<PinMessageListView>
                                     ),
                                     Text(
                                       '${items.length} ${ChatUIKitLocal.pinMessages.getString(context)}',
+                                      textScaler: TextScaler.noScaling,
                                       style: TextStyle(
                                         fontWeight:
                                             theme.font.bodyMedium.fontWeight,
@@ -334,6 +335,7 @@ class PinListItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: RichText(
+                      textScaler: TextScaler.noScaling,
                       text: TextSpan(
                         style: TextStyle(
                           fontWeight: theme.font.bodySmall.fontWeight,
@@ -380,6 +382,7 @@ class PinListItem extends StatelessWidget {
                           model.pinInfo.pinTime,
                           needTime: true,
                         ),
+                    textScaler: TextScaler.noScaling,
                     style: TextStyle(
                       fontWeight: theme.font.bodySmall.fontWeight,
                       fontSize: theme.font.bodySmall.fontSize,
@@ -399,6 +402,7 @@ class PinListItem extends StatelessWidget {
                         context,
                         needShowName: true,
                       ),
+                      textScaler: TextScaler.noScaling,
                       emojiSize: const Size(16, 16),
                       style: TextStyle(
                         fontWeight: theme.font.bodyMedium.fontWeight,
@@ -430,6 +434,7 @@ class PinListItem extends StatelessWidget {
                         if (isConfirming) {
                           return Text(
                             ChatUIKitLocal.unPinConfirmed.getString(context),
+                            textScaler: TextScaler.noScaling,
                             style: TextStyle(
                               fontWeight: theme.font.labelMedium.fontWeight,
                               fontSize: theme.font.labelMedium.fontSize,
@@ -441,6 +446,7 @@ class PinListItem extends StatelessWidget {
                         } else {
                           return Text(
                             ChatUIKitLocal.unPinInquire.getString(context),
+                            textScaler: TextScaler.noScaling,
                             style: TextStyle(
                               fontWeight: theme.font.labelMedium.fontWeight,
                               fontSize: theme.font.labelMedium.fontSize,

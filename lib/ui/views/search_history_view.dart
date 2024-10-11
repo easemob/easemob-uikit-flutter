@@ -250,6 +250,7 @@ class ChatUIKitSearchHistoryViewItem extends StatelessWidget {
     Widget title = Text(
       profile?.showName ?? message.nickname ?? message.from!,
       maxLines: 1,
+      textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       style: theme.titleMedium(
           color: theme.color.isDark

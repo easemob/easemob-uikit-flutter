@@ -384,6 +384,7 @@ class _MessagesViewState extends State<MessagesView>
                   },
                   child: Text(
                     ChatUIKitLocal.bottomSheetCancel.localString(context),
+                    textScaler: TextScaler.noScaling,
                     style: TextStyle(
                       color: theme.color.isDark
                           ? theme.color.primaryColor6
@@ -1398,6 +1399,7 @@ class _MessagesViewState extends State<MessagesView>
               const SizedBox(width: 5),
               Text(
                 ChatUIKitLocal.messagesViewTyping.localString(context),
+                textScaler: TextScaler.noScaling,
                 style: TextStyle(
                     fontWeight: theme.font.bodyExtraSmall.fontWeight,
                     fontSize: theme.font.bodyExtraSmall.fontSize,
@@ -2450,8 +2452,8 @@ class _MessagesViewState extends State<MessagesView>
                     borderRadius: BorderRadius.circular(8),
                   ),
                   padding: const EdgeInsets.all(3.6),
-                  width: 40,
-                  height: 40,
+                  width: 36,
+                  height: 36,
                   child: Image.asset(
                     ChatUIKitEmojiData.getEmojiImagePath(emoji)!,
                     package: ChatUIKitEmojiData.packageName,
@@ -2586,6 +2588,7 @@ class _MessagesViewState extends State<MessagesView>
           icon: const Icon(Icons.arrow_downward),
           label: Text(
             "${controller.cacheMessages.length} 条未读消息",
+            textScaler: TextScaler.noScaling,
             style: TextStyle(
               color: theme.color.isDark
                   ? theme.color.primaryColor6

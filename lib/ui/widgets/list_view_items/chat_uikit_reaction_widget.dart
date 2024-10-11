@@ -60,6 +60,7 @@ class ChatUIkitReactionWidget extends StatelessWidget {
               return Text(
                 reaction.reaction,
                 textAlign: TextAlign.right,
+                textScaler: TextScaler.noScaling,
               );
             }
           }(),
@@ -72,6 +73,7 @@ class ChatUIkitReactionWidget extends StatelessWidget {
             child: Center(
                 child: Text(
               "${reaction.userCount > 99 ? '99+' : reaction.userCount}",
+              textScaler: TextScaler.noScaling,
               style: TextStyle(
                 fontWeight: theme.font.labelMedium.fontWeight,
                 fontSize: theme.font.labelMedium.fontSize,

@@ -59,10 +59,11 @@ class ChatRouteFilter {
         return [
           ChatUIKitDetailsListViewItemModel(
             title: DemoLocalizations.contactRemark.localString(context),
-            trailing: Text(ChatUIKitProvider.instance
-                    .getProfile(arguments.profile)
-                    .remark ??
-                ''),
+            trailing: Text(
+              ChatUIKitProvider.instance.getProfile(arguments.profile).remark ??
+                  '',
+              textScaler: TextScaler.noScaling,
+            ),
             onTap: () async {
               String errStr =
                   DemoLocalizations.contactRemarkFailed.localString(context);

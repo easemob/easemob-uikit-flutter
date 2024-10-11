@@ -389,6 +389,7 @@ class _ChatUIKitDialogState extends State<ChatUIKitDialog> {
                     ? null
                     : Text(
                         '${_controllers[i].text.length}/${item.maxLength}',
+                        textScaler: TextScaler.noScaling,
                       ),
                 suffixIconConstraints: const BoxConstraints(),
                 suffixIcon: item.clearOnTap

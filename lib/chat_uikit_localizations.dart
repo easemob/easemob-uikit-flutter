@@ -379,7 +379,7 @@ mixin ChatUIKitLocal {
     messageListLongPressMenuMulti: '多选',
     messageListLongPressMenuPin: '置顶',
     messageListLongPressMenuTranslate: '翻译',
-    messageListLongPressMenuTranslateOrigin: '显示原文',
+    messageListLongPressMenuTranslateOrigin: '隐藏译文',
     messageListLongPressMenuCreateThread: '创建话题',
     recordBarRecord: '点击录音',
     recordBarRecording: '正在录音',

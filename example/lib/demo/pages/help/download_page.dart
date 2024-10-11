@@ -14,7 +14,10 @@ class _DownloadFileWidgetState extends State<DownloadFileWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.message.displayName ?? '文件下载'),
+        title: Text(
+          widget.message.displayName ?? '文件下载',
+          textScaler: TextScaler.noScaling,
+        ),
       ),
       body: ChatUIKitDownloadsHelperWidget(
         controller: controller,
@@ -30,7 +33,10 @@ class _DownloadFileWidgetState extends State<DownloadFileWidget> {
                 onPressed: () {
                   controller.download();
                 },
-                child: const Text('下载失败，点击重试'),
+                child: const Text(
+                  '下载失败，点击重试',
+                  textScaler: TextScaler.noScaling,
+                ),
               ),
             );
           }
