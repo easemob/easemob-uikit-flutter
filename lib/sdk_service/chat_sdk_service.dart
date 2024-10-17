@@ -1,5 +1,3 @@
-// ignore_for_file: duplicate_export
-
 library chat_sdk_service;
 
 import 'chat_sdk_define.dart';
@@ -59,7 +57,6 @@ export 'observers/presence_observer.dart';
 export 'observers/action_event_observer.dart';
 export 'observers/thread_observer.dart';
 
-export 'chat_sdk_service_defines.dart';
 export 'chat_sdk_service_defines.dart';
 export '../chat_uikit_service/chat_uikit_insert_tools.dart';
 
@@ -218,7 +215,7 @@ class ChatSDKService extends ChatUIKitServiceBase
   void connectHandler({
     VoidCallback? onConnected,
     VoidCallback? onDisconnected,
-    Function(String)? onUserDidLoginFromOtherDevice,
+    Function(LoginExtensionInfo)? onUserDidLoginFromOtherDevice,
     VoidCallback? onUserDidRemoveFromServer,
     VoidCallback? onUserDidForbidByServer,
     VoidCallback? onUserDidChangePassword,

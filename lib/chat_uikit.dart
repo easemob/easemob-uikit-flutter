@@ -68,7 +68,7 @@ export 'ui/widgets/chat_uikit_position_widget.dart';
 export 'ui/widgets/chat_uikit_popup_menu.dart';
 export 'ui/widgets/chat_uikit_quote_widget.dart';
 export 'ui/widgets/chat_uikit_reply_bar.dart';
-export 'ui/widgets/chat_uikit_record_bar.dart';
+export 'ui/widgets/record_bar/chat_uikit_record_bar.dart';
 export 'ui/widgets/chat_uikit_search_widget.dart';
 export 'ui/widgets/chat_uikit_show_image_widget.dart';
 export 'ui/widgets/chat_uikit_show_video_widget.dart';

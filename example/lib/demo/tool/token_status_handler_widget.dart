@@ -49,9 +49,8 @@ class _TokenStatusHandlerWidgetState extends State<TokenStatusHandlerWidget> {
     debugPrint('onDisconnected');
   }
 
-  void onUserDidLoginFromOtherDevice(String deviceName) {
-    debugPrint('onUserDidLoginFromOtherDevice: $deviceName');
-    showDialogInfo(title: 'Login From Other Device');
+  void onUserDidLoginFromOtherDevice(LoginExtensionInfo info) {
+    showDialogInfo(title: 'Login From ${info.deviceName}');
   }
 
   void onUserDidRemoveFromServer() {

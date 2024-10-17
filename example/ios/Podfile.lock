@@ -1,6 +1,8 @@
 PODS:
   - audioplayers_darwin (0.0.1):
     - Flutter
+  - chat_uikit_keyboard_panel (0.0.1):
+    - Flutter
   - DKImagePickerController/Core (4.3.9):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -42,10 +44,10 @@ PODS:
     - Flutter
   - flutter_sound_record (0.0.1):
     - Flutter
-  - HyphenateChat (4.7.0)
+  - HyphenateChat (4.8.1)
   - im_flutter_sdk (0.0.1):
     - Flutter
-    - HyphenateChat (= 4.7.0)
+    - HyphenateChat (= 4.8.1)
   - image_picker_ios (0.0.1):
     - Flutter
   - integration_test (0.0.1):
@@ -65,13 +67,16 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - SDWebImage (5.19.2):
-    - SDWebImage/Core (= 5.19.2)
-  - SDWebImage/Core (5.19.2)
+  - record_darwin (1.0.0):
+    - Flutter
+    - FlutterMacOS
+  - SDWebImage (5.19.7):
+    - SDWebImage/Core (= 5.19.7)
+  - SDWebImage/Core (5.19.7)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - sqflite (0.0.3):
+  - sqflite_darwin (0.0.4):
     - Flutter
     - FlutterMacOS
   - SwiftyGif (5.4.5)
@@ -86,6 +91,7 @@ PODS:
 
 DEPENDENCIES:
   - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
+  - chat_uikit_keyboard_panel (from `.symlinks/plugins/chat_uikit_keyboard_panel/ios`)
   - em_chat_uikit (from `.symlinks/plugins/em_chat_uikit/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
@@ -95,8 +101,9 @@ DEPENDENCIES:
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - record_darwin (from `.symlinks/plugins/record_darwin/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
-  - sqflite (from `.symlinks/plugins/sqflite/darwin`)
+  - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
   - video_thumbnail (from `.symlinks/plugins/video_thumbnail/ios`)
@@ -113,6 +120,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   audioplayers_darwin:
     :path: ".symlinks/plugins/audioplayers_darwin/ios"
+  chat_uikit_keyboard_panel:
+    :path: ".symlinks/plugins/chat_uikit_keyboard_panel/ios"
   em_chat_uikit:
     :path: ".symlinks/plugins/em_chat_uikit/ios"
   file_picker:
@@ -131,10 +140,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/integration_test/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  record_darwin:
+    :path: ".symlinks/plugins/record_darwin/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
-  sqflite:
-    :path: ".symlinks/plugins/sqflite/darwin"
+  sqflite_darwin:
+    :path: ".symlinks/plugins/sqflite_darwin/darwin"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   video_player_avfoundation:
@@ -144,22 +155,24 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
+  chat_uikit_keyboard_panel: 67cdf0084a828cc82c53c7065b54d92b9fc8951e
   DKImagePickerController: 946cec48c7873164274ecc4624d19e3da4c1ef3c
   DKPhotoGallery: b3834fecb755ee09a593d7c9e389d8b5d6deed60
-  em_chat_uikit: 92556d018d33a4e763e25609e3f12fda03d6b347
-  file_picker: 15fd9539e4eb735dc54bae8c0534a7a9511a03de
+  em_chat_uikit: f94bb90fbcee6304417422074e0011ee199a3de0
+  file_picker: 09aa5ec1ab24135ccd7a1621c46c84134bfd6655
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_localization: f43b18844a2b3d2c71fd64f04ffd6b1e64dd54d4
   flutter_sound_record: fa9800029599bccfaa8be22cc372550a5fa505ac
-  HyphenateChat: 0d76f40cec79d084a2c1133e43987e7379124694
-  im_flutter_sdk: fcff186ef0acfb1e7b0e9ba6c5260d0f2278ede8
+  HyphenateChat: 88ff1478183f1349498bd592c89ea9c394c12f76
+  im_flutter_sdk: e144b155d47b2050850b36510d96160ee3206c91
   image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   integration_test: 252f60fa39af5e17c3aa9899d35d908a0721b573
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
-  SDWebImage: dfe95b2466a9823cf9f0c6d01217c06550d7b29a
+  record_darwin: df0a677188e5fed18472550298e675f19ddaffbe
+  SDWebImage: 8a6b7b160b4d710e2a22b6900e25301075c34cb3
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
-  sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
+  sqflite_darwin: a553b1fd6fe66f53bbb0fe5b4f5bab93f08d7a13
   SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
   video_player_avfoundation: 7c6c11d8470e1675df7397027218274b6d2360b3

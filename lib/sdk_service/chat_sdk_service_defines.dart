@@ -122,6 +122,7 @@ enum ChatSDKEvent {
   uploadHMSPushToken,
   uploadFCMPushToken,
   uploadAPNsPushToken,
+  bindDeviceToken,
   setSilentMode,
   clearSilentMode,
   fetchSilentModel,

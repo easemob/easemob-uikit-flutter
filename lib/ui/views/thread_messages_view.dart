@@ -965,22 +965,19 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           showEmoji = false;
           inputBarController.unfocus();
           setState(() {});
-          ChatUIKitRecordModel? model = await showChatUIKitRecordBar(
+          RecordResultData? data = await showChatUIKitRecordBar(
             context: context,
-            statusChangeCallback: (type, duration, path) {
-              if (type == ChatUIKitVoiceBarStatusType.recording) {
-                stopVoice();
-              } else if (type == ChatUIKitVoiceBarStatusType.playing) {
-                // 播放录音
-                previewVoice(true, path: path);
-              } else if (type == ChatUIKitVoiceBarStatusType.ready) {
-                // 停止播放
-                previewVoice(false);
-              }
-            },
+            backgroundColor: theme.color.isDark
+                ? theme.color.neutralColor1
+                : theme.color.neutralColor98,
+            onRecordTypeChanged: (type) {},
           );
-          if (model != null) {
-            controller.sendVoiceMessage(model);
+          if (data?.path != null) {
+            controller.sendVoiceMessage(
+              data!.path!,
+              data.duration ?? 0,
+              data.fileName ?? '',
+            );
           }
         },
         child: ChatUIKitImageLoader.voiceKeyboard(),

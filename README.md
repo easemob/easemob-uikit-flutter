@@ -826,7 +826,7 @@ ChatUIKit.instance.connectHandler(
   onUserAuthenticationFailed: () {},
   onUserDidChangePassword: () {},
   onUserDidForbidByServer: () {},
-  onUserDidLoginFromOtherDevice: (deviceName) {},
+  onUserDidLoginFromOtherDevice: (info) {},
   onUserDidLoginTooManyDevice: () {},
   onUserDidRemoveFromServer: () {},
   onUserKickedByOtherDevice: () {},

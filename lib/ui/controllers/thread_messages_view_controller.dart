@@ -255,13 +255,14 @@ class ThreadMessagesViewController
     } catch (e) {}
   }
 
-  Future<void> sendVoiceMessage(ChatUIKitRecordModel model) async {
+  Future<void> sendVoiceMessage(
+      String path, int duration, String? displayName) async {
     if (await createThreadIfNotExits() == false) return;
     final message = Message.createVoiceSendMessage(
       targetId: thread!.threadId,
-      filePath: model.path,
-      duration: model.duration,
-      displayName: model.displayName,
+      filePath: path,
+      duration: duration,
+      displayName: displayName,
     );
     sendMessage(message);
   }

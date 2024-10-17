@@ -60,3 +60,4 @@ typedef MessageSearchScope = chat.MessageSearchScope;
 typedef UserInfo = chat.EMUserInfo;
 typedef MessagePinOperation = chat.MessagePinOperation;
 typedef MessagePinInfo = chat.MessagePinInfo;
+typedef LoginExtensionInfo = chat.LoginExtensionInfo;

@@ -19,21 +19,39 @@ mixin NotificationActions on NotificationWrapper {
     });
   }
 
+  @Deprecated('Use bindDeviceToken instead')
   Future<void> uploadHMSPushToken({required String token}) {
     return checkResult(ChatSDKEvent.uploadHMSPushToken, () {
+      // ignore: deprecated_member_use
       return Client.getInstance.pushManager.updateHMSPushToken(token);
     });
   }
 
+  @Deprecated('Use bindDeviceToken instead')
   Future<void> uploadFCMPushToken({required String token}) {
     return checkResult(ChatSDKEvent.uploadFCMPushToken, () {
+      // ignore: deprecated_member_use
       return Client.getInstance.pushManager.updateFCMPushToken(token);
     });
   }
 
+  @Deprecated('Use bindDeviceToken instead')
   Future<void> uploadAPNsPushToken({required String token}) {
     return checkResult(ChatSDKEvent.uploadAPNsPushToken, () {
+      // ignore: deprecated_member_use
       return Client.getInstance.pushManager.updateAPNsDeviceToken(token);
+    });
+  }
+
+  Future<void> bindDeviceToken({
+    required String notifierName,
+    required String deviceToken,
+  }) {
+    return checkResult(ChatSDKEvent.bindDeviceToken, () {
+      return Client.getInstance.pushManager.bindDeviceToken(
+        notifierName: notifierName,
+        deviceToken: deviceToken,
+      );
     });
   }
 

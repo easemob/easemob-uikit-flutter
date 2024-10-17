@@ -580,13 +580,14 @@ class MessagesViewController extends ChangeNotifier
     } catch (e) {}
   }
 
-  Future<void> sendVoiceMessage(ChatUIKitRecordModel model) async {
+  Future<void> sendVoiceMessage(
+      String path, int duration, String? displayName) async {
     final message = Message.createVoiceSendMessage(
       targetId: profile.id,
       chatType: chatType,
-      filePath: model.path,
-      duration: model.duration,
-      displayName: model.displayName,
+      filePath: path,
+      duration: duration,
+      displayName: displayName,
     );
     sendMessage(message);
   }
