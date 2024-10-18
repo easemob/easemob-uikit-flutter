@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../chat_uikit_defines.dart';
+import '../../../chat_uikit_defines.dart';
 
 class ChatUIKitPositionWidget extends StatefulWidget {
   const ChatUIKitPositionWidget({

@@ -147,6 +147,12 @@ class ChatRouteFilter {
     ChatUIKitViewObserver viewObserver = ChatUIKitViewObserver();
 
     arguments = arguments.copyWith(
+      controller: MessagesViewController(
+        profile: arguments.profile,
+        willSendHandler: (willSendMessage) {
+          return null;
+        },
+      ),
       viewObserver: viewObserver,
       showMessageItemNickname: (model) {
         // 只有群组消息并且不是自己发的消息显示昵称

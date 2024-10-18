@@ -64,14 +64,16 @@ export 'ui/widgets/chat_uikit_input_emoji_bar.dart';
 export 'ui/widgets/chat_uikit_list_view.dart';
 export 'ui/widgets/chat_uikit_message_status_widget.dart';
 export 'ui/widgets/chat_uikit_message_reaction_info.dart';
-export 'ui/widgets/chat_uikit_position_widget.dart';
-export 'ui/widgets/chat_uikit_popup_menu.dart';
+export 'ui/widgets/popup_menu/chat_uikit_position_widget.dart';
+export 'ui/widgets/popup_menu/chat_uikit_popup_menu.dart';
 export 'ui/widgets/chat_uikit_quote_widget.dart';
 export 'ui/widgets/chat_uikit_reply_bar.dart';
 export 'ui/widgets/record_bar/chat_uikit_record_bar.dart';
 export 'ui/widgets/chat_uikit_search_widget.dart';
 export 'ui/widgets/chat_uikit_show_image_widget.dart';
 export 'ui/widgets/chat_uikit_show_video_widget.dart';
+
+export 'ui/widgets/input_bar/chat_uikit_input_bar1.dart';
 
 export 'ui/controllers/chat_uikit_list_view_controller_base.dart';
 export 'ui/controllers/conversation_list_view_controller.dart';
@@ -172,3 +174,5 @@ export 'chat_uikit_emoji_data.dart';
 export 'chat_uikit_defines.dart';
 export 'universal/defines.dart';
 export 'chat_uikit_alphabet_sort_helper.dart';
+
+export 'package:chat_uikit_keyboard_panel/chat_uikit_keyboard_panel.dart';

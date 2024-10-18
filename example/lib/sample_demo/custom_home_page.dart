@@ -4,6 +4,7 @@ import 'package:em_chat_uikit_example/demo/home_page.dart';
 import 'package:em_chat_uikit_example/sample_demo/contact/contact_depth_custom_page.dart';
 import 'package:em_chat_uikit_example/sample_demo/contact/contact_page_custom1.dart';
 import 'package:em_chat_uikit_example/sample_demo/conversation/merge_conversation_page.dart';
+import 'package:em_chat_uikit_example/sample_demo/custom_page.dart';
 import 'package:em_chat_uikit_example/sample_demo/group/group_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,20 @@ class _CustomHomePageState extends State<CustomHomePage>
                 : theme.color.neutralColor0,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const InputBarPage();
+                  },
+                ),
+              );
+            },
+            icon: const Icon(Icons.add),
+          )
+        ],
         backgroundColor: theme.color.isDark
             ? theme.color.neutralColor1
             : theme.color.neutralColor98,

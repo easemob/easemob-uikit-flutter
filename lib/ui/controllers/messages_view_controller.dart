@@ -23,7 +23,7 @@ class MessagesViewController extends ChangeNotifier
   /// 一次获取的消息数量，默认为 30
   final int pageSize;
 
-  final Message? Function(Message)? willSendHandler;
+  final Future<Message>? Function(Message willSendMessage)? willSendHandler;
 
   /// 消息列表
   final List<MessageModel> msgModelList = [];
@@ -696,7 +696,7 @@ class MessagesViewController extends ChangeNotifier
   Future<void> sendMessage(Message message, {bool needPreview = false}) async {
     Message? willSendMsg = message;
     if (willSendHandler != null) {
-      willSendMsg = willSendHandler!(willSendMsg);
+      willSendMsg = await willSendHandler!(willSendMsg);
       if (willSendMsg == null) {
         return Future(() => null);
       }

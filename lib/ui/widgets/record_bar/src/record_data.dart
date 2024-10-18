@@ -20,4 +20,9 @@ class RecordResultData {
       duration: duration ?? this.duration,
     );
   }
+
+  @override
+  String toString() {
+    return 'RecordResultData(path: $path, fileName: $fileName, duration: $duration)';
+  }
 }
