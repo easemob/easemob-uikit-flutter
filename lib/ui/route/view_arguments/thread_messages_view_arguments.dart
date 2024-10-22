@@ -17,7 +17,6 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
     this.onErrorBtnTapHandler,
     this.bubbleBuilder,
     this.bubbleContentBuilder,
-    this.inputBarTextEditingController,
     this.multiSelectBottomBar,
     this.onReactionItemTap,
     this.onReactionInfoTap,
@@ -27,7 +26,7 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
     this.viewObserver,
     this.appBarModel,
     this.enableAppBar = true,
-    this.inputBarController,
+    this.inputController,
     this.morePressActions,
     this.onMoreActionsItemsHandler,
     this.longPressActions,
@@ -45,7 +44,7 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
   @override
   ChatUIKitViewObserver? viewObserver;
 
-  final ChatUIKitInputBarController? inputBarController;
+  final ChatUIKitKeyboardPanelController? inputController;
 
   final ThreadMessagesViewController controller;
 
@@ -102,7 +101,7 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
   /// 强制消息靠左，默认为 `false`， 设置后自己发的消息也会在左侧显示。
   final bool? forceLeft;
 
-  /// 表情控件，如果设置后将会替换默认的表情控件。详细参考 [ChatUIKitInputEmojiBar]。
+  /// 表情控件，如果设置后将会替换默认的表情控件。详细参考 [ChatUIKitEmojiPanel]。
   final Widget? emojiWidget;
 
   /// 回复消息输入控件构建器，如果设置后将会替换默认的回复消息输入控件构建器。详细参考 [ChatUIKitReplyBar]。
@@ -120,9 +119,6 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
   /// 气泡内容构建器，如果设置后将会替换默认的气泡内容构建器。详细参考 [MessageItemBuilder]。
   final MessageItemBuilder? bubbleContentBuilder;
 
-  /// 输入框控制器，如果设置后将会替换默认的输入框控制器。详细参考 [CustomTextEditingController]。
-  final ChatUIKitInputBarController? inputBarTextEditingController;
-
   /// 多选时显示的 bottom bar
   final Widget? multiSelectBottomBar;
 
@@ -136,7 +132,6 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
   final ChatUIKitMoreActionsBuilder? rightTopMoreActionsBuilder;
 
   ThreadMessagesViewArguments copyWith({
-    ChatUIKitInputBarController? inputBarController,
     ThreadMessagesViewController? controller,
     ChatUIKitAppBarModel? appBarModel,
     bool? enableAppBar,
@@ -162,7 +157,7 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
     MessageItemTapHandler? onErrorBtnTapHandler,
     MessageItemBubbleBuilder? bubbleBuilder,
     MessageItemBuilder? bubbleContentBuilder,
-    ChatUIKitInputBarController? inputBarTextEditingController,
+    ChatUIKitKeyboardPanelController? inputController,
     Widget? multiSelectBottomBar,
     MessageReactionItemTapHandler? onReactionItemTap,
     MessageItemTapHandler? onReactionInfoTap,
@@ -172,7 +167,7 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
     ChatUIKitMoreActionsBuilder? rightTopMoreActionsBuilder,
   }) {
     return ThreadMessagesViewArguments(
-      inputBarController: inputBarController ?? this.inputBarController,
+      inputController: inputController ?? this.inputController,
       controller: controller ?? this.controller,
       appBarModel: appBarModel ?? this.appBarModel,
       enableAppBar: enableAppBar ?? this.enableAppBar,
@@ -202,8 +197,6 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
       onErrorBtnTapHandler: onErrorBtnTapHandler ?? this.onErrorBtnTapHandler,
       bubbleBuilder: bubbleBuilder ?? this.bubbleBuilder,
       bubbleContentBuilder: bubbleContentBuilder ?? this.bubbleContentBuilder,
-      inputBarTextEditingController:
-          inputBarTextEditingController ?? this.inputBarTextEditingController,
       multiSelectBottomBar: multiSelectBottomBar ?? this.multiSelectBottomBar,
       onReactionItemTap: onReactionItemTap ?? this.onReactionItemTap,
       onReactionInfoTap: onReactionInfoTap ?? this.onReactionInfoTap,

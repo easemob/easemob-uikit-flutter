@@ -26,7 +26,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     this.bubbleContentBuilder,
     this.onMoreActionsItemsHandler,
     this.onItemLongPressHandler,
-    this.inputBarTextEditingController,
+    this.inputController,
     this.forceLeft,
     this.multiSelectBottomBar,
     this.viewObserver,
@@ -93,11 +93,12 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   /// 强制消息靠左，默认为 `false`， 设置后自己发的消息也会在左侧显示。
   final bool? forceLeft;
 
-  /// 表情控件，如果设置后将会替换默认的表情控件。详细参考 [ChatUIKitInputEmojiBar]。
+  /// 表情控件，如果设置后将会替换默认的表情控件。详细参考 [ChatUIKitEmojiPanel]。
   final Widget? emojiWidget;
 
-  /// 回复消息输入控件构建器，如果设置后将会替换默认的回复消息输入控件构建器。详细参考 [ChatUIKitReplyBar]。
-  final MessageItemBuilder? replyBarBuilder;
+  /// 回复消息提示组件构建器，如果设置后将会替换默认的回复消息提示组件。详细参考 [ChatUIKitReplyBar]。
+  final Widget? Function(BuildContext context, MessageModel replyMessage)?
+      replyBarBuilder;
 
   /// 引用消息构建器，如果设置后将会替换默认的引用消息样式。
   final Widget Function(BuildContext context, QuoteModel model)? quoteBuilder;
@@ -111,8 +112,8 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   /// 气泡内容构建器，如果设置后将会替换默认的气泡内容构建器。详细参考 [MessageItemBuilder]。
   final MessageItemBuilder? bubbleContentBuilder;
 
-  /// 输入框控制器，如果设置后将会替换默认的输入框控制器。详细参考 [CustomTextEditingController]。
-  final ChatUIKitInputBarController? inputBarTextEditingController;
+  /// 输入框控制器，如果设置后将会替换默认的输入框控制器。详细参考 [ChatUIKitKeyboardPanelController]。
+  final ChatUIKitKeyboardPanelController? inputController;
 
   /// 多选消息时显示的bottom bar.
   final Widget? multiSelectBottomBar;
@@ -172,7 +173,8 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     MessageItemBuilder? alertItemBuilder,
     FocusNode? focusNode,
     Widget? emojiWidget,
-    Widget? Function(BuildContext context, MessageModel model)? replyBarBuilder,
+    Widget? Function(BuildContext context, MessageModel replyMessage)?
+        replyBarBuilder,
     Widget Function(BuildContext context, QuoteModel model)? quoteBuilder,
     bool Function(BuildContext context, MessageModel message)?
         onErrorBtnTapHandler,
@@ -180,7 +182,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     MessageItemBuilder? bubbleContentBuilder,
     MessagesViewMorePressHandler? onMoreActionsItemsHandler,
     MessagesViewItemLongPressPositionHandler? onItemLongPressHandler,
-    ChatUIKitInputBarController? inputBarTextEditingController,
+    ChatUIKitKeyboardPanelController? inputController,
     bool? enableAppBar,
     bool? forceLeft,
     Widget? multiSelectBottomBar,
@@ -220,8 +222,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       onItemLongPressHandler:
           onItemLongPressHandler ?? this.onItemLongPressHandler,
       enableAppBar: enableAppBar ?? this.enableAppBar,
-      inputBarTextEditingController:
-          inputBarTextEditingController ?? this.inputBarTextEditingController,
+      inputController: inputController ?? this.inputController,
       forceLeft: forceLeft ?? this.forceLeft,
       multiSelectBottomBar: multiSelectBottomBar ?? this.multiSelectBottomBar,
       viewObserver: viewObserver ?? this.viewObserver,

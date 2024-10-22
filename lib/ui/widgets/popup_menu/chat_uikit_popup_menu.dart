@@ -77,7 +77,9 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu> {
     return NotificationListener(
         child: widget.child,
         onNotification: (notification) {
-          widget.controller.hideMenu();
+          if (notification is ScrollUpdateNotification) {
+            widget.controller.hideMenu();
+          }
           return true;
         });
   }
@@ -95,7 +97,7 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu> {
         MediaQuery.of(context).size.width - _kHorizontalPadding * 2;
 
     double reactionHeight = 0;
-    if (widget.controller.titleWidget != null) {
+    if (widget.controller.topWidget != null) {
       reactionHeight = 40 + kMenuHorizontalPadding + kMenuHorizontalPadding;
     }
 
@@ -142,7 +144,7 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu> {
       arrowOnTop = true;
     }
     double offset = 0;
-    if (widget.controller.titleWidget == null) {
+    if (widget.controller.topWidget == null) {
       if (widget.controller.list!.length < 5) {
         dx = widget.controller.rect!.left -
             menuWidth / 2 +
@@ -162,7 +164,7 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu> {
 
     Widget menuWidget = _PopUpMenuWidget(
       offset: offset,
-      topWidget: widget.controller.titleWidget,
+      topWidget: widget.controller.topWidget,
       arrowOnTop: arrowOnTop,
       actions: widget.controller.list!,
       rect: widget.controller.rect!,
@@ -177,7 +179,7 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu> {
         return Positioned(
           left: dx == 0 ? _kHorizontalPadding : dx,
           top: dy,
-          width: widget.controller.titleWidget != null ? maxWidth : menuWidth,
+          width: widget.controller.topWidget != null ? maxWidth : menuWidth,
           child: menuWidget,
         );
       },
@@ -196,18 +198,18 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu> {
 class ChatUIKitPopupMenuController with ChangeNotifier {
   ChatUIKitPopupMenuController();
 
-  Widget? titleWidget;
+  Widget? topWidget;
   bool isShow = false;
   Rect? rect;
 
   List<ChatUIKitEventAction>? list;
 
   void showMenu(
-    Widget? titleWidget,
+    Widget? topWidget,
     Rect rect,
     List<ChatUIKitEventAction> list,
   ) {
-    this.titleWidget = titleWidget;
+    this.topWidget = topWidget;
     this.rect = rect;
     this.list = list;
     isShow = true;

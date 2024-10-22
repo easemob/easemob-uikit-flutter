@@ -8,9 +8,17 @@ class ConversationPage extends StatefulWidget {
   State<ConversationPage> createState() => _ConversationPageState();
 }
 
-class _ConversationPageState extends State<ConversationPage> {
+class _ConversationPageState extends State<ConversationPage>
+    with ChatUIKitThemeMixin {
   @override
-  Widget build(BuildContext context) {
-    return const ConversationsView();
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
+    return Container(
+      color: Colors.red,
+      child: ConversationsView(
+        itemBuilder: (context, model) {
+          return ChatUIKitConversationListViewItem(model);
+        },
+      ),
+    );
   }
 }

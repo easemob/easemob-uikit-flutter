@@ -23,10 +23,6 @@ class ChatUIKitPositionWidget extends StatefulWidget {
 
 class _ChatUIKitPositionWidgetState extends State<ChatUIKitPositionWidget> {
   late RenderBox current;
-  // late RenderBox overlay;
-
-  // double width = 0;
-  // double height = 0;
 
   @override
   void initState() {

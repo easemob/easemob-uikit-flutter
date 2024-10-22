@@ -136,6 +136,7 @@ class _MessageListViewState extends State<MessageListView>
 
     content = Scaffold(
       key: ValueKey(controller.profile.id),
+      resizeToAvoidBottomInset: false,
       body: content,
       backgroundColor: theme.color.isDark
           ? theme.color.neutralColor1

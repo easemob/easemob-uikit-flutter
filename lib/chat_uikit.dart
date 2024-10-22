@@ -59,8 +59,7 @@ export 'ui/widgets/chat_uikit_bottom_sheet.dart';
 export 'ui/widgets/chat_uikit_dialog.dart';
 export 'ui/widgets/chat_uikit_downloads_helper_widget.dart';
 export 'ui/widgets/chat_uikit_emoji_rich_text_widget.dart';
-export 'ui/widgets/chat_uikit_input_bar.dart';
-export 'ui/widgets/chat_uikit_input_emoji_bar.dart';
+export 'ui/widgets/chat_uikit_emoji_panel.dart';
 export 'ui/widgets/chat_uikit_list_view.dart';
 export 'ui/widgets/chat_uikit_message_status_widget.dart';
 export 'ui/widgets/chat_uikit_message_reaction_info.dart';
@@ -73,6 +72,8 @@ export 'ui/widgets/chat_uikit_search_widget.dart';
 export 'ui/widgets/chat_uikit_show_image_widget.dart';
 export 'ui/widgets/chat_uikit_show_video_widget.dart';
 
+export 'ui/widgets/message_bottom_menu/chat_uikit_message_view_bottom_menu.dart';
+export 'ui/widgets/edit_bar/chat_uikit_edit_bar.dart';
 export 'ui/widgets/input_bar/chat_uikit_input_bar1.dart';
 
 export 'ui/controllers/chat_uikit_list_view_controller_base.dart';
