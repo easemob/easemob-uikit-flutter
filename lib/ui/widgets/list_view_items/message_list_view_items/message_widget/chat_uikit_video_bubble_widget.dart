@@ -210,16 +210,18 @@ class _ChatUIKitVideoBubbleWidgetState extends State<ChatUIKitVideoBubbleWidget>
   }
 
   void download() {
-    if (downloading) return;
+    WidgetsBinding.instance.addPostFrameCallback((time) {
+      if (downloading) return;
 
-    safeSetState(() {
-      downloading = true;
-      if (widget.isCombine) {
-        ChatUIKit.instance
-            .downloadMessageThumbnailInCombine(message: model.message);
-      } else {
-        ChatUIKit.instance.downloadThumbnail(message: model.message);
-      }
+      safeSetState(() {
+        downloading = true;
+        if (widget.isCombine) {
+          ChatUIKit.instance
+              .downloadMessageThumbnailInCombine(message: model.message);
+        } else {
+          ChatUIKit.instance.downloadThumbnail(message: model.message);
+        }
+      });
     });
   }
 

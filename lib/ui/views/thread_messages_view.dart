@@ -512,6 +512,14 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
         child: content,
       );
     }
+
+    content = PopScope(
+      onPopInvokedWithResult: (didPop, result) {
+        popupMenuController?.hideMenu();
+      },
+      child: content,
+    );
+
     return content;
   }
 
@@ -886,7 +894,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
               onCancelTap: () {
                 setState(() {
                   replyMessage = null;
-                  inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
+                  popupMenuController?.hideMenu();
                 });
               },
             );
@@ -1983,7 +1991,11 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
-                controller.sendTextMessage(inputController.text);
+                controller.sendTextMessage(
+                  inputController.text,
+                  replay: replyMessage?.message,
+                );
+                replyMessage = null;
                 inputController.clearText();
               },
               child: ChatUIKitImageLoader.sendKeyboard(

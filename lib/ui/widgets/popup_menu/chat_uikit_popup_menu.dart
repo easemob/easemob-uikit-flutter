@@ -41,7 +41,8 @@ class ChatUIKitPopupMenu extends StatefulWidget {
   State<ChatUIKitPopupMenu> createState() => _ChatUIKitPopupMenuState();
 }
 
-class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu> {
+class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu>
+    with WidgetsBindingObserver {
   OverlayEntry? entry;
   Offset? menuLeftTop;
   Offset? menuRightBottom;
@@ -49,6 +50,7 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((call) {
       RenderBox overlay =
           Overlay.of(context).context.findRenderObject() as RenderBox;
@@ -86,8 +88,32 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     widget.controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant ChatUIKitPopupMenu oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void didChangeDependencies() {
+    WidgetsBinding.instance.addPostFrameCallback((call) {
+      RenderBox overlay =
+          Overlay.of(context).context.findRenderObject() as RenderBox;
+      RenderBox current = context.findRenderObject() as RenderBox;
+      Rect rect = Rect.fromPoints(
+        current.localToGlobal(Offset.zero),
+        current.localToGlobal(Offset(current.size.width, current.size.height),
+            ancestor: overlay),
+      );
+
+      menuLeftTop = rect.topLeft;
+      menuRightBottom = rect.bottomRight;
+    });
+    super.didChangeDependencies();
   }
 
   void showMenu() {
@@ -161,6 +187,12 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu> {
         }
       }
     }
+
+    debugPrint(widget.controller.rect.toString());
+    debugPrint(menuLeftTop.toString());
+    debugPrint(menuRightBottom.toString());
+    debugPrint('dx: $dx');
+    debugPrint('dy: $dy');
 
     Widget menuWidget = _PopUpMenuWidget(
       offset: offset,

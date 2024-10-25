@@ -494,7 +494,7 @@ class _MessagesViewState extends State<MessagesView>
       showAvatar: widget.showMessageItemAvatar,
       showNickname: widget.showMessageItemNickname,
       onItemTap: (ctx, msg, rect) {
-        stopVoice();
+        stopSound();
         bool? ret = widget.onItemTap?.call(context, msg, rect);
         if (ret != true) {
           bubbleTab(msg, rect);
@@ -507,12 +507,12 @@ class _MessagesViewState extends State<MessagesView>
       },
       onItemDoubleTap: (context, model, rect) {
         bool? ret = widget.onDoubleTap?.call(context, model, rect);
-        stopVoice();
+        stopSound();
         return ret;
       },
       onAvatarTap: (context, model) {
         bool? ret = widget.onAvatarTap?.call(context, model);
-        stopVoice();
+        stopSound();
         if (ret != true) {
           avatarTap(model);
         }
@@ -520,13 +520,13 @@ class _MessagesViewState extends State<MessagesView>
       },
       onAvatarLongPressed: (context, model) {
         bool? ret = widget.onAvatarLongPress?.call(context, model);
-        stopVoice();
+        stopSound();
         if (ret != true) {}
         return ret;
       },
       onNicknameTap: (context, msg) {
         bool? ret = widget.onNicknameTap?.call(context, msg);
-        stopVoice();
+        stopSound();
         if (ret != true) {}
         return ret;
       },
@@ -583,131 +583,6 @@ class _MessagesViewState extends State<MessagesView>
       ],
     );
 
-    List<Widget> list = [
-      Expanded(child: content),
-    ];
-    if (controller.isMultiSelectMode) {
-      list.add(multiSelectBar());
-    } else {
-      list.add(widget.inputBar ?? inputBar());
-    }
-
-    content = Column(children: list);
-    content = Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
-      appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
-      body: SafeArea(
-        maintainBottomViewPadding: true,
-        child: ChatUIKitSettings.enablePinMsg &&
-                controller.chatType == ChatType.GroupChat
-            ? Stack(
-                children: [
-                  content,
-                  PinMessageListView(
-                    maxHeight: MediaQuery.of(context).size.height / 5 * 3,
-                    pinMessagesController: pinMessageController!,
-                    onTap: (message) => jumpToMessage(
-                      message.msgId,
-                      position: AutoScrollPosition.begin,
-                    ),
-                  ),
-                ],
-              )
-            : content,
-      ),
-    );
-
-    content = Stack(
-      children: [
-        content,
-        if (editMessage != null) ...[
-          Positioned.fill(
-            child: InkWell(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onTap: () {
-                editMessage = null;
-
-                updateView();
-              },
-              child: Opacity(
-                opacity: 0.5,
-                child: Container(color: Colors.black),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SafeArea(
-                  child: ChatUIKitEditBar(
-                    text: editMessage!.textContent,
-                    onInputTextChanged: (text) {
-                      controller.editMessage(editMessage!, text);
-                      editMessage = null;
-                      updateView();
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ]
-      ],
-    );
-
-    content = ShareUserData(
-      data: controller.userMap,
-      child: content,
-    );
-
-    content = NotificationListener(
-      onNotification: (notification) {
-        if (notification is ScrollUpdateNotification) {
-          if (_scrollController.offset < 20) {
-            if (controller.onBottom == false) {
-              controller.onBottom = true;
-              controller.addAllCacheToList();
-            }
-          } else {
-            if (controller.onBottom == true) {
-              controller.onBottom = false;
-              controller.lastActionType =
-                  MessageLastActionType.originalPosition;
-            }
-          }
-          if (_scrollController.position.maxScrollExtent -
-                  _scrollController.offset <
-              1500) {
-            controller.fetchItemList();
-          }
-        }
-
-        return false;
-      },
-      child: content,
-    );
-
-    content = ScrollConfiguration(
-      behavior: const ScrollBehavior(),
-      child: content,
-    );
-
-    content = PopScope(
-      child: content,
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop) {
-          controller.markAllMessageAsRead();
-        }
-      },
-    );
-
     if (ChatUIKitSettings.messageLongPressType ==
         ChatUIKitMessageLongPressType.popupMenu) {
       content = ChatUIKitPopupMenu(
@@ -728,6 +603,132 @@ class _MessagesViewState extends State<MessagesView>
               : 16,
         ),
         child: content,
+      );
+      List<Widget> list = [
+        Expanded(child: content),
+      ];
+      if (controller.isMultiSelectMode) {
+        list.add(multiSelectBar());
+      } else {
+        list.add(widget.inputBar ?? inputBar());
+      }
+
+      content = Column(children: list);
+      content = Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98,
+        appBar:
+            widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
+        body: SafeArea(
+          maintainBottomViewPadding: true,
+          child: ChatUIKitSettings.enablePinMsg &&
+                  controller.chatType == ChatType.GroupChat
+              ? Stack(
+                  children: [
+                    content,
+                    PinMessageListView(
+                      maxHeight: MediaQuery.of(context).size.height / 5 * 3,
+                      pinMessagesController: pinMessageController!,
+                      onTap: (message) => jumpToMessage(
+                        message.msgId,
+                        position: AutoScrollPosition.begin,
+                      ),
+                    ),
+                  ],
+                )
+              : content,
+        ),
+      );
+
+      content = Stack(
+        children: [
+          content,
+          if (editMessage != null) ...[
+            Positioned.fill(
+              child: InkWell(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                onTap: () {
+                  editMessage = null;
+
+                  updateView();
+                },
+                child: Opacity(
+                  opacity: 0.5,
+                  child: Container(color: Colors.black),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SafeArea(
+                    child: ChatUIKitEditBar(
+                      text: editMessage!.textContent,
+                      onInputTextChanged: (text) {
+                        controller.editMessage(editMessage!, text);
+                        editMessage = null;
+                        updateView();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ]
+        ],
+      );
+
+      content = ShareUserData(
+        data: controller.userMap,
+        child: content,
+      );
+
+      content = NotificationListener(
+        onNotification: (notification) {
+          if (notification is ScrollUpdateNotification) {
+            if (_scrollController.offset < 20) {
+              if (controller.onBottom == false) {
+                controller.onBottom = true;
+                controller.addAllCacheToList();
+              }
+            } else {
+              if (controller.onBottom == true) {
+                controller.onBottom = false;
+                controller.lastActionType =
+                    MessageLastActionType.originalPosition;
+              }
+            }
+            if (_scrollController.position.maxScrollExtent -
+                    _scrollController.offset <
+                1500) {
+              controller.fetchItemList();
+            }
+          }
+
+          return false;
+        },
+        child: content,
+      );
+
+      content = ScrollConfiguration(
+        behavior: const ScrollBehavior(),
+        child: content,
+      );
+
+      content = PopScope(
+        child: content,
+        onPopInvokedWithResult: (didPop, result) {
+          popupMenuController?.hideMenu();
+          if (didPop) {
+            controller.markAllMessageAsRead();
+          }
+        },
       );
     }
 
@@ -1187,7 +1188,7 @@ class _MessagesViewState extends State<MessagesView>
               onCancelTap: () {
                 setState(() {
                   replyMessage = null;
-                  inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
+                  popupMenuController?.hideMenu();
                 });
               },
             );
@@ -1345,7 +1346,7 @@ class _MessagesViewState extends State<MessagesView>
     popupMenuController?.hideMenu();
 
     if (_player.state == PlayerState.playing) {
-      stopVoice();
+      stopSound();
       needUpdate = true;
     }
 
@@ -1629,9 +1630,9 @@ class _MessagesViewState extends State<MessagesView>
   Future<void> playVoiceMessage(Message message) async {
     if (_playingMessage?.msgId == message.msgId) {
       _playingMessage = null;
-      await stopVoice();
+      await stopSound();
     } else {
-      await stopVoice();
+      await stopSound();
       File file = File(message.localPath!);
       if (!file.existsSync()) {
         await controller.downloadMessage(message);
@@ -1655,7 +1656,7 @@ class _MessagesViewState extends State<MessagesView>
     if (play) {
       await playVoice(path!);
     } else {
-      await stopVoice();
+      await stopSound();
     }
   }
 
@@ -1671,7 +1672,7 @@ class _MessagesViewState extends State<MessagesView>
     }).onError((error, stackTrace) {});
   }
 
-  Future<void> stopVoice() async {
+  Future<void> stopSound() async {
     if (_player.state == PlayerState.playing) {
       await _player.stop();
       _playingMessage = null;
@@ -2476,6 +2477,7 @@ class _MessagesViewState extends State<MessagesView>
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         onTap: () async {
+          stopSound();
           inputController.switchPanel(
             ChatUIKitKeyboardPanelType.voice,
           );
@@ -2597,7 +2599,12 @@ class _MessagesViewState extends State<MessagesView>
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
-                controller.sendTextMessage(inputController.text);
+                controller.sendTextMessage(
+                  inputController.text,
+                  replay: replyMessage?.message,
+                  mention: editController?.mentionList,
+                );
+                replyMessage = null;
                 inputController.clearText();
               },
               child: ChatUIKitImageLoader.sendKeyboard(
