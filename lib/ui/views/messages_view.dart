@@ -1394,6 +1394,7 @@ class _MessagesViewState extends State<MessagesView>
 
   void bubbleTab(MessageModel model, Rect rect) async {
     popupMenuController?.hideMenu();
+    inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
     if (model.message.bodyType == MessageType.IMAGE) {
       ChatUIKitRoute.pushOrPushNamed(
         context,

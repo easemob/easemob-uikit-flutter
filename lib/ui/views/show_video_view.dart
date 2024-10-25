@@ -90,6 +90,7 @@ class _ShowVideoViewState extends State<ShowVideoView>
     );
 
     content = Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,

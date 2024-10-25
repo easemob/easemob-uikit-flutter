@@ -90,6 +90,7 @@ class _ShowImageViewState extends State<ShowImageView>
     );
 
     content = Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,

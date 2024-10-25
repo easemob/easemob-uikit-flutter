@@ -110,6 +110,7 @@ class _ThreadMembersViewState extends State<ThreadMembersView>
     updateAppBarModel(theme);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: theme.color.isDark
           ? theme.color.neutralColor1
           : theme.color.neutralColor98,
