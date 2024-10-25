@@ -741,6 +741,12 @@ class _MessagesViewState extends State<MessagesView>
 
     Widget content = ChatUIKitMessageListViewMessageItem(
       isPlaying: _playingMessage?.msgId == model.message.msgId,
+      onThreadItemTap: () {
+        bool ret = widget.onThreadItemTap?.call(context, model) ?? false;
+        if (ret == false) {
+          showThread(context, model);
+        }
+      },
       onErrorBtnTap: () {
         if (widget.onErrorBtnTapHandler == null) {
           onErrorBtnTap(model);
@@ -945,6 +951,8 @@ class _MessagesViewState extends State<MessagesView>
                     MessageModel model =
                         MessageModel(message: value, thread: thread);
                     if (mounted) {
+                      inputController
+                          .switchPanel(ChatUIKitKeyboardPanelType.none);
                       ChatUIKitRoute.pushOrPushNamed(
                         context,
                         ChatUIKitRouteNames.threadMessagesView,
@@ -1724,6 +1732,7 @@ class _MessagesViewState extends State<MessagesView>
 
   void pushNextPage(ChatUIKitProfile profile) async {
     clearAllType();
+    inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
 
     // 如果点击的是自己头像
     if (profile.id == ChatUIKit.instance.currentUserId) {
@@ -2104,6 +2113,7 @@ class _MessagesViewState extends State<MessagesView>
           ),
           onTap: () async {
             closeMenu();
+            inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
             ChatUIKitRoute.pushOrPushNamed(
               context,
               ChatUIKitRouteNames.threadMessagesView,
@@ -2359,6 +2369,7 @@ class _MessagesViewState extends State<MessagesView>
   }
 
   void pushThread() {
+    inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.threadsView,
@@ -2413,6 +2424,7 @@ class _MessagesViewState extends State<MessagesView>
   }
 
   void showThread(BuildContext context, MessageModel model) {
+    inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.threadMessagesView,
