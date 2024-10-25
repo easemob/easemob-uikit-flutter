@@ -1060,12 +1060,17 @@ class _MessagesViewState extends State<MessagesView>
   }
 
   List<ChatUIKitEventAction> moreActions() {
-    void closeMenu() {
+    void closeMenu([close = true]) {
       if (ChatUIKitSettings.messageMoreActionType ==
           ChatUIKitMessageMoreActionType.bottomSheet) {
         Navigator.of(context).pop();
       } else {
-        // TODO: 关闭选择框
+        if (close) {
+          inputController.switchPanel(
+            ChatUIKitKeyboardPanelType.none,
+            duration: const Duration(milliseconds: 100),
+          );
+        }
       }
     }
 
@@ -1100,8 +1105,7 @@ class _MessagesViewState extends State<MessagesView>
               : theme.color.neutralColor3,
         ),
         onTap: () async {
-          closeMenu();
-          selectImage();
+          closeMenu(await selectImage());
         },
       ));
       items.add(ChatUIKitEventAction.normal(
@@ -1115,8 +1119,7 @@ class _MessagesViewState extends State<MessagesView>
               : theme.color.neutralColor3,
         ),
         onTap: () async {
-          closeMenu();
-          selectVideo();
+          closeMenu(await selectVideo());
         },
       ));
       items.add(ChatUIKitEventAction.normal(
@@ -1130,8 +1133,7 @@ class _MessagesViewState extends State<MessagesView>
               : theme.color.neutralColor3,
         ),
         onTap: () async {
-          closeMenu();
-          selectCamera();
+          closeMenu(await selectCamera());
         },
       ));
       items.add(ChatUIKitEventAction.normal(
@@ -1145,8 +1147,7 @@ class _MessagesViewState extends State<MessagesView>
               : theme.color.neutralColor3,
         ),
         onTap: () async {
-          closeMenu();
-          selectFile();
+          closeMenu(await selectFile());
         },
       ));
       items.add(ChatUIKitEventAction.normal(
@@ -1160,8 +1161,7 @@ class _MessagesViewState extends State<MessagesView>
               : theme.color.neutralColor3,
         ),
         onTap: () async {
-          closeMenu();
-          selectCard();
+          closeMenu(await selectCard());
         },
       ));
     }
@@ -1526,40 +1526,46 @@ class _MessagesViewState extends State<MessagesView>
     }
   }
 
-  void selectImage() async {
+  Future<bool> selectImage() async {
     try {
       final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
         controller.sendImageMessage(image.path, name: image.name);
+        return true;
       }
     } catch (e) {
       ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.noStoragePermission);
     }
+    return false;
   }
 
-  void selectVideo() async {
+  Future<bool> selectVideo() async {
     try {
       XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
       if (video != null) {
         controller.sendVideoMessage(video.path, name: video.name);
+        return true;
       }
     } catch (e) {
       ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.noStoragePermission);
     }
+    return false;
   }
 
-  void selectCamera() async {
+  Future<bool> selectCamera() async {
     try {
       final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
       if (photo != null) {
         controller.sendImageMessage(photo.path, name: photo.name);
+        return true;
       }
     } catch (e) {
       ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.noStoragePermission);
     }
+    return false;
   }
 
-  void selectFile() async {
+  Future<bool> selectFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
       PlatformFile file = result.files.single;
@@ -1569,12 +1575,14 @@ class _MessagesViewState extends State<MessagesView>
           name: file.name,
           fileSize: file.size,
         );
+        return true;
       }
     }
+    return false;
   }
 
-  void selectCard() async {
-    showModalBottomSheet(
+  Future<bool> selectCard() async {
+    bool? ret = await showModalBottomSheet<bool>(
       isScrollControlled: true,
       context: context,
       builder: (context) {
@@ -1614,9 +1622,13 @@ class _MessagesViewState extends State<MessagesView>
                 if (value != null) {
                   if (value is ContactItemModel) {
                     controller.sendCardMessage(value.profile);
-                  }
-                  if (context.mounted) {
-                    Navigator.of(context).pop();
+                    if (context.mounted) {
+                      Navigator.of(context).pop(true);
+                    }
+                  } else {
+                    if (context.mounted) {
+                      Navigator.of(context).pop(false);
+                    }
                   }
                 }
               });
@@ -1625,6 +1637,9 @@ class _MessagesViewState extends State<MessagesView>
         );
       },
     );
+
+    ret = ret ?? false;
+    return ret;
   }
 
   Future<void> playVoiceMessage(Message message) async {

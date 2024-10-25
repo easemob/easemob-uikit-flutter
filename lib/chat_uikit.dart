@@ -25,7 +25,7 @@ export 'tools/chat_uikit_url_helper.dart';
 
 export 'chat_uikit_time_formatter.dart';
 
-export 'ui/custom/custom_text_editing_controller.dart';
+export 'ui/widgets/input_bar/custom_text_editing_controller.dart';
 export 'ui/custom/share_user_data.dart';
 
 export 'ui/widgets/list_view_items/chat_uikit_details_list_view_item.dart';
@@ -74,7 +74,7 @@ export 'ui/widgets/chat_uikit_show_video_widget.dart';
 
 export 'ui/widgets/message_bottom_menu/chat_uikit_message_view_bottom_menu.dart';
 export 'ui/widgets/edit_bar/chat_uikit_edit_bar.dart';
-export 'ui/widgets/input_bar/chat_uikit_input_bar1.dart';
+export 'ui/widgets/input_bar/chat_uikit_input_bar.dart';
 
 export 'ui/controllers/chat_uikit_list_view_controller_base.dart';
 export 'ui/controllers/conversation_list_view_controller.dart';
