@@ -1,8 +1,8 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
-class ChatUIKitInputBar1 extends StatefulWidget {
-  const ChatUIKitInputBar1({
+class ChatUIKitInputBar extends StatefulWidget {
+  const ChatUIKitInputBar({
     required this.keyboardPanelController,
     this.leftItems,
     this.rightItems,
@@ -23,10 +23,10 @@ class ChatUIKitInputBar1 extends StatefulWidget {
   final bool readOnly;
 
   @override
-  State<ChatUIKitInputBar1> createState() => _ChatUIKitInputBar1State();
+  State<ChatUIKitInputBar> createState() => _ChatUIKitInputBarState();
 }
 
-class _ChatUIKitInputBar1State extends State<ChatUIKitInputBar1>
+class _ChatUIKitInputBarState extends State<ChatUIKitInputBar>
     with ChatUIKitThemeMixin {
   late final ChatUIKitKeyboardPanelController keyboardPanelController;
   ChatUIKitKeyboardPanelType currentPanelType = ChatUIKitKeyboardPanelType.none;

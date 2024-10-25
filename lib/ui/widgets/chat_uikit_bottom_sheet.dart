@@ -54,7 +54,7 @@ Future<T?> showChatUIKitBottomSheet<T>({
   );
 }
 
-enum ChatUIKitBottomSheetItemType {
+enum ChatUIKitEventActionType {
   normal,
   destructive,
 }
@@ -66,7 +66,7 @@ class ChatUIKitEventAction<T> {
     this.style,
     this.onTap,
     this.icon,
-  }) : type = ChatUIKitBottomSheetItemType.normal;
+  }) : type = ChatUIKitEventActionType.normal;
 
   ChatUIKitEventAction.destructive({
     required this.label,
@@ -74,7 +74,7 @@ class ChatUIKitEventAction<T> {
     this.style,
     this.onTap,
     this.icon,
-  }) : type = ChatUIKitBottomSheetItemType.destructive;
+  }) : type = ChatUIKitEventActionType.destructive;
 
   ChatUIKitEventAction({
     required this.type,
@@ -85,7 +85,7 @@ class ChatUIKitEventAction<T> {
     this.icon,
   });
 
-  final ChatUIKitBottomSheetItemType type;
+  final ChatUIKitEventActionType type;
   final String label;
   final TextStyle? style;
   final Widget? icon;
@@ -93,7 +93,7 @@ class ChatUIKitEventAction<T> {
   final ChatUIKitActionType actionType;
 
   ChatUIKitEventAction copyWith({
-    ChatUIKitBottomSheetItemType? type,
+    ChatUIKitEventActionType? type,
     String? label,
     TextStyle? style,
     Widget? icon,
@@ -253,7 +253,7 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: element.style ??
                                 (element.type ==
-                                        ChatUIKitBottomSheetItemType.normal
+                                        ChatUIKitEventActionType.normal
                                     ? normalStyle
                                     : destructive),
                           ),
@@ -265,7 +265,7 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
                       textScaler: TextScaler.noScaling,
                       overflow: TextOverflow.ellipsis,
                       style: element.style ??
-                          (element.type == ChatUIKitBottomSheetItemType.normal
+                          (element.type == ChatUIKitEventActionType.normal
                               ? normalStyle
                               : destructive),
                     ),

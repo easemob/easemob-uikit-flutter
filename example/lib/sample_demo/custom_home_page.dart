@@ -41,8 +41,8 @@ class _CustomHomePageState extends State<CustomHomePage>
           'Sample Demo',
           style: TextStyle(
             color: theme.color.isDark
-                ? theme.color.neutralColor98
-                : theme.color.neutralColor0,
+                ? theme.color.neutralColor1
+                : theme.color.neutralColor98,
           ),
         ),
         actions: [

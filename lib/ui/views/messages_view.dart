@@ -1192,7 +1192,7 @@ class _MessagesViewState extends State<MessagesView>
                 });
               },
             );
-    Widget content = ChatUIKitInputBar1(
+    Widget content = ChatUIKitInputBar(
       keyboardPanelController: inputController,
       maintainBottomViewPadding: true,
       bottomPanels: bottomPanels(),

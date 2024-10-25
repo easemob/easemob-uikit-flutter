@@ -105,7 +105,7 @@ class _InputBarPageState extends State<InputBarPage> with ChatUIKitThemeMixin {
           child: Column(
             children: [
               Expanded(child: content),
-              ChatUIKitInputBar1(
+              ChatUIKitInputBar(
                 maintainBottomViewPadding: true,
                 onPanelChanged: (panelType) {
                   currentPanelType = panelType;

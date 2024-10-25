@@ -110,20 +110,21 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> with ChatUIKitThemeMixin {
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
+    double width = MediaQuery.of(context).size.width;
+    double itemWidth = (width - _kHorizontalPadding * 2) / 4;
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(
           vertical: 16, horizontal: _kHorizontalPadding),
       itemCount: widget.eventActions.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        mainAxisSpacing: 12,
-        childAspectRatio: 1,
+      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: itemWidth,
+        mainAxisSpacing: 16,
       ),
       itemBuilder: (context, index) {
         return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             InkWell(
@@ -131,25 +132,25 @@ class _MenuPageState extends State<MenuPage> with ChatUIKitThemeMixin {
                 widget.eventActions[index].onTap?.call();
               },
               child: Container(
-                  decoration: BoxDecoration(
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor2
-                        : theme.color.neutralColor95,
-                    borderRadius: BorderRadius.circular(12),
+                decoration: BoxDecoration(
+                  color: theme.color.isDark
+                      ? theme.color.neutralColor2
+                      : theme.color.neutralColor95,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: const EdgeInsets.all(6),
+                width: 64,
+                height: 64,
+                child: Center(
+                  child: SizedBox(
+                    width: 32,
+                    height: 32,
+                    child: widget.eventActions[index].icon ??
+                        const Icon(Icons.add),
                   ),
-                  padding: const EdgeInsets.all(6),
-                  width: 64,
-                  height: 64,
-                  child: Center(
-                    child: SizedBox(
-                      width: 32,
-                      height: 32,
-                      child: widget.eventActions[index].icon ??
-                          const Icon(Icons.add),
-                    ),
-                  )),
+                ),
+              ),
             ),
-            const SizedBox(height: 8),
             Expanded(
               child: Text(
                 widget.eventActions[index].label,

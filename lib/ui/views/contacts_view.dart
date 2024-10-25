@@ -69,6 +69,7 @@ class ContactsView extends StatefulWidget {
   /// 联系人列表控制器，用于控制联系人列表数据，如果不设置将会自动创建。详细参考 [ContactListViewController]。
   final ContactListViewController? controller;
 
+  /// 自定义消息页面 `appBar`。如不设置会使用默认的。
   final ChatUIKitAppBarModel? appBarModel;
 
   /// 是否显示AppBar, 默认为 `true`。 当为 `false` 时将不会显示AppBar。同时也会影响到是否显示标题。

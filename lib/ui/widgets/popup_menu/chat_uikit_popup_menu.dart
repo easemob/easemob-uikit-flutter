@@ -531,7 +531,10 @@ class _TrianglePainter extends CustomPainter {
     }
 
     path.close();
-    canvas.drawShadow(path.shift(const Offset(0, 0)), shadowColor, 4.0, false);
+    canvas.drawShadow(path.shift(const Offset(0, -2)),
+        shadowColor.withOpacity(1), 2.0, false);
+    canvas.drawShadow(path.shift(const Offset(0, 0)),
+        shadowColor.withOpacity(0.5), 2.0, false);
 
     canvas.drawPath(path, paint);
   }

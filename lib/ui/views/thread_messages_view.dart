@@ -898,7 +898,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                 });
               },
             );
-    Widget content = ChatUIKitInputBar1(
+    Widget content = ChatUIKitInputBar(
       keyboardPanelController: inputController,
       maintainBottomViewPadding: true,
       bottomPanels: bottomPanels(),
