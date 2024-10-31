@@ -1802,7 +1802,6 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
         if (close) {
           inputController.switchPanel(
             ChatUIKitKeyboardPanelType.none,
-            duration: const Duration(milliseconds: 100),
           );
         }
       }

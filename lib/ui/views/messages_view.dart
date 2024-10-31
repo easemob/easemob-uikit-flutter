@@ -1076,7 +1076,6 @@ class _MessagesViewState extends State<MessagesView>
         if (close) {
           inputController.switchPanel(
             ChatUIKitKeyboardPanelType.none,
-            duration: const Duration(milliseconds: 100),
           );
         }
       }
@@ -2468,27 +2467,27 @@ class _MessagesViewState extends State<MessagesView>
           ),
           style: ButtonStyle(
             splashFactory: NoSplash.splashFactory,
-            backgroundColor: WidgetStateProperty.all(
+            backgroundColor: MaterialStateProperty.all(
               theme.color.isDark
                   ? theme.color.neutralColor2
                   : theme.color.neutralColor98,
             ),
-            overlayColor: WidgetStateProperty.all(Colors.transparent),
-            elevation: WidgetStateProperty.all(0),
-            shadowColor: WidgetStateProperty.all(Colors.transparent),
-            foregroundColor: WidgetStateProperty.all(
+            overlayColor: MaterialStateProperty.all(Colors.transparent),
+            elevation: MaterialStateProperty.all(0),
+            shadowColor: MaterialStateProperty.all(Colors.transparent),
+            foregroundColor: MaterialStateProperty.all(
               theme.color.isDark
                   ? theme.color.primaryColor6
                   : theme.color.primaryColor5,
             ),
-            side: WidgetStatePropertyAll<BorderSide>(
+            side: MaterialStateProperty.all<BorderSide>(
               BorderSide(
                 color: theme.color.isDark
                     ? theme.color.neutralColor3
                     : theme.color.neutralColor9,
               ),
             ),
-            shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
               ),
