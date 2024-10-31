@@ -514,7 +514,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     }
 
     content = PopScope(
-      onPopInvokedWithResult: (didPop, result) {
+      onPopInvoked: (didPop) {
         popupMenuController?.hideMenu();
       },
       child: content,

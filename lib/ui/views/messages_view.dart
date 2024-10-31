@@ -723,7 +723,7 @@ class _MessagesViewState extends State<MessagesView>
 
       content = PopScope(
         child: content,
-        onPopInvokedWithResult: (didPop, result) {
+        onPopInvoked: (didPop) {
           popupMenuController?.hideMenu();
           if (didPop) {
             controller.markAllMessageAsRead();
