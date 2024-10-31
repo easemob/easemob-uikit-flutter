@@ -37,7 +37,7 @@ This guide provides an overview and usage examples of the chat_uikit framework i
 ```yaml
 environment:
   sdk: '>=3.0.0 <4.0.0'
-  flutter: ">=3.3.0"
+  flutter: ">=3.19.0"
 ```
 
 - ios 12+

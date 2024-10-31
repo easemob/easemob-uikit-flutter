@@ -1733,7 +1733,7 @@ class _MessagesViewState extends State<MessagesView>
   void pushNextPage(ChatUIKitProfile profile) async {
     clearAllType();
     inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
-
+    popupMenuController?.hideMenu();
     // 如果点击的是自己头像
     if (profile.id == ChatUIKit.instance.currentUserId) {
       pushToCurrentUser(profile);
@@ -2425,6 +2425,7 @@ class _MessagesViewState extends State<MessagesView>
 
   void showThread(BuildContext context, MessageModel model) {
     inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
+    popupMenuController?.hideMenu();
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.threadMessagesView,

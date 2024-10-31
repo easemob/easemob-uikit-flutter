@@ -52,6 +52,7 @@ class _HomePageState extends State<HomePage>
     super.build(context);
 
     Widget content = Scaffold(
+      resizeToAvoidBottomInset: false,
       body: IndexedStack(
         index: _currentIndex,
         children: _pages(context),

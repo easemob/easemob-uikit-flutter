@@ -33,6 +33,7 @@ class _CustomHomePageState extends State<CustomHomePage>
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     Widget content = Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: theme.color.isDark
           ? theme.color.neutralColor1
           : theme.color.neutralColor98,

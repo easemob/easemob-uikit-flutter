@@ -188,11 +188,20 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu>
       }
     }
 
-    debugPrint(widget.controller.rect.toString());
-    debugPrint(menuLeftTop.toString());
-    debugPrint(menuRightBottom.toString());
-    debugPrint('dx: $dx');
-    debugPrint('dy: $dy');
+    // debugPrint(widget.controller.rect!.top.toString());
+    // debugPrint(widget.controller.rect!.height.toString());
+    // debugPrint(menuLeftTop.toString());
+    // debugPrint(menuRightBottom.toString());
+
+    // debugPrint('menuHeight: $menuHeight');
+    // if (arrowOnTop) {
+    //   if ((menuRightBottom!.dy - menuLeftTop!.dy) >
+    //       (widget.controller.rect!.top + widget.controller.rect!.height)) {
+    //     debugPrint('箭头正确');
+    //   } else {
+    //     debugPrint('箭头错误');
+    //   }
+    // }
 
     Widget menuWidget = _PopUpMenuWidget(
       offset: offset,
