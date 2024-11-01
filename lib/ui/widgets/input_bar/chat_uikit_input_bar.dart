@@ -1,6 +1,8 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
+import '../../custom/chat_uikit_selection_controls.dart';
+
 class ChatUIKitInputBar extends StatefulWidget {
   const ChatUIKitInputBar({
     required this.keyboardPanelController,
@@ -70,6 +72,7 @@ class _ChatUIKitInputBarState extends State<ChatUIKitInputBar>
                   }
                 },
                 child: TextField(
+                  selectionControls: ChatUIKitSelectionControls(),
                   onChanged: (value) {
                     widget.onInputTextChanged?.call(value);
                   },

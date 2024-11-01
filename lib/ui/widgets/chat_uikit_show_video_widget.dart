@@ -49,7 +49,9 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
     super.initState();
     ChatUIKit.instance.addObserver(this);
     message = widget.message;
-    checkVideoFile();
+    WidgetsBinding.instance.addPostFrameCallback((time) {
+      checkVideoFile();
+    });
   }
 
   void checkVideoFile() async {

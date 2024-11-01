@@ -47,7 +47,9 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
     ChatUIKit.instance.addObserver(this);
     widget.viewObserver?.addListener(() => setState(() {}));
     message = widget.message;
-    fetchCombineList();
+    WidgetsBinding.instance.addPostFrameCallback((time) {
+      fetchCombineList();
+    });
   }
 
   @override
@@ -297,7 +299,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
   }
 
   Widget voiceWidget(MessageModel model, ChatUIKitTheme theme) {
-    final body = message.body as VoiceMessageBody;
+    final body = model.message.body as VoiceMessageBody;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -343,7 +345,7 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
   }
 
   Widget locationWidget(MessageModel model, ChatUIKitTheme theme) {
-    final body = message.body as LocationMessageBody;
+    final body = model.message.body as LocationMessageBody;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [

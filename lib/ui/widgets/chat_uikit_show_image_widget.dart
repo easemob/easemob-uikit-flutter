@@ -43,7 +43,9 @@ class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget>
     super.initState();
     ChatUIKit.instance.addObserver(this);
     message = widget.message;
-    checkFile();
+    WidgetsBinding.instance.addPostFrameCallback((time) {
+      checkFile();
+    });
   }
 
   void checkFile() {
