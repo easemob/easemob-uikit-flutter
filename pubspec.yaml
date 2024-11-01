@@ -22,13 +22,13 @@ dependencies:
   
   record: ^5.1.2
 
-  shared_preferences: ^2.3.2
+  shared_preferences: ^2.2.3
 
   chat_uikit_theme: ^1.0.4
 
   path_provider: ^2.1.4
 
-  file_picker: ^8.1.2
+  file_picker: ^8.0.4
 
   audioplayers: ^6.1.0
 
@@ -38,17 +38,18 @@ dependencies:
 
   video_player: ^2.9.2
 
-  flutter_localization: ^0.2.2
+  flutter_localization: ^0.2.0
 
   scroll_to_index: ^3.0.1
 
   cached_network_image: ^3.4.1
 
-  chat_uikit_keyboard_panel: 0.1.0
-  # chat_uikit_keyboard_panel:
-  #   path: ../chat_uikit_keyboard_panel
+  chat_uikit_keyboard_panel: 0.1.1
 
   html: ^0.15.4
+
+dependency_overrides:
+  cached_network_image_web: 1.3.0
 
 dev_dependencies:
   flutter_test:
