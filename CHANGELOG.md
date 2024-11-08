@@ -4,6 +4,7 @@
 - 修改主题切换方式；
 - 依赖 `im_flutter_sdk` 版本改为 `4.8.2`;
 - 修改 `ChatUIKitBottomSheetItem` 为 `ChatUIKitEventAction`;
+- 修改依赖flutter版本为 `flutter: '>=3.19.0'`;
 
 ## 2.0.3
 
