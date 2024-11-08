@@ -2,6 +2,8 @@
 
 - 修改列表自定义项名称；
 - 修改主题切换方式；
+- 依赖 `im_flutter_sdk` 版本改为 `4.8.2`;
+- 修改 `ChatUIKitBottomSheetItem` 为 `ChatUIKitEventAction`;
 
 ## 2.0.3
 
