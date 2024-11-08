@@ -222,8 +222,8 @@ class _ContactsViewState extends State<ContactsView>
           specialAlphabeticalLetter: widget.specialAlphabeticalLetter,
           beforeWidgets: widget.beforeItems ?? beforeWidgets(),
           afterWidgets: widget.afterItems,
-          searchHideText: widget.searchHideText,
-          background: widget.listViewBackground,
+          searchBarHideText: widget.searchHideText,
+          emptyBackground: widget.listViewBackground,
           onTap: widget.onTap ??
               (ctx, model) {
                 tapContactInfo(model.profile);

@@ -142,8 +142,8 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView>
           }();
           return content;
         },
-        searchHideText: widget.searchBarHideText,
-        background: widget.listViewBackground,
+        searchBarHideText: widget.searchBarHideText,
+        emptyBackground: widget.listViewBackground,
         onTap: showConfirmDialog,
       ),
     );
@@ -155,7 +155,7 @@ class _GroupChangeOwnerViewState extends State<GroupChangeOwnerView>
     bool? ret = await showChatUIKitDialog(
       title: Strings.format(
           '${ChatUIKitLocal.groupChangeOwnerViewAlertTitle.localString(context)}"%a"?',
-          [model.profile.nickname]),
+          [model.profile.contactShowName]),
       context: context,
       actionItems: [
         ChatUIKitDialogAction.cancel(

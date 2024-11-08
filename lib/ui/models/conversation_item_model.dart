@@ -73,7 +73,7 @@ class ConversationItemModel with ChatUIKitListItemModelBase, NeedSearch {
 
   @override
   String get showName {
-    return profile.showName;
+    return profile.contactShowName;
   }
 
   String? get avatarUrl {

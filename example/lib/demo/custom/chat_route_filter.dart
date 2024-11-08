@@ -33,7 +33,7 @@ class ChatRouteFilter {
       Group group = await ChatUIKit.instance
           .fetchGroupInfo(groupId: arguments.profile.id);
       ChatUIKitProfile profile = arguments.profile
-          .copyWith(name: group.name, avatarUrl: group.extension);
+          .copyWith(showName: group.name, avatarUrl: group.extension);
       ChatUIKitProvider.instance.addProfiles([profile]);
       UserDataStore().saveUserData(profile);
     }).then((value) {

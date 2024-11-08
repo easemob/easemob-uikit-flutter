@@ -102,7 +102,7 @@ class _NewRequestDetailsViewState extends State<NewRequestDetailsView>
     );
 
     Widget name = Text(
-      widget.profile.showName,
+      widget.profile.contactShowName,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
       textScaler: TextScaler.noScaling,

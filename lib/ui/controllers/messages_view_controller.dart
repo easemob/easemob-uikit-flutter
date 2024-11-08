@@ -677,8 +677,8 @@ class MessagesViewController extends ChangeNotifier
 
   Future<void> sendCardMessage(ChatUIKitProfile cardProfile) async {
     Map<String, String> param = {cardUserIdKey: cardProfile.id};
-    if (cardProfile.name != null) {
-      param[cardNicknameKey] = cardProfile.name!;
+    if (cardProfile.contactShowName.isNotEmpty) {
+      param[cardNicknameKey] = cardProfile.contactShowName;
     }
     if (cardProfile.avatarUrl != null) {
       param[cardAvatarKey] = cardProfile.avatarUrl!;

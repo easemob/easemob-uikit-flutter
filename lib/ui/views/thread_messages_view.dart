@@ -642,7 +642,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                           ChatUIKitProfile? profile = ChatUIKitProvider.instance
                               .getProfileById(model.message.from!);
                           profile ??= model.message.fromProfile;
-                          return profile.showName;
+                          return profile.contactShowName;
                         }(),
                         style: TextStyle(
                           fontWeight: theme.font.titleSmall.fontWeight,
@@ -1698,7 +1698,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
         ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
           ChatUIKitProfile.contact(id: operator),
         );
-        showName = profile.showName;
+        showName = profile.contactShowName;
       }
       content ??= ChatUIKitMessageListViewAlertItem(
         actions: [

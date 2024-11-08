@@ -142,7 +142,7 @@ class ChatUIKitInsertTools {
       params: {
         alertOperatorIdKey: group.owner ?? creator?.id ?? '',
         alertOperatorNameKey:
-            creator?.showName ?? creator?.id ?? group.owner ?? '',
+            creator?.contactShowName ?? creator?.id ?? group.owner ?? '',
         alertTargetIdKey: group.groupId,
         alertTargetNameKey: group.name ?? '',
       },

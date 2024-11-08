@@ -228,8 +228,8 @@ class _GroupMembersViewState extends State<GroupMembersView>
           universalAlphabeticalLetter: widget.universalAlphabeticalLetter,
           sortAlphabetical: widget.sortAlphabetical,
           itemBuilder: widget.itemBuilder,
-          searchHideText: widget.searchBarHideText,
-          background: widget.listViewBackground,
+          searchBarHideText: widget.searchBarHideText,
+          emptyBackground: widget.listViewBackground,
           onTap: widget.onTap ??
               (context, model) {
                 onMemberTap(context, model.profile);

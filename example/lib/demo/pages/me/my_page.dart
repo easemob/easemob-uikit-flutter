@@ -62,7 +62,7 @@ class _MyPageState extends State<MyPage>
 
   Widget _buildContent() {
     Widget name = Text(
-      _userProfile?.showName ?? ChatUIKit.instance.currentUserId ?? '',
+      _userProfile?.contactShowName ?? ChatUIKit.instance.currentUserId ?? '',
       textScaler: TextScaler.noScaling,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,

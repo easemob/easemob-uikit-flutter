@@ -16,7 +16,8 @@ extension MessageHelper on Message {
 
   void addProfile() {
     _addAvatarURL(ChatUIKitProvider.instance.currentUserProfile?.avatarUrl);
-    _addNickname(ChatUIKitProvider.instance.currentUserProfile?.showName);
+    _addNickname(
+        ChatUIKitProvider.instance.currentUserProfile?.contactShowName);
   }
 
   void addPreview(ChatUIKitPreviewObj? previewObj) {
@@ -297,7 +298,7 @@ extension MessageHelper on Message {
     if (needShowName) {
       if (chatType == ChatType.GroupChat) {
         String? showName =
-            ChatUIKitProvider.instance.getProfileById(from!)?.showName;
+            ChatUIKitProvider.instance.getProfileById(from!)?.contactShowName;
         showName ??= nickname;
         title = "${showName ?? from ?? ""}: ";
       }
@@ -350,7 +351,7 @@ extension MessageHelper on Message {
               ChatUIKitProfile profile = ChatUIKitProvider.instance.getProfile(
                 ChatUIKitProfile.contact(id: operator!),
               );
-              showName = profile.showName;
+              showName = profile.contactShowName;
             }
             showName ??= '';
           }

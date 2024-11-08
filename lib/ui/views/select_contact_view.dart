@@ -128,8 +128,8 @@ class _SelectContactViewState extends State<SelectContactView>
       body: ContactListView(
         controller: controller,
         itemBuilder: widget.itemBuilder,
-        searchHideText: widget.searchBarHideText,
-        background: widget.listViewBackground,
+        searchBarHideText: widget.searchBarHideText,
+        emptyBackground: widget.listViewBackground,
         onTap: widget.onTap ?? tapContactInfo,
         onSearchTap: widget.onSearchTap ?? onSearchTap,
       ),

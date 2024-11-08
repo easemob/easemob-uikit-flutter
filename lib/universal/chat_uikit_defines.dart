@@ -1,4 +1,4 @@
-import 'chat_uikit.dart';
+import '../chat_uikit.dart';
 import 'package:flutter/widgets.dart';
 
 // 消息列表 item 构建器，需要返回一个 widget，如果返回 null 将会使用默认的 item。 返回后会用于列表显示。

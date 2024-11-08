@@ -45,7 +45,7 @@ class _MergeConversationPageState extends State<MergeConversationPage> {
             CustomConversationItemModel(
               profile: ChatUIKitProfile.custom(
                 id: conversationGroupId,
-                nickname: '合并会话',
+                showName: '合并会话',
               ),
               totalUnreadCount: totalUnreadCount,
               lastMessage: latestMessage,
@@ -176,7 +176,7 @@ class MergedHelper {
       [
         ChatUIKitProfile.custom(
           id: mergedId,
-          nickname: mergeName,
+          showName: mergeName,
         )
       ],
     );

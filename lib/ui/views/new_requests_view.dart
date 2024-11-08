@@ -112,8 +112,8 @@ class _NewRequestsViewState extends State<NewRequestsView>
           child: NewRequestsListView(
             controller: controller,
             itemBuilder: widget.itemBuilder,
-            searchHideText: widget.searchBarHideText,
-            background: widget.listViewBackground,
+            searchBarHideText: widget.searchBarHideText,
+            emptyBackground: widget.listViewBackground,
             errorMessage: widget.loadErrorMessage,
             // onTap: widget.onTap ?? onItemTap,
             onTap: widget.onTap,

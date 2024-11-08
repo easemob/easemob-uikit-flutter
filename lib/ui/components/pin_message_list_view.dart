@@ -9,39 +9,21 @@ double itemHeight = 64;
 double appBarHeight = 56;
 double bottomBarHeight = 16;
 
-class PinListItemModel {
-  final Message message;
-  final MessagePinInfo pinInfo;
-
-  const PinListItemModel({
-    required this.message,
-    required this.pinInfo,
-  });
-
-  PinListItemModel copyWith({
-    Message? message,
-    MessagePinInfo? pinInfo,
-    VoidCallback? onTap,
-    bool? isConfirming,
-  }) {
-    return PinListItemModel(
-      message: message ?? this.message,
-      pinInfo: pinInfo ?? this.pinInfo,
-    );
-  }
-
-  String get senderShowName {
-    return message.nickname ?? message.from!;
-  }
-
-  String get operatorShowName {
-    return ChatUIKitProvider.instance
-        .getProfile(ChatUIKitProfile.contact(id: pinInfo.operatorId))
-        .showName;
-  }
-}
-
+/// The pin message list view.
 class PinMessageListView extends StatefulWidget {
+  /// The pin message list view.
+  /// This widget is used to display the list of pinned messages.
+  ///
+  /// [pinMessagesController] The controller of the list.
+  ///
+  /// [maxHeight] The maximum height of the list.
+  ///
+  /// [duration] The duration of the animation.
+  ///
+  /// [barrierColor] The color of the barrier.
+  ///
+  /// [onTap] Callback when the list item is clicked.
+  ///
   const PinMessageListView({
     required this.pinMessagesController,
     this.maxHeight = 300,

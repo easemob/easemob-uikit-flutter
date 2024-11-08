@@ -1,7 +1,7 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 
-import '../../custom/chat_uikit_selection_controls.dart';
+import 'chat_uikit_selection_controls.dart';
 
 class ChatUIKitInputBar extends StatefulWidget {
   const ChatUIKitInputBar({

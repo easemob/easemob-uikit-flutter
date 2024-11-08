@@ -175,8 +175,8 @@ class _CreateGroupViewState extends State<CreateGroupView>
                 ),
               );
             },
-        searchHideText: widget.searchBarHideText,
-        background: widget.listViewBackground,
+        searchBarHideText: widget.searchBarHideText,
+        emptyBackground: widget.listViewBackground,
         onSearchTap: widget.onSearchTap ?? onSearchTap,
       ),
     );
@@ -250,7 +250,7 @@ class _CreateGroupViewState extends State<CreateGroupView>
                       ChatUIKitProfile.contact(
                           id: ChatUIKit.instance.currentUserId!)
                 ]
-          ].map((e) => e.showName).join(','),
+          ].map((e) => e.contactShowName).join(','),
       desc: info?.groupDesc ?? widget.createGroupInfo?.groupDesc,
       options: GroupOptions(
         maxCount: info?.maxCount ?? widget.createGroupInfo?.maxCount ?? 1000,

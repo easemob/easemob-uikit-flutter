@@ -351,8 +351,8 @@ class ThreadMessagesViewController
   Future<void> sendCardMessage(ChatUIKitProfile cardProfile) async {
     if (await createThreadIfNotExits() == false) return;
     Map<String, String> param = {cardUserIdKey: cardProfile.id};
-    if (cardProfile.name != null) {
-      param[cardNicknameKey] = cardProfile.name!;
+    if (cardProfile.contactShowName.isNotEmpty) {
+      param[cardNicknameKey] = cardProfile.contactShowName;
     }
     if (cardProfile.avatarUrl != null) {
       param[cardAvatarKey] = cardProfile.avatarUrl!;

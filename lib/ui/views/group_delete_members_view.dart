@@ -182,8 +182,8 @@ class _GroupDeleteMembersViewState extends State<GroupDeleteMembersView>
                 ),
               );
             },
-        searchHideText: widget.searchBarHideText,
-        background: widget.listViewBackground,
+        searchBarHideText: widget.searchBarHideText,
+        emptyBackground: widget.listViewBackground,
         onSearchTap: widget.onSearchTap ?? onSearchTap,
       ),
     );

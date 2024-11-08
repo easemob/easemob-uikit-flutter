@@ -202,7 +202,9 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
       children: [
         Expanded(
           child: Text(
-            profile?.showName ?? model.message.nickname ?? model.message.from!,
+            profile?.contactShowName ??
+                model.message.nickname ??
+                model.message.from!,
             textScaler: TextScaler.noScaling,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,

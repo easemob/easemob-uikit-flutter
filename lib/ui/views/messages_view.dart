@@ -319,8 +319,8 @@ class _MessagesViewState extends State<MessagesView>
     appBarModel = ChatUIKitAppBarModel(
       title: widget.appBarModel?.title ??
           (controller.conversationType == ConversationType.GroupChat
-              ? controller.profile.showName
-              : controller.userMap[controller.profile.id]?.showName),
+              ? controller.profile.contactShowName
+              : controller.userMap[controller.profile.id]?.contactShowName),
       titleTextStyle: widget.appBarModel?.titleTextStyle,
       centerWidget: widget.appBarModel?.centerWidget,
       subtitle: widget.appBarModel?.subtitle,
@@ -861,7 +861,7 @@ class _MessagesViewState extends State<MessagesView>
         if (from?.isNotEmpty == true) {
           ChatUIKitProfile profile = ChatUIKitProvider.instance
               .getProfile(ChatUIKitProfile.contact(id: from!));
-          showName = profile.showName;
+          showName = profile.contactShowName;
         }
       }
 
@@ -892,7 +892,7 @@ class _MessagesViewState extends State<MessagesView>
     if (ChatUIKit.instance.currentUserId == operator) {
       showName = ChatUIKitLocal.alertYou.localString(context);
     } else {
-      showName = operatorProfile?.showName ?? '';
+      showName = operatorProfile?.contactShowName ?? '';
     }
 
     // 如果是创建群组消息提醒
@@ -914,7 +914,7 @@ class _MessagesViewState extends State<MessagesView>
               text: ChatUIKitLocal.messagesViewAlertGroupInfoTitle
                   .localString(context)),
           MessageAlertAction(
-            text: targetProfile?.showName ?? "",
+            text: targetProfile?.contactShowName ?? "",
             type: MessageAlertActionType.heightLight,
           ),
         ],
@@ -960,7 +960,7 @@ class _MessagesViewState extends State<MessagesView>
                         ChatUIKitRouteNames.threadMessagesView,
                         ThreadMessagesViewArguments(
                           appBarModel: ChatUIKitAppBarModel(
-                              subtitle: controller.profile.showName),
+                              subtitle: controller.profile.contactShowName),
                           controller:
                               ThreadMessagesViewController(model: model),
                           attributes: widget.attributes,
@@ -1028,7 +1028,7 @@ class _MessagesViewState extends State<MessagesView>
             text: ChatUIKitLocal.alertAlreadyAdd.localString(context),
           ),
           MessageAlertAction(
-            text: profile.showName,
+            text: profile.contactShowName,
             type: MessageAlertActionType.heightLight,
           ),
           MessageAlertAction(
@@ -1608,7 +1608,10 @@ class _MessagesViewState extends State<MessagesView>
                     .localString(context),
                 content: Strings.format(
                     '${ChatUIKitLocal.messagesViewShareContactAlertSubTitle.localString(context)}"%a"${ChatUIKitLocal.messagesViewShareContactAlertSubTitleTo.localString(context)}"%a"?',
-                    [model.profile.showName, controller.profile.showName]),
+                    [
+                      model.profile.contactShowName,
+                      controller.profile.contactShowName
+                    ]),
                 context: context,
                 actionItems: [
                   ChatUIKitDialogAction.cancel(

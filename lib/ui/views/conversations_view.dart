@@ -195,7 +195,7 @@ class _ConversationsViewState extends State<ConversationsView>
           beforeWidgets: widget.beforeWidgets,
           afterWidgets: widget.afterWidgets,
           searchBarHideText: widget.searchBarHideText,
-          background: widget.listViewBackground,
+          emptyBackground: widget.listViewBackground,
           onTap: widget.onItemTap ??
               (BuildContext context, ConversationItemModel info) {
                 pushToMessagePage(info.profile);

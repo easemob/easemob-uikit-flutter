@@ -140,8 +140,8 @@ class _GroupMentionViewState extends State<GroupMentionView>
                     child: ChatUIKitContactListViewItem(model),
                   );
                 },
-            searchHideText: widget.searchBarHideText,
-            background: widget.listViewBackground,
+            searchBarHideText: widget.searchBarHideText,
+            emptyBackground: widget.listViewBackground,
             onSearchTap: widget.onSearchTap ?? onSearchTap,
           );
         },

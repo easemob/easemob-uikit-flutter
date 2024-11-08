@@ -167,7 +167,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
     Widget avatar = statusAvatar();
 
     Widget name = Text(
-      profile!.showName,
+      profile!.contactShowName,
       overflow: TextOverflow.ellipsis,
       textScaler: TextScaler.noScaling,
       maxLines: 1,

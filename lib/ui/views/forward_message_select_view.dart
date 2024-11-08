@@ -75,7 +75,8 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
       } else {
         ChatUIKitProfile? profile =
             ChatUIKitProvider.instance.getProfileById(msg.from!);
-        str += '${profile?.nickname ?? msg.fromProfile.nickname}: ';
+        str +=
+            '${profile?.contactShowName ?? msg.fromProfile.contactShowName}: ';
         if (msg.bodyType == MessageType.TXT) {
           str += msg.textContent;
         }

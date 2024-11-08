@@ -13,7 +13,7 @@ export 'chat_uikit_service/chat_uikit_service.dart';
 export 'provider/chat_uikit_profile.dart';
 export 'chat_uikit_service/chat_uikit_action_events.dart';
 export 'chat_uikit_service/observers/chat_uikit_events_observers.dart';
-export 'package:em_chat_uikit/universal/chat_string_extension.dart';
+export 'package:em_chat_uikit/tools/chat_string_extension.dart';
 
 export 'tools/chat_uikit_helper.dart';
 export 'tools/chat_uikit_image_loader.dart';
@@ -96,6 +96,7 @@ export 'ui/models/new_request_item_model.dart';
 export 'ui/models/quote_mode.dart';
 export 'ui/models/alphabetical_item_model.dart';
 export 'ui/models/message_model.dart';
+export 'ui/models/pin_list_item_model.dart';
 
 export 'ui/components/block_list_view.dart';
 export 'ui/components/conversation_list_view.dart';
@@ -172,7 +173,7 @@ export 'ui/route/chat_uikit_view_observer.dart';
 export 'universal/chat_uikit_action_model.dart';
 
 export 'chat_uikit_emoji_data.dart';
-export 'chat_uikit_defines.dart';
+export 'universal/chat_uikit_defines.dart';
 export 'universal/defines.dart';
 export 'chat_uikit_alphabet_sort_helper.dart';
 

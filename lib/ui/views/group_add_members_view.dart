@@ -200,8 +200,8 @@ class _GroupAddMembersViewState extends State<GroupAddMembersView>
                 ),
               );
             },
-        searchHideText: widget.searchBarHideText,
-        background: widget.listViewBackground,
+        searchBarHideText: widget.searchBarHideText,
+        emptyBackground: widget.listViewBackground,
         onSearchTap: widget.onSearchTap ?? onSearchTap,
       ),
     );

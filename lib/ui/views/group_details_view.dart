@@ -243,7 +243,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     Widget avatar = statusAvatar();
 
     Widget name = Text(
-      profile!.showName,
+      profile!.contactShowName,
       overflow: TextOverflow.ellipsis,
       textScaler: TextScaler.noScaling,
       maxLines: 1,

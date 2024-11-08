@@ -113,7 +113,7 @@ class _ChatUIKitReplyBarState extends State<ChatUIKitReplyBar>
                   ChatUIKitProfile? profile = ChatUIKitProvider.instance
                       .profilesCache[widget.messageModel.message.from!];
                   profile ??= widget.messageModel.message.fromProfile;
-                  return profile.showName;
+                  return profile.contactShowName;
                 }(),
                 style: TextStyle(
                   fontWeight: theme.font.labelSmall.fontWeight,

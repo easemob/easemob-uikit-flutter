@@ -99,7 +99,7 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
     ChatUIKitProfile? profile =
         ChatUIKitProvider.instance.getProfileById(group.groupId);
 
-    profile = profile?.copyWith(name: group.name) ??
+    profile = profile?.copyWith(showName: group.name) ??
         ChatUIKitProfile.group(
           id: group.groupId,
           groupName: group.name,

@@ -138,8 +138,8 @@ class _GroupsViewState extends State<GroupsView> with ChatUIKitThemeMixin {
         child: GroupListView(
           controller: controller,
           itemBuilder: widget.itemBuilder,
-          searchHideText: widget.searchBarHideText,
-          background: widget.listViewBackground,
+          searchBarHideText: widget.searchBarHideText,
+          emptyBackground: widget.listViewBackground,
           errorMessage: widget.loadErrorMessage,
           onTap: widget.onTap ?? tapGroupInfo,
           onLongPress: widget.onLongPress,
