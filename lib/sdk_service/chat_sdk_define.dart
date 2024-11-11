@@ -61,3 +61,8 @@ typedef UserInfo = chat.EMUserInfo;
 typedef MessagePinOperation = chat.MessagePinOperation;
 typedef MessagePinInfo = chat.MessagePinInfo;
 typedef LoginExtensionInfo = chat.LoginExtensionInfo;
+
+typedef ChatRoomEventHandler = chat.EMChatRoomEventHandler;
+typedef LeaveReason = chat.LeaveReason;
+typedef ChatRoom = chat.EMChatRoom;
+typedef PageResult<T> = chat.EMPageResult<T>;

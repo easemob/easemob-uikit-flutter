@@ -9,6 +9,7 @@ import 'observers/action_event_observer.dart';
 
 import 'actions/chat_actions.dart';
 import 'actions/group_actions.dart';
+import 'actions/room_actions.dart';
 import 'actions/notification_actions.dart';
 import 'actions/contact_actions.dart';
 import 'actions/presence_actions.dart';
@@ -16,7 +17,7 @@ import 'actions/thread_actions.dart';
 import 'actions/user_info_actions.dart';
 
 import 'wrappers/chat_wrapper.dart';
-// import 'wrappers/connect_wrapper.dart';
+import 'wrappers/room_wrapper.dart';
 import 'wrappers/contact_wrapper.dart';
 import 'wrappers/group_wrapper.dart';
 import 'wrappers/message_wrapper.dart';
@@ -28,6 +29,7 @@ import 'wrappers/user_info_wrapper.dart';
 
 export 'actions/chat_actions.dart';
 export 'actions/group_actions.dart';
+export 'actions/room_actions.dart';
 export 'actions/notification_actions.dart';
 export 'actions/contact_actions.dart';
 export 'actions/presence_actions.dart';
@@ -39,6 +41,7 @@ export 'chat_sdk_define.dart';
 export 'wrappers/chat_wrapper.dart';
 export 'wrappers/connect_wrapper.dart';
 export 'wrappers/contact_wrapper.dart';
+export 'wrappers/room_wrapper.dart';
 export 'wrappers/group_wrapper.dart';
 export 'wrappers/message_wrapper.dart';
 export 'wrappers/multi_wrapper.dart';
@@ -56,9 +59,10 @@ export 'observers/multi_observer.dart';
 export 'observers/presence_observer.dart';
 export 'observers/action_event_observer.dart';
 export 'observers/thread_observer.dart';
+export 'observers/room_observer.dart';
 
 export 'chat_sdk_service_defines.dart';
-export '../chat_uikit_service/chat_uikit_insert_tools.dart';
+export 'chat_uikit_insert_tools.dart';
 
 const String sdkEventKey = 'chat_uikit';
 
@@ -128,6 +132,7 @@ class ChatSDKService extends ChatUIKitServiceBase
     with
         ChatWrapper,
         GroupWrapper,
+        RoomWrapper,
         ContactWrapper,
         // ConnectWrapper,
         MultiWrapper,
@@ -139,6 +144,7 @@ class ChatSDKService extends ChatUIKitServiceBase
         ChatActions,
         ContactActions,
         GroupActions,
+        RoomActions,
         NotificationActions,
         ThreadActions,
         PresenceActions,
