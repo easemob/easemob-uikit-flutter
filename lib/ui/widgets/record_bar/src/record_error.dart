@@ -3,5 +3,3 @@ class RecordError extends Error {
   final int code;
   final String? message;
 }
-
-

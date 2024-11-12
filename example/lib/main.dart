@@ -23,7 +23,6 @@ const appKey = 'easemob#easeim';
 const bool appDebug = false;
 
 void main() async {
-  
   SettingsDataStore().init();
   return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MyApp()));

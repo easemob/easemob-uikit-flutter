@@ -252,8 +252,7 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
                             textScaler: TextScaler.noScaling,
                             overflow: TextOverflow.ellipsis,
                             style: element.style ??
-                                (element.type ==
-                                        ChatUIKitEventActionType.normal
+                                (element.type == ChatUIKitEventActionType.normal
                                     ? normalStyle
                                     : destructive),
                           ),
