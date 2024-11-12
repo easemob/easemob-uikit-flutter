@@ -7,7 +7,7 @@ mixin ChatWrapper on ChatUIKitServiceBase {
     super.addListeners();
     Client.getInstance.chatManager.addEventHandler(
       sdkEventKey,
-      ChatEventHandle(
+      ChatEventHandler(
         onMessagesReceived: onMessagesReceived,
         onCmdMessagesReceived: onCmdMessagesReceived,
         onMessagesRead: onMessagesRead,

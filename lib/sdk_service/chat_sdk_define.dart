@@ -3,7 +3,7 @@ import 'package:im_flutter_sdk/im_flutter_sdk.dart' as chat;
 
 typedef Client = chat.EMClient;
 typedef ChatManager = chat.EMChatManager;
-typedef ChatEventHandle = chat.EMChatEventHandler;
+typedef ChatEventHandler = chat.EMChatEventHandler;
 typedef GroupEventHandler = chat.EMGroupEventHandler;
 typedef RoomEventHandler = chat.EMChatRoomEventHandler;
 typedef ContactEventHandler = chat.EMContactEventHandler;

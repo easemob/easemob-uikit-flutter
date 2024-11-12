@@ -22,13 +22,13 @@ dependencies:
   
   record: 5.1.2
 
-  shared_preferences: 2.3.1
+  shared_preferences: 2.2.3
 
   chat_uikit_theme: 1.0.4
 
-  path_provider: 2.1.5
+  path_provider: 2.1.4
 
-  file_picker: 8.0.6
+  file_picker: 8.0.5
 
   audioplayers: 6.0.0
 
