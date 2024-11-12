@@ -41,7 +41,7 @@ environment:
 ```
 
 - ios 12+
-- android minSDKVersion 21
+- android minSDKVersion 24
 
 # Installation
 
