@@ -1,6 +1,10 @@
 ## 2.1.0+2
 
 - 优化消息长按菜单显示;
+- 修改 `ChatUIKitSetting.messageLongPressType` 为 `ChatUIKitSetting.messageLongPressMenuStyle`;
+- 修改 `ChatUIKitSetting.messageMoreActionType` 为 `ChatUIKitSetting.messageAttachmentMenuStyle`;
+- 修改 `ChatUIKitMessageLongPressType` 为 `ChatUIKitMessageLongPressMenuStyle`;
+- 修改 `ChatUIKitMessageMoreActionType` 为 `ChatUIKitMessageAttachmentMenuStyle`;
 
 ## 2.1.0+1
 
