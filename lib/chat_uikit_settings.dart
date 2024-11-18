@@ -124,9 +124,9 @@ class ChatUIKitSettings {
   /// Contact alphabetical sorting order, if there are Chinese characters, you can redefine the initials using [ChatUIKitAlphabetSortHelper].
   static String sortAlphabetical = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#';
 
-  static ChatUIKitMessageLongPressType messageLongPressType =
-      ChatUIKitMessageLongPressType.popupMenu;
+  static ChatUIKitMessageLongPressMenuStyle messageLongPressMenuStyle =
+      ChatUIKitMessageLongPressMenuStyle.popupMenu;
 
-  static ChatUIKitMessageMoreActionType messageMoreActionType =
-      ChatUIKitMessageMoreActionType.menu;
+  static ChatUIKitMessageAttachmentMenuStyle messageAttachmentMenuStyle =
+      ChatUIKitMessageAttachmentMenuStyle.menu;
 }

@@ -276,8 +276,8 @@ class _MessagesViewState extends State<MessagesView>
 
     pinMessageController = PinMessageListViewController(profile!);
 
-    if (ChatUIKitSettings.messageLongPressType ==
-        ChatUIKitMessageLongPressType.popupMenu) {
+    if (ChatUIKitSettings.messageLongPressMenuStyle ==
+        ChatUIKitMessageLongPressMenuStyle.popupMenu) {
       popupMenuController = ChatUIKitPopupMenuController();
     }
 
@@ -592,8 +592,8 @@ class _MessagesViewState extends State<MessagesView>
       ],
     );
 
-    if (ChatUIKitSettings.messageLongPressType ==
-        ChatUIKitMessageLongPressType.popupMenu) {
+    if (ChatUIKitSettings.messageLongPressMenuStyle ==
+        ChatUIKitMessageLongPressMenuStyle.popupMenu) {
       content = ChatUIKitPopupMenu(
         controller: popupMenuController!,
         style: ChatUIKitPopupMenuStyle(
@@ -1082,8 +1082,8 @@ class _MessagesViewState extends State<MessagesView>
 
   List<ChatUIKitEventAction> moreActions() {
     void closeMenu([close = true]) {
-      if (ChatUIKitSettings.messageMoreActionType ==
-          ChatUIKitMessageMoreActionType.bottomSheet) {
+      if (ChatUIKitSettings.messageAttachmentMenuStyle ==
+          ChatUIKitMessageAttachmentMenuStyle.bottomSheet) {
         Navigator.of(context).pop();
       } else {
         if (close) {
@@ -1094,8 +1094,8 @@ class _MessagesViewState extends State<MessagesView>
       }
     }
 
-    final style = ChatUIKitSettings.messageMoreActionType ==
-            ChatUIKitMessageMoreActionType.bottomSheet
+    final style = ChatUIKitSettings.messageAttachmentMenuStyle ==
+            ChatUIKitMessageAttachmentMenuStyle.bottomSheet
         ? TextStyle(
             color: theme.color.isDark
                 ? theme.color.neutralColor7
@@ -1393,8 +1393,8 @@ class _MessagesViewState extends State<MessagesView>
     }
 
     if (items != null) {
-      if (ChatUIKitSettings.messageLongPressType ==
-          ChatUIKitMessageLongPressType.popupMenu) {
+      if (ChatUIKitSettings.messageLongPressMenuStyle ==
+          ChatUIKitMessageLongPressMenuStyle.popupMenu) {
         popupMenuController?.showMenu(
             bottomSheetReactionsTitle(model), rect, items);
       } else {
@@ -1929,8 +1929,8 @@ class _MessagesViewState extends State<MessagesView>
 
   List<ChatUIKitEventAction> defaultItemLongPressed(MessageModel model) {
     void closeMenu() {
-      if (ChatUIKitSettings.messageLongPressType ==
-          ChatUIKitMessageLongPressType.bottomSheet) {
+      if (ChatUIKitSettings.messageLongPressMenuStyle ==
+          ChatUIKitMessageLongPressMenuStyle.bottomSheet) {
         Navigator.of(context).pop();
       }
     }
@@ -2296,8 +2296,8 @@ class _MessagesViewState extends State<MessagesView>
     List<MessageReaction>? reactions = model.reactions;
 
     void closeMenu() {
-      if (ChatUIKitSettings.messageLongPressType ==
-          ChatUIKitMessageLongPressType.bottomSheet) {
+      if (ChatUIKitSettings.messageLongPressMenuStyle ==
+          ChatUIKitMessageLongPressMenuStyle.bottomSheet) {
         Navigator.of(context).pop();
       }
     }
@@ -2600,8 +2600,8 @@ class _MessagesViewState extends State<MessagesView>
               onTap: () {
                 ChatUIKitKeyboardPanelType panel =
                     ChatUIKitKeyboardPanelType.none;
-                if (ChatUIKitSettings.messageMoreActionType ==
-                    ChatUIKitMessageMoreActionType.bottomSheet) {
+                if (ChatUIKitSettings.messageAttachmentMenuStyle ==
+                    ChatUIKitMessageAttachmentMenuStyle.bottomSheet) {
                   panel = ChatUIKitKeyboardPanelType.none;
                   inputController.switchPanel(panel);
                   List<ChatUIKitEventAction> items = moreActions();
@@ -2699,8 +2699,8 @@ class _MessagesViewState extends State<MessagesView>
       ChatUIKitBottomPanelData(
         height: 254,
         panelType: ChatUIKitKeyboardPanelType.more,
-        child: ChatUIKitSettings.messageMoreActionType ==
-                ChatUIKitMessageMoreActionType.menu
+        child: ChatUIKitSettings.messageAttachmentMenuStyle ==
+                ChatUIKitMessageAttachmentMenuStyle.menu
             ? ChatUIKitMessageViewBottomMenu(
                 eventActionsHandler: () => moreActions(),
               )

@@ -113,12 +113,12 @@ typedef ChatUIKitDetailItemBuilder = List<ChatUIKitDetailsListViewItemModel>
 
 typedef ChatUIKitPositionWidgetHandler = void Function(Rect rect);
 
-enum ChatUIKitMessageLongPressType {
+enum ChatUIKitMessageLongPressMenuStyle {
   popupMenu,
   bottomSheet,
 }
 
-enum ChatUIKitMessageMoreActionType {
+enum ChatUIKitMessageAttachmentMenuStyle {
   menu,
   bottomSheet,
 }
