@@ -13,12 +13,13 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
     this.onItemTap,
     this.onItemLongPressHandler,
     this.searchBarHideText,
-    this.listViewBackground,
+    this.emptyBackground,
     this.enableAppBar = true,
     this.enableSearchBar = true,
     this.viewObserver,
     this.moreActionsBuilder,
     this.enablePinHighlight = true,
+    this.backgroundWidget,
     this.attributes,
   });
 
@@ -53,12 +54,15 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
   final bool enableSearchBar;
 
   /// 会话列表的背景，会话为空时会显示，如果设置后将会替换默认的背景。
-  final Widget? listViewBackground;
+  final Widget? emptyBackground;
 
   /// 是否显示AppBar, 默认为 `true`。 当为 `false` 时将不会显示AppBar。同时也会影响到是否显示标题。
   final bool enableAppBar;
 
   final bool enablePinHighlight;
+
+  /// 背景组件，如果设置后将会替换默认的背景组件。
+  final Widget? backgroundWidget;
 
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   @override
@@ -68,24 +72,25 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
 
   final ChatUIKitMoreActionsBuilder? moreActionsBuilder;
 
-  ConversationsViewArguments copyWith(
-      {ConversationListViewController? controller,
-      ChatUIKitAppBarModel? appBarModel,
-      void Function(List<ConversationItemModel> data)? onSearchTap,
-      List<NeedAlphabeticalWidget>? beforeWidgets,
-      List<NeedAlphabeticalWidget>? afterWidgets,
-      ChatUIKitListItemBuilder? itemBuilder,
-      void Function(BuildContext context, ConversationItemModel model)?
-          onItemTap,
-      ConversationsViewItemLongPressHandler? onItemLongPressHandler,
-      String? searchBarHideText,
-      Widget? listViewBackground,
-      bool? enableAppBar,
-      bool? enableSearchBar,
-      ChatUIKitViewObserver? viewObserver,
-      ChatUIKitMoreActionsBuilder? moreActionsBuilder,
-      String? attributes,
-      bool? enablePinHighlight}) {
+  ConversationsViewArguments copyWith({
+    ConversationListViewController? controller,
+    ChatUIKitAppBarModel? appBarModel,
+    void Function(List<ConversationItemModel> data)? onSearchTap,
+    List<NeedAlphabeticalWidget>? beforeWidgets,
+    List<NeedAlphabeticalWidget>? afterWidgets,
+    ChatUIKitListItemBuilder? itemBuilder,
+    void Function(BuildContext context, ConversationItemModel model)? onItemTap,
+    ConversationsViewItemLongPressHandler? onItemLongPressHandler,
+    String? searchBarHideText,
+    Widget? emptyBackground,
+    bool? enableAppBar,
+    bool? enableSearchBar,
+    ChatUIKitViewObserver? viewObserver,
+    ChatUIKitMoreActionsBuilder? moreActionsBuilder,
+    String? attributes,
+    bool? enablePinHighlight,
+    Widget? backgroundWidget,
+  }) {
     return ConversationsViewArguments(
       controller: controller ?? this.controller,
       appBarModel: appBarModel ?? this.appBarModel,
@@ -98,12 +103,13 @@ class ConversationsViewArguments implements ChatUIKitViewArguments {
       onItemLongPressHandler:
           onItemLongPressHandler ?? this.onItemLongPressHandler,
       searchBarHideText: searchBarHideText ?? this.searchBarHideText,
-      listViewBackground: listViewBackground ?? this.listViewBackground,
+      emptyBackground: emptyBackground ?? this.emptyBackground,
       enableAppBar: enableAppBar ?? this.enableAppBar,
       viewObserver: viewObserver ?? this.viewObserver,
       attributes: attributes ?? this.attributes,
       moreActionsBuilder: moreActionsBuilder ?? this.moreActionsBuilder,
       enablePinHighlight: enablePinHighlight ?? this.enablePinHighlight,
+      backgroundWidget: backgroundWidget ?? this.backgroundWidget,
     );
   }
 }

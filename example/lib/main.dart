@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/ui/widgets/input_bar/chat_uikit_input_bar_theme.dart';
 import 'package:em_chat_uikit_example/demo/debug_login_page.dart';
 import 'package:em_chat_uikit_example/demo/demo_localizations.dart';
 import 'package:em_chat_uikit_example/demo/home_page.dart';

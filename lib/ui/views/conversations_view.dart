@@ -10,7 +10,7 @@ class ConversationsView extends StatefulWidget {
         afterWidgets = arguments.afterWidgets,
         onSearchTap = arguments.onSearchTap,
         searchBarHideText = arguments.searchBarHideText,
-        listViewBackground = arguments.listViewBackground,
+        emptyBackground = arguments.emptyBackground,
         onItemTap = arguments.onItemTap,
         onItemLongPressHandler = arguments.onItemLongPressHandler,
         appBarModel = arguments.appBarModel,
@@ -20,6 +20,7 @@ class ConversationsView extends StatefulWidget {
         viewObserver = arguments.viewObserver,
         moreActionsBuilder = arguments.moreActionsBuilder,
         enablePinHighlight = arguments.enablePinHighlight,
+        backgroundWidget = arguments.backgroundWidget,
         attributes = arguments.attributes;
 
   /// 会话列表构造方法，如果需要自定义会话列表可以使用这个方法。
@@ -29,7 +30,7 @@ class ConversationsView extends StatefulWidget {
     this.afterWidgets,
     this.onSearchTap,
     this.searchBarHideText,
-    this.listViewBackground,
+    this.emptyBackground,
     this.onItemTap,
     this.onItemLongPressHandler,
     this.appBarModel,
@@ -40,6 +41,7 @@ class ConversationsView extends StatefulWidget {
     this.viewObserver,
     this.moreActionsBuilder,
     this.enablePinHighlight = true,
+    this.backgroundWidget,
     super.key,
   });
 
@@ -75,7 +77,7 @@ class ConversationsView extends StatefulWidget {
   final bool enableSearchBar;
 
   /// 会话列表的背景，会话为空时会显示，如果设置后将会替换默认的背景。
-  final Widget? listViewBackground;
+  final Widget? emptyBackground;
 
   /// 是否显示AppBar, 默认为 `true`。 当为 `false` 时将不会显示AppBar。同时也会影响到是否显示标题。
   final bool enableAppBar;
@@ -91,6 +93,9 @@ class ConversationsView extends StatefulWidget {
 
   /// 是否开启置顶消息点击高亮，默认为 `true`。如果设置为 `false` 将不会显示置顶高亮。
   final bool enablePinHighlight;
+
+  /// 背景组件，如果设置后将会替换默认的背景组件。
+  final Widget? backgroundWidget;
 
   @override
   State<ConversationsView> createState() => _ConversationsViewState();
@@ -182,9 +187,7 @@ class _ConversationsViewState extends State<ConversationsView>
     updateAppBarModel(theme);
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
+      backgroundColor: Colors.transparent,
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
       body: SafeArea(
         child: ConversationListView(
@@ -195,7 +198,7 @@ class _ConversationsViewState extends State<ConversationsView>
           beforeWidgets: widget.beforeWidgets,
           afterWidgets: widget.afterWidgets,
           searchBarHideText: widget.searchBarHideText,
-          emptyBackground: widget.listViewBackground,
+          emptyBackground: widget.emptyBackground,
           onTap: widget.onItemTap ??
               (BuildContext context, ConversationItemModel info) {
                 pushToMessagePage(info.profile);
@@ -206,6 +209,18 @@ class _ConversationsViewState extends State<ConversationsView>
           onSearchTap: widget.onSearchTap ?? onSearchTap,
         ),
       ),
+    );
+
+    content = Stack(
+      children: [
+        Container(
+          color: theme.color.isDark
+              ? theme.color.neutralColor1
+              : theme.color.neutralColor98,
+          child: widget.backgroundWidget,
+        ),
+        content,
+      ],
     );
 
     return content;

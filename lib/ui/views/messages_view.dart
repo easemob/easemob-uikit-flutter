@@ -46,7 +46,8 @@ class MessagesView extends StatefulWidget {
         onReactionInfoTap = arguments.onReactionInfoTap,
         reactionItemsBuilder = arguments.reactionItemsBuilder,
         onThreadItemTap = arguments.onThreadItemTap,
-        threadItemBuilder = arguments.threadItemBuilder;
+        threadItemBuilder = arguments.threadItemBuilder,
+        backgroundWidget = arguments.backgroundWidget;
 
   /// 构造函数。
   const MessagesView({
@@ -83,6 +84,7 @@ class MessagesView extends StatefulWidget {
     this.reactionItemsBuilder,
     this.onThreadItemTap,
     this.threadItemBuilder,
+    this.backgroundWidget,
     super.key,
   });
 
@@ -185,6 +187,9 @@ class MessagesView extends StatefulWidget {
   /// 用于刷新页面的Observer
   final ChatUIKitViewObserver? viewObserver;
 
+  /// 背景组件，如果设置后将会替换默认的背景组件。
+  final Widget? backgroundWidget;
+
   @override
   State<MessagesView> createState() => _MessagesViewState();
 }
@@ -280,11 +285,13 @@ class _MessagesViewState extends State<MessagesView>
       popupMenuController?.hideMenu();
     });
 
-    if (editController?.needMention == true) {
-      if (profile?.type == ChatUIKitProfileType.group) {
-        needMention();
+    editController?.addListener(() {
+      if (editController?.needMention == true) {
+        if (profile?.type == ChatUIKitProfileType.group) {
+          needMention();
+        }
       }
-    }
+    });
   }
 
   void jumpToMessage(String? messageId,
@@ -618,9 +625,7 @@ class _MessagesViewState extends State<MessagesView>
       content = Column(children: list);
       content = Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: theme.color.isDark
-            ? theme.color.neutralColor1
-            : theme.color.neutralColor98,
+        backgroundColor: Colors.transparent,
         appBar:
             widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
         body: SafeArea(
@@ -646,6 +651,12 @@ class _MessagesViewState extends State<MessagesView>
 
       content = Stack(
         children: [
+          Container(
+            color: theme.color.isDark
+                ? theme.color.neutralColor1
+                : theme.color.neutralColor98,
+            child: widget.backgroundWidget,
+          ),
           content,
           if (editMessage != null) ...[
             Positioned.fill(
@@ -1366,6 +1377,10 @@ class _MessagesViewState extends State<MessagesView>
 
   void onItemLongPress(MessageModel model, Rect rect) async {
     clearAllType();
+    if (currentPanelType.value != ChatUIKitKeyboardPanelType.none) {
+      inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
+      return;
+    }
     List<ChatUIKitEventAction>? items = defaultItemLongPressed(model);
     if (items.isEmpty) return;
     if (widget.onItemLongPressHandler != null) {

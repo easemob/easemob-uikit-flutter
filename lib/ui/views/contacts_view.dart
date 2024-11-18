@@ -82,10 +82,10 @@ class ContactsView extends StatefulWidget {
   final bool enableSearchBar;
 
   /// 联系人列表之前的数据。
-  final List<ChatUIKitListViewMoreItem>? beforeItems;
+  final List<NeedAlphabeticalWidget>? beforeItems;
 
   /// 联系人列表之后的数据。
-  final List<ChatUIKitListViewMoreItem>? afterItems;
+  final List<NeedAlphabeticalWidget>? afterItems;
 
   /// 联系人列表的 `item` 构建器，如果设置后需要显示联系人时会直接回调，如果不处理可以返回 `null`。
   final ChatUIKitContactItemBuilder? itemBuilder;
@@ -239,7 +239,7 @@ class _ContactsViewState extends State<ContactsView>
     return content;
   }
 
-  List<ChatUIKitListViewMoreItem> beforeWidgets() {
+  List<NeedAlphabeticalWidget> beforeWidgets() {
     return [
       ChatUIKitListViewMoreItem(
         title: ChatUIKitLocal.contactsViewNewRequests.localString(context),

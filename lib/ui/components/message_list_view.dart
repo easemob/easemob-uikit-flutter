@@ -178,14 +178,12 @@ class _MessageListViewState extends State<MessageListView>
       child: content,
     );
 
-    content = Scaffold(
-      key: ValueKey(controller.profile.id),
-      resizeToAvoidBottomInset: false,
-      body: content,
-      backgroundColor: theme.color.isDark
-          ? theme.color.neutralColor1
-          : theme.color.neutralColor98,
-    );
+    // content = Scaffold(
+    //   key: ValueKey(controller.profile.id),
+    //   resizeToAvoidBottomInset: false,
+    //   body: content,
+    //   backgroundColor: Colors.red,
+    // );
 
     return content;
   }

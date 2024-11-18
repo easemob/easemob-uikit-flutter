@@ -6,6 +6,7 @@ import 'package:em_chat_uikit_example/sample_demo/contact/contact_page_custom1.d
 import 'package:em_chat_uikit_example/sample_demo/conversation/merge_conversation_page.dart';
 import 'package:em_chat_uikit_example/sample_demo/custom_input_bar_page.dart';
 import 'package:em_chat_uikit_example/sample_demo/group/group_page.dart';
+import 'package:em_chat_uikit_example/sample_demo/message/send_message_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -75,6 +76,11 @@ class _CustomHomePageState extends State<CustomHomePage>
             name: '合并会话列表(Merge Conversation list)',
             title: 'MergeConversationPage',
             widget: const MergeConversationPage(),
+          ),
+          itemWidget(
+            name: '发送你的消息(Send your message)',
+            title: 'Send Message',
+            widget: const SendMessagePage(),
           ),
           itemWidget(
             name: '默认通讯录列表(Default Contact list)',

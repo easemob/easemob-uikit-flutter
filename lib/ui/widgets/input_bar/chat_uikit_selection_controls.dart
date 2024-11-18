@@ -2,7 +2,6 @@
 
 import 'dart:math';
 
-import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +10,10 @@ const double _kToolbarContentDistanceBelow = _kHandleSize - 2.0;
 const double _kToolbarContentDistance = 8.0;
 
 class ChatUIKitSelectionControls extends TextSelectionControls {
+  ChatUIKitSelectionControls({this.selectionColor});
+
+  final Color? selectionColor;
+
   @override
   Widget buildHandle(
       BuildContext context, TextSelectionHandleType type, double textLineHeight,
@@ -20,9 +23,7 @@ class ChatUIKitSelectionControls extends TextSelectionControls {
       height: _kHandleSize,
       child: Container(
         decoration: BoxDecoration(
-          color: ChatUIKitTheme.instance.color.isDark
-              ? ChatUIKitTheme.instance.color.primaryColor6
-              : ChatUIKitTheme.instance.color.primaryColor5,
+          color: selectionColor,
           shape: BoxShape.circle,
         ),
       ),

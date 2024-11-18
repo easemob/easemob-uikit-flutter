@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/ui/widgets/input_bar/chat_uikit_input_bar_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'chat_uikit_selection_controls.dart';
@@ -46,11 +47,14 @@ class _ChatUIKitInputBarState extends State<ChatUIKitInputBar>
 
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
+    ChatUIKitInputBarTheme? inputTheme = Theme.of(context).extension();
+
     Widget content = Container(
       decoration: BoxDecoration(
-        color: theme.color.isDark
-            ? theme.color.neutralColor1
-            : theme.color.neutralColor98,
+        color: inputTheme?.backgroundColor ??
+            (theme.color.isDark
+                ? theme.color.neutralColor1
+                : theme.color.neutralColor98),
       ),
       padding: const EdgeInsets.symmetric(
         horizontal: 12,
@@ -72,7 +76,11 @@ class _ChatUIKitInputBarState extends State<ChatUIKitInputBar>
                   }
                 },
                 child: TextField(
-                  selectionControls: ChatUIKitSelectionControls(),
+                  selectionControls: ChatUIKitSelectionControls(
+                      selectionColor: inputTheme?.inputSelectionColor ??
+                          (ChatUIKitTheme.instance.color.isDark
+                              ? ChatUIKitTheme.instance.color.primaryColor6
+                              : ChatUIKitTheme.instance.color.primaryColor5)),
                   onChanged: (value) {
                     widget.onInputTextChanged?.call(value);
                   },
@@ -88,13 +96,15 @@ class _ChatUIKitInputBarState extends State<ChatUIKitInputBar>
                       theme.color.isDark ? Brightness.dark : Brightness.light,
                   maxLines: 4,
                   minLines: 1,
-                  cursorColor: theme.color.isDark
-                      ? theme.color.primaryColor6
-                      : theme.color.primaryColor5,
+                  cursorColor: inputTheme?.inputCursorColor ??
+                      (theme.color.isDark
+                          ? theme.color.primaryColor6
+                          : theme.color.primaryColor5),
                   style: TextStyle(
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor98
-                        : theme.color.neutralColor1,
+                    color: inputTheme?.inputTextColor ??
+                        (theme.color.isDark
+                            ? theme.color.neutralColor98
+                            : theme.color.neutralColor1),
                     fontSize: theme.font.bodyLarge.fontSize,
                     fontWeight: theme.font.bodyLarge.fontWeight,
                   ),
@@ -108,16 +118,18 @@ class _ChatUIKitInputBarState extends State<ChatUIKitInputBar>
                         CornerRadiusHelper.inputBarRadius(36),
                       ), // 设置圆角大小
                     ),
-                    fillColor: theme.color.isDark
-                        ? theme.color.neutralColor2
-                        : theme.color.neutralColor95,
+                    fillColor: inputTheme?.inputBackgroundColor ??
+                        (theme.color.isDark
+                            ? theme.color.neutralColor2
+                            : theme.color.neutralColor95),
                     filled: true,
                     isDense: true,
                     hintText: 'Aa',
                     hintStyle: TextStyle(
-                      color: theme.color.isDark
-                          ? theme.color.neutralColor4
-                          : theme.color.neutralColor6,
+                      color: inputTheme?.inputHintTextColor ??
+                          (theme.color.isDark
+                              ? theme.color.neutralColor4
+                              : theme.color.neutralColor6),
                       fontSize: theme.font.bodyLarge.fontSize,
                       fontWeight: theme.font.bodyLarge.fontWeight,
                     ),

@@ -12,13 +12,6 @@ class _ConversationPageState extends State<ConversationPage>
     with ChatUIKitThemeMixin {
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
-    return Container(
-      color: Colors.red,
-      child: ConversationsView(
-        itemBuilder: (context, model) {
-          return ChatUIKitConversationListViewItem(model);
-        },
-      ),
-    );
+    return const ConversationsView();
   }
 }

@@ -36,6 +36,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     this.reactionItemsBuilder,
     this.onThreadItemTap,
     this.threadItemBuilder,
+    this.backgroundWidget,
   }) {
     this.appBarModel = appBarModel ?? ChatUIKitAppBarModel(centerTitle: false);
   }
@@ -128,6 +129,9 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
 
   final MessageItemBuilder? threadItemBuilder;
 
+  /// 背景组件，如果设置后将会替换默认的背景组件。
+  final Widget? backgroundWidget;
+
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   @override
   String? attributes;
@@ -193,6 +197,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     MessageItemBuilder? reactionItemsBuilder,
     MessageItemTapHandler? onThreadItemTap,
     MessageItemBuilder? threadItemBuilder,
+    Widget? backgroundWidget,
   }) {
     return MessagesViewArguments(
       profile: profile ?? this.profile,
@@ -232,6 +237,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       reactionItemsBuilder: reactionItemsBuilder ?? this.reactionItemsBuilder,
       onThreadItemTap: onThreadItemTap ?? this.onThreadItemTap,
       threadItemBuilder: threadItemBuilder ?? this.threadItemBuilder,
+      backgroundWidget: backgroundWidget ?? this.backgroundWidget,
     );
   }
 }
