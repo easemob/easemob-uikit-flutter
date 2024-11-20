@@ -155,6 +155,10 @@ class ChatSDKService extends ChatUIKitServiceBase
     return _instance ??= ChatSDKService();
   }
 
+  ChatSDKService() {
+    _instance = this;
+  }
+
   Future<void> init({
     required Options options,
   }) async {
