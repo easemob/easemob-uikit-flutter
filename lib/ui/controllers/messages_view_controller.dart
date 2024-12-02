@@ -693,7 +693,7 @@ class MessagesViewController extends ChangeNotifier
     sendMessage(message);
   }
 
-  Future<void> sendMessage(Message message, {bool needPreview = false}) async {
+  Future<void> sendMessage(Message message) async {
     Message? willSendMsg = message;
     if (willSendHandler != null) {
       willSendMsg = await willSendHandler!(willSendMsg);

@@ -129,4 +129,6 @@ class ChatUIKitSettings {
 
   static ChatUIKitMessageAttachmentMenuStyle messageAttachmentMenuStyle =
       ChatUIKitMessageAttachmentMenuStyle.menu;
+
+  static ChatRecordEncodeType audioEncoder = ChatRecordEncodeType.aac;
 }

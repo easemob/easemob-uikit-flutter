@@ -2,6 +2,7 @@ library chat_uikit_record_bar;
 
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
+import 'package:record/record.dart';
 export 'src/record_bar.dart';
 export 'src/record_types.dart';
 export 'src/error_code.dart';
@@ -32,6 +33,20 @@ Future<RecordResultData?> showChatUIKitRecordBar<T>({
     barrierColor: barrierColor,
     context: context,
     builder: (BuildContext context) {
+      AudioEncoder encoder = AudioEncoder.aacLc;
+      if (ChatUIKitSettings.audioEncoder == ChatRecordEncodeType.amrNb) {
+        encoder = AudioEncoder.amrNb;
+      } else if (ChatUIKitSettings.audioEncoder == ChatRecordEncodeType.wav) {
+        encoder = AudioEncoder.wav;
+      }
+      RecordBarController controller = RecordBarController(
+        recordConfig: RecordConfig(
+          encoder: encoder,
+          numChannels: 1,
+          bitRate: 128000,
+          sampleRate: 44100,
+        ),
+      );
       return RecordBar(
         controller: controller,
         maxDuration: maxDuration,

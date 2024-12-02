@@ -25,7 +25,14 @@ class _SendMessagePageState extends State<SendMessagePage> {
       children: [
         TextButton(
           onPressed: () {
-            messagesViewController.sendTextMessage('asd');
+            final msg = Message.createCustomSendMessage(
+              targetId: profile.id,
+              event: 'custom_event',
+              chatType: profile.type == ChatUIKitProfileType.group
+                  ? ChatType.GroupChat
+                  : ChatType.Chat,
+            );
+            messagesViewController.sendMessage(msg);
           },
           child: const Text('Send Message'),
         ),
@@ -33,6 +40,23 @@ class _SendMessagePageState extends State<SendMessagePage> {
           child: MessagesView(
             profile: profile,
             controller: messagesViewController,
+            bubbleBuilder: (context, child, model) {
+              if (model.message.body is CustomMessageBody) {
+                CustomMessageBody customMessageBody =
+                    model.message.body as CustomMessageBody;
+                if (customMessageBody.event == 'custom_event') {
+                  return Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: const Text('我是自定义消息'),
+                  );
+                }
+              }
+              return null;
+            },
           ),
         )
       ],

@@ -19,7 +19,7 @@ class RecordBarController {
       encoder: AudioEncoder.aacLc,
       bitRate: 128000,
       sampleRate: 44100,
-      numChannels: 2,
+      numChannels: 1,
     ),
   }) {
     getTemporaryDirectory().then((value) => _directory = value);

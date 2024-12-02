@@ -122,3 +122,10 @@ enum ChatUIKitMessageAttachmentMenuStyle {
   menu,
   bottomSheet,
 }
+
+enum ChatRecordEncodeType {
+  /// amrNb only support android
+  amrNb,
+  aac,
+  wav,
+}
