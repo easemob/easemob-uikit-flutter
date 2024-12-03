@@ -191,7 +191,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.1.0+3"
+    version: "2.1.0+4"
   fake_async:
     dependency: transitive
     description:
@@ -369,11 +369,10 @@ packages:
   im_flutter_sdk:
     dependency: transitive
     description:
-      name: im_flutter_sdk
-      sha256: "5a948e99e7d7076d231063f999971538f3e5332b6e6a6fb4dcd37f4ffceb1014"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.8.2+1"
+      path: "../../../../im_flutter_sdk"
+      relative: true
+    source: path
+    version: "4.10.0"
   image_picker:
     dependency: transitive
     description:

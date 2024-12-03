@@ -243,20 +243,6 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView>
     Widget? content = widget.itemBuilder?.call(context, model);
     content ??= ChatUIKitMessageListViewMessageItem(
       enableThread: false,
-      enableSelected: controller.isMultiSelectMode
-          ? () {
-              if (controller.selectedMessages
-                  .map((e) => e.msgId)
-                  .toList()
-                  .contains(model.message.msgId)) {
-                controller.selectedMessages
-                    .removeWhere((e) => model.message.msgId == e.msgId);
-              } else {
-                controller.selectedMessages.add(model.message);
-              }
-              setState(() {});
-            }
-          : null,
       forceLeft: widget.forceLeft,
       bubbleContentBuilder: widget.bubbleContentBuilder,
       bubbleBuilder: widget.bubbleBuilder,

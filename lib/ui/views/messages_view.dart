@@ -767,20 +767,6 @@ class _MessagesViewState extends State<MessagesView>
           widget.onErrorBtnTapHandler!.call(context, model);
         }
       },
-      enableSelected: controller.isMultiSelectMode
-          ? () {
-              if (controller.selectedMessages
-                  .map((e) => e.msgId)
-                  .toList()
-                  .contains(model.message.msgId)) {
-                controller.selectedMessages
-                    .removeWhere((e) => model.message.msgId == e.msgId);
-              } else {
-                controller.selectedMessages.add(model.message);
-              }
-              updateView();
-            }
-          : null,
       key: ValueKey(model.message.localTime),
       showAvatar: widget.showMessageItemAvatar,
       quoteBuilder: widget.quoteBuilder,
@@ -802,9 +788,22 @@ class _MessagesViewState extends State<MessagesView>
         onItemLongPress(model, rect);
       },
       onBubbleTap: (rect) {
-        bool? ret = widget.onItemTap?.call(context, model, rect);
-        if (ret != true) {
-          bubbleTab(model, rect);
+        if (controller.isMultiSelectMode) {
+          if (controller.selectedMessages
+              .map((e) => e.msgId)
+              .toList()
+              .contains(model.message.msgId)) {
+            controller.selectedMessages
+                .removeWhere((e) => model.message.msgId == e.msgId);
+          } else {
+            controller.selectedMessages.add(model.message);
+          }
+          updateView();
+        } else {
+          bool? ret = widget.onItemTap?.call(context, model, rect);
+          if (ret != true) {
+            bubbleTab(model, rect);
+          }
         }
       },
       onNicknameTap: () {
@@ -1300,9 +1299,9 @@ class _MessagesViewState extends State<MessagesView>
                   context: context,
                   actionItems: [
                     ChatUIKitDialogAction.cancel(
-                        label: ChatUIKitLocal.confirm.localString(context)),
+                        label: ChatUIKitLocal.cancel.localString(context)),
                     ChatUIKitDialogAction.confirm(
-                      label: ChatUIKitLocal.cancel.localString(context),
+                      label: ChatUIKitLocal.confirm.localString(context),
                       onTap: () async {
                         Navigator.of(context).pop(true);
                       },

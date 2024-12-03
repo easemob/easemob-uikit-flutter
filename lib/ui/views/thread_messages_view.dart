@@ -542,20 +542,6 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
       showAvatar: widget.showMessageItemAvatar,
       quoteBuilder: widget.quoteBuilder,
       showNickname: widget.showMessageItemNickname,
-      enableSelected: controller.isMultiSelectMode
-          ? () {
-              if (controller.selectedMessages
-                  .map((e) => e.msgId)
-                  .toList()
-                  .contains(model.message.msgId)) {
-                controller.selectedMessages
-                    .removeWhere((e) => model.message.msgId == e.msgId);
-              } else {
-                controller.selectedMessages.add(model.message);
-              }
-              setState(() {});
-            }
-          : null,
       onAvatarTap: () {
         if (widget.onAvatarTap == null) {
           avatarTap(model);
@@ -575,10 +561,37 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           onItemLongPress(model, rect);
         }
       },
+      onItemTap: () {
+        if (controller.isMultiSelectMode) {
+          if (controller.selectedMessages
+              .map((e) => e.msgId)
+              .toList()
+              .contains(model.message.msgId)) {
+            controller.selectedMessages
+                .removeWhere((e) => model.message.msgId == e.msgId);
+          } else {
+            controller.selectedMessages.add(model.message);
+          }
+          setState(() {});
+        }
+      },
       onBubbleTap: (rect) {
-        bool? ret = widget.onItemTap?.call(context, model, rect);
-        if (ret != true) {
-          bubbleTab(model, rect);
+        if (controller.isMultiSelectMode) {
+          if (controller.selectedMessages
+              .map((e) => e.msgId)
+              .toList()
+              .contains(model.message.msgId)) {
+            controller.selectedMessages
+                .removeWhere((e) => model.message.msgId == e.msgId);
+          } else {
+            controller.selectedMessages.add(model.message);
+          }
+          setState(() {});
+        } else {
+          bool? ret = widget.onItemTap?.call(context, model, rect);
+          if (ret != true) {
+            bubbleTab(model, rect);
+          }
         }
       },
       onNicknameTap: () {

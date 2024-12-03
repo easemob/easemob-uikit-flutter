@@ -12,9 +12,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  im_flutter_sdk: 4.8.2+1
-  # im_flutter_sdk:
-  #   path: ../../../im_flutter_sdk/
+  # im_flutter_sdk: 4.8.2+1
+  im_flutter_sdk:
+    path: ../../../im_flutter_sdk/
 
   
   record: 5.1.2

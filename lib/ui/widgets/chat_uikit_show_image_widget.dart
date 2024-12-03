@@ -53,6 +53,7 @@ class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget>
       File file = File(message!.localPath!);
       if (file.existsSync()) {
         localPath = message!.localPath;
+        safeSetState(() {});
       } else {
         Future.delayed(const Duration(milliseconds: 100)).then((value) {
           if (widget.isCombine) {

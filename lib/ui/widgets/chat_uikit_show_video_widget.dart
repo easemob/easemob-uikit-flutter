@@ -41,6 +41,7 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
   String? remoteThumbPath;
   bool isPlaying = false;
   bool downloading = false;
+  bool isPlayed = false;
   final ValueNotifier _hasThumb = ValueNotifier(false);
   final ValueNotifier<int> _progress = ValueNotifier(0);
 
@@ -132,7 +133,7 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
     try {
       debugPrint('updateController: $file');
       _controller = VideoPlayerController.file(file);
-      await _controller?.initialize();
+
       _controller?.addListener(() {
         if (_controller?.value.isInitialized == true) {
           if (isPlaying != (_controller?.value.isPlaying ?? false)) {
@@ -141,7 +142,7 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
           }
         }
       });
-      // ignore: empty_catches
+      await _controller?.initialize();
     } catch (e) {
       debugPrint('updateController error: $e');
     }
@@ -166,9 +167,10 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
   }
 
   Widget thumbWidget() {
-    if (_controller?.value.isPlaying ?? false) {
+    if ((_controller?.value.isPlaying ?? false) || isPlayed) {
       return const SizedBox();
     }
+
     Widget? content;
     if (localThumbPath?.isNotEmpty == true) {
       content = Image.file(
@@ -180,30 +182,34 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
       content = Center(child: content);
     }
     content ??= const SizedBox();
+
     return content;
   }
 
   Widget playerWidget() {
-    return Center(
-      child: Stack(
-        children: [
-          () {
-            if (_controller?.value.isInitialized == true) {
-              Widget content = AspectRatio(
-                  aspectRatio: _controller!.value.aspectRatio,
-                  child: VideoPlayer(_controller!));
+    return Stack(
+      children: [
+        () {
+          if (_controller?.value.isInitialized == true) {
+            Widget content = AspectRatio(
+                aspectRatio: _controller!.value.aspectRatio,
+                child: VideoPlayer(_controller!));
 
-              return content;
-            } else {
-              return const SizedBox();
-            }
-          }(),
-          Positioned.fill(child: thumbWidget()),
-          Positioned.fill(
-            child: InkWell(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onTap: () {
+            content = Center(child: content);
+
+            return content;
+          } else {
+            return const SizedBox();
+          }
+        }(),
+        Positioned.fill(child: thumbWidget()),
+        Positioned.fill(
+          child: InkWell(
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            onTap: () {
+              if (_controller?.value.isInitialized == true) {
+                isPlayed = true;
                 safeSetState(() {
                   if (_controller!.value.isPlaying) {
                     _controller?.pause();
@@ -211,23 +217,24 @@ class _ChatUIKitShowVideoWidgetState extends State<ChatUIKitShowVideoWidget>
                     _controller?.play();
                   }
                 });
-              },
-              child: isPlaying
-                  ? const SizedBox()
-                  : Center(
-                      child: widget.playIcon ??
-                          Icon(
-                            Icons.play_circle_outline,
-                            size: 70,
-                            color: theme.color.isDark
-                                ? theme.color.neutralColor2
-                                : theme.color.neutralColor95,
-                          ),
+              } else {
+                ChatUIKit.instance.onChatUIKitEventsReceived(
+                    ChatUIKitEvent.messageDownloading);
+              }
+            },
+            child: isPlaying
+                ? const SizedBox()
+                : widget.playIcon ??
+                    Icon(
+                      Icons.play_circle_outline,
+                      size: 70,
+                      color: theme.color.isDark
+                          ? theme.color.neutralColor2
+                          : theme.color.neutralColor95,
                     ),
-            ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

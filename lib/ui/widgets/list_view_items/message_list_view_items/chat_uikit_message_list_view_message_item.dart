@@ -28,11 +28,11 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     this.onReactionInfoTap,
     this.onThreadItemTap,
     this.threadItemBuilder,
-    this.enableSelected,
     this.reactions,
     this.enableThread = true,
     this.enableReaction = true,
     this.enableVoiceUnreadIcon = true,
+    this.onItemTap,
     super.key,
   });
 
@@ -56,7 +56,6 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   final ChatUIKitPositionWidgetHandler? onBubbleTap;
   final ChatUIKitPositionWidgetHandler? onBubbleLongPressed;
   final ChatUIKitPositionWidgetHandler? onBubbleDoubleTap;
-  final VoidCallback? enableSelected;
   final Widget Function(BuildContext context, QuoteModel model)? quoteBuilder;
   final VoidCallback? onErrorBtnTap;
   final MessageItemBubbleBuilder? bubbleBuilder;
@@ -66,6 +65,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   final VoidCallback? onReactionInfoTap;
   final VoidCallback? onThreadItemTap;
   final MessageItemBuilder? threadItemBuilder;
+  final VoidCallback? onItemTap;
 
   @override
   Widget build(BuildContext context) {
@@ -130,11 +130,9 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     }
 
     bubbleWidget = ChatUIKitPositionWidget(
-      onTapPositionHandler: enableSelected != null ? null : onBubbleTap,
-      onLongPressPositionHandler:
-          enableSelected != null ? null : onBubbleLongPressed,
-      onDoubleTapPositionHandler:
-          enableSelected != null ? null : onBubbleDoubleTap,
+      onTapPositionHandler: onBubbleTap,
+      onLongPressPositionHandler: onBubbleLongPressed,
+      onDoubleTapPositionHandler: onBubbleDoubleTap,
       child: bubbleWidget,
     );
 
@@ -220,14 +218,12 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
       child: item,
     );
 
-    if (enableSelected != null) {
-      item = InkWell(
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        onTap: enableSelected,
-        child: item,
-      );
-    }
+    item = InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      onTap: onItemTap,
+      child: item,
+    );
 
     return item;
   }
@@ -325,8 +321,8 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
       content = InkWell(
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
-        onTap: enableSelected != null ? null : onAvatarTap,
-        onLongPress: enableSelected != null ? null : onAvatarLongPressed,
+        onTap: onAvatarTap,
+        onLongPress: onAvatarLongPressed,
         child: content,
       );
     } else {
@@ -359,7 +355,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
       content = InkWell(
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
-        onTap: enableSelected != null ? null : onNicknameTap,
+        onTap: onNicknameTap,
         child: content,
       );
       double padding =
@@ -414,7 +410,7 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
             child: threadItemBuilder?.call(context, model) ??
                 ChatUIKitMessageThreadWidget(
                   chatThread: model.thread!,
-                  onTap: enableSelected != null ? null : onThreadItemTap,
+                  onTap: onThreadItemTap,
                 ),
           ),
         ],
@@ -447,10 +443,8 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
                 ChatUIKitMessageReactionsRow(
                   reactions: reactions!,
                   isLeft: left,
-                  onReactionTap:
-                      enableSelected != null ? null : onReactionItemTap,
-                  onReactionInfoTap:
-                      enableSelected != null ? null : onReactionInfoTap,
+                  onReactionTap: onReactionItemTap,
+                  onReactionInfoTap: onReactionInfoTap,
                 ),
           ),
         ],

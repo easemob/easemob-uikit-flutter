@@ -229,20 +229,6 @@ class _MessageListViewState extends State<MessageListView>
 
     Widget? content = widget.itemBuilder?.call(context, model);
     content ??= ChatUIKitMessageListViewMessageItem(
-      enableSelected: controller.isMultiSelectMode
-          ? () {
-              if (controller.selectedMessages
-                  .map((e) => e.msgId)
-                  .toList()
-                  .contains(model.message.msgId)) {
-                controller.selectedMessages
-                    .removeWhere((e) => model.message.msgId == e.msgId);
-              } else {
-                controller.selectedMessages.add(model.message);
-              }
-              setState(() {});
-            }
-          : null,
       forceLeft: widget.forceLeft,
       bubbleContentBuilder: widget.bubbleContentBuilder,
       bubbleBuilder: widget.bubbleBuilder,
@@ -260,37 +246,80 @@ class _MessageListViewState extends State<MessageListView>
       },
       showNickname: widget.showNickname,
       onAvatarTap: () {
-        if (widget.onAvatarTap != null) {
-          widget.onAvatarTap?.call(context, model);
+        if (!controller.isMultiSelectMode) {
+          if (widget.onAvatarTap != null) {
+            widget.onAvatarTap?.call(context, model);
+          }
         }
       },
       onAvatarLongPressed: () {
-        widget.onAvatarLongPressed?.call(context, model);
+        if (!controller.isMultiSelectMode) {
+          widget.onAvatarLongPressed?.call(context, model);
+        }
       },
       onBubbleDoubleTap: (rect) {
-        widget.onItemDoubleTap?.call(context, model, rect);
+        if (!controller.isMultiSelectMode) {
+          widget.onItemDoubleTap?.call(context, model, rect);
+        }
       },
       onBubbleLongPressed: (rect) {
-        widget.onItemLongPress?.call(context, model, rect);
+        if (!controller.isMultiSelectMode) {
+          widget.onItemLongPress?.call(context, model, rect);
+        }
       },
       onBubbleTap: (rect) {
-        widget.onItemTap?.call(context, model, rect);
+        if (controller.isMultiSelectMode) {
+          if (controller.selectedMessages
+              .map((e) => e.msgId)
+              .toList()
+              .contains(model.message.msgId)) {
+            controller.selectedMessages
+                .removeWhere((e) => model.message.msgId == e.msgId);
+          } else {
+            controller.selectedMessages.add(model.message);
+          }
+          setState(() {});
+        } else {
+          widget.onItemTap?.call(context, model, rect);
+        }
       },
       onNicknameTap: () {
-        widget.onNicknameTap?.call(context, model);
+        if (!controller.isMultiSelectMode) {
+          widget.onNicknameTap?.call(context, model);
+        }
       },
       model: model,
       reactions: model.reactions,
       onReactionItemTap: (reaction) {
-        widget.onReactionItemTap?.call(model, reaction);
+        if (!controller.isMultiSelectMode) {
+          widget.onReactionItemTap?.call(model, reaction);
+        }
       },
       onReactionInfoTap: () {
-        widget.onReactionInfoTap?.call(context, model);
+        if (!controller.isMultiSelectMode) {
+          widget.onReactionInfoTap?.call(context, model);
+        }
       },
       reactionItemsBuilder: widget.reactionItemsBuilder,
       threadItemBuilder: widget.threadItemBuilder,
       onThreadItemTap: () {
-        widget.onThreadItemTap?.call(context, model);
+        if (!controller.isMultiSelectMode) {
+          widget.onThreadItemTap?.call(context, model);
+        }
+      },
+      onItemTap: () {
+        if (controller.isMultiSelectMode) {
+          if (controller.selectedMessages
+              .map((e) => e.msgId)
+              .toList()
+              .contains(model.message.msgId)) {
+            controller.selectedMessages
+                .removeWhere((e) => model.message.msgId == e.msgId);
+          } else {
+            controller.selectedMessages.add(model.message);
+          }
+          setState(() {});
+        }
       },
     );
 
