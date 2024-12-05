@@ -191,7 +191,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.1.0+4"
+    version: "2.1.0+5"
   fake_async:
     dependency: transitive
     description:
@@ -369,9 +369,10 @@ packages:
   im_flutter_sdk:
     dependency: transitive
     description:
-      path: "../../../../im_flutter_sdk"
-      relative: true
-    source: path
+      name: im_flutter_sdk
+      sha256: "0023ee17d4e3037af9b360c2c4ea170dba774b7542197865027f0a1f4cc12089"
+      url: "https://pub.dev"
+    source: hosted
     version: "4.10.0"
   image_picker:
     dependency: transitive
@@ -931,10 +932,10 @@ packages:
     dependency: transitive
     description:
       name: video_player_avfoundation
-      sha256: "0b146e5d82e886ff43e5a46c6bcbe390761b802864a6e2503eb612d69a405dfa"
+      sha256: f498e44a547a3572a928fa30ac8760e127d5e5fc86b81b10b0d56300866322f3
       url: "https://pub.dev"
     source: hosted
-    version: "2.6.3"
+    version: "2.6.4"
   video_player_platform_interface:
     dependency: transitive
     description:

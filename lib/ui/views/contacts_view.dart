@@ -131,6 +131,11 @@ class _ContactsViewState extends State<ContactsView>
 
     ChatUIKit.instance.addObserver(this);
     controller = widget.controller ?? ContactListViewController();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      contactRequestCount.value = ChatUIKit.instance.contactRequestCount();
+      debugPrint('contactRequestCount: $contactRequestCount');
+    });
   }
 
   @override
