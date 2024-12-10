@@ -369,7 +369,7 @@ class MessagesViewController extends ChangeNotifier
   }
 
   @override
-  void onSuccess(String msgId, Message msg) {
+  void onMessageSendSuccess(String msgId, Message msg) {
     final index = msgModelList.indexWhere((element) =>
         element.message.msgId == msgId && msg.status != element.message.status);
 
@@ -380,7 +380,7 @@ class MessagesViewController extends ChangeNotifier
   }
 
   @override
-  void onError(String msgId, Message msg, ChatError error) {
+  void onMessageSendError(String msgId, Message msg, ChatError error) {
     final index = msgModelList.indexWhere((element) =>
         element.message.msgId == msgId && msg.status != element.message.status);
     if (index != -1) {

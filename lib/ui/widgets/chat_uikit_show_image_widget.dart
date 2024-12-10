@@ -96,7 +96,7 @@ class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget>
   }
 
   @override
-  void onProgress(String msgId, int progress) {
+  void onMessageSendProgress(String msgId, int progress) {
     if (message!.msgId == msgId) {
       _progress.value = progress;
       widget.onProgress?.call(progress);
@@ -104,7 +104,7 @@ class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget>
   }
 
   @override
-  void onError(String msgId, Message msg, ChatError error) {
+  void onMessageSendError(String msgId, Message msg, ChatError error) {
     if (message!.msgId == msgId) {
       message = msg;
       widget.onError?.call(error);
@@ -112,7 +112,7 @@ class _ChatUIKitShowImageWidgetState extends State<ChatUIKitShowImageWidget>
   }
 
   @override
-  void onSuccess(String msgId, Message msg) {
+  void onMessageSendSuccess(String msgId, Message msg) {
     if (message!.msgId == msgId) {
       message = msg;
       widget.onSuccess?.call();

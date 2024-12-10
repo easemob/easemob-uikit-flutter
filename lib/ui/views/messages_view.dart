@@ -203,6 +203,9 @@ class _MessagesViewState extends State<MessagesView>
 
   ChatUIKitPopupMenuController? popupMenuController;
 
+  final Duration _keyboardPanelSwitchDuration =
+      const Duration(milliseconds: 150);
+
   Message? editMessage;
   MessageModel? replyMessage;
   ChatUIKitProfile? profile;
@@ -963,8 +966,10 @@ class _MessagesViewState extends State<MessagesView>
                     MessageModel model =
                         MessageModel(message: value, thread: thread);
                     if (mounted) {
-                      inputController
-                          .switchPanel(ChatUIKitKeyboardPanelType.none);
+                      inputController.switchPanel(
+                        ChatUIKitKeyboardPanelType.none,
+                        duration: _keyboardPanelSwitchDuration,
+                      );
                       ChatUIKitRoute.pushOrPushNamed(
                         context,
                         ChatUIKitRouteNames.threadMessagesView,
@@ -1088,6 +1093,7 @@ class _MessagesViewState extends State<MessagesView>
         if (close) {
           inputController.switchPanel(
             ChatUIKitKeyboardPanelType.none,
+            duration: _keyboardPanelSwitchDuration,
           );
         }
       }
@@ -1377,7 +1383,10 @@ class _MessagesViewState extends State<MessagesView>
   void onItemLongPress(MessageModel model, Rect rect) async {
     clearAllType();
     if (currentPanelType.value != ChatUIKitKeyboardPanelType.none) {
-      inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
+      inputController.switchPanel(
+        ChatUIKitKeyboardPanelType.none,
+        duration: _keyboardPanelSwitchDuration,
+      );
       return;
     }
     List<ChatUIKitEventAction>? items = defaultItemLongPressed(model);
@@ -1417,7 +1426,10 @@ class _MessagesViewState extends State<MessagesView>
 
   void bubbleTab(MessageModel model, Rect rect) async {
     popupMenuController?.hideMenu();
-    inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
+    inputController.switchPanel(
+      ChatUIKitKeyboardPanelType.none,
+      duration: _keyboardPanelSwitchDuration,
+    );
     if (model.message.bodyType == MessageType.IMAGE) {
       ChatUIKitRoute.pushOrPushNamed(
         context,
@@ -1479,7 +1491,10 @@ class _MessagesViewState extends State<MessagesView>
     clearAllType();
     if (message.bodyType != MessageType.TXT) return;
     editMessage = message;
-    inputController.switchPanel(ChatUIKitKeyboardPanelType.keyboard);
+    inputController.switchPanel(
+      ChatUIKitKeyboardPanelType.keyboard,
+      duration: _keyboardPanelSwitchDuration,
+    );
     updateView();
   }
 
@@ -1487,7 +1502,10 @@ class _MessagesViewState extends State<MessagesView>
     replyMessage = model;
     updateView();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      inputController.switchPanel(ChatUIKitKeyboardPanelType.keyboard);
+      inputController.switchPanel(
+        ChatUIKitKeyboardPanelType.keyboard,
+        duration: _keyboardPanelSwitchDuration,
+      );
     });
   }
 
@@ -1750,7 +1768,10 @@ class _MessagesViewState extends State<MessagesView>
 
   void pushNextPage(ChatUIKitProfile profile) async {
     clearAllType();
-    inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
+    inputController.switchPanel(
+      ChatUIKitKeyboardPanelType.none,
+      duration: _keyboardPanelSwitchDuration,
+    );
     popupMenuController?.hideMenu();
     // 如果点击的是自己头像
     if (profile.id == ChatUIKit.instance.currentUserId) {
@@ -2131,7 +2152,10 @@ class _MessagesViewState extends State<MessagesView>
           ),
           onTap: () async {
             closeMenu();
-            inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
+            inputController.switchPanel(
+              ChatUIKitKeyboardPanelType.none,
+              duration: _keyboardPanelSwitchDuration,
+            );
             ChatUIKitRoute.pushOrPushNamed(
               context,
               ChatUIKitRouteNames.threadMessagesView,
@@ -2387,7 +2411,10 @@ class _MessagesViewState extends State<MessagesView>
   }
 
   void pushThread() {
-    inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
+    inputController.switchPanel(
+      ChatUIKitKeyboardPanelType.none,
+      duration: _keyboardPanelSwitchDuration,
+    );
     ChatUIKitRoute.pushOrPushNamed(
       context,
       ChatUIKitRouteNames.threadsView,
@@ -2442,7 +2469,10 @@ class _MessagesViewState extends State<MessagesView>
   }
 
   void showThread(BuildContext context, MessageModel model) {
-    inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
+    inputController.switchPanel(
+      ChatUIKitKeyboardPanelType.none,
+      duration: _keyboardPanelSwitchDuration,
+    );
     popupMenuController?.hideMenu();
     ChatUIKitRoute.pushOrPushNamed(
       context,
@@ -2527,6 +2557,7 @@ class _MessagesViewState extends State<MessagesView>
           stopSound();
           inputController.switchPanel(
             ChatUIKitKeyboardPanelType.voice,
+            duration: _keyboardPanelSwitchDuration,
           );
           RecordResultData? data = await showChatUIKitRecordBar(
             context: context,
@@ -2538,6 +2569,7 @@ class _MessagesViewState extends State<MessagesView>
 
           inputController.switchPanel(
             ChatUIKitKeyboardPanelType.none,
+            duration: _keyboardPanelSwitchDuration,
           );
           if (data?.path != null) {
             controller.sendVoiceMessage(
@@ -2574,7 +2606,10 @@ class _MessagesViewState extends State<MessagesView>
           }
 
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            inputController.switchPanel(type);
+            inputController.switchPanel(
+              type,
+              duration: _keyboardPanelSwitchDuration,
+            );
           });
         },
         child: ChatUIKitImageLoader.faceKeyboard(
@@ -2602,7 +2637,10 @@ class _MessagesViewState extends State<MessagesView>
                 if (ChatUIKitSettings.messageAttachmentMenuStyle ==
                     ChatUIKitMessageAttachmentMenuStyle.bottomSheet) {
                   panel = ChatUIKitKeyboardPanelType.none;
-                  inputController.switchPanel(panel);
+                  inputController.switchPanel(
+                    panel,
+                    duration: _keyboardPanelSwitchDuration,
+                  );
                   List<ChatUIKitEventAction> items = moreActions();
                   if (items.isNotEmpty) {
                     showChatUIKitBottomSheet(
@@ -2623,7 +2661,10 @@ class _MessagesViewState extends State<MessagesView>
                           ? ChatUIKitKeyboardPanelType.keyboard
                           : ChatUIKitKeyboardPanelType.more;
 
-                  inputController.switchPanel(panel);
+                  inputController.switchPanel(
+                    panel,
+                    duration: _keyboardPanelSwitchDuration,
+                  );
                 }
               },
               child: ValueListenableBuilder(

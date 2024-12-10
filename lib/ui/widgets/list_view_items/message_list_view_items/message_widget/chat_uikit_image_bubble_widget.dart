@@ -54,7 +54,7 @@ class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget>
   }
 
   @override
-  void onSuccess(String msgId, Message msg) {
+  void onMessageSendSuccess(String msgId, Message msg) {
     if (msgId == model.message.msgId) {
       model = model.copyWith(message: msg);
       safeSetState(() {
@@ -64,7 +64,7 @@ class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget>
   }
 
   @override
-  void onError(String msgId, Message msg, ChatError error) {
+  void onMessageSendError(String msgId, Message msg, ChatError error) {
     if (msgId == model.message.msgId && msg.bodyType == MessageType.IMAGE) {
       (msg.body as ImageMessageBody).fileStatus !=
           (model.message.body as ImageMessageBody).fileStatus;

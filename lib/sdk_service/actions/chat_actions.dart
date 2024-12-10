@@ -2,6 +2,8 @@ import '../chat_sdk_service.dart';
 
 mixin ChatActions on ChatWrapper {
   Future<Message> sendMessage({required Message message}) {
+    // ignore: invalid_use_of_protected_member
+    // ChatSDKService.instance.onWillSendMessage(message);
     return checkResult(ChatSDKEvent.sendMessage, () async {
       return Client.getInstance.chatManager.sendMessage(message);
     });

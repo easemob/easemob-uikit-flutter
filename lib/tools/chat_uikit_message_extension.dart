@@ -299,7 +299,9 @@ extension MessageHelper on Message {
       if (chatType == ChatType.GroupChat) {
         String? showName =
             ChatUIKitProvider.instance.getProfileById(from!)?.contactShowName;
-        showName ??= nickname;
+        if (nickname?.isNotEmpty == true) {
+          showName ??= nickname;
+        }
         title = "${showName ?? from ?? ""}: ";
       }
     }

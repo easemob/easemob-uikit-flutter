@@ -198,6 +198,8 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
   late final AutoScrollController _scrollController;
   ChatUIKitAppBarModel? appBarModel;
   ChatUIKitPopupMenuController? popupMenuController;
+  final Duration _keyboardPanelSwitchDuration =
+      const Duration(milliseconds: 150);
 
   ValueNotifier<ChatUIKitKeyboardPanelType> currentPanelType =
       ValueNotifier(ChatUIKitKeyboardPanelType.none);
@@ -338,7 +340,10 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
               child: GestureDetector(
                 onTap: () {
                   clearAllType();
-                  inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
+                  inputController.switchPanel(
+                    ChatUIKitKeyboardPanelType.none,
+                    duration: _keyboardPanelSwitchDuration,
+                  );
                 },
                 child: ThreadMessageListView(
                   scrollController: _scrollController,
@@ -953,7 +958,10 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     clearAllType();
     if (message.bodyType != MessageType.TXT) return;
     editMessage = message;
-    inputController.switchPanel(ChatUIKitKeyboardPanelType.keyboard);
+    inputController.switchPanel(
+      ChatUIKitKeyboardPanelType.keyboard,
+      duration: _keyboardPanelSwitchDuration,
+    );
     setState(() {});
   }
 
@@ -961,7 +969,10 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     replyMessage = model;
     setState(() {});
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      inputController.switchPanel(ChatUIKitKeyboardPanelType.keyboard);
+      inputController.switchPanel(
+        ChatUIKitKeyboardPanelType.keyboard,
+        duration: _keyboardPanelSwitchDuration,
+      );
     });
   }
 
@@ -1779,6 +1790,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
         onTap: () async {
           inputController.switchPanel(
             ChatUIKitKeyboardPanelType.voice,
+            duration: _keyboardPanelSwitchDuration,
           );
           RecordResultData? data = await showChatUIKitRecordBar(
             context: context,
@@ -1790,6 +1802,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
 
           inputController.switchPanel(
             ChatUIKitKeyboardPanelType.none,
+            duration: _keyboardPanelSwitchDuration,
           );
           if (data?.path != null) {
             controller.sendVoiceMessage(
@@ -1817,6 +1830,7 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
         if (close) {
           inputController.switchPanel(
             ChatUIKitKeyboardPanelType.none,
+            duration: _keyboardPanelSwitchDuration,
           );
         }
       }
@@ -1942,7 +1956,10 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           }
 
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            inputController.switchPanel(type);
+            inputController.switchPanel(
+              type,
+              duration: _keyboardPanelSwitchDuration,
+            );
           });
         },
         child: ChatUIKitImageLoader.faceKeyboard(
@@ -1970,7 +1987,10 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                 if (ChatUIKitSettings.messageAttachmentMenuStyle ==
                     ChatUIKitMessageAttachmentMenuStyle.bottomSheet) {
                   panel = ChatUIKitKeyboardPanelType.none;
-                  inputController.switchPanel(panel);
+                  inputController.switchPanel(
+                    panel,
+                    duration: _keyboardPanelSwitchDuration,
+                  );
                   List<ChatUIKitEventAction> items = moreActions();
                   if (items.isNotEmpty) {
                     showChatUIKitBottomSheet(
@@ -1991,7 +2011,10 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                           ? ChatUIKitKeyboardPanelType.keyboard
                           : ChatUIKitKeyboardPanelType.more;
 
-                  inputController.switchPanel(panel);
+                  inputController.switchPanel(
+                    panel,
+                    duration: _keyboardPanelSwitchDuration,
+                  );
                 }
               },
               child: ValueListenableBuilder(

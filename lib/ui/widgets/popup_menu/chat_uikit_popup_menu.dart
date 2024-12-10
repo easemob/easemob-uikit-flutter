@@ -76,7 +76,7 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu>
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener(
+    Widget content = NotificationListener(
         child: widget.child,
         onNotification: (notification) {
           if (notification is ScrollUpdateNotification) {
@@ -84,6 +84,15 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu>
           }
           return true;
         });
+
+    content = Listener(
+      onPointerHover: (event) {
+        widget.controller.hideMenu();
+      },
+      child: content,
+    );
+
+    return content;
   }
 
   @override

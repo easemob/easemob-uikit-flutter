@@ -9,9 +9,21 @@ class ConversationPage extends StatefulWidget {
 }
 
 class _ConversationPageState extends State<ConversationPage>
-    with ChatUIKitThemeMixin {
+    with ChatUIKitThemeMixin, MessageObserver {
+  Message? message;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
-    return const ConversationsView();
+    return ConversationsView(
+      itemBuilder: (context, model) {
+        message = model.lastMessage;
+        return ChatUIKitConversationListViewItem(model);
+      },
+    );
   }
 }

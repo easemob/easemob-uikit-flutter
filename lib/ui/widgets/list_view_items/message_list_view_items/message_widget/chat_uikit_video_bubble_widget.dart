@@ -45,7 +45,7 @@ class _ChatUIKitVideoBubbleWidgetState extends State<ChatUIKitVideoBubbleWidget>
   }
 
   @override
-  void onSuccess(String msgId, Message msg) {
+  void onMessageSendSuccess(String msgId, Message msg) {
     if (msgId == model.message.msgId) {
       model = model.copyWith(message: msg);
       safeSetState(() {
@@ -55,7 +55,7 @@ class _ChatUIKitVideoBubbleWidgetState extends State<ChatUIKitVideoBubbleWidget>
   }
 
   @override
-  void onError(String msgId, Message message, ChatError error) {
+  void onMessageSendError(String msgId, Message message, ChatError error) {
     if (msgId == message.msgId) {
       safeSetState(() {
         downloading = false;
