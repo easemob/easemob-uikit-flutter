@@ -199,14 +199,14 @@ class ChatRouteFilter {
             )
           ],
           actionItems: [
+            ChatUIKitDialogAction.cancel(
+              label: DemoLocalizations.createGroupCancel.localString(context),
+            ),
             ChatUIKitDialogAction.inputsConfirm(
               label: DemoLocalizations.createGroupConfirm.localString(context),
               onInputsTap: (inputs) async {
                 Navigator.of(context).pop(inputs.first);
               },
-            ),
-            ChatUIKitDialogAction.cancel(
-              label: DemoLocalizations.createGroupCancel.localString(context),
             ),
           ],
         );
