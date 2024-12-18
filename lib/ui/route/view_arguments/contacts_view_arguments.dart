@@ -97,7 +97,6 @@ class ContactsViewArguments implements ChatUIKitViewArguments {
     String? loadErrorMessage,
     bool? enableSearchBar,
     bool? enableAppBar,
-    String? title,
     ChatUIKitViewObserver? viewObserver,
     String? attributes,
     Widget? appBarLeading,

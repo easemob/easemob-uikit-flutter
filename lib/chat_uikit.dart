@@ -13,8 +13,8 @@ export 'chat_uikit_service/chat_uikit_service.dart';
 export 'provider/chat_uikit_profile.dart';
 export 'chat_uikit_service/chat_uikit_action_events.dart';
 export 'chat_uikit_service/observers/chat_uikit_events_observers.dart';
-export 'package:em_chat_uikit/tools/chat_string_extension.dart';
 
+export 'tools/chat_string_extension.dart';
 export 'tools/chat_uikit_helper.dart';
 export 'tools/chat_uikit_image_loader.dart';
 export 'tools/chat_uikit_message_extension.dart';

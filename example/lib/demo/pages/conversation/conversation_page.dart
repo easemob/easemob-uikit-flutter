@@ -19,11 +19,6 @@ class _ConversationPageState extends State<ConversationPage>
 
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
-    return ConversationsView(
-      itemBuilder: (context, model) {
-        message = model.lastMessage;
-        return ChatUIKitConversationListViewItem(model);
-      },
-    );
+    return const ConversationsView();
   }
 }

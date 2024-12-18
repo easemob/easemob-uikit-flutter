@@ -1,6 +1,6 @@
 library chat_uikit_record_bar;
 
-import 'package:em_chat_uikit/chat_uikit.dart';
+import '../../../chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:record/record.dart';
 export 'src/record_bar.dart';

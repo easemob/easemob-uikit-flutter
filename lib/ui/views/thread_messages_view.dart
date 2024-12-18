@@ -1321,8 +1321,8 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           label: ChatUIKitLocal.messagesViewLongPressActionsTitleReply
               .localString(context),
           onTap: () async {
-            closeMenu();
             replyMessaged(model);
+            closeMenu();
           },
         ));
       }
@@ -1346,11 +1346,11 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           ),
           label: ChatUIKitLocal.forwardMessage.localString(context),
           onTap: () async {
-            closeMenu();
             forwardMessage(
               [model.message],
               isMultiSelect: false,
             );
+            closeMenu();
           },
         ));
       }
@@ -1376,8 +1376,8 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           label:
               ChatUIKitLocal.messageListLongPressMenuMulti.localString(context),
           onTap: () async {
-            closeMenu();
             controller.enableMultiSelectMode();
+            closeMenu();
           },
         ));
       }
@@ -1407,11 +1407,11 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
               : ChatUIKitLocal.messageListLongPressMenuTranslate
                   .localString(context),
           onTap: () async {
-            closeMenu();
             controller.translateMessage(
               model.message,
               showTranslate: !model.message.hasTranslate,
             );
+            closeMenu();
           },
         ));
       }
@@ -1439,8 +1439,8 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                 : theme.color.neutralColor3,
           ),
           onTap: () async {
-            closeMenu();
             textMessageEdit(model.message);
+            closeMenu();
           },
         ));
       }
@@ -1466,8 +1466,8 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                 : theme.color.neutralColor3,
           ),
           onTap: () async {
-            closeMenu();
             reportMessage(model);
+            closeMenu();
           },
         ));
       }
@@ -1528,8 +1528,8 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
                 highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
                 onTap: () {
-                  onReactionTap(model, emoji, !highlight);
                   closeMenu();
+                  onReactionTap(model, emoji, !highlight);
                   popupMenuController?.hideMenu();
                 },
                 child: Container(

@@ -1,5 +1,5 @@
-import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/ui/widgets/input_bar/chat_uikit_input_bar_theme.dart';
+import '../../../chat_uikit.dart';
+import 'chat_uikit_input_bar_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'chat_uikit_selection_controls.dart';

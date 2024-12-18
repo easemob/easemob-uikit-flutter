@@ -371,10 +371,13 @@ class _MessagesViewState extends State<MessagesView>
                   controller.conversationType == ConversationType.GroupChat)
                 ChatUIKitAppBarAction(
                   actionType: ChatUIKitActionType.pinMessage,
-                  child: ChatUIKitImageLoader.pinMessage(
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor9
-                        : theme.color.neutralColor3,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: ChatUIKitImageLoader.pinMessage(
+                      color: theme.color.isDark
+                          ? theme.color.neutralColor9
+                          : theme.color.neutralColor3,
+                    ),
                   ),
                   onTap: (context) {
                     showPinMsgsView();
@@ -388,10 +391,13 @@ class _MessagesViewState extends State<MessagesView>
                   onTap: (context) {
                     pushThread();
                   },
-                  child: ChatUIKitImageLoader.messageLongPressThread(
-                    color: theme.color.isDark
-                        ? theme.color.neutralColor9
-                        : theme.color.neutralColor3,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: ChatUIKitImageLoader.messageLongPressThread(
+                      color: theme.color.isDark
+                          ? theme.color.neutralColor9
+                          : theme.color.neutralColor3,
+                    ),
                   ),
                 ),
               if (controller.isMultiSelectMode)
@@ -616,137 +622,136 @@ class _MessagesViewState extends State<MessagesView>
         ),
         child: content,
       );
-      List<Widget> list = [
-        Expanded(child: content),
-      ];
-      if (controller.isMultiSelectMode) {
-        list.add(multiSelectBar());
-      } else {
-        list.add(widget.inputBar ?? inputBar());
-      }
+    }
+    List<Widget> list = [
+      Expanded(child: content),
+    ];
+    if (controller.isMultiSelectMode) {
+      list.add(multiSelectBar());
+    } else {
+      list.add(widget.inputBar ?? inputBar());
+    }
 
-      content = Column(children: list);
-      content = Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.transparent,
-        appBar:
-            widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
-        body: SafeArea(
-          maintainBottomViewPadding: true,
-          child: ChatUIKitSettings.enablePinMsg &&
-                  controller.chatType == ChatType.GroupChat
-              ? Stack(
-                  children: [
-                    content,
-                    PinMessageListView(
-                      maxHeight: MediaQuery.of(context).size.height / 5 * 3,
-                      pinMessagesController: pinMessageController!,
-                      onTap: (message) => jumpToMessage(
-                        message.msgId,
-                        position: AutoScrollPosition.begin,
-                      ),
-                    ),
-                  ],
-                )
-              : content,
-        ),
-      );
-
-      content = Stack(
-        children: [
-          Container(
-            color: theme.color.isDark
-                ? theme.color.neutralColor1
-                : theme.color.neutralColor98,
-            child: widget.backgroundWidget,
-          ),
-          content,
-          if (editMessage != null) ...[
-            Positioned.fill(
-              child: InkWell(
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                onTap: () {
-                  editMessage = null;
-
-                  updateView();
-                },
-                child: Opacity(
-                  opacity: 0.5,
-                  child: Container(color: Colors.black),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+    content = Column(children: list);
+    content = Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.transparent,
+      appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
+      body: SafeArea(
+        maintainBottomViewPadding: true,
+        child: ChatUIKitSettings.enablePinMsg &&
+                controller.chatType == ChatType.GroupChat
+            ? Stack(
                 children: [
-                  SafeArea(
-                    child: ChatUIKitEditBar(
-                      text: editMessage!.textContent,
-                      onInputTextChanged: (text) {
-                        controller.editMessage(editMessage!, text);
-                        editMessage = null;
-                        updateView();
-                      },
+                  content,
+                  PinMessageListView(
+                    maxHeight: MediaQuery.of(context).size.height / 5 * 3,
+                    pinMessagesController: pinMessageController!,
+                    onTap: (message) => jumpToMessage(
+                      message.msgId,
+                      position: AutoScrollPosition.begin,
                     ),
                   ),
                 ],
+              )
+            : content,
+      ),
+    );
+
+    content = Stack(
+      children: [
+        Container(
+          color: theme.color.isDark
+              ? theme.color.neutralColor1
+              : theme.color.neutralColor98,
+          child: widget.backgroundWidget,
+        ),
+        content,
+        if (editMessage != null) ...[
+          Positioned.fill(
+            child: InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onTap: () {
+                editMessage = null;
+
+                updateView();
+              },
+              child: Opacity(
+                opacity: 0.5,
+                child: Container(color: Colors.black),
               ),
             ),
-          ]
-        ],
-      );
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SafeArea(
+                  child: ChatUIKitEditBar(
+                    text: editMessage!.textContent,
+                    onInputTextChanged: (text) {
+                      controller.editMessage(editMessage!, text);
+                      editMessage = null;
+                      updateView();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ]
+      ],
+    );
 
-      content = ShareUserData(
-        data: controller.userMap,
-        child: content,
-      );
+    content = ShareUserData(
+      data: controller.userMap,
+      child: content,
+    );
 
-      content = NotificationListener(
-        onNotification: (notification) {
-          if (notification is ScrollUpdateNotification) {
-            if (_scrollController.offset < 20) {
-              if (controller.onBottom == false) {
-                controller.onBottom = true;
-                controller.addAllCacheToList();
-              }
-            } else {
-              if (controller.onBottom == true) {
-                controller.onBottom = false;
-                controller.lastActionType =
-                    MessageLastActionType.originalPosition;
-              }
+    content = NotificationListener(
+      onNotification: (notification) {
+        if (notification is ScrollUpdateNotification) {
+          if (_scrollController.offset < 20) {
+            if (controller.onBottom == false) {
+              controller.onBottom = true;
+              controller.addAllCacheToList();
             }
-            if (_scrollController.position.maxScrollExtent -
-                    _scrollController.offset <
-                1500) {
-              controller.fetchItemList();
+          } else {
+            if (controller.onBottom == true) {
+              controller.onBottom = false;
+              controller.lastActionType =
+                  MessageLastActionType.originalPosition;
             }
           }
-
-          return false;
-        },
-        child: content,
-      );
-
-      content = ScrollConfiguration(
-        behavior: const ScrollBehavior(),
-        child: content,
-      );
-
-      content = PopScope(
-        child: content,
-        onPopInvoked: (didPop) {
-          popupMenuController?.hideMenu();
-          if (didPop) {
-            controller.markAllMessageAsRead();
+          if (_scrollController.position.maxScrollExtent -
+                  _scrollController.offset <
+              1500) {
+            controller.fetchItemList();
           }
-        },
-      );
-    }
+        }
+
+        return false;
+      },
+      child: content,
+    );
+
+    content = ScrollConfiguration(
+      behavior: const ScrollBehavior(),
+      child: content,
+    );
+
+    content = PopScope(
+      child: content,
+      onPopInvoked: (didPop) {
+        popupMenuController?.hideMenu();
+        if (didPop) {
+          controller.markAllMessageAsRead();
+        }
+      },
+    );
 
     return content;
   }
@@ -2005,8 +2010,8 @@ class _MessagesViewState extends State<MessagesView>
           label: ChatUIKitLocal.messagesViewLongPressActionsTitleReply
               .localString(context),
           onTap: () async {
-            closeMenu();
             replyMessaged(model);
+            closeMenu();
           },
         ));
       }
@@ -2198,8 +2203,8 @@ class _MessagesViewState extends State<MessagesView>
                 : theme.color.neutralColor3,
           ),
           onTap: () async {
-            textMessageEdit(model.message);
             closeMenu();
+            textMessageEdit(model.message);
           },
         ));
       }
@@ -2225,8 +2230,8 @@ class _MessagesViewState extends State<MessagesView>
                 : theme.color.neutralColor3,
           ),
           onTap: () async {
-            reportMessage(model);
             closeMenu();
+            reportMessage(model);
           },
         ));
       }
@@ -2249,8 +2254,8 @@ class _MessagesViewState extends State<MessagesView>
                 : theme.color.neutralColor3,
           ),
           onTap: () async {
-            deleteMessage(model);
             closeMenu();
+            deleteMessage(model);
           },
         ));
       }
@@ -2280,8 +2285,8 @@ class _MessagesViewState extends State<MessagesView>
                 : theme.color.neutralColor3,
           ),
           onTap: () async {
-            recallMessage(model);
             closeMenu();
+            recallMessage(model);
           },
         ));
       }
@@ -2346,8 +2351,8 @@ class _MessagesViewState extends State<MessagesView>
                 highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
                 onTap: () {
-                  onReactionTap(model, emoji, !highlight);
                   closeMenu();
+                  onReactionTap(model, emoji, !highlight);
                   popupMenuController?.hideMenu();
                 },
                 child: Container(
