@@ -19,6 +19,14 @@ class _ConversationPageState extends State<ConversationPage>
 
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
-    return const ConversationsView();
+    AppBar();
+    return ConversationsView(
+      appBarModel: ChatUIKitAppBarModel(
+          showBackButton: false,
+          bottomWidgetHeight: 50,
+          bottomWidget: Container(
+            color: Colors.red,
+          )),
+    );
   }
 }

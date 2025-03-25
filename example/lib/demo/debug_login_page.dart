@@ -1,5 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/main.dart';
+import 'package:example/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -76,7 +76,7 @@ class _DebugLoginPageState extends State<DebugLoginPage> {
     ChatUIKit.instance
         .loginWithPassword(userId: userId, password: password)
         .then((value) {
-      toSampleDemo();
+      toHomePage();
     }).catchError((e) {
       EasyLoading.showError(e.toString());
     }).whenComplete(() {
@@ -84,7 +84,7 @@ class _DebugLoginPageState extends State<DebugLoginPage> {
     });
   }
 
-  void toSampleDemo() {
-    Navigator.of(context).pushReplacementNamed('/sample_demo');
+  void toHomePage() {
+    Navigator.of(context).pushReplacementNamed('/home');
   }
 }

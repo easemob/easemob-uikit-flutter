@@ -1,5 +1,4 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/demo/demo_localizations.dart';
 
 import 'package:flutter/material.dart';
 
@@ -22,19 +21,20 @@ class _WelcomePageState extends State<WelcomePage> with ChatUIKitThemeMixin {
       return ChatUIKit.instance.isLoginBefore();
     }).then((value) {
       if (value) {
-        toSampleDemoPage();
+        toHomePage();
       } else {
         toLoginPage();
       }
     });
   }
 
-  void toSampleDemoPage() {
-    Navigator.of(context).pushReplacementNamed('/sample_demo');
+  void toHomePage() {
+    Navigator.of(context).pushReplacementNamed('/home');
   }
 
   void toLoginPage() {
-    Navigator.of(context).pushReplacementNamed('/login');
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
   }
 
   @override
@@ -54,28 +54,9 @@ class _WelcomePageState extends State<WelcomePage> with ChatUIKitThemeMixin {
                 child: Image.asset('assets/images/icon.png'),
               ),
               const SizedBox(height: 38),
-              Text(
-                DemoLocalizations.welcome.localString(context),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w500,
-                  color: theme.color.primaryColor5,
-                ),
-              ),
               const SizedBox(height: 180),
             ],
           ),
-          Positioned(
-            bottom: 60,
-            left: 0,
-            right: 0,
-            child: Text(
-              'Powered by Easemob',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: theme.color.neutralColor5),
-            ),
-          )
         ],
       ),
     );

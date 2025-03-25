@@ -1,12 +1,8 @@
 mixin DemoLocalizations {
   static String confirm = 'confirm';
 
-  // welcome
-  static String welcome = 'welcome';
-
   // login
   static String login = 'login';
-  static String loginEaseMob = 'loginEaseMob';
   static String loginFailed = 'loginFailed';
   static String loginSuccess = 'loginSuccess';
   static String loginInputPhoneHint = 'loginInputPhoneHint';
@@ -116,12 +112,8 @@ mixin DemoLocalizations {
   static Map<String, String> zh = {
     confirm: '确认',
 
-    // welcome
-    welcome: '环信即时通讯云',
-
     // login
     login: '登录',
-    loginEaseMob: '登录环信IM',
     loginFailed: '登录失败',
     loginSuccess: '登录成功',
     loginInputPhoneHint: '请输入手机号',
@@ -227,12 +219,8 @@ mixin DemoLocalizations {
   static Map<String, String> en = {
     confirm: 'Confirm',
 
-    // welcome
-    welcome: 'EaseMob IM',
-
     // login
     login: 'Login',
-    loginEaseMob: 'Login EaseMob IM',
     loginFailed: 'Login failed',
     loginSuccess: 'Login success',
     loginInputPhoneHint: 'Please enter the phone number',
@@ -245,7 +233,7 @@ mixin DemoLocalizations {
     loginResendSms: 'Resend',
     loggingIn: 'Logging in...',
     loginCheck: 'Agree to',
-    loginTermsOfService: ' Easemob Terms',
+    loginTermsOfService: ' Terms',
     loginAnd: ' & ',
     loginPrivacyPolicy: 'Privacy',
     loginPleaseAgreeTermsOfServicePrivacyPolicy:

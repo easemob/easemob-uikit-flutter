@@ -3,6 +3,7 @@ import '../chat_uikit.dart';
 class ChatUIKitInsertTools {
   static Message insertRecallMessage({
     required Message recalledMessage,
+    String? operatorId,
     int? timestamp,
   }) {
     int time = timestamp ?? recalledMessage.serverTime;
@@ -11,7 +12,7 @@ class ChatUIKitInsertTools {
       event: alertRecalledKey,
       chatType: recalledMessage.chatType,
       params: {
-        alertOperatorIdKey: recalledMessage.from!,
+        alertOperatorIdKey: operatorId ?? recalledMessage.from!,
       },
     );
     alertMsg.conversationId = recalledMessage.conversationId;

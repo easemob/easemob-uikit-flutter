@@ -1,4 +1,4 @@
-package com.ease.em_chat_uikit_example
+package com.ease.example
 
 import io.flutter.embedding.android.FlutterActivity
 

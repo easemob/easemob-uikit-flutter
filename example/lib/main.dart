@@ -1,17 +1,15 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/demo/debug_login_page.dart';
-import 'package:em_chat_uikit_example/demo/demo_localizations.dart';
-import 'package:em_chat_uikit_example/demo/home_page.dart';
+import 'package:example/demo/debug_login_page.dart';
+import 'package:example/demo/demo_localizations.dart';
+import 'package:example/demo/home_page.dart';
 
-import 'package:em_chat_uikit_example/demo/custom/chat_route_filter.dart';
-import 'package:em_chat_uikit_example/demo/pages/me/about_page.dart';
-import 'package:em_chat_uikit_example/demo/pages/me/settings/advanced_page.dart';
-import 'package:em_chat_uikit_example/demo/pages/me/settings/general_page.dart';
-import 'package:em_chat_uikit_example/demo/pages/me/settings/language_page.dart';
-import 'package:em_chat_uikit_example/demo/pages/me/settings/translate_page.dart';
-import 'package:em_chat_uikit_example/demo/tool/settings_data_store.dart';
-import 'package:em_chat_uikit_example/welcome_page.dart';
-import 'package:em_chat_uikit_example/sample_demo/custom_home_page.dart';
+import 'package:example/demo/custom/chat_route_filter.dart';
+import 'package:example/demo/pages/me/settings/advanced_page.dart';
+import 'package:example/demo/pages/me/settings/general_page.dart';
+import 'package:example/demo/pages/me/settings/language_page.dart';
+import 'package:example/demo/pages/me/settings/translate_page.dart';
+import 'package:example/demo/tool/settings_data_store.dart';
+import 'package:example/welcome_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -68,8 +66,8 @@ class _MyAppState extends State<MyApp> {
   // 初始化聊天 UI 套件
   void init() async {
     await ChatUIKit.instance.init(
-      options: Options(
-        appKey: appKey,
+      options: Options.withAppKey(
+        appKey,
         deleteMessagesAsExitGroup: false, // 退出群组时不删除消息
       ),
     );
@@ -105,9 +103,7 @@ class _MyAppState extends State<MyApp> {
             MaterialPageRoute(
               builder: (context) {
                 // 根据路由名称返回对应页面
-                if (settings.name == '/sample_demo') {
-                  return const CustomHomePage();
-                } else if (settings.name == '/home') {
+                if (settings.name == '/home') {
                   return const HomePage();
                 } else if (settings.name == '/login') {
                   return const DebugLoginPage();
@@ -121,8 +117,6 @@ class _MyAppState extends State<MyApp> {
                   return const TranslatePage();
                 } else if (settings.name == '/advanced_page') {
                   return const AdvancedPage();
-                } else if (settings.name == '/about_page') {
-                  return const AboutPage();
                 } else {
                   return const SizedBox();
                 }

@@ -51,8 +51,9 @@ class ConversationListViewController
   }
 
   @override
-  void onMessagesRecalled(List<Message> recalled, List<Message> replaces) {
-    List<String> recalledIds = recalled.map((e) => e.msgId).toList();
+  void onMessagesRecalledInfo(
+      List<RecallMessageInfo> infos, List<Message> replaces) {
+    List<String> recalledIds = infos.map((e) => e.recallMessageId).toList();
     bool has = list.cast<ConversationItemModel>().any((element) {
       return recalledIds.contains(element.lastMessage?.msgId ?? "");
     });

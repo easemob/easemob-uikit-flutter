@@ -99,7 +99,7 @@ mixin GroupWrapper on ChatUIKitServiceBase {
   }
 
   @protected
-  void onAnnouncementChangedFromGroup(String groupId, String announcement) {
+  void onAnnouncementChangedFromGroup(String groupId, String? announcement) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is GroupObserver) {
         observer.onAnnouncementChangedFromGroup(groupId, announcement);

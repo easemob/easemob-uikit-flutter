@@ -1,6 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/demo/demo_localizations.dart';
-import 'package:em_chat_uikit_example/demo/widgets/list_item.dart';
+import 'package:example/demo/demo_localizations.dart';
+import 'package:example/demo/widgets/list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -142,12 +142,6 @@ class _MyPageState extends State<MyPage>
           title: DemoLocalizations.notification.localString(context),
           onTap: nonsupport,
         ),
-        ListItem(
-          imageWidget: Image.asset('assets/images/info.png'),
-          title: DemoLocalizations.about.localString(context),
-          enableArrow: true,
-          onTap: about,
-        ),
         const SizedBox(height: 16),
         Padding(
           padding: const EdgeInsets.only(left: 16, right: 16),
@@ -176,14 +170,6 @@ class _MyPageState extends State<MyPage>
 
   void generalSettings() {
     Navigator.of(context).pushNamed('/general_page').then(
-      (value) {
-        setState(() {});
-      },
-    );
-  }
-
-  void about() {
-    Navigator.of(context).pushNamed('/about_page').then(
       (value) {
         setState(() {});
       },
@@ -230,6 +216,7 @@ class _MyPageState extends State<MyPage>
   }
 
   void toLoginPage() {
-    Navigator.of(context).popAndPushNamed('/login');
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
   }
 }

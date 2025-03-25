@@ -20,6 +20,7 @@ mixin ChatWrapper on ChatUIKitServiceBase {
         onMessageReactionDidChange: onMessageReactionDidChange,
         onMessageContentChanged: onMessageContentChanged,
         onMessagePinChanged: onMessagePinChanged,
+        onMessagesRecalledInfo: onMessagesRecalledInfo,
       ),
     );
   }
@@ -88,15 +89,27 @@ mixin ChatWrapper on ChatUIKitServiceBase {
 
   @protected
   void onMessagesRecalled(List<Message> messages) {
+    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
+      if (observer is ChatObserver) {
+        // ignore: deprecated_member_use_from_same_package
+        observer.onMessagesRecalled(messages);
+      }
+    }
+  }
+
+  @protected
+  void onMessagesRecalledInfo(List<RecallMessageInfo> infos) {
     List<Message> replaces = [];
-    for (var msg in messages) {
-      final replace =
-          ChatUIKitInsertTools.insertRecallMessage(recalledMessage: msg);
+    for (var info in infos) {
+      final replace = ChatUIKitInsertTools.insertRecallMessage(
+        recalledMessage: info.recallMessage!,
+        operatorId: info.recallBy,
+      );
       replaces.add(replace);
     }
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
-        observer.onMessagesRecalled(messages, replaces);
+        observer.onMessagesRecalledInfo(infos, replaces);
       }
     }
   }

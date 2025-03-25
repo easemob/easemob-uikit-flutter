@@ -1,3 +1,5 @@
+import 'package:flutter/semantics.dart';
+
 import '../../../chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +22,9 @@ class ChatUIKitAppBarModel {
   /// [backgroundColor] 状态栏样式
   /// [bottomLine] 是否显示底部分割线
   /// [bottomLineColor] 底部分割线颜色
+  /// [flexibleSpace] 中间控件
+  /// [bottomWidgetHeight] 底部控件高度
+  /// [bottomWidget] 底部控件
   ChatUIKitAppBarModel({
     this.title,
     this.centerWidget,
@@ -37,6 +42,9 @@ class ChatUIKitAppBarModel {
     this.backgroundColor,
     this.bottomLine,
     this.bottomLineColor,
+    this.flexibleSpace,
+    this.bottomWidgetHeight = 0,
+    this.bottomWidget,
   });
 
   /// 是否显示返回键
@@ -86,6 +94,12 @@ class ChatUIKitAppBarModel {
 
   /// 底部分割线颜色
   Color? bottomLineColor;
+
+  Widget? flexibleSpace;
+
+  double bottomWidgetHeight;
+
+  Widget? bottomWidget;
 }
 
 class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -106,10 +120,13 @@ class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
       backgroundColor: model.backgroundColor,
       bottomLine: model.bottomLine ?? false,
       bottomLineColor: model.bottomLineColor,
+      flexibleSpace: model.flexibleSpace,
+      bottomWidgetHeight: model.bottomWidgetHeight,
+      bottomWidget: model.bottomWidget,
     );
   }
 
-  const ChatUIKitAppBar({
+  ChatUIKitAppBar({
     this.centerWidget,
     this.title,
     this.titleTextStyle,
@@ -125,8 +142,11 @@ class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.backgroundColor,
     this.bottomLine = false,
     this.bottomLineColor,
+    this.flexibleSpace,
+    this.bottomWidgetHeight = 0,
+    this.bottomWidget,
     super.key,
-  });
+  }) : preferredSize = Size.fromHeight(56 + bottomWidgetHeight);
 
   final bool showBackButton;
   final VoidCallback? onBackButtonPressed;
@@ -143,14 +163,15 @@ class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
   final SystemUiOverlayStyle? systemOverlayStyle;
   final bool bottomLine;
   final Color? bottomLineColor;
+  final Widget? flexibleSpace;
+  final double bottomWidgetHeight;
+  final Widget? bottomWidget;
 
   @override
   State<ChatUIKitAppBar> createState() => _ChatUIKitAppBarState();
 
   @override
-  Size get preferredSize {
-    return const Size.fromHeight(56);
-  }
+  final Size preferredSize;
 }
 
 class _ChatUIKitAppBarState extends State<ChatUIKitAppBar>
@@ -315,25 +336,56 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar>
     );
 
     content = Container(
-      height: MediaQuery.paddingOf(context).top +
-          widget.preferredSize.height -
-          (widget.bottomLine ? 1 : 0),
+      alignment: Alignment.topCenter,
+      height:
+          MediaQuery.paddingOf(context).top + 56 - (widget.bottomLine ? 1 : 0),
       color: backgroundColor,
       child: content,
     );
 
-    if (widget.bottomLine) {
-      content = Column(
-        children: [
-          content,
-          Divider(
-            height: 0.3,
-            thickness: 0.3,
-            color: widget.bottomLineColor ??
-                (theme.color.isDark
-                    ? theme.color.neutralColor2
-                    : theme.color.neutralColor9),
-          )
+    content = Column(
+      children: [
+        content,
+        Expanded(
+          child: widget.bottomWidgetHeight != 0
+              ? SizedBox(
+                  height: widget.bottomWidgetHeight,
+                  child: widget.bottomWidget,
+                )
+              : const SizedBox(),
+        ),
+        widget.bottomLine
+            ? Divider(
+                height: 0.3,
+                thickness: 0.3,
+                color: widget.bottomLineColor ??
+                    (theme.color.isDark
+                        ? theme.color.neutralColor2
+                        : theme.color.neutralColor9),
+              )
+            : const SizedBox(),
+      ],
+    );
+
+    if (widget.flexibleSpace != null) {
+      content = Stack(
+        fit: StackFit.passthrough,
+        children: <Widget>[
+          Semantics(
+            sortKey: const OrdinalSortKey(1.0),
+            explicitChildNodes: true,
+            child: widget.flexibleSpace,
+          ),
+          Semantics(
+            sortKey: const OrdinalSortKey(0.0),
+            explicitChildNodes: true,
+            // Creates a material widget to prevent the flexibleSpace from
+            // obscuring the ink splashes produced by appBar children.
+            child: Material(
+              type: MaterialType.transparency,
+              child: content,
+            ),
+          ),
         ],
       );
     }

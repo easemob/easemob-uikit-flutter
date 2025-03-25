@@ -7,7 +7,10 @@ abstract mixin class ChatObserver implements ChatUIKitObserverBase {
   void onGroupMessageRead(List<GroupMessageAck> groupMessageAcks) {}
   void onReadAckForGroupMessageUpdated() {}
   void onMessagesDelivered(List<Message> messages) {}
-  void onMessagesRecalled(List<Message> recalled, List<Message> replaces) {}
+  @Deprecated('Use [ChatObserver.onMessagesRecalledInfo] instead.')
+  void onMessagesRecalled(List<Message> recalled) {}
+  void onMessagesRecalledInfo(
+      List<RecallMessageInfo> infos, List<Message> replaces) {}
   void onConversationsUpdate() {}
   void onConversationRead(String from, String to) {}
   void onMessageReactionDidChange(List<MessageReactionEvent> events) {}

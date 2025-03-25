@@ -294,11 +294,12 @@ class MessagesViewController extends ChangeNotifier
   }
 
   @override
-  void onMessagesRecalled(List<Message> recalled, List<Message> replaces) {
+  void onMessagesRecalledInfo(
+      List<RecallMessageInfo> infos, List<Message> replaces) {
     bool needReload = false;
-    for (var i = 0; i < recalled.length; i++) {
+    for (var i = 0; i < infos.length; i++) {
       int index = msgModelList
-          .indexWhere((element) => recalled[i].msgId == element.message.msgId);
+          .indexWhere((element) => infos[i].recallMessageId == element.message.msgId);
       if (index != -1) {
         msgModelList[index] =
             msgModelList[index].copyWith(message: replaces[i]);
@@ -632,32 +633,30 @@ class MessagesViewController extends ChangeNotifier
       maxWidth: 200,
       quality: 80,
     );
-    if (imageData != null) {
-      final directory = await getApplicationCacheDirectory();
-      String thumbnailPath =
-          '${directory.path}/thumbnail_${Random().nextInt(999999999)}.jpeg';
-      final file = File(thumbnailPath);
-      file.writeAsBytesSync(imageData);
+    final directory = await getApplicationCacheDirectory();
+    String thumbnailPath =
+        '${directory.path}/thumbnail_${Random().nextInt(999999999)}.jpeg';
+    final file = File(thumbnailPath);
+    file.writeAsBytesSync(imageData);
 
-      final videoFile = File(path);
+    final videoFile = File(path);
 
-      Image.file(file)
-          .image
-          .resolve(const ImageConfiguration())
-          .addListener(ImageStreamListener((info, synchronousCall) {
-        final msg = Message.createVideoSendMessage(
-          targetId: profile.id,
-          chatType: chatType,
-          filePath: path,
-          thumbnailLocalPath: file.path,
-          width: info.image.width.toDouble(),
-          height: info.image.height.toDouble(),
-          fileSize: videoFile.lengthSync(),
-          displayName: videoFile.path.split('/').last,
-        );
-        sendMessage(msg);
-      }));
-    }
+    Image.file(file)
+        .image
+        .resolve(const ImageConfiguration())
+        .addListener(ImageStreamListener((info, synchronousCall) {
+      final msg = Message.createVideoSendMessage(
+        targetId: profile.id,
+        chatType: chatType,
+        filePath: path,
+        thumbnailLocalPath: file.path,
+        width: info.image.width.toDouble(),
+        height: info.image.height.toDouble(),
+        fileSize: videoFile.lengthSync(),
+        displayName: videoFile.path.split('/').last,
+      );
+      sendMessage(msg);
+    }));
   }
 
   Future<void> sendFileMessage(

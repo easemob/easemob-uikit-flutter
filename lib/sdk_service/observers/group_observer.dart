@@ -6,7 +6,7 @@ abstract mixin class GroupObserver implements ChatUIKitObserverBase {
   void onAllGroupMemberMuteStateChanged(String groupId, bool isAllMuted) {}
   void onAllowListAddedFromGroup(String groupId, List<String> members) {}
   void onAllowListRemovedFromGroup(String groupId, List<String> members) {}
-  void onAnnouncementChangedFromGroup(String groupId, String announcement) {}
+  void onAnnouncementChangedFromGroup(String groupId, String? announcement) {}
   void onAutoAcceptInvitationFromGroup(
       String groupId, String inviter, String? inviteMessage) {}
   void onGroupDestroyed(String groupId, String? groupName) {}

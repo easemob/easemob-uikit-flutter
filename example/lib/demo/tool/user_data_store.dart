@@ -1,6 +1,6 @@
 // 单例模式
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/main.dart';
+import 'package:example/main.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sqflite/sqflite.dart';
 

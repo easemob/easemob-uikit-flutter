@@ -124,6 +124,7 @@ class _TokenStatusHandlerWidgetState extends State<TokenStatusHandlerWidget> {
   }
 
   void toLoginPage() {
-    Navigator.of(context).popAndPushNamed('/login');
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
   }
 }

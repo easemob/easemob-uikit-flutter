@@ -1,7 +1,7 @@
 name: em_chat_uikit
 description: A set of ui components adapted to the chat sdk can quickly build a chat page
   and chat through the chat sdk by invoking the ui components.
-version: 2.1.0+5
+version: 2.2.0
 homepage: https://www.easemob.com/
 
 environment:
@@ -12,9 +12,14 @@ dependencies:
   flutter:
     sdk: flutter
 
-  im_flutter_sdk: 4.10.0
+  # im_flutter_sdk: 4.10.1
   # im_flutter_sdk:
     # path: ../../../im_flutter_sdk/
+  im_flutter_sdk:
+    git:
+      url: https://github.com/dujiepeng/im_flutter_new.git
+      path: im_flutter_sdk
+      ref: e9de3c4
 
   
   record: 5.1.2
@@ -25,13 +30,13 @@ dependencies:
 
   path_provider: 2.1.4
 
-  file_picker: 8.0.5
+  file_picker: 8.3.2
 
   audioplayers: 6.0.0
 
   image_picker: 1.1.2
 
-  video_thumbnail: 0.5.3
+  get_thumbnail_video: 0.7.3
 
   video_player: 2.9.1
 

@@ -5,6 +5,7 @@ export 'package:path_provider/path_provider.dart';
 export 'package:scroll_to_index/scroll_to_index.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:video_player/video_player.dart';
-export 'package:video_thumbnail/video_thumbnail.dart';
+export 'package:get_thumbnail_video/video_thumbnail.dart';
+export 'package:get_thumbnail_video/index.dart';
 export 'package:flutter_localization/flutter_localization.dart';
 export '../universal/chat_uikit_log.dart';

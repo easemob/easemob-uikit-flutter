@@ -1,7 +1,7 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/demo/demo_localizations.dart';
-import 'package:em_chat_uikit_example/demo/tool/settings_data_store.dart';
-import 'package:em_chat_uikit_example/demo/widgets/list_item.dart';
+import 'package:example/demo/demo_localizations.dart';
+import 'package:example/demo/tool/settings_data_store.dart';
+import 'package:example/demo/widgets/list_item.dart';
 import 'package:flutter/material.dart';
 
 class TranslatePage extends StatefulWidget {

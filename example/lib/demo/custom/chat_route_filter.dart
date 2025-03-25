@@ -1,8 +1,8 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/demo/demo_localizations.dart';
+import 'package:example/demo/demo_localizations.dart';
 
-import 'package:em_chat_uikit_example/demo/pages/help/download_page.dart';
-import 'package:em_chat_uikit_example/demo/tool/user_data_store.dart';
+import 'package:example/demo/pages/help/download_page.dart';
+import 'package:example/demo/tool/user_data_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 

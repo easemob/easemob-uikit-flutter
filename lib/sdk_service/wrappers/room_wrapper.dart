@@ -79,7 +79,7 @@ mixin RoomWrapper on ChatUIKitServiceBase {
   }
 
   @protected
-  void onAnnouncementChangedFromChatRoom(String roomId, String announcement) {
+  void onAnnouncementChangedFromChatRoom(String roomId, String? announcement) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is RoomObserver) {
         observer.onAnnouncementChangedFromChatRoom(roomId, announcement);
@@ -117,11 +117,10 @@ mixin RoomWrapper on ChatUIKitServiceBase {
   }
 
   @protected
-  void onMuteListAddedFromChatRoom(
-      String roomId, List<String> mutes, String? expireTime) {
+  void onMuteListAddedFromChatRoom(String roomId, Map<String, int> mutes) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is RoomObserver) {
-        observer.onMuteListAddedFromChatRoom(roomId, mutes, expireTime);
+        observer.onMuteListAddedFromChatRoom(roomId, mutes);
       }
     }
   }

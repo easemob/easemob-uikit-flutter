@@ -1,4 +1,5 @@
 PODS:
+  - AgoraInfra_iOS (1.2.13)
   - audioplayers_darwin (0.0.1):
     - Flutter
   - chat_uikit_keyboard_panel (0.0.1):
@@ -42,25 +43,29 @@ PODS:
   - Flutter (1.0.0)
   - flutter_localization (0.0.1):
     - Flutter
-  - HyphenateChat (4.10.2)
-  - im_flutter_sdk (0.0.1):
+  - get_thumbnail_video (0.0.1):
     - Flutter
-    - HyphenateChat (= 4.10.2)
+    - libwebp
+  - HyphenateChat (4.13.0):
+    - AgoraInfra_iOS (= 1.2.13)
+  - im_flutter_sdk_ios (0.0.1):
+    - Flutter
+    - HyphenateChat (= 4.13.0)
   - image_picker_ios (0.0.1):
     - Flutter
   - integration_test (0.0.1):
     - Flutter
-  - libwebp (1.3.2):
-    - libwebp/demux (= 1.3.2)
-    - libwebp/mux (= 1.3.2)
-    - libwebp/sharpyuv (= 1.3.2)
-    - libwebp/webp (= 1.3.2)
-  - libwebp/demux (1.3.2):
+  - libwebp (1.5.0):
+    - libwebp/demux (= 1.5.0)
+    - libwebp/mux (= 1.5.0)
+    - libwebp/sharpyuv (= 1.5.0)
+    - libwebp/webp (= 1.5.0)
+  - libwebp/demux (1.5.0):
     - libwebp/webp
-  - libwebp/mux (1.3.2):
+  - libwebp/mux (1.5.0):
     - libwebp/demux
-  - libwebp/sharpyuv (1.3.2)
-  - libwebp/webp (1.3.2):
+  - libwebp/sharpyuv (1.5.0)
+  - libwebp/webp (1.5.0):
     - libwebp/sharpyuv
   - path_provider_foundation (0.0.1):
     - Flutter
@@ -82,9 +87,6 @@ PODS:
   - video_player_avfoundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - video_thumbnail (0.0.1):
-    - Flutter
-    - libwebp
 
 DEPENDENCIES:
   - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
@@ -93,7 +95,8 @@ DEPENDENCIES:
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
   - flutter_localization (from `.symlinks/plugins/flutter_localization/ios`)
-  - im_flutter_sdk (from `.symlinks/plugins/im_flutter_sdk/ios`)
+  - get_thumbnail_video (from `.symlinks/plugins/get_thumbnail_video/ios`)
+  - im_flutter_sdk_ios (from `.symlinks/plugins/im_flutter_sdk_ios/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -102,10 +105,10 @@ DEPENDENCIES:
   - sqflite (from `.symlinks/plugins/sqflite/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
-  - video_thumbnail (from `.symlinks/plugins/video_thumbnail/ios`)
 
 SPEC REPOS:
   trunk:
+    - AgoraInfra_iOS
     - DKImagePickerController
     - DKPhotoGallery
     - HyphenateChat
@@ -126,8 +129,10 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_localization:
     :path: ".symlinks/plugins/flutter_localization/ios"
-  im_flutter_sdk:
-    :path: ".symlinks/plugins/im_flutter_sdk/ios"
+  get_thumbnail_video:
+    :path: ".symlinks/plugins/get_thumbnail_video/ios"
+  im_flutter_sdk_ios:
+    :path: ".symlinks/plugins/im_flutter_sdk_ios/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   integration_test:
@@ -144,23 +149,23 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   video_player_avfoundation:
     :path: ".symlinks/plugins/video_player_avfoundation/darwin"
-  video_thumbnail:
-    :path: ".symlinks/plugins/video_thumbnail/ios"
 
 SPEC CHECKSUMS:
+  AgoraInfra_iOS: 65e11a2183ab7836258768868d06058c22701b13
   audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
   chat_uikit_keyboard_panel: 67cdf0084a828cc82c53c7065b54d92b9fc8951e
   DKImagePickerController: 946cec48c7873164274ecc4624d19e3da4c1ef3c
   DKPhotoGallery: b3834fecb755ee09a593d7c9e389d8b5d6deed60
   em_chat_uikit: f94bb90fbcee6304417422074e0011ee199a3de0
-  file_picker: 09aa5ec1ab24135ccd7a1621c46c84134bfd6655
+  file_picker: b159e0c068aef54932bb15dc9fd1571818edaf49
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_localization: f43b18844a2b3d2c71fd64f04ffd6b1e64dd54d4
-  HyphenateChat: 6924f613947f6301bee909fc12c3bb01b50f52c6
-  im_flutter_sdk: 2167ace35f9d787fc3ad9df2a3280312a3f79a08
+  get_thumbnail_video: b9a180957daed3e9179e66268db51d8798e41f65
+  HyphenateChat: c2ecd32ae5328c027d8e270bdbe63c0902cfc828
+  im_flutter_sdk_ios: 989968246d61b7472044cd19c93ff2bb70194a10
   image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
-  integration_test: 13825b8a9334a850581300559b8839134b124670
-  libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
+  integration_test: ce0a3ffa1de96d1a89ca0ac26fca7ea18a749ef4
+  libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   record_darwin: 3b1a8e7d5c0cbf45ad6165b4d83a6ca643d929c3
   SDWebImage: 73c6079366fea25fa4bb9640d5fb58f0893facd8
@@ -169,7 +174,6 @@ SPEC CHECKSUMS:
   SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
   video_player_avfoundation: 7c6c11d8470e1675df7397027218274b6d2360b3
-  video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
 
 PODFILE CHECKSUM: 7be2f5f74864d463a8ad433546ed1de7e0f29aef
 
