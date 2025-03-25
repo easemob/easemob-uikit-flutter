@@ -204,6 +204,9 @@ class _ContactsViewState extends State<ContactsView>
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
       bottomLine: widget.appBarModel?.bottomLine,
       bottomLineColor: widget.appBarModel?.bottomLineColor,
+      flexibleSpace: widget.appBarModel?.flexibleSpace,
+      bottomWidget: widget.appBarModel?.bottomWidget,
+      bottomWidgetHeight: widget.appBarModel?.bottomWidgetHeight,
     );
   }
 

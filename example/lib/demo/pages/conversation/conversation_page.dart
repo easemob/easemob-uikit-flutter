@@ -1,4 +1,5 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/ui/widgets/chat_uikit_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class ConversationPage extends StatefulWidget {
@@ -13,20 +14,17 @@ class _ConversationPageState extends State<ConversationPage>
   Message? message;
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
   }
 
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
-    AppBar();
-    return ConversationsView(
-      appBarModel: ChatUIKitAppBarModel(
-          showBackButton: false,
-          bottomWidgetHeight: 50,
-          bottomWidget: Container(
-            color: Colors.red,
-          )),
-    );
+    return const ConversationsView();
   }
 }

@@ -191,7 +191,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.1.0+5"
+    version: "2.2.0"
   fake_async:
     dependency: transitive
     description:
@@ -378,8 +378,8 @@ packages:
     dependency: transitive
     description:
       path: im_flutter_sdk
-      ref: e9de3c4
-      resolved-ref: e9de3c4d1c5f2b45ca185a3bb6989ff0820808a8
+      ref: "4582efd"
+      resolved-ref: "4582efd42f4b2ae2d53b8541765d3eef8076a55c"
       url: "https://github.com/dujiepeng/im_flutter_new.git"
     source: git
     version: "4.13.0"
@@ -387,8 +387,8 @@ packages:
     dependency: transitive
     description:
       path: im_flutter_sdk_android
-      ref: e9de3c4
-      resolved-ref: e9de3c4d1c5f2b45ca185a3bb6989ff0820808a8
+      ref: "4582efd"
+      resolved-ref: "4582efd42f4b2ae2d53b8541765d3eef8076a55c"
       url: "https://github.com/dujiepeng/im_flutter_new.git"
     source: git
     version: "4.13.0"
@@ -396,8 +396,8 @@ packages:
     dependency: transitive
     description:
       path: im_flutter_sdk_interface
-      ref: e9de3c4
-      resolved-ref: e9de3c4d1c5f2b45ca185a3bb6989ff0820808a8
+      ref: "4582efd"
+      resolved-ref: "4582efd42f4b2ae2d53b8541765d3eef8076a55c"
       url: "https://github.com/dujiepeng/im_flutter_new.git"
     source: git
     version: "0.0.1"
@@ -405,8 +405,8 @@ packages:
     dependency: transitive
     description:
       path: im_flutter_sdk_ios
-      ref: e9de3c4
-      resolved-ref: e9de3c4d1c5f2b45ca185a3bb6989ff0820808a8
+      ref: "4582efd"
+      resolved-ref: "4582efd42f4b2ae2d53b8541765d3eef8076a55c"
       url: "https://github.com/dujiepeng/im_flutter_new.git"
     source: git
     version: "4.13.0"
@@ -414,8 +414,8 @@ packages:
     dependency: transitive
     description:
       path: im_flutter_sdk_ohos
-      ref: e9de3c4
-      resolved-ref: e9de3c4d1c5f2b45ca185a3bb6989ff0820808a8
+      ref: "4582efd"
+      resolved-ref: "4582efd42f4b2ae2d53b8541765d3eef8076a55c"
       url: "https://github.com/dujiepeng/im_flutter_new.git"
     source: git
     version: "1.5.3"

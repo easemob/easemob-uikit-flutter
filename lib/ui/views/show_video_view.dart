@@ -76,6 +76,9 @@ class _ShowVideoViewState extends State<ShowVideoView>
           widget.appBarModel?.backgroundColor ?? Colors.transparent,
       bottomLine: widget.appBarModel?.bottomLine,
       bottomLineColor: widget.appBarModel?.bottomLineColor,
+      flexibleSpace: widget.appBarModel?.flexibleSpace,
+      bottomWidget: widget.appBarModel?.bottomWidget,
+      bottomWidgetHeight: widget.appBarModel?.bottomWidgetHeight,
     );
   }
 

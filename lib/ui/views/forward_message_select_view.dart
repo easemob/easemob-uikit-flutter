@@ -148,6 +148,9 @@ class _ForwardMessageSelectViewState extends State<ForwardMessageSelectView>
       backgroundColor: widget.appBarModel?.backgroundColor,
       bottomLine: widget.appBarModel?.bottomLine,
       bottomLineColor: widget.appBarModel?.bottomLineColor,
+      flexibleSpace: widget.appBarModel?.flexibleSpace,
+      bottomWidget: widget.appBarModel?.bottomWidget,
+      bottomWidgetHeight: widget.appBarModel?.bottomWidgetHeight,
     );
   }
 

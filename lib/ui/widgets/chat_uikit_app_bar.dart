@@ -43,7 +43,7 @@ class ChatUIKitAppBarModel {
     this.bottomLine,
     this.bottomLineColor,
     this.flexibleSpace,
-    this.bottomWidgetHeight = 0,
+    this.bottomWidgetHeight,
     this.bottomWidget,
   });
 
@@ -97,7 +97,7 @@ class ChatUIKitAppBarModel {
 
   Widget? flexibleSpace;
 
-  double bottomWidgetHeight;
+  double? bottomWidgetHeight;
 
   Widget? bottomWidget;
 }
@@ -143,10 +143,11 @@ class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.bottomLine = false,
     this.bottomLineColor,
     this.flexibleSpace,
-    this.bottomWidgetHeight = 0,
+    double? bottomWidgetHeight,
     this.bottomWidget,
     super.key,
-  }) : preferredSize = Size.fromHeight(56 + bottomWidgetHeight);
+  })  : preferredSize = Size.fromHeight(56 + (bottomWidgetHeight ?? 0)),
+        bottomWidgetHeight = bottomWidgetHeight ?? 0;
 
   final bool showBackButton;
   final VoidCallback? onBackButtonPressed;

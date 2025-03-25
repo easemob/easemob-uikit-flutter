@@ -116,6 +116,11 @@ class _ChangeInfoViewState extends State<ChangeInfoView>
           (theme.color.isDark
               ? theme.color.neutralColor1
               : theme.color.neutralColor98),
+      flexibleSpace: widget.appBarModel?.flexibleSpace,
+      bottomLine: widget.appBarModel?.bottomLine,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
+      bottomWidget: widget.appBarModel?.bottomWidget,
+      bottomWidgetHeight: widget.appBarModel?.bottomWidgetHeight,
     );
   }
 

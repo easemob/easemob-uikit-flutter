@@ -439,6 +439,9 @@ class _MessagesViewState extends State<MessagesView>
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
       bottomLine: widget.appBarModel?.bottomLine ?? true,
       bottomLineColor: widget.appBarModel?.bottomLineColor,
+      flexibleSpace: widget.appBarModel?.flexibleSpace,
+      bottomWidget: widget.appBarModel?.bottomWidget,
+      bottomWidgetHeight: widget.appBarModel?.bottomWidgetHeight,
     );
   }
 

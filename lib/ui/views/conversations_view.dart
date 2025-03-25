@@ -181,7 +181,7 @@ class _ConversationsViewState extends State<ConversationsView>
       bottomLineColor: widget.appBarModel?.bottomLineColor,
       flexibleSpace: widget.appBarModel?.flexibleSpace,
       bottomWidget: widget.appBarModel?.bottomWidget,
-      bottomWidgetHeight: widget.appBarModel?.bottomWidgetHeight ?? 0,
+      bottomWidgetHeight: widget.appBarModel?.bottomWidgetHeight,
     );
   }
 

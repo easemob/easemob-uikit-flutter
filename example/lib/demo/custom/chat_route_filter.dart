@@ -178,6 +178,18 @@ class ChatRouteFilter {
         }
         return false;
       },
+      appBarModel: ChatUIKitAppBarModel(
+        bottomWidgetHeight: 54,
+        bottomWidget: Container(
+          color: const Color.fromRGBO(240, 248, 190, 1),
+          child: const Center(
+            child: Text(
+              '请勿轻信任何关于汇款、中奖等信息，务必提高警惕，谨慎对待来自陌生号码的电话。如遇可疑情况，请及时向相关部门反馈并采取必要的防范措施。',
+              style: TextStyle(fontSize: 12),
+            ),
+          ),
+        ),
+      ),
     );
 
     return RouteSettings(name: settings.name, arguments: arguments);

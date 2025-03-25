@@ -19,7 +19,7 @@ dependencies:
     git:
       url: https://github.com/dujiepeng/im_flutter_new.git
       path: im_flutter_sdk
-      ref: e9de3c4
+      ref: 4582efd
 
   
   record: 5.1.2
