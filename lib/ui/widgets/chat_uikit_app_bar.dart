@@ -120,7 +120,7 @@ class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
       centerTitle: model.centerTitle,
       systemOverlayStyle: model.systemOverlayStyle,
       backgroundColor: model.backgroundColor,
-      bottomLine: model.bottomLine ?? false,
+      bottomLine: model.bottomLine ?? true,
       bottomLineColor: model.bottomLineColor,
       flexibleSpace: model.flexibleSpace,
       bottomWidgetHeight: model.bottomWidgetHeight,
@@ -343,7 +343,7 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar>
       alignment: Alignment.topCenter,
       height: MediaQuery.paddingOf(context).top +
           appBarHeight -
-          (widget.bottomLine ? 1 : 0),
+          (widget.bottomLine ? 0.3 : 0),
       color: backgroundColor,
       child: content,
     );

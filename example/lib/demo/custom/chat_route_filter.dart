@@ -188,7 +188,9 @@ class ChatRouteFilter {
                 margin: const EdgeInsets.only(top: 60, left: 8, right: 8),
                 height: 78,
                 decoration: BoxDecoration(
-                  color: ChatUIKitTheme.instance.color.neutralSpecialColor9,
+                  color: ChatUIKitTheme.instance.color.isDark
+                      ? ChatUIKitTheme.instance.color.neutralColor2
+                      : ChatUIKitTheme.instance.color.neutralSpecialColor9,
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
                     BoxShadow(
@@ -218,8 +220,11 @@ class ChatRouteFilter {
                                 height: 1.5,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
-                                color:
-                                    ChatUIKitTheme.instance.color.neutralColor3,
+                                color: ChatUIKitTheme.instance.color.isDark
+                                    ? ChatUIKitTheme
+                                        .instance.color.neutralColor9
+                                    : ChatUIKitTheme
+                                        .instance.color.neutralColor3,
                               ),
                             ),
                             TextSpan(
@@ -247,7 +252,9 @@ class ChatRouteFilter {
                     InkWell(
                       child: Icon(
                         Icons.close,
-                        color: ChatUIKitTheme.instance.color.neutralColor3,
+                        color: ChatUIKitTheme.instance.color.isDark
+                            ? ChatUIKitTheme.instance.color.neutralColor9
+                            : ChatUIKitTheme.instance.color.neutralColor3,
                         size: 16,
                       ),
                       onTapUp: (details) {

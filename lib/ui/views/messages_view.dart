@@ -445,8 +445,7 @@ class _MessagesViewState extends State<MessagesView>
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
       bottomLine: widget.appBarModel?.bottomLine ?? true,
-      bottomLineColor:
-          widget.appBarModel?.bottomLineColor ?? theme.color.neutralColor9,
+      bottomLineColor: widget.appBarModel?.bottomLineColor,
       flexibleSpace: widget.appBarModel?.flexibleSpace,
       bottomWidget: widget.appBarModel?.bottomWidget,
       bottomWidgetHeight: widget.appBarModel?.bottomWidgetHeight,
