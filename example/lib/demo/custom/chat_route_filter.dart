@@ -3,7 +3,9 @@ import 'package:example/demo/demo_localizations.dart';
 
 import 'package:example/demo/pages/help/download_page.dart';
 import 'package:example/demo/tool/user_data_store.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ChatRouteFilter {
@@ -201,15 +203,42 @@ class ChatRouteFilter {
                     Icon(
                       Icons.error,
                       color: ChatUIKitTheme.instance.color.primaryColor5,
+                      size: 16,
                     ),
                     const SizedBox(width: 8),
-                    const Expanded(
-                      child: Text(
-                        '请勿轻信任何关于汇款、中奖等信息，务必提高警惕，谨慎对待来自陌生号码的电话。如遇可疑情况，请及时向相关部门反馈并采取必要的防范措施。',
-                        style: TextStyle(
-                          height: 1.5,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
+                    Expanded(
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text:
+                                  '请勿轻信任何关于汇款、中奖等信息，务必提高警惕，谨慎对待来自陌生号码的电话。如遇可疑情况，请及时向相关部门反馈并采取必要的防范措施。',
+                              style: TextStyle(
+                                height: 1.5,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color:
+                                    ChatUIKitTheme.instance.color.neutralColor3,
+                              ),
+                            ),
+                            TextSpan(
+                                text: '点击举报',
+                                style: TextStyle(
+                                  height: 1.5,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: ChatUIKitTheme
+                                      .instance.color.primaryColor5,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () async {
+                                    EasyLoading.show(status: '举报中...');
+                                    Future.delayed(const Duration(seconds: 1),
+                                        () {
+                                      EasyLoading.showSuccess('举报成功');
+                                    });
+                                  })
+                          ],
                         ),
                       ),
                     ),
@@ -218,7 +247,7 @@ class ChatRouteFilter {
                       child: Icon(
                         Icons.close,
                         color: ChatUIKitTheme.instance.color.neutralColor3,
-                        size: 18,
+                        size: 16,
                       ),
                       onTapUp: (details) {
                         showAnti = false;
