@@ -82,7 +82,6 @@ class _MyAppState extends State<MyApp> {
       localeResolutionCallback: _localization.localeResolutionCallback,
       locale: _localization.currentLocale,
 
-      // 主题配置
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,

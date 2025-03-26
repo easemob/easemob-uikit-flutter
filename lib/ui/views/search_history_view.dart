@@ -284,6 +284,7 @@ class ChatUIKitSearchHistoryViewItem extends StatelessWidget {
 
     Widget avatar = ChatUIKitAvatar(
       avatarUrl: profile?.avatarUrl ?? message.fromProfile.avatarUrl,
+      isGroup: profile?.type == ChatUIKitProfileType.group,
       size: 40,
     );
 

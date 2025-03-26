@@ -17,6 +17,9 @@ class ChatUIKitSettings {
   /// Default avatar placeholder image
   static ImageProvider? avatarPlaceholder;
 
+  /// Default group avatar placeholder image
+  static ImageProvider? groupAvatarPlaceholder;
+
   /// The corner radius for the dialog.
   static ChatUIKitDialogRectangleType dialogRectangleType =
       ChatUIKitDialogRectangleType.filletCorner;

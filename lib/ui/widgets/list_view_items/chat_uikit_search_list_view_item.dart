@@ -25,6 +25,7 @@ class ChatUIKitSearchListViewItem extends StatelessWidget {
 
     Widget avatar = ChatUIKitAvatar(
       avatarUrl: profile.avatarUrl,
+      isGroup: profile.type == ChatUIKitProfileType.group,
       size: 40,
     );
 

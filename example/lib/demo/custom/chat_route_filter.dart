@@ -5,7 +5,7 @@ import 'package:example/demo/pages/help/download_page.dart';
 import 'package:example/demo/tool/user_data_store.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ChatRouteFilter {
@@ -49,97 +49,98 @@ class ChatRouteFilter {
 
   // 自定义 contact detail view
   static RouteSettings contactDetails(RouteSettings settings) {
-    ChatUIKitViewObserver? viewObserver = ChatUIKitViewObserver();
-    ContactDetailsViewArguments arguments =
-        settings.arguments as ContactDetailsViewArguments;
+    return settings;
+    // ChatUIKitViewObserver? viewObserver = ChatUIKitViewObserver();
+    // ContactDetailsViewArguments arguments =
+    //     settings.arguments as ContactDetailsViewArguments;
 
-    arguments = arguments.copyWith(
-      viewObserver: viewObserver,
+    // arguments = arguments.copyWith(
+    //   viewObserver: viewObserver,
 
-      // 添加 remark 实现
-      itemsBuilder: (context, profile, models) {
-        return [
-          ChatUIKitDetailsListViewItemModel(
-            title: DemoLocalizations.contactRemark.localString(context),
-            trailing: Text(
-              ChatUIKitProvider.instance.getProfile(arguments.profile).remark ??
-                  '',
-              textScaler: TextScaler.noScaling,
-            ),
-            onTap: () async {
-              String errStr =
-                  DemoLocalizations.contactRemarkFailed.localString(context);
-              String? remark = await showChatUIKitDialog(
-                context: context,
-                title: DemoLocalizations.contactRemark.localString(context),
-                inputItems: [
-                  ChatUIKitDialogInputContentItem(
-                    hintText: DemoLocalizations.contactRemarkDesc
-                        .localString(context),
-                    maxLength: 32,
-                  )
-                ],
-                actionItems: [
-                  ChatUIKitDialogAction.inputsConfirm(
-                    label: DemoLocalizations.contactRemarkConfirm
-                        .localString(context),
-                    onInputsTap: (inputs) async {
-                      Navigator.of(context).pop(inputs.first);
-                    },
-                  ),
-                  ChatUIKitDialogAction.cancel(
-                      label: DemoLocalizations.contactRemarkCancel
-                          .localString(context)),
-                ],
-              );
+    //   // 添加 remark 实现
+    //   itemsBuilder: (context, profile, models) {
+    //     return [
+    //       ChatUIKitDetailsListViewItemModel(
+    //         title: DemoLocalizations.contactRemark.localString(context),
+    //         trailing: Text(
+    //           ChatUIKitProvider.instance.getProfile(arguments.profile).remark ??
+    //               '',
+    //           textScaler: TextScaler.noScaling,
+    //         ),
+    //         onTap: () async {
+    //           String errStr =
+    //               DemoLocalizations.contactRemarkFailed.localString(context);
+    //           String? remark = await showChatUIKitDialog(
+    //             context: context,
+    //             title: DemoLocalizations.contactRemark.localString(context),
+    //             inputItems: [
+    //               ChatUIKitDialogInputContentItem(
+    //                 hintText: DemoLocalizations.contactRemarkDesc
+    //                     .localString(context),
+    //                 maxLength: 32,
+    //               )
+    //             ],
+    //             actionItems: [
+    //               ChatUIKitDialogAction.inputsConfirm(
+    //                 label: DemoLocalizations.contactRemarkConfirm
+    //                     .localString(context),
+    //                 onInputsTap: (inputs) async {
+    //                   Navigator.of(context).pop(inputs.first);
+    //                 },
+    //               ),
+    //               ChatUIKitDialogAction.cancel(
+    //                   label: DemoLocalizations.contactRemarkCancel
+    //                       .localString(context)),
+    //             ],
+    //           );
 
-              if (remark?.isNotEmpty == true) {
-                ChatUIKit.instance
-                    .updateContactRemark(arguments.profile.id, remark!)
-                    .then((value) {
-                  ChatUIKitProfile profile =
-                      arguments.profile.copyWith(remark: remark);
-                  // 更新数据，并设置到provider中
-                  UserDataStore().saveUserData(profile);
-                  ChatUIKitProvider.instance.addProfiles([profile]);
-                }).catchError((e) {
-                  EasyLoading.showError(errStr);
-                });
-              }
-            },
-          ),
-          ...models,
-        ];
-      },
-    );
+    //           if (remark?.isNotEmpty == true) {
+    //             ChatUIKit.instance
+    //                 .updateContactRemark(arguments.profile.id, remark!)
+    //                 .then((value) {
+    //               ChatUIKitProfile profile =
+    //                   arguments.profile.copyWith(remark: remark);
+    //               // 更新数据，并设置到provider中
+    //               UserDataStore().saveUserData(profile);
+    //               ChatUIKitProvider.instance.addProfiles([profile]);
+    //             }).catchError((e) {
+    //               EasyLoading.showError(errStr);
+    //             });
+    //           }
+    //         },
+    //       ),
+    //       ...models,
+    //     ];
+    //   },
+    // );
 
-    // 异步更新用户信息
-    Future(() async {
-      String userId = arguments.profile.id;
-      try {
-        Map<String, UserInfo> map =
-            await ChatUIKit.instance.fetchUserInfoByIds([userId]);
-        UserInfo? userInfo = map[userId];
-        Contact? contact = await ChatUIKit.instance.getContact(userId);
-        if (contact != null) {
-          ChatUIKitProfile profile = ChatUIKitProfile.contact(
-            id: contact.userId,
-            nickname: userInfo?.nickName,
-            avatarUrl: userInfo?.avatarUrl,
-            remark: contact.remark,
-          );
-          // 更新数据，并设置到provider中
-          UserDataStore().saveUserData(profile);
-          ChatUIKitProvider.instance.addProfiles([profile]);
-        }
-      } catch (e) {
-        debugPrint('fetch user info error');
-      }
-    }).then((value) {
-      viewObserver.refresh();
-    }).catchError((e) {});
+    // // 异步更新用户信息
+    // Future(() async {
+    //   String userId = arguments.profile.id;
+    //   try {
+    //     Map<String, UserInfo> map =
+    //         await ChatUIKit.instance.fetchUserInfoByIds([userId]);
+    //     UserInfo? userInfo = map[userId];
+    //     Contact? contact = await ChatUIKit.instance.getContact(userId);
+    //     if (contact != null) {
+    //       ChatUIKitProfile profile = ChatUIKitProfile.contact(
+    //         id: contact.userId,
+    //         nickname: userInfo?.nickName,
+    //         avatarUrl: userInfo?.avatarUrl,
+    //         remark: contact.remark,
+    //       );
+    //       // 更新数据，并设置到provider中
+    //       UserDataStore().saveUserData(profile);
+    //       ChatUIKitProvider.instance.addProfiles([profile]);
+    //     }
+    //   } catch (e) {
+    //     debugPrint('fetch user info error');
+    //   }
+    // }).then((value) {
+    //   viewObserver.refresh();
+    // }).catchError((e) {});
 
-    return RouteSettings(name: settings.name, arguments: arguments);
+    // return RouteSettings(name: settings.name, arguments: arguments);
   }
 
   // 为 MessagesView 添加文件点击下载

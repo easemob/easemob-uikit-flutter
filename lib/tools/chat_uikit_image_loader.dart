@@ -83,14 +83,20 @@ class ChatUIKitImageLoader {
     );
   }
 
-  static Widget defaultAvatar(
-      {double width = 30, double height = 30, Color? color}) {
+  static Widget defaultAvatar({
+    double width = 30,
+    double height = 30,
+    Color? color,
+    bool isGroup = false,
+  }) {
     return Image(
       gaplessPlayback: true,
       color: color,
       width: width,
       height: height,
-      image: ChatUIKitSettings.avatarPlaceholder ??
+      image: (isGroup
+              ? ChatUIKitSettings.groupAvatarPlaceholder
+              : ChatUIKitSettings.avatarPlaceholder) ??
           AssetImage('assets/images/avatar.png', package: packageName),
       fit: BoxFit.fill,
     );

@@ -350,6 +350,8 @@ class _MessagesViewState extends State<MessagesView>
                 onTap: (ctx) => pushNextPage(controller.profile),
                 child: ChatUIKitAvatar(
                   avatarUrl: controller.profile.avatarUrl,
+                  isGroup:
+                      controller.profile.type == ChatUIKitProfileType.group,
                 ),
               ),
             ];
@@ -1292,7 +1294,10 @@ class _MessagesViewState extends State<MessagesView>
               SizedBox(
                 width: 16,
                 height: 16,
-                child: ChatUIKitAvatar(avatarUrl: profile?.avatarUrl),
+                child: ChatUIKitAvatar(
+                  avatarUrl: profile?.avatarUrl,
+                  isGroup: profile?.type == ChatUIKitProfileType.group,
+                ),
               ),
               const SizedBox(width: 5),
               Text(
@@ -1913,6 +1918,9 @@ class _MessagesViewState extends State<MessagesView>
             controller.clearMessages();
           },
           actionsBuilder: (context, defaultList) {
+            if (profile.id != controller.profile.id) {
+              return defaultList;
+            }
             return [
               ChatUIKitDetailContentAction(
                 title:

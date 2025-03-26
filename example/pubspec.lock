@@ -378,8 +378,8 @@ packages:
     dependency: transitive
     description:
       path: im_flutter_sdk
-      ref: "4582efd"
-      resolved-ref: "4582efd42f4b2ae2d53b8541765d3eef8076a55c"
+      ref: ec9b99b
+      resolved-ref: ec9b99ba84bf96d1ea28c475aa381ed0be403723
       url: "https://github.com/dujiepeng/im_flutter_new.git"
     source: git
     version: "4.13.0"
@@ -387,8 +387,8 @@ packages:
     dependency: transitive
     description:
       path: im_flutter_sdk_android
-      ref: "4582efd"
-      resolved-ref: "4582efd42f4b2ae2d53b8541765d3eef8076a55c"
+      ref: ec9b99b
+      resolved-ref: ec9b99ba84bf96d1ea28c475aa381ed0be403723
       url: "https://github.com/dujiepeng/im_flutter_new.git"
     source: git
     version: "4.13.0"
@@ -396,8 +396,8 @@ packages:
     dependency: transitive
     description:
       path: im_flutter_sdk_interface
-      ref: "4582efd"
-      resolved-ref: "4582efd42f4b2ae2d53b8541765d3eef8076a55c"
+      ref: ec9b99b
+      resolved-ref: ec9b99ba84bf96d1ea28c475aa381ed0be403723
       url: "https://github.com/dujiepeng/im_flutter_new.git"
     source: git
     version: "0.0.1"
@@ -405,8 +405,8 @@ packages:
     dependency: transitive
     description:
       path: im_flutter_sdk_ios
-      ref: "4582efd"
-      resolved-ref: "4582efd42f4b2ae2d53b8541765d3eef8076a55c"
+      ref: ec9b99b
+      resolved-ref: ec9b99ba84bf96d1ea28c475aa381ed0be403723
       url: "https://github.com/dujiepeng/im_flutter_new.git"
     source: git
     version: "4.13.0"
@@ -414,8 +414,8 @@ packages:
     dependency: transitive
     description:
       path: im_flutter_sdk_ohos
-      ref: "4582efd"
-      resolved-ref: "4582efd42f4b2ae2d53b8541765d3eef8076a55c"
+      ref: ec9b99b
+      resolved-ref: ec9b99ba84bf96d1ea28c475aa381ed0be403723
       url: "https://github.com/dujiepeng/im_flutter_new.git"
     source: git
     version: "1.5.3"

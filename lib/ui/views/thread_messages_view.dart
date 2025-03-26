@@ -642,6 +642,8 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
         children: [
           ChatUIKitAvatar(
             avatarUrl: model.message.fromProfile.avatarUrl,
+            isGroup:
+                model.message.fromProfile.type == ChatUIKitProfileType.group,
             size: 28,
             onTap: () {
               pushNextPage(model.message.fromProfile);

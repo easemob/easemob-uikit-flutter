@@ -243,7 +243,9 @@ class _ForwardMessagesViewState extends State<ForwardMessagesView>
       mainAxisSize: MainAxisSize.max,
       children: [
         ChatUIKitAvatar(
-            avatarUrl: profile?.avatarUrl ?? model.message.avatarUrl),
+          avatarUrl: profile?.avatarUrl ?? model.message.avatarUrl,
+          isGroup: profile?.type == ChatUIKitProfileType.group,
+        ),
         const SizedBox(width: 10),
         Expanded(
           child: Column(

@@ -11,7 +11,7 @@ class ChatUIKitAvatar extends StatefulWidget {
     this.avatarUrl,
     this.onTap,
     super.key,
-  }) {
+  }) : isGroup = false {
     isCurrent = true;
   }
 
@@ -20,6 +20,7 @@ class ChatUIKitAvatar extends StatefulWidget {
     this.size = 32,
     this.cornerRadius,
     this.onTap,
+    this.isGroup = false,
     ValueKey? key,
   }) : super(key: key ?? ValueKey(avatarUrl)) {
     isCurrent = false;
@@ -29,6 +30,7 @@ class ChatUIKitAvatar extends StatefulWidget {
   final String? avatarUrl;
   late final bool isCurrent;
   final VoidCallback? onTap;
+  final bool isGroup;
 
   @override
   State<ChatUIKitAvatar> createState() => _ChatUIKitAvatarState();
@@ -80,43 +82,42 @@ class _ChatUIKitAvatarState extends State<ChatUIKitAvatar>
   @override
   Widget build(BuildContext context) {
     Widget content = Container(
-        width: widget.size,
-        height: widget.size,
-        clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(
-            CornerRadiusHelper.avatarRadius(
-              widget.size,
-              cornerRadius: widget.cornerRadius,
-            ),
+      width: widget.size,
+      height: widget.size,
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          CornerRadiusHelper.avatarRadius(
+            widget.size,
+            cornerRadius: widget.cornerRadius,
           ),
         ),
-        child: avatarUrl?.isNotEmpty == true
-            ? CachedNetworkImage(
-                imageUrl: avatarUrl!,
-                errorListener: (value) {
-                  chatPrint('avatarUrl: $avatarUrl, error: $value');
-                },
-                width: widget.size,
-                height: widget.size,
-                fit: BoxFit.fill,
-                placeholder: (context, url) {
-                  return ChatUIKitImageLoader.defaultAvatar(
+      ),
+      child: avatarUrl?.isNotEmpty == true
+          ? CachedNetworkImage(
+              imageUrl: avatarUrl!,
+              errorListener: (value) {
+                chatPrint('avatarUrl: $avatarUrl, error: $value');
+              },
+              width: widget.size,
+              height: widget.size,
+              fit: BoxFit.fill,
+              placeholder: (context, url) {
+                return ChatUIKitImageLoader.defaultAvatar(
                     height: widget.size,
                     width: widget.size,
-                  );
-                },
-                errorWidget: (context, url, error) {
-                  return ChatUIKitImageLoader.defaultAvatar(
+                    isGroup: widget.isGroup);
+              },
+              errorWidget: (context, url, error) {
+                return ChatUIKitImageLoader.defaultAvatar(
                     height: widget.size,
                     width: widget.size,
-                  );
-                },
-              )
-            : ChatUIKitImageLoader.defaultAvatar(
-                height: widget.size,
-                width: widget.size,
-              ));
+                    isGroup: widget.isGroup);
+              },
+            )
+          : ChatUIKitImageLoader.defaultAvatar(
+              height: widget.size, width: widget.size, isGroup: widget.isGroup),
+    );
 
     content = InkWell(
       highlightColor: Colors.transparent,

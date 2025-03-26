@@ -43,6 +43,7 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
             child: ChatUIKitAvatar(
               avatarUrl: info.avatarUrl,
               size: 50,
+              isGroup: info.profile.type == ChatUIKitProfileType.group,
             ),
           )
         : const SizedBox();

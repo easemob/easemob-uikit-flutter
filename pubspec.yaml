@@ -16,10 +16,11 @@ dependencies:
   # im_flutter_sdk:
     # path: ../../../im_flutter_sdk/
   im_flutter_sdk:
+    # path: ../../../im_flutter_sdk_new/im_flutter_sdk
     git:
       url: https://github.com/dujiepeng/im_flutter_new.git
       path: im_flutter_sdk
-      ref: 4582efd
+      ref: d961021
 
   
   record: 5.1.2

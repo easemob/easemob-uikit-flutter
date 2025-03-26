@@ -27,6 +27,7 @@ class ChatUIKitGroupListViewItem extends StatelessWidget {
 
     Widget avatar = ChatUIKitAvatar(
       avatarUrl: model.avatarUrl,
+      isGroup: model.profile.type == ChatUIKitProfileType.group,
       size: 40,
     );
 

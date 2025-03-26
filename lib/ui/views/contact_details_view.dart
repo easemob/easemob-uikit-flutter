@@ -513,6 +513,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
     return ChatUIKitAvatar(
       avatarUrl: profile!.avatarUrl,
       size: 100,
+      isGroup: profile!.type == ChatUIKitProfileType.group,
     );
   }
 

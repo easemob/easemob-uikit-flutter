@@ -101,6 +101,7 @@ class _NewRequestDetailsViewState extends State<NewRequestDetailsView>
   Widget _buildContent() {
     Widget avatar = ChatUIKitAvatar(
       avatarUrl: widget.profile.avatarUrl,
+      isGroup: widget.profile.type == ChatUIKitProfileType.group,
       size: 100,
     );
 
