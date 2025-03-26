@@ -102,6 +102,8 @@ class ChatUIKitAppBarModel {
   Widget? bottomWidget;
 }
 
+const appBarHeight = 52.0;
+
 class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
   factory ChatUIKitAppBar.model(ChatUIKitAppBarModel model) {
     return ChatUIKitAppBar(
@@ -146,7 +148,8 @@ class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
     double? bottomWidgetHeight,
     this.bottomWidget,
     super.key,
-  })  : preferredSize = Size.fromHeight(56 + (bottomWidgetHeight ?? 0)),
+  })  : preferredSize =
+            Size.fromHeight(appBarHeight + (bottomWidgetHeight ?? 0)),
         bottomWidgetHeight = bottomWidgetHeight ?? 0;
 
   final bool showBackButton;
@@ -338,8 +341,9 @@ class _ChatUIKitAppBarState extends State<ChatUIKitAppBar>
 
     content = Container(
       alignment: Alignment.topCenter,
-      height:
-          MediaQuery.paddingOf(context).top + 56 - (widget.bottomLine ? 1 : 0),
+      height: MediaQuery.paddingOf(context).top +
+          appBarHeight -
+          (widget.bottomLine ? 1 : 0),
       color: backgroundColor,
       child: content,
     );

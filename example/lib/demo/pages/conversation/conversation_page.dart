@@ -1,5 +1,4 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit/ui/widgets/chat_uikit_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class ConversationPage extends StatefulWidget {

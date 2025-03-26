@@ -6,7 +6,7 @@ import '../../universal/inner_headers.dart';
 import 'package:flutter/material.dart';
 
 double itemHeight = 64;
-double appBarHeight = 56;
+
 double bottomBarHeight = 16;
 
 /// The pin message list view.

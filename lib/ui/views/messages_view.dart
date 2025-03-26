@@ -47,7 +47,8 @@ class MessagesView extends StatefulWidget {
         reactionItemsBuilder = arguments.reactionItemsBuilder,
         onThreadItemTap = arguments.onThreadItemTap,
         threadItemBuilder = arguments.threadItemBuilder,
-        backgroundWidget = arguments.backgroundWidget;
+        backgroundWidget = arguments.backgroundWidget,
+        floatingWidget = arguments.floatingWidget;
 
   /// 构造函数。
   const MessagesView({
@@ -85,6 +86,7 @@ class MessagesView extends StatefulWidget {
     this.onThreadItemTap,
     this.threadItemBuilder,
     this.backgroundWidget,
+    this.floatingWidget,
     super.key,
   });
 
@@ -189,6 +191,9 @@ class MessagesView extends StatefulWidget {
 
   /// 背景组件，如果设置后将会替换默认的背景组件。
   final Widget? backgroundWidget;
+
+  /// 悬浮组件，悬浮在聊天页上面
+  final WidgetBuilder? floatingWidget;
 
   @override
   State<MessagesView> createState() => _MessagesViewState();
@@ -438,7 +443,8 @@ class _MessagesViewState extends State<MessagesView>
       systemOverlayStyle: widget.appBarModel?.systemOverlayStyle,
       onBackButtonPressed: widget.appBarModel?.onBackButtonPressed,
       bottomLine: widget.appBarModel?.bottomLine ?? true,
-      bottomLineColor: widget.appBarModel?.bottomLineColor,
+      bottomLineColor:
+          widget.appBarModel?.bottomLineColor ?? theme.color.neutralColor9,
       flexibleSpace: widget.appBarModel?.flexibleSpace,
       bottomWidget: widget.appBarModel?.bottomWidget,
       bottomWidgetHeight: widget.appBarModel?.bottomWidgetHeight,
@@ -705,7 +711,20 @@ class _MessagesViewState extends State<MessagesView>
               ],
             ),
           ),
-        ]
+        ],
+        widget.floatingWidget != null
+            ? Positioned(
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                child: SafeArea(
+                  bottom: false,
+                  child: Align(
+                      alignment: Alignment.topLeft,
+                      child: widget.floatingWidget!.call(context)),
+                ))
+            : const SizedBox(),
       ],
     );
 

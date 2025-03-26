@@ -145,7 +145,7 @@ class ChatRouteFilter {
     MessagesViewArguments arguments =
         settings.arguments as MessagesViewArguments;
     ChatUIKitViewObserver viewObserver = ChatUIKitViewObserver();
-
+    bool showAnti = true;
     arguments = arguments.copyWith(
       viewObserver: viewObserver,
       showMessageItemNickname: (model) {
@@ -178,18 +178,58 @@ class ChatRouteFilter {
         }
         return false;
       },
-      appBarModel: ChatUIKitAppBarModel(
-        bottomWidgetHeight: 54,
-        bottomWidget: Container(
-          color: const Color.fromRGBO(240, 248, 190, 1),
-          child: const Center(
-            child: Text(
-              '请勿轻信任何关于汇款、中奖等信息，务必提高警惕，谨慎对待来自陌生号码的电话。如遇可疑情况，请及时向相关部门反馈并采取必要的防范措施。',
-              style: TextStyle(fontSize: 12),
-            ),
-          ),
-        ),
-      ),
+      floatingWidget: (ctx) {
+        return showAnti
+            ? Container(
+                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.only(top: 60, left: 8, right: 8),
+                height: 78,
+                decoration: BoxDecoration(
+                  color: ChatUIKitTheme.instance.color.neutralSpecialColor9,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      offset: const Offset(0, 2),
+                      blurRadius: 4,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.error,
+                      color: ChatUIKitTheme.instance.color.primaryColor5,
+                    ),
+                    const SizedBox(width: 8),
+                    const Expanded(
+                      child: Text(
+                        '请勿轻信任何关于汇款、中奖等信息，务必提高警惕，谨慎对待来自陌生号码的电话。如遇可疑情况，请及时向相关部门反馈并采取必要的防范措施。',
+                        style: TextStyle(
+                          height: 1.5,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    InkWell(
+                      child: Icon(
+                        Icons.close,
+                        color: ChatUIKitTheme.instance.color.neutralColor3,
+                        size: 18,
+                      ),
+                      onTapUp: (details) {
+                        showAnti = false;
+                        viewObserver.refresh();
+                      },
+                    ),
+                  ],
+                ),
+              )
+            : const SizedBox();
+      },
     );
 
     return RouteSettings(name: settings.name, arguments: arguments);
