@@ -1,34 +1,39 @@
+
 import 'dart:async';
 import 'dart:io';
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/universal/inner_headers.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'water_ripple.dart';
 import 'package:flutter/material.dart';
-import 'package:record/record.dart';
-
+import 'package:permission_handler/permission_handler.dart';
+// import 'package:record/record.dart';
 class RecordBarController {
-  final RecordConfig recordConfig;
-  late final AudioRecorder record;
+  FlutterSoundRecorder recorderModule = FlutterSoundRecorder();
+  // final RecordConfig recordConfig;
+  // late final AudioRecorder record;
   late final AudioPlayer player;
   String? currentPath;
   RecordBarState? _state;
   Directory? _directory;
   String? fileName;
-  RecordBarController({
-    this.recordConfig = const RecordConfig(
-      encoder: AudioEncoder.aacLc,
-      bitRate: 128000,
-      sampleRate: 44100,
-      numChannels: 2,
-    ),
-  }) {
+  RecordBarController(/*{
+
+    // this.recordConfig = const RecordConfig(
+    //   encoder: AudioEncoder.aacLc,
+    //   bitRate: 128000,
+    //   sampleRate: 44100,
+    //   numChannels: 2,
+    // ),
+  }*/) {
     getTemporaryDirectory().then((value) => _directory = value);
-    record = AudioRecorder();
-    record
-        .onAmplitudeChanged(const Duration(milliseconds: 100))
-        .listen((event) {
-      onAmplitudeChanged?.call(event.current, event.max);
-    });
+    // record = AudioRecorder();
+    // record
+    //     .onAmplitudeChanged(const Duration(milliseconds: 100))
+    //     .listen((event) {
+    //   onAmplitudeChanged?.call(event.current, event.max);
+    // });
 
     player = AudioPlayer();
   }
@@ -49,46 +54,94 @@ class RecordBarController {
   void dispose() {
     _state = null;
     player.release();
-    record.dispose();
+    // record.dispose();
+    recorderModule.closeRecorder();
+  }
+  /// 初始化
+  Future<void> initRecorder() async {
+
+    await recorderModule.openRecorder();
+    // 设置音频编解码器（可选）
+    await recorderModule.setSubscriptionDuration(Duration(milliseconds: 500));
+    final status = await Permission.microphone.request();
+    if (!status.isGranted) return null;
   }
 
+  /// 开始录音
   Future<void> startRecording() async {
-    if (await record.hasPermission()) {
-      if (await record.isRecording()) {
+    print('0000');
+    if (await recorderModule.isRecording) {
         return;
-      }
-      try {
-        fileName =
-            "${DateTime.now().millisecondsSinceEpoch.toString()}.$extensionName";
-        record.start(recordConfig, path: "${_directory!.path}/$fileName");
-        _state?.switchRecordType(RecordBarRecordType.recording);
-      } catch (e) {
-        throw RecordError(recordFailed, 'Failed to start recording');
-      }
-    } else {
-      throw RecordError(permissionDenied, 'Permission denied');
     }
-  }
+    try {
+      print('1111');
+      await initRecorder();
+      print('2222');
+      // fileName = "${DateTime.now().millisecondsSinceEpoch.toString()}.$extensionName";
+      fileName = "${DateTime.now().millisecondsSinceEpoch.toString()}.m4a";
+      print('3333');
+      print('33334>${_directory!.path}/$fileName');
+      print('3333');
 
+      await recorderModule.startRecorder(
+        toFile: "${_directory!.path}/$fileName",  // 录音文件路径
+        codec: Codec.aacMP4,         // 音频编码格式
+        bitRate:  128000,
+        sampleRate:   44100,
+        numChannels: 2,
+      );
+      print('4444');
+      _state?.switchRecordType(RecordBarRecordType.recording);
+    } catch (e) {
+      print('5554$e');
+      throw RecordError(recordFailed, 'Failed to start recording');
+    }
+    // if (await record.hasPermission()) {
+    //   if (await record.isRecording()) {
+    //     return;
+    //   }
+    //   try {
+    //     fileName =
+    //         "${DateTime.now().millisecondsSinceEpoch.toString()}.$extensionName";
+    //     record.start(recordConfig, path: "${_directory!.path}/$fileName");
+    //     _state?.switchRecordType(RecordBarRecordType.recording);
+    //   } catch (e) {
+    //     throw RecordError(recordFailed, 'Failed to start recording');
+    //   }
+    // } else {
+    //   throw RecordError(permissionDenied, 'Permission denied');
+    // }
+  }
+  ///完成录音
   Future<String?> finishRecording() async {
-    if (await record.isRecording()) {
-      String? path = await record.stop();
+      String? path = await  recorderModule.stopRecorder();
       _state?.switchRecordType(RecordBarRecordType.recorded);
       currentPath = path;
       return path;
-    }
+    // if (await record.isRecording()) {
+    //   String? path = await record.stop();
+    //   _state?.switchRecordType(RecordBarRecordType.recorded);
+    //   currentPath = path;
+    //   return path;
+    // }
     _state?.switchRecordType(RecordBarRecordType.idle);
     return null;
   }
+  ///停止录音
 
   Future<void> stopRecording() async {
-    if (await record.isRecording()) {
-      String? path = await record.stop();
-      if (path != null) {
-        File file = File(path);
-        file.delete();
-      }
+    String? path = await recorderModule.stopRecorder();
+    if (path != null) {
+      File file = File(path);
+      file.delete();
     }
+    // if (await record.isRecording()) {
+    //   String? path = await record.stop();
+    //   if (path != null) {
+    //     File file = File(path);
+    //     file.delete();
+    //   }
+    // }
     _state?.switchRecordType(RecordBarRecordType.idle);
   }
 
@@ -105,17 +158,19 @@ class RecordBarController {
     await player.stop();
     _state?.switchRecordType(RecordBarRecordType.recorded);
   }
-
+  /// 发送
   Future<RecordResultData> send() async {
     String? path;
-    if (await record.isRecording()) {
-      path = await record.stop();
+      path = await recorderModule.stopRecorder();
       _state?.switchRecordType(RecordBarRecordType.idle);
-    } else {
-      path = currentPath;
-      currentPath = null;
-      _state?.switchRecordType(RecordBarRecordType.idle);
-    }
+    // if (await record.isRecording()) {
+    //   path = await record.stop();
+    //   _state?.switchRecordType(RecordBarRecordType.idle);
+    // } else {
+    //   path = currentPath;
+    //   currentPath = null;
+    //   _state?.switchRecordType(RecordBarRecordType.idle);
+    // }
     return RecordResultData(path: path, fileName: fileName);
   }
 
@@ -124,25 +179,27 @@ class RecordBarController {
   }
 
   String get extensionName {
-    switch (recordConfig.encoder) {
-      case AudioEncoder.aacLc:
-      case AudioEncoder.aacEld:
-      case AudioEncoder.aacHe:
-        return 'm4a';
-      case AudioEncoder.amrNb:
-      case AudioEncoder.amrWb:
-        return '3gp';
-      case AudioEncoder.opus:
-        return 'opus';
-      case AudioEncoder.flac:
-        return 'flac';
-      case AudioEncoder.wav:
-        return 'wav';
-      case AudioEncoder.pcm16bits:
-        return 'pcm';
-      default:
-        return '';
-    }
+    return 'm4a';
+    // return 'adts';
+    // switch (recordConfig.encoder) {
+    //   case AudioEncoder.aacLc:
+    //   case AudioEncoder.aacEld:
+    //   case AudioEncoder.aacHe:
+    //     return 'm4a';
+    //   case AudioEncoder.amrNb:
+    //   case AudioEncoder.amrWb:
+    //     return '3gp';
+    //   case AudioEncoder.opus:
+    //     return 'opus';
+    //   case AudioEncoder.flac:
+    //     return 'flac';
+    //   case AudioEncoder.wav:
+    //     return 'wav';
+    //   case AudioEncoder.pcm16bits:
+    //     return 'pcm';
+    //   default:
+    //     return '';
+    // }
   }
 }
 

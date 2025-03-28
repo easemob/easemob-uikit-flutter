@@ -626,18 +626,24 @@ class MessagesViewController extends ChangeNotifier
     if (path.isEmpty) {
       return;
     }
-    final imageData = await VideoThumbnail.thumbnailData(
-      video: path,
-      imageFormat: ImageFormat.JPEG,
-      maxWidth: 200,
-      quality: 80,
+    // 获取视频缩略图
+    File? imageData = await VideoCompress.getFileThumbnail(
+        path, // 视频文件路径
+        quality: 50, // 质量 (1-100)
+        position: -1 // 获取哪一帧 (-1 表示中间帧)
     );
+    // final imageData = await VideoThumbnail.thumbnailData(
+    //   video: path,
+    //   imageFormat: ImageFormat.JPEG,
+    //   maxWidth: 200,
+    //   quality: 80,
+    // );
     if (imageData != null) {
       final directory = await getApplicationCacheDirectory();
       String thumbnailPath =
           '${directory.path}/thumbnail_${Random().nextInt(999999999)}.jpeg';
       final file = File(thumbnailPath);
-      file.writeAsBytesSync(imageData);
+      file.writeAsBytesSync(imageData.readAsBytesSync());
 
       final videoFile = File(path);
 

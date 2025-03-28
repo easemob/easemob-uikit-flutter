@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 import '../../../chat_uikit.dart';
 import '../../../universal/chat_uikit_log.dart';
 
@@ -92,7 +92,8 @@ class _ChatUIKitAvatarState extends State<ChatUIKitAvatar>
           ),
         ),
         child: avatarUrl?.isNotEmpty == true
-            ? CachedNetworkImage(
+            ?  Text('CachedNetworkImage无')
+      /*CachedNetworkImage(
                 imageUrl: avatarUrl!,
                 errorListener: (value) {
                   chatPrint('avatarUrl: $avatarUrl, error: $value');
@@ -112,7 +113,7 @@ class _ChatUIKitAvatarState extends State<ChatUIKitAvatar>
                     width: widget.size,
                   );
                 },
-              )
+              )*/
             : ChatUIKitImageLoader.defaultAvatar(
                 height: widget.size,
                 width: widget.size,

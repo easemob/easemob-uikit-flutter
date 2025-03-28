@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../chat_uikit.dart';
@@ -108,34 +108,35 @@ class ChatUIKitTextBubbleWidget extends StatelessWidget {
                   }
                   return FittedBox(
                     fit: BoxFit.none,
-                    child: CachedNetworkImage(
-                      height: 118,
-                      width: constraints.maxWidth + 24,
-                      imageUrl: imgUrl,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) {
-                        return Container(
-                          height: 118,
-                          width: 300,
-                          color: theme.color.isDark
-                              ? theme.color.neutralColor3
-                              : theme.color.neutralColor95,
-                        );
-                      },
-                      errorWidget: (context, url, error) {
-                        debugPrint('urlPreview errorWidget: $url');
-                        return Container(
-                          height: 118,
-                          width: 300,
-                          color: theme.color.isDark
-                              ? theme.color.neutralColor3
-                              : theme.color.neutralColor95,
-                        );
-                      },
-                      errorListener: (value) {
-                        debugPrint('urlPreview errorListener: $value');
-                      },
-                    ),
+                    child: Text('CachedNetworkImage无'),
+                    // child: CachedNetworkImage(
+                    //   height: 118,
+                    //   width: constraints.maxWidth + 24,
+                    //   imageUrl: imgUrl,
+                    //   fit: BoxFit.cover,
+                    //   placeholder: (context, url) {
+                    //     return Container(
+                    //       height: 118,
+                    //       width: 300,
+                    //       color: theme.color.isDark
+                    //           ? theme.color.neutralColor3
+                    //           : theme.color.neutralColor95,
+                    //     );
+                    //   },
+                    //   errorWidget: (context, url, error) {
+                    //     debugPrint('urlPreview errorWidget: $url');
+                    //     return Container(
+                    //       height: 118,
+                    //       width: 300,
+                    //       color: theme.color.isDark
+                    //           ? theme.color.neutralColor3
+                    //           : theme.color.neutralColor95,
+                    //     );
+                    //   },
+                    //   errorListener: (value) {
+                    //     debugPrint('urlPreview errorListener: $value');
+                    //   },
+                    // ),
                   );
                 },
               ),

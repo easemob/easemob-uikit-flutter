@@ -15,7 +15,7 @@ mixin GroupWrapper on ChatUIKitServiceBase {
         onAllGroupMemberMuteStateChanged: onAllGroupMemberMuteStateChanged,
         onAllowListAddedFromGroup: onAllowListAddedFromGroup,
         onAllowListRemovedFromGroup: onAllowListRemovedFromGroup,
-        onAnnouncementChangedFromGroup: onAnnouncementChangedFromGroup,
+        // onAnnouncementChangedFromGroup: onAnnouncementChangedFromGroup,
         onAutoAcceptInvitationFromGroup: onAutoAcceptInvitationFromGroup,
         onInvitationAcceptedFromGroup: onInvitationAcceptedFromGroup,
         onInvitationDeclinedFromGroup: onInvitationDeclinedFromGroup,
