@@ -377,48 +377,35 @@ packages:
   im_flutter_sdk:
     dependency: transitive
     description:
-      path: im_flutter_sdk
-      ref: ec9b99b
-      resolved-ref: ec9b99ba84bf96d1ea28c475aa381ed0be403723
-      url: "https://github.com/dujiepeng/im_flutter_new.git"
-    source: git
+      name: im_flutter_sdk
+      sha256: b946f2906198d30f2f54fc162169febf0973aae3738f287a2c17a4832abc1cc5
+      url: "https://pub.dev"
+    source: hosted
     version: "4.13.0"
   im_flutter_sdk_android:
     dependency: transitive
     description:
-      path: im_flutter_sdk_android
-      ref: ec9b99b
-      resolved-ref: ec9b99ba84bf96d1ea28c475aa381ed0be403723
-      url: "https://github.com/dujiepeng/im_flutter_new.git"
-    source: git
+      name: im_flutter_sdk_android
+      sha256: "1e6374be259add7e8e9fdb0dbd284817767e66bb5ad0c4b90d0b1c605fd2c79f"
+      url: "https://pub.dev"
+    source: hosted
     version: "4.13.0"
   im_flutter_sdk_interface:
     dependency: transitive
     description:
-      path: im_flutter_sdk_interface
-      ref: ec9b99b
-      resolved-ref: ec9b99ba84bf96d1ea28c475aa381ed0be403723
-      url: "https://github.com/dujiepeng/im_flutter_new.git"
-    source: git
-    version: "0.0.1"
+      name: im_flutter_sdk_interface
+      sha256: fa78d0089dea15a0f08eda345ff9b88d2c32fa9c1233ab4652168ccd094879d6
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.13.0"
   im_flutter_sdk_ios:
     dependency: transitive
     description:
-      path: im_flutter_sdk_ios
-      ref: ec9b99b
-      resolved-ref: ec9b99ba84bf96d1ea28c475aa381ed0be403723
-      url: "https://github.com/dujiepeng/im_flutter_new.git"
-    source: git
+      name: im_flutter_sdk_ios
+      sha256: "57e012a097b5e2e736227b7873108b945b3a7f2436f5ccd9054f1220694b9283"
+      url: "https://pub.dev"
+    source: hosted
     version: "4.13.0"
-  im_flutter_sdk_ohos:
-    dependency: transitive
-    description:
-      path: im_flutter_sdk_ohos
-      ref: ec9b99b
-      resolved-ref: ec9b99ba84bf96d1ea28c475aa381ed0be403723
-      url: "https://github.com/dujiepeng/im_flutter_new.git"
-    source: git
-    version: "1.5.3"
   image_picker:
     dependency: transitive
     description:

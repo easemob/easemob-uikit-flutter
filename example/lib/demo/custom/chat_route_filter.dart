@@ -182,90 +182,89 @@ class ChatRouteFilter {
         return false;
       },
       floatingWidget: (ctx) {
-        return showAnti
-            ? Container(
-                padding: const EdgeInsets.all(12),
-                margin: const EdgeInsets.only(top: 60, left: 8, right: 8),
-                height: 78,
-                decoration: BoxDecoration(
-                  color: ChatUIKitTheme.instance.color.isDark
-                      ? ChatUIKitTheme.instance.color.neutralColor2
-                      : ChatUIKitTheme.instance.color.neutralSpecialColor9,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      offset: const Offset(0, 2),
-                      blurRadius: 4,
-                    ),
-                  ],
+        return AnimatedOpacity(
+          opacity: showAnti ? 1 : 0,
+          duration: const Duration(milliseconds: 300),
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.only(top: 60, left: 8, right: 8),
+            height: 78,
+            decoration: BoxDecoration(
+              color: ChatUIKitTheme.instance.color.isDark
+                  ? ChatUIKitTheme.instance.color.neutralColor2
+                  : ChatUIKitTheme.instance.color.neutralSpecialColor9,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  offset: const Offset(0, 2),
+                  blurRadius: 4,
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.error,
-                      color: ChatUIKitTheme.instance.color.primaryColor5,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text:
-                                  '请勿轻信任何关于汇款、中奖等信息，务必提高警惕，谨慎对待来自陌生号码的电话。如遇可疑情况，请及时向相关部门反馈并采取必要的防范措施。',
-                              style: TextStyle(
-                                height: 1.5,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: ChatUIKitTheme.instance.color.isDark
-                                    ? ChatUIKitTheme
-                                        .instance.color.neutralColor9
-                                    : ChatUIKitTheme
-                                        .instance.color.neutralColor3,
-                              ),
-                            ),
-                            TextSpan(
-                                text: '点击举报',
-                                style: TextStyle(
-                                  height: 1.5,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: ChatUIKitTheme
-                                      .instance.color.primaryColor5,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () async {
-                                    EasyLoading.show(status: '举报中...');
-                                    Future.delayed(const Duration(seconds: 1),
-                                        () {
-                                      EasyLoading.showSuccess('举报成功');
-                                    });
-                                  })
-                          ],
+              ],
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.error,
+                  color: ChatUIKitTheme.instance.color.primaryColor5,
+                  size: 16,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text:
+                              '请勿轻信任何关于汇款、中奖等信息，务必提高警惕，谨慎对待来自陌生号码的电话。如遇可疑情况，请及时向相关部门反馈并采取必要的防范措施。',
+                          style: TextStyle(
+                            height: 1.5,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: ChatUIKitTheme.instance.color.isDark
+                                ? ChatUIKitTheme.instance.color.neutralColor9
+                                : ChatUIKitTheme.instance.color.neutralColor3,
+                          ),
                         ),
-                      ),
+                        TextSpan(
+                            text: '点击举报',
+                            style: TextStyle(
+                              height: 1.5,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color:
+                                  ChatUIKitTheme.instance.color.primaryColor5,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                EasyLoading.show(status: '举报中...');
+                                Future.delayed(const Duration(seconds: 1), () {
+                                  EasyLoading.showSuccess('举报成功');
+                                });
+                              })
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    InkWell(
-                      child: Icon(
-                        Icons.close,
-                        color: ChatUIKitTheme.instance.color.isDark
-                            ? ChatUIKitTheme.instance.color.neutralColor9
-                            : ChatUIKitTheme.instance.color.neutralColor3,
-                        size: 16,
-                      ),
-                      onTapUp: (details) {
-                        showAnti = false;
-                        viewObserver.refresh();
-                      },
-                    ),
-                  ],
+                  ),
                 ),
-              )
-            : const SizedBox();
+                const SizedBox(width: 8),
+                InkWell(
+                  child: Icon(
+                    Icons.close,
+                    color: ChatUIKitTheme.instance.color.isDark
+                        ? ChatUIKitTheme.instance.color.neutralColor9
+                        : ChatUIKitTheme.instance.color.neutralColor3,
+                    size: 16,
+                  ),
+                  onTapUp: (details) {
+                    showAnti = false;
+                    viewObserver.refresh();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
       },
     );
 
