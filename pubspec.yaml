@@ -13,63 +13,90 @@ dependencies:
     sdk: flutter
 
   im_flutter_sdk: 4.8.2
-  # im_flutter_sdk:
-  #   path: ../../../im_flutter_sdk/
-  # im_flutter_sdk:
-  #   git:
-  #     url: https://www.github.com/easemob/im_flutter_sdk.git
-  #     ref: dev_4.8.2
+
+
+
   
-  record: 5.1.2
+#  record: 5.1.2  # oh无 换 flutter_sound
+  flutter_sound:
+    git:
+      url: "https://gitee.com/openharmony-sig/flutter_sound.git"
+      path: "flutter_sound"
+# flutter_sound需要获取录音权限
+  permission_handler:
+    git:
+      url: "https://gitee.com/openharmony-sig/flutter_permission_handler.git"
+      path: "permission_handler"
 
   shared_preferences: 2.2.3
 
   chat_uikit_theme: 1.0.4
 
-  path_provider: 2.1.4
+#  path_provider: 2.1.4 暂时用不到
 
-  file_picker: 8.0.5
+#  file_picker: 8.0.5  #oh无 换 file_selector
+  file_selector:
+    git:
+      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
+      path: "packages/file_selector/file_selector"
 
-  audioplayers: 6.0.0
+#  audioplayers: 6.0.0
+  audioplayers:
+    git:
+      url: "https://gitee.com/openharmony-sig/flutter_audioplayers.git"
+      path: "packages/audioplayers"
 
-  image_picker: 1.1.2
+#  image_picker: 1.1.2
+  image_picker:
+    git:
+      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
+      path: "packages/image_picker/image_picker"
 
-  video_thumbnail: 0.5.3
+#  video_thumbnail: 0.5.3  #oh无 换 video_compress
+  video_compress:
+    git:
+      url: "https://gitee.com/openharmony-sig/fluttertpc_video_compress.git"
+      ref: master
+#  export_video_frame:
+#    git:
+#      url: "https://gitee.com/openharmony-sig/fluttertpc_export_video_frame.git"
+#      ref: master
 
-  video_player: 2.9.1
+#  video_player: 2.8.1
+  video_player:
+    git:
+      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
+      path: "packages/video_player/video_player"
 
   flutter_localization: 0.2.0
 
-  scroll_to_index: ^3.0.1
+  scroll_to_index: ^3.0.1  #oh无
 
-  cached_network_image: 3.3.1
+#  cached_network_image: 3.3.0
+#  cached_network_image: 3.1.0+1  #oh
 
   chat_uikit_keyboard_panel: 0.1.1
-  # chat_uikit_keyboard_panel:
-  #   path: ../chat_uikit_keyboard_panel
 
-  html: ^0.15.4
+  html: ^0.15.4  #oh无
+
+# 强制使用版本
+dependency_overrides:
+  shared_preferences:
+    git:
+      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
+      path: "packages/shared_preferences/shared_preferences"
+
+  flutter_localization: 0.1.14
+
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
 flutter:
-  # This section identifies this Flutter project as a plugin project.
-  # The 'pluginClass' specifies the class (in Java, Kotlin, Swift, Objective-C, etc.)
-  # which should be registered in the plugin registry. This is required for
-  # using method channels.
-  # The Android 'package' specifies package in which the registered class is.
-  # This is required for using method channels on Android.
-  # The 'ffiPlugin' specifies that native code should be built and bundled.
-  # This is required for using `dart:ffi`.
-  # All these are used by the tooling to maintain consistency when
-  # adding or updating assets for this project.
+
   plugin:
     platforms:
       android:
@@ -78,33 +105,6 @@ flutter:
       ios:
         pluginClass: EmChatUikitPlugin
 
-  # To add assets to your plugin package, add an assets section, like this:
   assets:
     - assets/images/
     - assets/images/emojis/
-  #
-  # For details regarding assets in packages, see
-  # https://flutter.dev/assets-and-images/#from-packages
-  #
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware
-
-  # To add custom fonts to your plugin package, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts in packages, see
-  # https://flutter.dev/custom-fonts/#from-packages
