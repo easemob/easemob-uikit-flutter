@@ -1576,17 +1576,25 @@ class _MessagesViewState extends State<MessagesView>
   }
 
   Future<bool> selectFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      PlatformFile file = result.files.single;
-      if (file.path?.isNotEmpty == true) {
-        controller.sendFileMessage(
-          file.path!,
-          name: file.name,
-          fileSize: file.size,
-        );
-        return true;
-      }
+    final XFile? file = await openFile(
+      acceptedTypeGroups: [
+        XTypeGroup(
+          label: '所有类型文件',
+          extensions: [],
+          mimeTypes: [],
+        ),
+      ],
+    );
+    if (file != null) {
+      // 获取文件大小（字节）
+      final fileData = await file.readAsBytes();
+      final sizeInBytes = fileData.lengthInBytes;
+      controller.sendFileMessage(
+        file.path,
+        name: file.name,
+        fileSize: sizeInBytes,
+      );
+      return true;
     }
     return false;
   }

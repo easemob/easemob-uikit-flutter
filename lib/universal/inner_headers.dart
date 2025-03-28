@@ -1,10 +1,13 @@
 export 'package:audioplayers/audioplayers.dart';
-export 'package:file_picker/file_picker.dart';
+// export 'package:file_picker/file_picker.dart';
+export 'package:file_selector/file_selector.dart';
 export 'package:image_picker/image_picker.dart';
 export 'package:path_provider/path_provider.dart';
 export 'package:scroll_to_index/scroll_to_index.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:video_player/video_player.dart';
-export 'package:video_thumbnail/video_thumbnail.dart';
+// export 'package:video_thumbnail/video_thumbnail.dart';
+export 'package:video_compress/video_compress.dart';
+// export 'package:export_video_frame/export_video_frame.dart';
 export 'package:flutter_localization/flutter_localization.dart';
 export 'package:em_chat_uikit/universal/chat_uikit_log.dart';
