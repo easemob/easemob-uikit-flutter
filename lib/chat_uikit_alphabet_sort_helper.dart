@@ -18,5 +18,4 @@ class ChatUIKitAlphabetSortHelper {
   AlphabetSortHandler? sortHandler;
 
   ChatUIKitAlphabetSortHelper._internal();
-} 
-
+}

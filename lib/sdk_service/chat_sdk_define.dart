@@ -69,7 +69,6 @@ typedef LeaveReason = chat.LeaveReason;
 typedef ChatRoom = chat.EMChatRoom;
 typedef PageResult<T> = chat.EMPageResult<T>;
 
-
 /*
 import 'package:agora_chat_sdk/agora_chat_sdk.dart' as chat;
 export 'package:agora_chat_sdk/agora_chat_sdk.dart';

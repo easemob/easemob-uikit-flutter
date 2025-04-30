@@ -18,9 +18,9 @@ dependencies:
 
   shared_preferences: 2.2.3
 
-  # chat_uikit_theme: 1.0.4
-  chat_uikit_theme:
-    path: ../chat_uikit_theme
+  chat_uikit_theme: 1.0.4
+  # chat_uikit_theme:
+  #   path: ../chat_uikit_theme
 
   path_provider: 2.1.4
 
@@ -40,9 +40,9 @@ dependencies:
 
   cached_network_image: 3.3.1
 
-  # chat_uikit_keyboard_panel: 0.1.1
-  chat_uikit_keyboard_panel:
-    path: ../chat_uikit_keyboard_panel
+  chat_uikit_keyboard_panel: 0.1.1
+  # chat_uikit_keyboard_panel:
+  #   path: ../chat_uikit_keyboard_panel
 
   html: ^0.15.4
 
