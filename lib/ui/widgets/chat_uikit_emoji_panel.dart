@@ -57,6 +57,14 @@ class ChatUIKitEmojiPanel extends StatelessWidget {
         childCount: ChatUIKitEmojiData.listSize,
       ),
     );
+
+    content = Container(
+      // color: Colors.red,
+      color: theme.color.isDark
+          ? theme.color.neutralColor1
+          : theme.color.neutralColor98,
+      child: content,
+    );
     if (deleteOnTap != null) {
       content = Stack(
         children: [
@@ -97,20 +105,21 @@ class ChatUIKitEmojiPanel extends StatelessWidget {
 
     content = ShaderMask(
       shaderCallback: (bounds) {
+        final color = theme.color.isDark
+            ? theme.color.neutralColor1
+            : theme.color.neutralColor98;
         return LinearGradient(
           colors: [
+            color,
+            color,
             Colors.transparent,
-            Colors.transparent,
-            theme.color.isDark
-                ? theme.color.neutralColor3
-                : theme.color.neutralColor98,
           ],
           stops: const [0.05, 0.9, 1.0],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ).createShader(bounds);
       },
-      blendMode: BlendMode.dstOut,
+      blendMode: BlendMode.dstIn,
       child: content,
     );
 

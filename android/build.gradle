@@ -5,6 +5,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal() // 添加这一行确保可以访问Gradle插件
     }
 
     dependencies {
@@ -16,6 +17,7 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal() // 这里也可以添加
     }
 }
 

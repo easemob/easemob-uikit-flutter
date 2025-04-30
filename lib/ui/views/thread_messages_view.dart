@@ -569,20 +569,6 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
           onItemLongPress(model, rect);
         }
       },
-      onItemTap: () {
-        if (controller.isMultiSelectMode) {
-          if (controller.selectedMessages
-              .map((e) => e.msgId)
-              .toList()
-              .contains(model.message.msgId)) {
-            controller.selectedMessages
-                .removeWhere((e) => model.message.msgId == e.msgId);
-          } else {
-            controller.selectedMessages.add(model.message);
-          }
-          setState(() {});
-        }
-      },
       onBubbleTap: (rect) {
         if (controller.isMultiSelectMode) {
           if (controller.selectedMessages
@@ -1502,7 +1488,9 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
     if (ChatUIKitSettings.msgItemLongPressActions
                 .contains(ChatUIKitActionType.reaction) ==
             false ||
-        ChatUIKitSettings.enableMessageReaction == false) return null;
+        ChatUIKitSettings.enableMessageReaction == false) {
+      return null;
+    }
 
     void closeMenu() {
       if (ChatUIKitSettings.messageLongPressMenuStyle ==

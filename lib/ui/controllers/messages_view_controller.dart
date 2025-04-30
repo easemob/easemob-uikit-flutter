@@ -20,6 +20,8 @@ class MessagesViewController extends ChangeNotifier
   /// 用户信息对象，用于设置对方信息, 详细参考 [ChatUIKitProfile]。如果你自己设置了 `MessageListViewController` 需要确保 `profile` 与 [MessagesView] 传入的 `profile` 一致。
   ChatUIKitProfile profile;
 
+  final List<BottomCondition> bottomConditions = [];
+
   /// 一次获取的消息数量，默认为 30
   final int pageSize;
 
@@ -46,7 +48,7 @@ class MessagesViewController extends ChangeNotifier
   /// 不可修改
   bool hasNew = false;
 
-  bool onBottom = true;
+  bool canMoveToBottomPosition = true;
 
   /// 不可修改
   bool _isFetching = false;
@@ -73,7 +75,7 @@ class MessagesViewController extends ChangeNotifier
     msgModelList.clear();
     cacheMessages.clear();
     lastActionType = MessageLastActionType.bottomPosition;
-    onBottom = true;
+    canMoveToBottomPosition = true;
     hasNew = false;
     _lastMessageId = null;
     refresh();
@@ -106,7 +108,7 @@ class MessagesViewController extends ChangeNotifier
     hasSearched = false;
     msgModelList.clear();
     lastActionType = MessageLastActionType.bottomPosition;
-    onBottom = true;
+    canMoveToBottomPosition = true;
     hasNew = false;
     _lastMessageId = null;
     _isEmpty = false;
@@ -116,6 +118,7 @@ class MessagesViewController extends ChangeNotifier
   @override
   void dispose() {
     isDisposed = true;
+    bottomConditions.clear();
     ChatUIKit.instance.removeObserver(this);
     pinedMessages.dispose();
     super.dispose();
@@ -240,7 +243,14 @@ class MessagesViewController extends ChangeNotifier
     }
     if (list.isNotEmpty) {
       _clearMention(list);
-      if (onBottom) {
+      bool canMoveBottom = true;
+      for (var element in bottomConditions) {
+        canMoveBottom = element.call();
+        if (canMoveBottom == false) {
+          break;
+        }
+      }
+      if (canMoveToBottomPosition && canMoveBottom) {
         msgModelList.insertAll(0, list.reversed);
         lastActionType = MessageLastActionType.bottomPosition;
       } else {
@@ -298,8 +308,8 @@ class MessagesViewController extends ChangeNotifier
       List<RecallMessageInfo> infos, List<Message> replaces) {
     bool needReload = false;
     for (var i = 0; i < infos.length; i++) {
-      int index = msgModelList
-          .indexWhere((element) => infos[i].recallMessageId == element.message.msgId);
+      int index = msgModelList.indexWhere(
+          (element) => infos[i].recallMessageId == element.message.msgId);
       if (index != -1) {
         msgModelList[index] =
             msgModelList[index].copyWith(message: replaces[i]);
@@ -443,7 +453,7 @@ class MessagesViewController extends ChangeNotifier
     if (isDisposed) return;
     if (msgModelList.isEmpty) {
       lastActionType = MessageLastActionType.bottomPosition;
-      onBottom = true;
+      canMoveToBottomPosition = true;
     }
     notifyListeners();
   }
@@ -627,17 +637,14 @@ class MessagesViewController extends ChangeNotifier
     if (path.isEmpty) {
       return;
     }
-    final imageData = await VideoThumbnail.thumbnailData(
-      video: path,
-      imageFormat: ImageFormat.JPEG,
-      maxWidth: 200,
-      quality: 80,
-    );
+    final uint8list =
+        await VideoCompress.getByteThumbnail(path, quality: 80, position: -1);
+
     final directory = await getApplicationCacheDirectory();
     String thumbnailPath =
         '${directory.path}/thumbnail_${Random().nextInt(999999999)}.jpeg';
     final file = File(thumbnailPath);
-    file.writeAsBytesSync(imageData);
+    file.writeAsBytesSync(uint8list!);
 
     final videoFile = File(path);
 
@@ -722,12 +729,13 @@ class MessagesViewController extends ChangeNotifier
         ChatUIKitPreviewObj? obj = await ChatUIKitURLHelper()
             .fetchPreview(url!, messageId: willSendMsg.msgId);
         willSendMsg.addPreview(obj);
-        ChatUIKit.instance.sendMessage(message: willSendMsg);
+        ChatSDKService.instance.sendMessage(message: willSendMsg);
       }
     }
 
     if (url == null) {
-      final msg = await ChatUIKit.instance.sendMessage(message: willSendMsg);
+      final msg =
+          await ChatSDKService.instance.sendMessage(message: willSendMsg);
       msgModelList.insert(0, MessageModel(message: msg));
       hasNew = true;
       lastActionType = MessageLastActionType.bottomPosition;
@@ -788,7 +796,9 @@ class MessagesViewController extends ChangeNotifier
     if (message.chatType == ChatType.Chat &&
         message.direction == MessageDirection.RECEIVE &&
         message.hasReadAck == false) {
-      ChatUIKit.instance.sendMessageReadAck(message: message).then((value) {
+      ChatSDKService.instance
+          .sendMessageReadAck(message: message)
+          .then((value) {
         message.hasReadAck = true;
       }).catchError((error) {});
     }
@@ -920,4 +930,16 @@ class MessagesViewController extends ChangeNotifier
     MessagePinOperation pinOperation,
     MessagePinInfo pinInfo,
   ) {}
+}
+
+typedef BottomCondition = bool Function();
+
+extension MessageListViewControllerExtension on MessagesViewController {
+  void addCanMoveBottomConditions(BottomCondition condition) {
+    bottomConditions.add(condition);
+  }
+
+  void cleanBottomConditions(BottomCondition condition) {
+    bottomConditions.remove(condition);
+  }
 }

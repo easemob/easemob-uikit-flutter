@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 
 import '../../chat_uikit.dart';
 import '../../universal/inner_headers.dart';
+import '../controllers/messages_view_controller.dart';
 
 /// 消息页面
 class MessagesView extends StatefulWidget {
@@ -596,14 +597,6 @@ class _MessagesViewState extends State<MessagesView>
       threadItemBuilder: widget.threadItemBuilder,
     );
 
-    content = GestureDetector(
-      onTap: () {
-        clearAllType();
-        inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
-      },
-      child: content,
-    );
-
     content = Stack(
       children: [
         content,
@@ -728,6 +721,13 @@ class _MessagesViewState extends State<MessagesView>
             : const SizedBox(),
       ],
     );
+    content = InkWell(
+      onTap: () {
+        clearAllType();
+        inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
+      },
+      child: content,
+    );
 
     content = ShareUserData(
       data: controller.userMap,
@@ -738,13 +738,11 @@ class _MessagesViewState extends State<MessagesView>
       onNotification: (notification) {
         if (notification is ScrollUpdateNotification) {
           if (_scrollController.offset < 20) {
-            if (controller.onBottom == false) {
-              controller.onBottom = true;
-              controller.addAllCacheToList();
-            }
+            controller.canMoveToBottomPosition = true;
+            controller.addAllCacheToList();
           } else {
-            if (controller.onBottom == true) {
-              controller.onBottom = false;
+            if (controller.canMoveToBottomPosition == true) {
+              controller.canMoveToBottomPosition = false;
               controller.lastActionType =
                   MessageLastActionType.originalPosition;
             }
@@ -769,7 +767,7 @@ class _MessagesViewState extends State<MessagesView>
     content = PopScope(
       child: content,
       onPopInvoked: (didPop) {
-        popupMenuController?.hideMenu();
+        closeMenu();
         if (didPop) {
           controller.markAllMessageAsRead();
         }
@@ -1436,6 +1434,7 @@ class _MessagesViewState extends State<MessagesView>
           ChatUIKitMessageLongPressMenuStyle.popupMenu) {
         popupMenuController?.showMenu(
             bottomSheetReactionsTitle(model), rect, items);
+        controller.canMoveToBottomPosition = false;
       } else {
         showChatUIKitBottomSheet(
           titleWidget: bottomSheetReactionsTitle(model),
@@ -1981,14 +1980,15 @@ class _MessagesViewState extends State<MessagesView>
     );
   }
 
-  List<ChatUIKitEventAction> defaultItemLongPressed(MessageModel model) {
-    void closeMenu() {
-      if (ChatUIKitSettings.messageLongPressMenuStyle ==
-          ChatUIKitMessageLongPressMenuStyle.bottomSheet) {
-        Navigator.of(context).pop();
-      }
+  void closeMenu() {
+    if (ChatUIKitSettings.messageLongPressMenuStyle ==
+        ChatUIKitMessageLongPressMenuStyle.bottomSheet) {
+      Navigator.of(context).pop();
     }
+    popupMenuController?.hideMenu();
+  }
 
+  List<ChatUIKitEventAction> defaultItemLongPressed(MessageModel model) {
     List<ChatUIKitEventAction> items = [];
     for (var element in ChatUIKitSettings.msgItemLongPressActions) {
       // 复制
@@ -2349,15 +2349,10 @@ class _MessagesViewState extends State<MessagesView>
     if (ChatUIKitSettings.msgItemLongPressActions
                 .contains(ChatUIKitActionType.reaction) ==
             false ||
-        ChatUIKitSettings.enableMessageReaction == false) return null;
-    List<MessageReaction>? reactions = model.reactions;
-
-    void closeMenu() {
-      if (ChatUIKitSettings.messageLongPressMenuStyle ==
-          ChatUIKitMessageLongPressMenuStyle.bottomSheet) {
-        Navigator.of(context).pop();
-      }
+        ChatUIKitSettings.enableMessageReaction == false) {
+      return null;
     }
+    List<MessageReaction>? reactions = model.reactions;
 
     return Padding(
       padding: EdgeInsets.zero,
@@ -2382,7 +2377,6 @@ class _MessagesViewState extends State<MessagesView>
                 onTap: () {
                   closeMenu();
                   onReactionTap(model, emoji, !highlight);
-                  popupMenuController?.hideMenu();
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -2410,8 +2404,8 @@ class _MessagesViewState extends State<MessagesView>
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onTap: () {
+                closeMenu();
                 showAllReactions(model);
-                popupMenuController?.hideMenu();
               },
               child: ChatUIKitImageLoader.moreReactions(
                 width: 36,

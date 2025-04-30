@@ -32,7 +32,6 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
     this.enableThread = true,
     this.enableReaction = true,
     this.enableVoiceUnreadIcon = true,
-    this.onItemTap,
     super.key,
   });
 
@@ -65,7 +64,6 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
   final VoidCallback? onReactionInfoTap;
   final VoidCallback? onThreadItemTap;
   final MessageItemBuilder? threadItemBuilder;
-  final VoidCallback? onItemTap;
 
   @override
   Widget build(BuildContext context) {
@@ -160,10 +158,10 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
                     model.message.status == MessageStatus.FAIL) {
                   return MessageStatusType.fail;
                 } else {
-                  if (model.message.hasDeliverAck) {
-                    return MessageStatusType.deliver;
-                  } else if (model.message.hasReadAck) {
+                  if (model.message.hasReadAck) {
                     return MessageStatusType.read;
+                  } else if (model.message.hasDeliverAck) {
+                    return MessageStatusType.deliver;
                   }
                   return MessageStatusType.succeed;
                 }
@@ -215,13 +213,6 @@ class ChatUIKitMessageListViewMessageItem extends StatelessWidget {
 
     item = Container(
       margin: const EdgeInsets.only(top: 16, bottom: 2),
-      child: item,
-    );
-
-    item = InkWell(
-      highlightColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      onTap: onItemTap,
       child: item,
     );
 

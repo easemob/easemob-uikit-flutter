@@ -307,20 +307,6 @@ class _MessageListViewState extends State<MessageListView>
           widget.onThreadItemTap?.call(context, model);
         }
       },
-      // onItemTap: () {
-      //   if (controller.isMultiSelectMode) {
-      //     if (controller.selectedMessages
-      //         .map((e) => e.msgId)
-      //         .toList()
-      //         .contains(model.message.msgId)) {
-      //       controller.selectedMessages
-      //           .removeWhere((e) => model.message.msgId == e.msgId);
-      //     } else {
-      //       controller.selectedMessages.add(model.message);
-      //     }
-      //     setState(() {});
-      //   }
-      // },
     );
 
     double zoom = 0.8;

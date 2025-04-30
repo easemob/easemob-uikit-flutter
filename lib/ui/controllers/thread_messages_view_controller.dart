@@ -301,17 +301,14 @@ class ThreadMessagesViewController
     if (path.isEmpty) {
       return;
     }
-    final imageData = await VideoThumbnail.thumbnailData(
-      video: path,
-      imageFormat: ImageFormat.JPEG,
-      maxWidth: 200,
-      quality: 80,
-    );
+    final uint8list =
+        await VideoCompress.getByteThumbnail(path, quality: 80, position: -1);
+
     final directory = await getApplicationCacheDirectory();
     String thumbnailPath =
         '${directory.path}/thumbnail_${Random().nextInt(999999999)}.jpeg';
     final file = File(thumbnailPath);
-    file.writeAsBytesSync(imageData);
+    file.writeAsBytesSync(uint8list!);
 
     final videoFile = File(path);
 
@@ -329,7 +326,7 @@ class ThreadMessagesViewController
       );
       sendMessage(msg);
     }));
-    }
+  }
 
   Future<void> sendFileMessage(
     String path, {
@@ -375,7 +372,7 @@ class ThreadMessagesViewController
     willSendMsg.addProfile();
     willSendMsg.isChatThreadMessage = true;
     willSendMsg.chatType = ChatType.GroupChat;
-    final msg = await ChatUIKit.instance.sendMessage(message: willSendMsg);
+    final msg = await ChatSDKService.instance.sendMessage(message: willSendMsg);
     if (ChatUIKitProvider.instance.currentUserProfile != null) {
       userMap[ChatUIKit.instance.currentUserId!] =
           ChatUIKitProvider.instance.currentUserProfile!;
@@ -390,7 +387,7 @@ class ThreadMessagesViewController
   Future<void> resendMessage(Message message) async {
     msgModelList
         .removeWhere((element) => element.message.msgId == message.msgId);
-    final msg = await ChatUIKit.instance.sendMessage(message: message);
+    final msg = await ChatSDKService.instance.sendMessage(message: message);
     msgModelList.insert(0, MessageModel(message: msg));
 
     refresh();

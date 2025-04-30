@@ -14,6 +14,7 @@ class ChatUIKitInputBar extends StatefulWidget {
     this.maintainBottomViewPadding = false,
     this.onInputTextChanged,
     this.readOnly = false,
+    this.bottomDistance = 0,
     super.key,
   });
   final List<Widget>? leftItems;
@@ -24,6 +25,7 @@ class ChatUIKitInputBar extends StatefulWidget {
   final void Function(ChatUIKitKeyboardPanelType panelType)? onPanelChanged;
   final bool maintainBottomViewPadding;
   final bool readOnly;
+  final double bottomDistance;
 
   @override
   State<ChatUIKitInputBar> createState() => _ChatUIKitInputBarState();
@@ -154,6 +156,7 @@ class _ChatUIKitInputBarState extends State<ChatUIKitInputBar>
       children: [
         content,
         ChatUIKitKeyboardPanel(
+          bottomDistance: widget.bottomDistance,
           maintainBottomViewPadding: widget.maintainBottomViewPadding,
           controller: keyboardPanelController,
           bottomPanels: widget.bottomPanels,

@@ -49,8 +49,6 @@ extension MessageTypeExt on MessageType {
         return 'custom';
       case MessageType.CMD:
         return 'cmd';
-      default:
-        return 'txt';
     }
   }
 }

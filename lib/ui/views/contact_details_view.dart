@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import '../../chat_uikit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

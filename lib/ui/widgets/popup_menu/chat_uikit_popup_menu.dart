@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -82,7 +84,7 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu>
           if (notification is ScrollUpdateNotification) {
             widget.controller.hideMenu();
           }
-          return true;
+          return false;
         });
 
     content = Listener(
@@ -232,6 +234,26 @@ class _ChatUIKitPopupMenuState extends State<ChatUIKitPopupMenu>
           width: widget.controller.topWidget != null ? maxWidth : menuWidth,
           child: menuWidget,
         );
+        // return Stack(
+        //   children: [
+        //     Positioned.fill(
+        //       child: InkWell(
+        //         onTap: () {
+        //           widget.controller.hideMenu();
+        //         },
+        //         child: Container(
+        //           color: Colors.transparent,
+        //         ),
+        //       ),
+        //     ),
+        //     Positioned(
+        //       left: dx == 0 ? _kHorizontalPadding : dx,
+        //       top: dy,
+        //       width: widget.controller.topWidget != null ? maxWidth : menuWidth,
+        //       child: menuWidget,
+        //     )
+        //   ],
+        // );
       },
     );
     Overlay.of(context).insert(entry!);
