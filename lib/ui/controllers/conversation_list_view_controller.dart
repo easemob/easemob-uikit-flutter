@@ -135,7 +135,7 @@ class ConversationListViewController
         await fetchConversations();
         items = await ChatUIKit.instance.getAllConversations();
       }
-      items = await clearEmptyConversations(items);
+      items = await clearEmptyAndChatRoomConversations(items);
       List<ConversationItemModel> tmp =
           await mapperToConversationModelItems(items);
       list.clear();
@@ -158,7 +158,7 @@ class ConversationListViewController
   Future<void> reload() async {
     loadingType.value = ChatUIKitListViewType.refresh;
     List<Conversation> items = await ChatUIKit.instance.getAllConversations();
-    items = await clearEmptyConversations(items);
+    items = await clearEmptyAndChatRoomConversations(items);
     List<ConversationItemModel> tmp =
         await mapperToConversationModelItems(items);
     list.clear();
@@ -171,10 +171,13 @@ class ConversationListViewController
     }
   }
 
-  Future<List<Conversation>> clearEmptyConversations(
+  Future<List<Conversation>> clearEmptyAndChatRoomConversations(
       List<Conversation> list) async {
     List<Conversation> tmp = [];
     for (var item in list) {
+      if (item.type == ConversationType.ChatRoom) {
+        continue;
+      }
       final latest = await item.latestMessage();
       final unreadCount = await item.unreadCount();
       if (latest != null || unreadCount > 0) {
@@ -254,6 +257,8 @@ class ConversationListViewController
           ret.add(ChatUIKitProfile.group(id: item.id));
         } else if (item.type == ConversationType.Chat) {
           ret.add(ChatUIKitProfile.contact(id: item.id));
+        } else if (item.type == ConversationType.ChatRoom) {
+          ret.add(ChatUIKitProfile.chatroom(id: item.id));
         }
       }
       return ret;
