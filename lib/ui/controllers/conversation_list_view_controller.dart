@@ -130,7 +130,7 @@ class ConversationListViewController
     List<Conversation> items = await ChatUIKit.instance.getAllConversations();
     try {
       if ((items.isEmpty &&
-              !ChatUIKitContext.instance.isConversationLoadFinished()) ||
+              !ChatSDKContext.instance.isConversationLoadFinished()) ||
           force == true) {
         await fetchConversations();
         items = await ChatUIKit.instance.getAllConversations();
@@ -209,11 +209,11 @@ class ConversationListViewController
       cursor = result.cursor;
       items.addAll(result.data);
       if (result.data.length < pageSize || cursor == '') {
-        ChatUIKitContext.instance.setConversationLoadFinished();
+        ChatSDKContext.instance.setConversationLoadFinished();
         hasMore = false;
       }
     } catch (e) {
-      ChatUIKitContext.instance.setConversationLoadFinished();
+      ChatSDKContext.instance.setConversationLoadFinished();
       hasError = true;
       debugPrint('fetchConversations error: $e');
     }

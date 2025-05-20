@@ -1,4 +1,5 @@
 import '../../chat_uikit.dart';
+import '../../universal/inner_headers.dart';
 
 class ConversationItemModel with ChatUIKitListItemModelBase, NeedSearch {
   final Message? lastMessage;
@@ -28,7 +29,7 @@ class ConversationItemModel with ChatUIKitListItemModelBase, NeedSearch {
     Message? lastMessage = await conversation.latestMessage();
 
     bool noDisturb =
-        ChatUIKitContext.instance.conversationIsMute(conversation.id);
+        ChatSDKContext.instance.conversationIsMute(conversation.id);
 
     ConversationItemModel info = ConversationItemModel(
       profile: profile,

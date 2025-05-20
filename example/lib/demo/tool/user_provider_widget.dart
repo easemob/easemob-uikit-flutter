@@ -65,7 +65,8 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
 
   // This method is called when uikit needs to display user information and the cache does not exist;
   // it requires fetching and storing the information in the db based on user attributes.
-  List<ChatUIKitProfile>? onProfilesRequest(List<ChatUIKitProfile> profiles) {
+  List<ChatUIKitProfile>? onProfilesRequest(List<ChatUIKitProfile> profiles,
+      [String? belongId]) {
     List<String> userIds = profiles
         .where((e) => e.type == ChatUIKitProfileType.contact)
         .map((e) => e.id)

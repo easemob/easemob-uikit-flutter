@@ -1,22 +1,23 @@
 import '../../chat_uikit.dart';
+import '../../universal/inner_headers.dart';
 
 mixin ChatUIKitContactActions on ChatSDKService {
   @override
   Future<void> acceptContactRequest({required String userId}) async {
     await super.acceptContactRequest(userId: userId);
-    ChatUIKitContext.instance.removeRequest(userId);
+    ChatSDKContext.instance.removeRequest(userId);
   }
 
   @override
   Future<void> declineContactRequest({required String userId}) async {
     await super.declineContactRequest(userId: userId);
-    ChatUIKitContext.instance.removeRequest(userId);
+    ChatSDKContext.instance.removeRequest(userId);
   }
 
   @override
   Future<List<String>> getAllContactIds() async {
     List<String> ret = await super.getAllContactIds();
-    ChatUIKitContext.instance.removeRequests(ret);
+    ChatSDKContext.instance.removeRequests(ret);
     return ret;
   }
 
@@ -24,7 +25,7 @@ mixin ChatUIKitContactActions on ChatSDKService {
   Future<List<String>> fetchAllContactIds() async {
     List<String> ret = await super.fetchAllContactIds();
     for (var userId in ret) {
-      ChatUIKitContext.instance.removeRequest(userId);
+      ChatSDKContext.instance.removeRequest(userId);
     }
     return ret;
   }
@@ -42,6 +43,6 @@ mixin ChatUIKitContactActions on ChatSDKService {
   }
 
   int contactRequestCount() {
-    return ChatUIKitContext.instance.newRequestCount();
+    return ChatSDKContext.instance.newRequestCount();
   }
 }

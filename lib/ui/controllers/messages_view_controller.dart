@@ -96,10 +96,13 @@ class MessagesViewController extends ChangeNotifier
       }
     }();
     userMap[profile.id] = profile;
-    if (ChatUIKitProvider.instance.currentUserProfile != null) {
-      // 这能保证每次修改自己的信息后看到的历史信息数据是正确的
-      userMap[ChatUIKit.instance.currentUserId!] =
-          ChatUIKitProvider.instance.currentUserProfile!;
+    if (ChatUIKit.instance.currentUserId != null) {
+      final profile = ChatUIKitProvider.instance.getProfileById(
+        ChatUIKit.instance.currentUserId!,
+      );
+      if (profile == null) {
+        userMap[ChatUIKit.instance.currentUserId!] = profile!;
+      }
     }
   }
 
@@ -708,9 +711,13 @@ class MessagesViewController extends ChangeNotifier
       }
     }
     willSendMsg.addProfile();
-    if (ChatUIKitProvider.instance.currentUserProfile != null) {
-      userMap[ChatUIKit.instance.currentUserId!] =
-          ChatUIKitProvider.instance.currentUserProfile!;
+    if (ChatUIKit.instance.currentUserId != null) {
+      final profile = ChatUIKitProvider.instance.getProfileById(
+        ChatUIKit.instance.currentUserId!,
+      );
+      if (profile == null) {
+        userMap[ChatUIKit.instance.currentUserId!] = profile!;
+      }
     }
     // 插入缓存中的消息
     addAllCacheToList();

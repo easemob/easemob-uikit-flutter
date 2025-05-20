@@ -118,7 +118,7 @@ class _PinMessageListViewState extends State<PinMessageListView>
   }
 
   @override
-  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
     List<PinListItemModel> models =
         widget.pinMessagesController.list.value.toList();
     List<String> updateIds = map.keys.toList();

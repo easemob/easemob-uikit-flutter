@@ -56,9 +56,7 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView>
   }
 
   @override
-  void onProfilesUpdate(
-    Map<String, ChatUIKitProfile> map,
-  ) {
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
     if (map.keys.contains(profile?.id)) {
       setState(() {
         profile = map[profile?.id];
@@ -107,12 +105,16 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView>
 
   Widget _buildContent() {
     Widget avatar = ChatUIKitAvatar(
-      avatarUrl: ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
+      avatarUrl: ChatUIKitProvider.instance
+          .getProfileById(ChatUIKit.instance.currentUserId)
+          ?.avatarUrl,
       size: 100,
     );
 
     Widget name = Text(
-      ChatUIKitProvider.instance.currentUserProfile?.contactShowName ??
+      ChatUIKitProvider.instance
+              .getProfileById(ChatUIKit.instance.currentUserId)
+              ?.contactShowName ??
           ChatUIKit.instance.currentUserId ??
           '',
       overflow: TextOverflow.ellipsis,

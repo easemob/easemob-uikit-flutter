@@ -1,16 +1,13 @@
 export 'package:chat_uikit_theme/chat_uikit_theme.dart';
+export 'package:chat_uikit_provider/chat_uikit_provider.dart';
+
+export 'package:chat_sdk_service/chat_sdk_service.dart';
 
 export 'tools/chat_uikit_context.dart';
 export 'chat_uikit_settings.dart';
 export 'chat_uikit_localizations.dart';
 
-export 'provider/chat_uikit_provider.dart';
-
-export 'sdk_service/chat_sdk_service.dart';
-export 'sdk_service/chat_sdk_service_defines.dart';
-
 export 'chat_uikit_service/chat_uikit_service.dart';
-export 'provider/chat_uikit_profile.dart';
 export 'chat_uikit_service/chat_uikit_action_events.dart';
 export 'chat_uikit_service/observers/chat_uikit_events_observers.dart';
 

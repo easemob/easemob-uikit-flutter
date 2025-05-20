@@ -82,7 +82,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
 
   void fetchGroupInfos() {
     isNotDisturb.value =
-        ChatUIKitContext.instance.conversationIsMute(profile!.id);
+        ChatSDKContext.instance.conversationIsMute(profile!.id);
     fetchGroup();
   }
 
@@ -95,7 +95,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
   }
 
   @override
-  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
     if (map.keys.contains(profile!.id)) {
       profile = map[profile!.id];
       safeSetState(() {});

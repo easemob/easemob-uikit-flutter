@@ -1,4 +1,5 @@
 import '../../chat_uikit.dart';
+import '../../universal/inner_headers.dart';
 
 mixin ChatUIKitNotificationActions on ChatSDKService {
   @override
@@ -11,7 +12,7 @@ mixin ChatUIKitNotificationActions on ChatSDKService {
       type: type,
       param: param,
     );
-    ChatUIKitContext.instance.addConversationMute({
+    ChatSDKContext.instance.addConversationMute({
       conversationId:
           param.remindType == ChatPushRemindType.MENTION_ONLY ? 1 : 0
     });
@@ -31,7 +32,7 @@ mixin ChatUIKitNotificationActions on ChatSDKService {
         .toList();
 
     List<String> needClearIds = list.map((e) => e.conversationId).toList();
-    ChatUIKitContext.instance.deleteConversationMute(needClearIds);
+    ChatSDKContext.instance.deleteConversationMute(needClearIds);
 
     list = map.values
         .where(
@@ -41,7 +42,7 @@ mixin ChatUIKitNotificationActions on ChatSDKService {
     List<String> needAddIds = list.map((e) => e.conversationId).toList();
     Map<String, int> addMap = {for (var index in needAddIds) index: 1};
 
-    ChatUIKitContext.instance.addConversationMute(addMap);
+    ChatSDKContext.instance.addConversationMute(addMap);
     return map;
   }
 
@@ -54,7 +55,7 @@ mixin ChatUIKitNotificationActions on ChatSDKService {
       conversationId: conversationId,
       type: type,
     );
-    ChatUIKitContext.instance.deleteConversationMute([conversationId]);
+    ChatSDKContext.instance.deleteConversationMute([conversationId]);
     onConversationsUpdate();
   }
 

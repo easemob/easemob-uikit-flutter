@@ -1,5 +1,5 @@
 import '../../chat_uikit.dart';
-
+import '../../universal/inner_headers.dart';
 import 'package:flutter/material.dart';
 
 class NewRequestsView extends StatefulWidget {
@@ -101,7 +101,7 @@ class _NewRequestsViewState extends State<NewRequestsView>
 
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
-    Future(() => {ChatUIKitContext.instance.markAllRequestsAsRead()});
+    Future(() => {ChatSDKContext.instance.markAllRequestsAsRead()});
 
     updateAppBarModel(theme);
     Widget content = Scaffold(

@@ -85,7 +85,7 @@ class _GroupListViewState extends State<GroupListView>
   }
 
   @override
-  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
     if (controller.list.any((element) =>
         map.keys.contains((element as GroupItemModel).profile.id))) {
       for (var element in map.keys) {

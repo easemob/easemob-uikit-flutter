@@ -19,7 +19,10 @@ class _MyPageState extends State<MyPage>
   void initState() {
     super.initState();
     ChatUIKitProvider.instance.addObserver(this);
-    _userProfile = ChatUIKitProvider.instance.currentUserProfile;
+    _userProfile = ChatUIKitProvider.instance.getProfileById(
+          ChatUIKit.instance.currentUserId,
+        ) ??
+        ChatUIKitProfile.contact(id: 'undefined');
   }
 
   @override
@@ -29,7 +32,7 @@ class _MyPageState extends State<MyPage>
   }
 
   @override
-  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
     if (map.keys.contains(ChatUIKit.instance.currentUserId)) {
       setState(() {
         _userProfile = map[ChatUIKit.instance.currentUserId];

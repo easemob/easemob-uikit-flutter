@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import '../../chat_uikit.dart';
+import '../../universal/inner_headers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -68,7 +69,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
 
     ChatUIKitProvider.instance.addObserver(this);
     isNotDisturb.value =
-        ChatUIKitContext.instance.conversationIsMute(profile!.id);
+        ChatSDKContext.instance.conversationIsMute(profile!.id);
     fetchInfo();
   }
 
@@ -100,9 +101,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
   }
 
   @override
-  void onProfilesUpdate(
-    Map<String, ChatUIKitProfile> map,
-  ) {
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
     if (map.keys.contains(profile?.id)) {
       safeSetState(() {
         profile = map[profile!.id];

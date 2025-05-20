@@ -36,9 +36,11 @@ class ThreadMessagesViewController
   }) {
     ChatUIKit.instance.addObserver(this);
     if (ChatUIKit.instance.currentUserId != null) {
-      if (ChatUIKitProvider.instance.currentUserProfile != null) {
-        userMap[ChatUIKit.instance.currentUserId!] =
-            ChatUIKitProvider.instance.currentUserProfile!;
+      final profile = ChatUIKitProvider.instance.getProfileById(
+        ChatUIKit.instance.currentUserId!,
+      );
+      if (profile == null) {
+        userMap[ChatUIKit.instance.currentUserId!] = profile!;
       }
     }
     thread ??= model?.thread;
@@ -373,9 +375,13 @@ class ThreadMessagesViewController
     willSendMsg.isChatThreadMessage = true;
     willSendMsg.chatType = ChatType.GroupChat;
     final msg = await ChatSDKService.instance.sendMessage(message: willSendMsg);
-    if (ChatUIKitProvider.instance.currentUserProfile != null) {
-      userMap[ChatUIKit.instance.currentUserId!] =
-          ChatUIKitProvider.instance.currentUserProfile!;
+    if (ChatUIKit.instance.currentUserId != null) {
+      final profile = ChatUIKitProvider.instance.getProfileById(
+        ChatUIKit.instance.currentUserId!,
+      );
+      if (profile == null) {
+        userMap[ChatUIKit.instance.currentUserId!] = profile!;
+      }
     }
 
     if (loadFinished) {

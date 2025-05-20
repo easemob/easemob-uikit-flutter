@@ -168,10 +168,16 @@ class _ContactsViewState extends State<ContactsView>
               ChatUIKitAppBarAction(
                 actionType: ChatUIKitActionType.avatar,
                 child: ChatUIKitAvatar.current(
-                  size: 32,
-                  avatarUrl:
-                      ChatUIKitProvider.instance.currentUserProfile?.avatarUrl,
-                ),
+                    size: 32,
+                    avatarUrl: () {
+                      if (ChatUIKit.instance.currentUserId != null) {
+                        final profile =
+                            ChatUIKitProvider.instance.getProfileById(
+                          ChatUIKit.instance.currentUserId!,
+                        );
+                        return profile?.avatarUrl;
+                      }
+                    }()),
               ),
             );
             return widget.appBarModel?.leadingActionsBuilder

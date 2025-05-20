@@ -1,4 +1,5 @@
 import '../../chat_uikit.dart';
+import '../../universal/inner_headers.dart';
 
 class NewRequestListViewController with ChatUIKitListViewControllerBase {
   NewRequestListViewController();
@@ -8,7 +9,7 @@ class NewRequestListViewController with ChatUIKitListViewControllerBase {
   @override
   Future<void> fetchItemList({bool force = false}) async {
     loadingType.value = ChatUIKitListViewType.refresh;
-    List items = ChatUIKitContext.instance.requestList();
+    List items = ChatSDKContext.instance.requestList();
     List<NewRequestItemModel> tmp = mapperToNewRequestItemModelItems(items);
     list.clear();
     list.addAll(tmp);

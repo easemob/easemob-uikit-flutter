@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-
+import '../../universal/inner_headers.dart';
 import '../../chat_uikit.dart';
 
 mixin ChatUIKitMultiObservers on ChatSDKService {
@@ -30,17 +30,17 @@ mixin ChatUIKitMultiObservers on ChatSDKService {
   void onContactEvent(MultiDevicesEvent event, String userId, String? ext) {
     if (event == MultiDevicesEvent.CONTACT_ACCEPT) {
       ChatUIKit.instance.onContactAdded(userId);
-      ChatUIKitContext.instance.removeRequest(userId);
+      ChatSDKContext.instance.removeRequest(userId);
       ChatUIKitInsertTools.insertAddContactMessage(userId);
     }
 
     if (event == MultiDevicesEvent.CONTACT_DECLINE) {
-      ChatUIKitContext.instance.removeRequest(userId);
+      ChatSDKContext.instance.removeRequest(userId);
     }
 
     if (event == MultiDevicesEvent.CONTACT_REMOVE) {
       ChatUIKit.instance.onContactDeleted(userId);
-      ChatUIKitContext.instance.removeRequest(userId);
+      ChatSDKContext.instance.removeRequest(userId);
     }
     super.onContactEvent(event, userId, ext);
   }

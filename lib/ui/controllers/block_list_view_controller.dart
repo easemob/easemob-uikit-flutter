@@ -1,4 +1,5 @@
 import '../../chat_uikit.dart';
+import '../../universal/inner_headers.dart';
 
 class BlockListViewController
     with ChatUIKitListViewControllerBase, ContactObserver {
@@ -83,7 +84,7 @@ class BlockListViewController
 
   Future<List<String>> fetchBlocks() async {
     List<String> result = await ChatUIKit.instance.fetchAllBlockedContactIds();
-    ChatUIKitContext.instance.setContactLoadFinished();
+    ChatSDKContext.instance.setContactLoadFinished();
     return result;
   }
 
@@ -125,7 +126,7 @@ class BlockListViewController
   Future<void> reload() async {
     loadingType.value = ChatUIKitListViewType.refresh;
     List<String> items = await ChatUIKit.instance.getAllBlockedContactIds();
-    ChatUIKitContext.instance.removeRequests(items);
+    ChatSDKContext.instance.removeRequests(items);
     List<ContactItemModel> tmp = mapperToContactItemModelItems(items);
     list.clear();
     list.addAll(tmp);

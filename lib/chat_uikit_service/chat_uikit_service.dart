@@ -1,3 +1,5 @@
+import 'package:chat_sdk_context/chat_sdk_context.dart';
+
 import '../../chat_uikit.dart';
 import 'actions/chat_uikit_chat_actions.dart';
 import 'actions/chat_uikit_contact_actions.dart';
@@ -32,7 +34,7 @@ class ChatUIKit extends ChatSDKService
   }
 
   ChatUIKit() : super() {
-    ChatUIKitContext.instance;
+    ChatSDKContext.instance;
   }
 
   Options? _options;
@@ -42,7 +44,7 @@ class ChatUIKit extends ChatSDKService
   Future<void> init({required Options options}) async {
     _options = options;
     await super.init(options: options);
-    ChatUIKitContext.instance.currentUserId = currentUserId;
+    ChatSDKContext.instance.setUserId(currentUserId);
   }
 
   /// Login
@@ -57,7 +59,7 @@ class ChatUIKit extends ChatSDKService
   }) async {
     try {
       await super.loginWithPassword(userId: userId, password: password);
-      ChatUIKitContext.instance.currentUserId = userId;
+      ChatSDKContext.instance.setUserId(userId);
     } catch (e) {
       rethrow;
     }
@@ -70,7 +72,7 @@ class ChatUIKit extends ChatSDKService
   }) async {
     try {
       await super.loginWithToken(userId: userId, token: token);
-      ChatUIKitContext.instance.currentUserId = userId;
+      ChatSDKContext.instance.setUserId(userId);
     } catch (e) {
       rethrow;
     }
@@ -80,7 +82,7 @@ class ChatUIKit extends ChatSDKService
   Future<void> logout() async {
     try {
       await super.logout();
-      ChatUIKitContext.instance.currentUserId = null;
+      ChatSDKContext.instance.setUserId(null);
       ChatUIKitProvider.instance.clearAllCache();
     } catch (e) {
       rethrow;

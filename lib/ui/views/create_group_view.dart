@@ -249,9 +249,12 @@ class _CreateGroupViewState extends State<CreateGroupView>
           [
             ...inviteMembers +
                 [
-                  ChatUIKitProvider.instance.currentUserProfile ??
+                  ChatUIKitProvider.instance.getProfileById(
+                        ChatUIKit.instance.currentUserId,
+                      ) ??
                       ChatUIKitProfile.contact(
-                          id: ChatUIKit.instance.currentUserId!)
+                        id: ChatUIKit.instance.currentUserId!,
+                      )
                 ]
           ].map((e) => e.contactShowName).join(','),
       desc: info?.groupDesc ?? widget.createGroupInfo?.groupDesc,

@@ -15,9 +15,16 @@ extension MessageHelper on Message {
   }
 
   void addProfile() {
-    _addAvatarURL(ChatUIKitProvider.instance.currentUserProfile?.avatarUrl);
+    _addAvatarURL(
+      ChatUIKitProvider.instance
+          .getProfileById(ChatUIKit.instance.currentUserId)
+          ?.avatarUrl,
+    );
     _addNickname(
-        ChatUIKitProvider.instance.currentUserProfile?.contactShowName);
+      ChatUIKitProvider.instance
+          .getProfileById(ChatUIKit.instance.currentUserId)
+          ?.contactShowName,
+    );
   }
 
   void addPreview(ChatUIKitPreviewObj? previewObj) {

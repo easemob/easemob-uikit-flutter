@@ -2,7 +2,7 @@ import '../chat_uikit_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 
-extension StringExtension on String {
+extension StringLocal on String {
   String localString(BuildContext context) => getString(context);
 
   bool hasURL() {

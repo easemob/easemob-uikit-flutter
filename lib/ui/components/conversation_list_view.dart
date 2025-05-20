@@ -95,7 +95,7 @@ class _ConversationListViewState extends State<ConversationListView>
   }
 
   @override
-  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) async {
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
     if (controller.list.any((element) =>
         map.keys.contains((element as ConversationItemModel).profile.id))) {
       for (var element in map.keys) {

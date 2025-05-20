@@ -80,7 +80,7 @@ class _NewRequestsListViewState extends State<NewRequestsListView>
   }
 
   @override
-  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
     if (controller.list.any((element) =>
         map.keys.contains((element as NewRequestItemModel).profile.id))) {
       for (var element in map.keys) {

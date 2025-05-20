@@ -1,7 +1,6 @@
-import 'dart:convert';
+import 'package:chat_sdk_context/chat_sdk_context.dart';
 
 import '../chat_uikit.dart';
-import '../universal/inner_headers.dart';
 
 const String convLoadFinishedKey =
     'EaseChatUIKit_conversation_load_more_finished';
@@ -10,46 +9,7 @@ const String contactLoadFinishedKey =
 const String muteMapKey = 'EaseChatUIKit_conversation_mute_map';
 const String requestsKey = 'EaseChatUIKit_friend_requests';
 
-class ChatUIKitContext {
-  late SharedPreferences sharedPreferences;
-  String? _currentUserId;
-
-  Map<String, dynamic> cachedMap = {};
-  // 缓存，不存db；
-  bool _hasFetchedContacts = false;
-
-  static ChatUIKitContext? _instance;
-  static ChatUIKitContext get instance {
-    return _instance ??= ChatUIKitContext._internal();
-  }
-
-  set currentUserId(String? userId) {
-    if (_currentUserId != userId) {
-      cachedMap.clear();
-    }
-    _currentUserId = userId;
-    if (_currentUserId?.isNotEmpty == true) {
-      String? cache = sharedPreferences.getString(_currentUserId!);
-      if (cache != null) {
-        cachedMap = json.decode(cache);
-      }
-    }
-  }
-
-  ChatUIKitContext._internal() {
-    init();
-  }
-
-  void init() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-  }
-
-  void _updateStore() {
-    sharedPreferences.setString(_currentUserId!, json.encode(cachedMap));
-  }
-}
-
-extension Request on ChatUIKitContext {
+extension Request on ChatSDKContext {
   List requestList() {
     return cachedMap[requestsKey] ?? [];
   }
@@ -78,7 +38,7 @@ extension Request on ChatUIKitContext {
       ChatUIKit.instance.onFriendRequestCountChanged(newRequestCount());
     }
 
-    _updateStore();
+    save();
   }
 
   bool addRequest(String userId, String? reason, [bool isGroup = false]) {
@@ -95,7 +55,7 @@ extension Request on ChatUIKitContext {
     });
     cachedMap[requestsKey] = requestList;
     ChatUIKit.instance.onFriendRequestCountChanged(newRequestCount());
-    _updateStore();
+    save();
     return true;
   }
 
@@ -109,7 +69,7 @@ extension Request on ChatUIKitContext {
         ChatUIKit.instance.onFriendRequestCountChanged(newRequestCount());
       }
       cachedMap[requestsKey] = requestList;
-      _updateStore();
+      save();
     }
   }
 
@@ -128,39 +88,40 @@ extension Request on ChatUIKitContext {
     }
     if (needUpdate) {
       cachedMap[requestsKey] = requestList;
-      _updateStore();
+      save();
       ChatUIKit.instance.onFriendRequestCountChanged(newRequestCount());
     }
   }
 }
 
-extension ContactLoad on ChatUIKitContext {
+extension ContactLoad on ChatSDKContext {
   bool isContactLoadFinished() {
-    return _hasFetchedContacts;
+    return cachedMap[contactLoadFinishedKey] ??= false;
   }
 
   void setContactLoadFinished() {
-    _hasFetchedContacts = true;
+    cachedMap[contactLoadFinishedKey] = true;
+    save();
   }
 }
 
-extension ConversationFirstLoad on ChatUIKitContext {
+extension ConversationFirstLoad on ChatSDKContext {
   bool isConversationLoadFinished() {
     return cachedMap[convLoadFinishedKey] ??= false;
   }
 
   void setConversationLoadFinished() {
     cachedMap[convLoadFinishedKey] = true;
-    _updateStore();
+    save();
   }
 }
 
-extension ConversationMute on ChatUIKitContext {
+extension ConversationMute on ChatSDKContext {
   void addConversationMute(Map<String, int> map) {
     dynamic tmpMap = cachedMap[muteMapKey] ?? {};
     tmpMap.addAll(map);
     cachedMap[muteMapKey] = tmpMap;
-    _updateStore();
+    save();
   }
 
   bool conversationIsMute(String conversationId) {
@@ -174,6 +135,6 @@ extension ConversationMute on ChatUIKitContext {
       tmpMap.remove(element);
     }
     cachedMap[muteMapKey] = tmpMap;
-    _updateStore();
+    save();
   }
 }

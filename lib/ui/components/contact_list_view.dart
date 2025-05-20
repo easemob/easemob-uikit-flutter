@@ -111,7 +111,7 @@ class _ContactListViewState extends State<ContactListView>
   }
 
   @override
-  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
     if (controller.list.any((element) =>
         map.keys.contains((element as ContactItemModel).profile.id))) {
       for (var element in map.keys) {

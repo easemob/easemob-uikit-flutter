@@ -126,7 +126,7 @@ class _MessageListViewState extends State<MessageListView>
   }
 
   @override
-  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
     controller.userMap.addAll(map);
     if (map.keys.contains(controller.profile.id)) {
       controller.profile = map[controller.profile.id]!;

@@ -1,4 +1,5 @@
 import '../../chat_uikit.dart';
+import '../../universal/inner_headers.dart';
 
 mixin ChatUIKitChatActions on ChatSDKService {
   @override
@@ -12,7 +13,7 @@ mixin ChatUIKitChatActions on ChatSDKService {
         if (withoutIds!.contains(conversation.id)) continue;
       }
 
-      if (!ChatUIKitContext.instance.conversationIsMute(conversation.id)) {
+      if (!ChatSDKContext.instance.conversationIsMute(conversation.id)) {
         int count = await conversation.unreadCount();
         unreadCount += count;
       }

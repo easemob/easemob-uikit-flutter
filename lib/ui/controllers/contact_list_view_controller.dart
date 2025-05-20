@@ -1,4 +1,5 @@
 import '../../chat_uikit.dart';
+import '../../universal/inner_headers.dart';
 
 /// 联系人列表控制器
 class ContactListViewController with ChatUIKitListViewControllerBase {
@@ -30,12 +31,11 @@ class ContactListViewController with ChatUIKitListViewControllerBase {
 
     try {
       List<String> items = await ChatUIKit.instance.getAllContactIds();
-      if ((items.isEmpty &&
-              !ChatUIKitContext.instance.isContactLoadFinished()) ||
+      if ((items.isEmpty && !ChatSDKContext.instance.isContactLoadFinished()) ||
           force == true) {
         items = await fetchContacts();
       }
-      ChatUIKitContext.instance.removeRequests(items);
+      ChatSDKContext.instance.removeRequests(items);
       List<ContactItemModel> tmp = mapperToContactItemModels(items);
       list.clear();
       list.addAll(tmp);
@@ -51,7 +51,7 @@ class ContactListViewController with ChatUIKitListViewControllerBase {
 
   Future<List<String>> fetchContacts() async {
     List<String> result = await ChatUIKit.instance.fetchAllContactIds();
-    ChatUIKitContext.instance.setContactLoadFinished();
+    ChatSDKContext.instance.setContactLoadFinished();
     return result;
   }
 
@@ -93,7 +93,7 @@ class ContactListViewController with ChatUIKitListViewControllerBase {
   Future<void> reload() async {
     loadingType.value = ChatUIKitListViewType.refresh;
     List<String> items = await ChatUIKit.instance.getAllContactIds();
-    ChatUIKitContext.instance.removeRequests(items);
+    ChatSDKContext.instance.removeRequests(items);
     List<ContactItemModel> tmp = mapperToContactItemModels(items);
     list.clear();
     list.addAll(tmp);

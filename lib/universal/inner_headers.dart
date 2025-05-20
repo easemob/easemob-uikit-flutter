@@ -8,3 +8,4 @@ export 'package:video_player/video_player.dart';
 export 'package:video_compress/video_compress.dart';
 export 'package:flutter_localization/flutter_localization.dart';
 export '../universal/chat_uikit_log.dart';
+export 'package:chat_sdk_context/chat_sdk_context.dart';

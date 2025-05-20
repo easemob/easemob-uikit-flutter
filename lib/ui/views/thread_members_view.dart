@@ -65,7 +65,7 @@ class _ThreadMembersViewState extends State<ThreadMembersView>
   }
 
   @override
-  void onProfilesUpdate(Map<String, ChatUIKitProfile> map) {
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
     if (controller.modelsList
         .any((element) => map.keys.contains(element.profile.id))) {
       for (var i = 0; i < controller.modelsList.length; i++) {

@@ -149,9 +149,8 @@ class _ChatReactionInfoWidgetState extends State<ChatReactionInfoWidget>
   }
 
   @override
-  void onProfilesUpdate(
-    Map<String, ChatUIKitProfile> map,
-  ) {}
+  void onProfilesUpdate(Map<String, ChatUIKitProfile> map,
+      [String? belongId]) {}
 
   void fetchReactionInfo() async {
     if (fetching) return;
