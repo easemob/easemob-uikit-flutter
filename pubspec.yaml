@@ -18,21 +18,6 @@ dependencies:
 
   chat_uikit_keyboard_panel: 0.1.2
 
-  chat_sdk_service:
-    git:
-      url: https://github.com/dujiepeng/chat_sdk_service.git
-      ref: 5c6f7bb
-
-  chat_uikit_provider:
-    git:
-      url: https://github.com/dujiepeng/chat_uikit_provider.git
-      ref: main
-
-  chat_sdk_context:
-    git:
-      url: https://github.com/dujiepeng/chat_uikit_context.git
-      ref: main
-
   record: 5.1.2
 
   shared_preferences: 2.2.3
@@ -70,5 +55,7 @@ flutter:
         pluginClass: EmChatUikitPlugin
 
   assets:
-    - assets/images/
-    - assets/images/emojis/
+    - assets/images/chat/
+    - assets/images/chat/emojis/
+    - assets/images/chatroom/
+    - assets/images/chatroom/emojis/

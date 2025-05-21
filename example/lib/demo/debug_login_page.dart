@@ -14,9 +14,7 @@ class _DebugLoginPageState extends State<DebugLoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('当前AppKey: $appKey'),
-      ),
+      appBar: AppBar(title: const Text('当前AppKey: $appKey')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -56,12 +54,8 @@ class _DebugLoginPageState extends State<DebugLoginPage> {
     dynamic ret = await showChatUIKitDialog(
       context: context,
       inputItems: [
-        ChatUIKitDialogInputContentItem(
-          hintText: 'UserId',
-        ),
-        ChatUIKitDialogInputContentItem(
-          hintText: 'Password',
-        ),
+        ChatUIKitDialogInputContentItem(hintText: 'UserId'),
+        ChatUIKitDialogInputContentItem(hintText: 'Password'),
       ],
       actionItems: list,
     );

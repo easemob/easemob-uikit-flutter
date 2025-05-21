@@ -51,7 +51,7 @@ class _WelcomePageState extends State<WelcomePage> with ChatUIKitThemeMixin {
               SizedBox(
                 width: 100,
                 height: 100,
-                child: Image.asset('assets/images/icon.png'),
+                child: Image.asset('assets/chat/icon.png'),
               ),
               const SizedBox(height: 38),
               const SizedBox(height: 180),

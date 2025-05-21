@@ -49,8 +49,9 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
   Future<void> fetchCurrentUserInfo() async {
     try {
       // Do not retrieve own data from the db, always fetch the latest data from the server.
-      Map<String, UserInfo> map = await ChatUIKit.instance
-          .fetchUserInfoByIds([ChatUIKit.instance.currentUserId!]);
+      Map<String, UserInfo> map = await ChatUIKit.instance.fetchUserInfoByIds([
+        ChatUIKit.instance.currentUserId!,
+      ]);
       ChatUIKitProfile profile = ChatUIKitProfile.contact(
         id: map.values.first.userId,
         nickname: map.values.first.nickName,
@@ -65,8 +66,10 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
 
   // This method is called when uikit needs to display user information and the cache does not exist;
   // it requires fetching and storing the information in the db based on user attributes.
-  List<ChatUIKitProfile>? onProfilesRequest(List<ChatUIKitProfile> profiles,
-      [String? belongId]) {
+  List<ChatUIKitProfile>? onProfilesRequest(
+    List<ChatUIKitProfile> profiles, [
+    String? belongId,
+  ]) {
     List<String> userIds = profiles
         .where((e) => e.type == ChatUIKitProfileType.contact)
         .map((e) => e.id)
@@ -86,8 +89,10 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
   // When a group is created by oneself, it is necessary to fill the group information into uikit.
   @override
   void onGroupCreatedByMyself(Group group) async {
-    ChatUIKitProfile profile =
-        ChatUIKitProfile.group(id: group.groupId, groupName: group.name);
+    ChatUIKitProfile profile = ChatUIKitProfile.group(
+      id: group.groupId,
+      groupName: group.name,
+    );
 
     ChatUIKitProvider.instance.addProfiles([profile]);
     // save to db
@@ -97,14 +102,12 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
   // When the group name is changed by oneself, it is necessary to update the group information in uikit.
   @override
   void onGroupNameChangedByMeSelf(Group group) {
-    ChatUIKitProfile? profile =
-        ChatUIKitProvider.instance.getProfileById(group.groupId);
+    ChatUIKitProfile? profile = ChatUIKitProvider.instance.getProfileById(
+      group.groupId,
+    );
 
     profile = profile?.copyWith(showName: group.name) ??
-        ChatUIKitProfile.group(
-          id: group.groupId,
-          groupName: group.name,
-        );
+        ChatUIKitProfile.group(id: group.groupId, groupName: group.name);
 
     ChatUIKitProvider.instance.addProfiles([profile]);
     // save to db
@@ -121,7 +124,9 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
   Future<void> loadGroupInfos() async {
     List<Group> groups = await ChatUIKit.instance.getJoinedGroups();
     List<ChatUIKitProfile> profiles = groups
-        .map((e) => ChatUIKitProfile.group(id: e.groupId, groupName: e.name))
+        .map(
+          (e) => ChatUIKitProfile.group(id: e.groupId, groupName: e.name),
+        )
         .toList();
 
     if (profiles.isNotEmpty) {
@@ -172,11 +177,17 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
 
   void fetchUserInfos(List<String> userIds) async {
     try {
-      Map<String, UserInfo> map =
-          await ChatUIKit.instance.fetchUserInfoByIds(userIds);
+      Map<String, UserInfo> map = await ChatUIKit.instance.fetchUserInfoByIds(
+        userIds,
+      );
       List<ChatUIKitProfile> list = map.values
-          .map((e) => ChatUIKitProfile.contact(
-              id: e.userId, nickname: e.nickName, avatarUrl: e.avatarUrl))
+          .map(
+            (e) => ChatUIKitProfile.contact(
+              id: e.userId,
+              nickname: e.nickName,
+              avatarUrl: e.avatarUrl,
+            ),
+          )
           .toList();
 
       if (list.isNotEmpty) {

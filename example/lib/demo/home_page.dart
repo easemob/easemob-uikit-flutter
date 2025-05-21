@@ -1,12 +1,14 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
+import 'package:flutter/material.dart';
 import 'package:example/demo/demo_localizations.dart';
+import 'package:example/demo/pages/chatroom/chatroom_list_view.dart';
 import 'package:example/demo/pages/contact/contact_page.dart';
 import 'package:example/demo/pages/conversation/conversation_page.dart';
 import 'package:example/demo/pages/me/my_page.dart';
 import 'package:example/demo/tool/toast_page.dart';
 import 'package:example/demo/tool/token_status_handler_widget.dart';
 import 'package:example/demo/tool/user_provider_widget.dart';
-import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -44,7 +46,12 @@ class _HomePageState extends State<HomePage>
   }
 
   List<Widget> _pages(BuildContext context) {
-    return const [ConversationPage(), ContactPage(), MyPage()];
+    return const [
+      ConversationPage(),
+      ContactPage(),
+      ChatRoomListView(),
+      MyPage(),
+    ];
   }
 
   @override
@@ -53,10 +60,7 @@ class _HomePageState extends State<HomePage>
 
     Widget content = Scaffold(
       resizeToAvoidBottomInset: false,
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _pages(context),
-      ),
+      body: IndexedStack(index: _currentIndex, children: _pages(context)),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 1,
         selectedLabelStyle: TextStyle(
@@ -85,7 +89,7 @@ class _HomePageState extends State<HomePage>
         items: [
           CustomBottomNavigationBarItem(
             label: DemoLocalizations.chat.localString(context),
-            image: 'assets/images/chat.png',
+            image: 'assets/chat/chat.png',
             unreadCountWidget: ValueListenableBuilder(
               valueListenable: unreadMessageCount,
               builder: (context, value, child) {
@@ -107,7 +111,7 @@ class _HomePageState extends State<HomePage>
           ),
           CustomBottomNavigationBarItem(
             label: DemoLocalizations.contacts.localString(context),
-            image: 'assets/images/contact.png',
+            image: 'assets/chat/contact.png',
             unreadCountWidget: ValueListenableBuilder(
               valueListenable: contactRequestCount,
               builder: (context, value, child) {
@@ -128,12 +132,22 @@ class _HomePageState extends State<HomePage>
             imageUnSelectColor: theme.color.neutralColor5,
           ),
           CustomBottomNavigationBarItem(
-            label: DemoLocalizations.me.localString(context),
-            image: 'assets/images/me.png',
+            label: 'Room',
+            image: 'assets/chat/chat.png',
+            borderColor: theme.color.isDark
+                ? theme.color.neutralColor1
+                : theme.color.neutralColor98,
             isSelect: _currentIndex == 2,
             imageSelectColor: theme.color.primaryColor5,
             imageUnSelectColor: theme.color.neutralColor5,
-          )
+          ),
+          CustomBottomNavigationBarItem(
+            label: DemoLocalizations.me.localString(context),
+            image: 'assets/chat/me.png',
+            isSelect: _currentIndex == 3,
+            imageSelectColor: theme.color.primaryColor5,
+            imageUnSelectColor: theme.color.neutralColor5,
+          ),
         ],
       ),
     );
@@ -200,27 +214,29 @@ class CustomBottomNavigationBarItem extends BottomNavigationBarItem {
                 width: 76,
                 height: 34,
                 child: Padding(
-                    padding: const EdgeInsets.only(left: 4, right: 4, top: 10),
-                    child: Image.asset(
-                      image,
-                      fit: BoxFit.contain,
-                      color: isSelect ? imageSelectColor : imageUnSelectColor,
-                    )),
+                  padding: const EdgeInsets.only(left: 4, right: 4, top: 10),
+                  child: Image.asset(
+                    image,
+                    fit: BoxFit.contain,
+                    color: isSelect ? imageSelectColor : imageUnSelectColor,
+                  ),
+                ),
               ),
               Positioned(
-                  top: 0,
-                  left: 36,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(
-                        color: borderColor ?? Colors.transparent,
-                        width: 2,
-                      ),
+                top: 0,
+                left: 36,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(
+                      color: borderColor ?? Colors.transparent,
+                      width: 2,
                     ),
-                    child: unreadCountWidget ?? const SizedBox(),
-                  ))
+                  ),
+                  child: unreadCountWidget ?? const SizedBox(),
+                ),
+              ),
             ],
           ),
         );

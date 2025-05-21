@@ -17,7 +17,8 @@ class _MessageWidgetState extends State<MessageWidget>
   void initState() {
     super.initState();
     keyboardPanelController = ChatUIKitKeyboardPanelController(
-        inputTextEditingController: CustomTextEditingController());
+      inputTextEditingController: CustomTextEditingController(),
+    );
     messageController = MessagesViewController(profile: widget.profile);
   }
 

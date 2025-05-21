@@ -1,20 +1,19 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:example/demo/custom/chat_route_filter.dart';
 import 'package:example/demo/debug_login_page.dart';
 import 'package:example/demo/demo_localizations.dart';
 import 'package:example/demo/home_page.dart';
-
-import 'package:example/demo/custom/chat_route_filter.dart';
 import 'package:example/demo/pages/me/settings/advanced_page.dart';
 import 'package:example/demo/pages/me/settings/general_page.dart';
 import 'package:example/demo/pages/me/settings/language_page.dart';
 import 'package:example/demo/pages/me/settings/translate_page.dart';
 import 'package:example/demo/tool/settings_data_store.dart';
 import 'package:example/welcome_page.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 // App Key 常量定义
 const appKey = 'easemob#easeim';
@@ -26,8 +25,9 @@ const bool appDebug = false;
 void main() async {
   SettingsDataStore().init();
   // 设置应用只支持竖屏模式
-  return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(const MyApp()));
+  return SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]).then((value) => runApp(const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
       ChatLocal(
         'en',
         Map.from(ChatUIKitLocal.en)..addAll(DemoLocalizations.en),
-      )
+      ),
     ];
     // 重置本地化配置
     _localization.resetLocales();
@@ -93,7 +93,6 @@ class _MyAppState extends State<MyApp> {
       builder: EasyLoading.init(),
       // 初始页面
       home: const WelcomePage(), // 欢迎页面
-
       // 路由生成器：处理应用内的页面导航
       onGenerateRoute: (settings) {
         // 使用自定义路由过滤器处理聊天相关路由

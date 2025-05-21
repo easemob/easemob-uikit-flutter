@@ -53,11 +53,7 @@ class _MyPageState extends State<MyPage>
             ? theme.color.neutralColor1
             : theme.color.neutralColor98,
       ),
-      body: SafeArea(
-        top: false,
-        bottom: false,
-        child: _buildContent(),
-      ),
+      body: SafeArea(top: false, bottom: false, child: _buildContent()),
     );
 
     return content;
@@ -100,10 +96,9 @@ class _MyPageState extends State<MyPage>
         InkWell(
           onTap: () {
             Clipboard.setData(
-                ClipboardData(text: ChatUIKit.instance.currentUserId ?? ''));
-            ChatUIKit.instance.sendChatUIKitEvent(
-              ChatUIKitEvent.userIdCopied,
+              ClipboardData(text: ChatUIKit.instance.currentUserId ?? ''),
             );
+            ChatUIKit.instance.sendChatUIKitEvent(ChatUIKitEvent.userIdCopied);
           },
           child: Icon(
             Icons.file_copy_sharp,
@@ -131,17 +126,19 @@ class _MyPageState extends State<MyPage>
         const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.only(left: 16, right: 16),
-          child: Text(DemoLocalizations.settings.localString(context),
-              textScaler: TextScaler.noScaling),
+          child: Text(
+            DemoLocalizations.settings.localString(context),
+            textScaler: TextScaler.noScaling,
+          ),
         ),
         ListItem(
-          imageWidget: Image.asset('assets/images/settings.png'),
+          imageWidget: Image.asset('assets/chat/settings.png'),
           title: DemoLocalizations.general.localString(context),
           enableArrow: true,
           onTap: generalSettings,
         ),
         ListItem(
-          imageWidget: Image.asset('assets/images/notifications.png'),
+          imageWidget: Image.asset('assets/chat/notifications.png'),
           title: DemoLocalizations.notification.localString(context),
           onTap: nonsupport,
         ),
@@ -172,11 +169,9 @@ class _MyPageState extends State<MyPage>
   }
 
   void generalSettings() {
-    Navigator.of(context).pushNamed('/general_page').then(
-      (value) {
-        setState(() {});
-      },
-    );
+    Navigator.of(context).pushNamed('/general_page').then((value) {
+      setState(() {});
+    });
   }
 
   void nonsupport() {
@@ -219,7 +214,8 @@ class _MyPageState extends State<MyPage>
   }
 
   void toLoginPage() {
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+    Navigator.of(
+      context,
+    ).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
   }
 }

@@ -1,14 +1,14 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:example/demo/demo_localizations.dart';
 
-import 'package:example/demo/pages/help/download_page.dart';
-import 'package:example/demo/tool/user_data_store.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:example/demo/demo_localizations.dart';
+import 'package:example/demo/pages/help/download_page.dart';
+import 'package:example/demo/tool/user_data_store.dart';
 
 class ChatRouteFilter {
   static RouteSettings chatRouteSettings(RouteSettings settings) {
@@ -30,14 +30,15 @@ class ChatRouteFilter {
     GroupDetailsViewArguments arguments =
         settings.arguments as GroupDetailsViewArguments;
 
-    arguments = arguments.copyWith(
-      viewObserver: viewObserver,
-    );
+    arguments = arguments.copyWith(viewObserver: viewObserver);
     Future(() async {
-      Group group = await ChatUIKit.instance
-          .fetchGroupInfo(groupId: arguments.profile.id);
-      ChatUIKitProfile profile = arguments.profile
-          .copyWith(showName: group.name, avatarUrl: group.extension);
+      Group group = await ChatUIKit.instance.fetchGroupInfo(
+        groupId: arguments.profile.id,
+      );
+      ChatUIKitProfile profile = arguments.profile.copyWith(
+        showName: group.name,
+        avatarUrl: group.extension,
+      );
       ChatUIKitProvider.instance.addProfiles([profile]);
       UserDataStore().saveUserData(profile);
     }).then((value) {
@@ -150,8 +151,9 @@ class ChatRouteFilter {
     MessagesViewArguments arguments =
         settings.arguments as MessagesViewArguments;
     ChatUIKitViewObserver viewObserver = ChatUIKitViewObserver();
-    MessagesViewController controller =
-        MessagesViewController(profile: arguments.profile);
+    MessagesViewController controller = MessagesViewController(
+      profile: arguments.profile,
+    );
     bool visible = true;
     arguments = arguments.copyWith(
       controller: controller,
@@ -235,22 +237,25 @@ class ChatRouteFilter {
                             ),
                           ),
                           TextSpan(
-                              text: '点击举报',
-                              style: TextStyle(
-                                height: 1.5,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color:
-                                    ChatUIKitTheme.instance.color.primaryColor5,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () async {
-                                  EasyLoading.show(status: '举报中...');
-                                  Future.delayed(const Duration(seconds: 1),
-                                      () {
+                            text: '点击举报',
+                            style: TextStyle(
+                              height: 1.5,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color:
+                                  ChatUIKitTheme.instance.color.primaryColor5,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                EasyLoading.show(status: '举报中...');
+                                Future.delayed(
+                                  const Duration(seconds: 1),
+                                  () {
                                     EasyLoading.showSuccess('举报成功');
-                                  });
-                                })
+                                  },
+                                );
+                              },
+                          ),
                         ],
                       ),
                     ),
@@ -293,7 +298,7 @@ class ChatRouteFilter {
             ChatUIKitDialogInputContentItem(
               hintText: DemoLocalizations.createGroupDesc.localString(context),
               maxLength: 32,
-            )
+            ),
           ],
           actionItems: [
             ChatUIKitDialogAction.cancel(
@@ -316,13 +321,16 @@ class ChatRouteFilter {
               if (error != null) {
                 showChatUIKitDialog(
                   context: context,
-                  title:
-                      DemoLocalizations.createGroupFailed.localString(context),
+                  title: DemoLocalizations.createGroupFailed.localString(
+                    context,
+                  ),
                   content: error.description,
                   actionItems: [
                     ChatUIKitDialogAction.confirm(
-                        label: DemoLocalizations.createGroupConfirm
-                            .localString(context)),
+                      label: DemoLocalizations.createGroupConfirm.localString(
+                        context,
+                      ),
+                    ),
                   ],
                 );
               } else {
