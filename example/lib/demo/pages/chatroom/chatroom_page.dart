@@ -164,6 +164,22 @@ class _ChatRoomPageState extends State<ChatRoomPage> with ChatUIKitThemeMixin {
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       appBar: ChatUIKitAppBar(
+        showBackButton: false,
+        leadingActions: [
+          ChatUIKitAppBarAction(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 12),
+              child: Icon(
+                Icons.arrow_back_ios,
+                size: 20,
+                color: theme.color.isDark ? Colors.white38 : Colors.white70,
+              ),
+            ),
+            onTap: (context) {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
         backgroundColor: Colors.transparent,
         trailingActions: [
           ChatUIKitAppBarAction(

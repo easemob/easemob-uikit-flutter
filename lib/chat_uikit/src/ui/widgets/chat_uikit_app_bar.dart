@@ -113,7 +113,6 @@ class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
       titleTextStyle: model.titleTextStyle,
       subtitle: model.subtitle,
       subTitleTextStyle: model.subTitleTextStyle,
-      leading: null,
       leadingActions: model.leadingActions,
       trailingActions: model.trailingActions,
       showBackButton: model.showBackButton,
@@ -135,7 +134,6 @@ class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.titleTextStyle,
     this.subtitle,
     this.subTitleTextStyle,
-    this.leading,
     this.leadingActions,
     this.trailingActions,
     this.showBackButton = true,
@@ -160,7 +158,6 @@ class ChatUIKitAppBar extends StatefulWidget implements PreferredSizeWidget {
   final TextStyle? titleTextStyle;
   final String? subtitle;
   final TextStyle? subTitleTextStyle;
-  final Widget? leading;
   final List<ChatUIKitAppBarAction>? leadingActions;
   final List<ChatUIKitAppBarAction>? trailingActions;
   final bool centerTitle;
