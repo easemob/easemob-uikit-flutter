@@ -122,9 +122,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> with ChatUIKitThemeMixin {
             itemBuilder: (ctx, msg, user) {
               return null;
             },
-            onTap: (context, msg) {
-              debugPrint('onTap: $msg');
-            },
           ),
         ),
         Positioned(
