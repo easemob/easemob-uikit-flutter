@@ -121,7 +121,21 @@ class _ChatRoomPageState extends State<ChatRoomPage> with ChatUIKitThemeMixin {
             roomId: roomId,
             itemBuilder: (ctx, msg, user) {
               if (msg.isChatRoomCustomMessage) {
-                return ChatRoomMessageListItem(msg, user: user);
+                return ChatRoomMessageListItem(
+                  msg,
+                  user: user,
+                  inlineSpan: TextSpan(children: [
+                    const TextSpan(text: '  自定义消息'),
+                    WidgetSpan(
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 10),
+                        width: 20,
+                        height: 20,
+                        child: Image.asset('assets/room/send_gift.png'),
+                      ),
+                    )
+                  ]),
+                );
               }
               return null;
             },
