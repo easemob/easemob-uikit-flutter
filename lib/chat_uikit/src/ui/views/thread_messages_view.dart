@@ -274,6 +274,9 @@ class _ThreadMessagesViewState extends State<ThreadMessagesView>
 
   @override
   void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
+    if (belongId?.isNotEmpty == true) {
+      return;
+    }
     controller.userMap.addAll(map);
     setState(() {});
   }

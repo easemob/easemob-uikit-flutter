@@ -33,6 +33,9 @@ class _MyPageState extends State<MyPage>
 
   @override
   void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
+    if (belongId?.isNotEmpty == true) {
+      return;
+    }
     if (map.keys.contains(ChatUIKit.instance.currentUserId)) {
       setState(() {
         _userProfile = map[ChatUIKit.instance.currentUserId];

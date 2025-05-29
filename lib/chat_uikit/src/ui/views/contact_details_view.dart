@@ -107,6 +107,9 @@ class _ContactDetailsViewState extends State<ContactDetailsView>
 
   @override
   void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
+    if (belongId?.isNotEmpty == true) {
+      return;
+    }
     if (map.keys.contains(profile?.id)) {
       safeSetState(() {
         profile = map[profile!.id];

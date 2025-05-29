@@ -59,6 +59,9 @@ class _CurrentUserInfoViewState extends State<CurrentUserInfoView>
 
   @override
   void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
+    if (belongId?.isNotEmpty == true) {
+      return;
+    }
     if (map.keys.contains(profile?.id)) {
       setState(() {
         profile = map[profile?.id];

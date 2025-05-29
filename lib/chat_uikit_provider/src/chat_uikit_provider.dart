@@ -114,7 +114,10 @@ class ChatUIKitProvider {
   /// 当传入 [belongId] 时，返回的是群组内的用户信息，如果缓存中不存在，则尝试返回通用的信息
   ChatUIKitProfile? getProfileById(String? id, [String? belongId]) {
     if (id == null) return null;
-    return groupProfilesCache[belongId]?[id] ?? profilesCache[id];
+    if (belongId?.isNotEmpty == true) {
+      return groupProfilesCache[belongId]?[id] ?? profilesCache[id];
+    }
+    return profilesCache[id];
   }
 
   /// 添加用户信息，用户信息更新时会通知所有的观察者信息更新。
