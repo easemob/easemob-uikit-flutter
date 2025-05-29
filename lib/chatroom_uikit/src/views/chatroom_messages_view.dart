@@ -17,8 +17,10 @@ class ChatRoomMessagesView extends StatefulWidget {
 
   final Widget? Function(
       BuildContext content, Message msg, ChatUIKitProfile? user)? itemBuilder;
-  final void Function(BuildContext content, Message msg)? onTap;
-  final void Function(BuildContext content, Message msg)? onLongPress;
+  final void Function(
+      BuildContext content, Message msg, ChatUIKitProfile? user)? onTap;
+  final void Function(
+      BuildContext content, Message msg, ChatUIKitProfile? user)? onLongPress;
   @override
   State<ChatRoomMessagesView> createState() => _ChatRoomMessagesViewState();
 }
@@ -73,23 +75,22 @@ class _ChatRoomMessagesViewState extends State<ChatRoomMessagesView>
       itemCount: messages.length,
       itemBuilder: (context, index) {
         final msg = messages[index];
-
-        Widget? listItem =
-            widget.itemBuilder?.call(context, msg, profileCache[msg.from!]) ??
-                ChatMessageListItemManager.getMessageListItem(
-                  msg,
-                  profileCache[msg.from!],
-                );
+        final profile = profileCache[msg.from!];
+        Widget? listItem = widget.itemBuilder?.call(context, msg, profile) ??
+            ChatMessageListItemManager.getMessageListItem(
+              msg,
+              profileCache[msg.from!],
+            );
         listItem = InkWell(
           key: ValueKey(msg.msgId),
           onLongPress: widget.onLongPress != null
               ? () {
-                  widget.onLongPress?.call(context, msg);
+                  widget.onLongPress?.call(context, msg, profile);
                 }
               : null,
           onTap: widget.onTap != null
               ? () {
-                  widget.onTap?.call(context, msg);
+                  widget.onTap?.call(context, msg, profile);
                 }
               : null,
           child: listItem,

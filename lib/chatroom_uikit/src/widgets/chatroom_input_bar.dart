@@ -18,6 +18,10 @@ class ChatRoomInputBarController {
   void hiddenInputBar() {
     _state?.hiddenInputBar();
   }
+
+  void requestFocus() {
+    _state?.requestFocus();
+  }
 }
 
 class ChatRoomInputBar extends StatefulWidget {
@@ -29,6 +33,7 @@ class ChatRoomInputBar extends StatefulWidget {
     this.textDirection,
     this.onSend,
     this.controller,
+    this.textEditingController,
     this.bottomDistance = 0,
     super.key,
   }) {
@@ -43,6 +48,7 @@ class ChatRoomInputBar extends StatefulWidget {
   final TextDirection? textDirection;
   final void Function(String msg)? onSend;
   final ChatRoomInputBarController? controller;
+  final TextEditingController? textEditingController;
   final double bottomDistance;
 
   @override
@@ -64,7 +70,8 @@ class ChatRoomInputBarState extends State<ChatRoomInputBar>
     controller = widget.controller ?? ChatRoomInputBarController();
     controller._attach(this);
     focusNode = FocusNode();
-    textEditingController = TextEditingController();
+    textEditingController =
+        widget.textEditingController ?? TextEditingController();
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
         setState(() {
@@ -77,6 +84,13 @@ class ChatRoomInputBarState extends State<ChatRoomInputBar>
   void hiddenInputBar() {
     setState(() {
       _inputType = InputType.normal;
+    });
+  }
+
+  void requestFocus() {
+    setState(() {
+      _inputType = InputType.text;
+      focusNode.requestFocus();
     });
   }
 
