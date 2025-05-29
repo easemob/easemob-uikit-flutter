@@ -85,7 +85,7 @@ class ChatRoomUIKitMembersController extends ChatRoomUIKitMembersInterface {
 typedef ChatRoomUIKitMembersListItemBuilder = Widget? Function(
   BuildContext context,
   ChatUIKitProfile profile,
-  Function? onMoreAction,
+  VoidCallback? onMoreAction,
 );
 
 abstract class ChatRoomUIKitMembersInterface {
@@ -283,6 +283,7 @@ class _ChatRoomMemberListViewState extends State<ChatRoomMemberListView>
         ChatUIKitProvider.instance.getProfiles(temp, belongId: widget.roomId);
     members.removeWhere((element) => map.values.contains(element.id));
     members.addAll(map.values);
+
     if (mounted) {
       setState(() {});
     }

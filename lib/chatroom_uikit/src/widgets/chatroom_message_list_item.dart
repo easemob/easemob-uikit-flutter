@@ -1,20 +1,22 @@
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
 import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
+import 'package:em_chat_uikit/chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 import 'package:flutter/material.dart';
 
 class ChatMessageListItemManager {
   static Widget getMessageListItem(Message message, ChatUIKitProfile? user) {
-    if (message.isChatRoomJoinNotify) {
-      return ChatRoomUserJoinListItem(message, user);
-    } else if (message.isChatRoomGift) {
-      return ChatRoomGiftListItem(message, user);
-    } else if (message.isChatRoomCustomMessage) {
-      return ChatRoomMessageListItem(message, user: user);
-    } else {
+    if (message.bodyType == MessageType.CUSTOM) {
+      if (message.isChatRoomJoinNotify) {
+        return ChatRoomUserJoinListItem(message, user);
+      } else if (message.isChatRoomGift) {
+        return ChatRoomGiftListItem(message, user);
+      }
+    } else if (message.bodyType == MessageType.TXT) {
       return ChatRoomTextMessageListItem(message, user);
     }
+    return ChatRoomMessageListItem(message, user: user);
   }
 }
 

@@ -72,36 +72,26 @@ extension ChatRoomMessage on Message {
   }
 
   /// 创建礼物消息
-  static Message giftMessage(
-    String roomId,
-    ChatRoomGift gift, [
-    List<String>? receiver,
-  ]) {
+  static Message giftMessage(String roomId, ChatRoomGift gift) {
     Message giftMsg = Message.createCustomSendMessage(
       targetId: roomId,
       event: ChatRoomUIKitKey.giftEvent,
       params: {ChatRoomUIKitKey.gift: json.encode(gift.toJson())},
       chatType: ChatType.ChatRoom,
     );
-    giftMsg.receiverList = receiver;
+
     giftMsg.addUserInfo(roomId);
 
     return giftMsg;
   }
 
   /// 创建聊天室消息
-  static Message roomMessage(
-    String roomId,
-    String text, [
-    List<String>? receiver,
-  ]) {
+  static Message roomMessage(String roomId, String text) {
     Message msg = Message.createTxtSendMessage(
       targetId: roomId,
       content: text,
       chatType: ChatType.ChatRoom,
     );
-    msg.receiverList = receiver;
-
     msg.addUserInfo(roomId);
     return msg;
   }
@@ -116,23 +106,21 @@ extension ChatRoomMessage on Message {
     return msg;
   }
 
-  /// 创建聊天室消息
+  /// 创建自定义聊天室消息
   static Message customMessage(
-    String roomId, [
+    String roomId,
+    String event, {
     Map<String, String>? params,
-    List<String>? receiver,
-  ]) {
+    ChatRoomMessagePriority priority = ChatRoomMessagePriority.Normal,
+  }) {
     Message msg = Message.createCustomSendMessage(
       targetId: roomId,
-      event: ChatRoomUIKitKey.customEvent,
+      event: event,
       params: params,
     );
+
+    msg.chatroomMessagePriority = priority;
     msg.addUserInfo(roomId);
     return msg;
-  }
-
-  bool get isChatRoomCustomMessage {
-    return body.type == MessageType.CUSTOM &&
-        (body as CustomMessageBody).event == ChatRoomUIKitKey.customEvent;
   }
 }

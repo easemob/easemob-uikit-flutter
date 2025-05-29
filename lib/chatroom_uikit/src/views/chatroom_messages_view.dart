@@ -73,7 +73,14 @@ class _ChatRoomMessagesViewState extends State<ChatRoomMessagesView>
       itemCount: messages.length,
       itemBuilder: (context, index) {
         final msg = messages[index];
-        return InkWell(
+
+        Widget? listItem =
+            widget.itemBuilder?.call(context, msg, profileCache[msg.from!]) ??
+                ChatMessageListItemManager.getMessageListItem(
+                  msg,
+                  profileCache[msg.from!],
+                );
+        listItem = InkWell(
           key: ValueKey(msg.msgId),
           onLongPress: widget.onLongPress != null
               ? () {
@@ -85,13 +92,9 @@ class _ChatRoomMessagesViewState extends State<ChatRoomMessagesView>
                   widget.onTap?.call(context, msg);
                 }
               : null,
-          child:
-              widget.itemBuilder?.call(context, msg, profileCache[msg.from!]) ??
-                  ChatMessageListItemManager.getMessageListItem(
-                    msg,
-                    profileCache[msg.from!],
-                  ),
+          child: listItem,
         );
+        return listItem;
       },
       findChildIndexCallback: (key) {
         final index = messages.indexWhere((element) {

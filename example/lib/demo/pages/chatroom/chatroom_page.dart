@@ -120,23 +120,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> with ChatUIKitThemeMixin {
           child: ChatRoomMessagesView(
             roomId: roomId,
             itemBuilder: (ctx, msg, user) {
-              if (msg.isChatRoomCustomMessage) {
-                return ChatRoomMessageListItem(
-                  msg,
-                  user: user,
-                  inlineSpan: TextSpan(children: [
-                    const TextSpan(text: '  自定义消息'),
-                    WidgetSpan(
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 10),
-                        width: 20,
-                        height: 20,
-                        child: Image.asset('assets/room/send_gift.png'),
-                      ),
-                    )
-                  ]),
-                );
-              }
               return null;
             },
             onTap: (context, msg) {
@@ -212,7 +195,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> with ChatUIKitThemeMixin {
               // 发送自定义消息
               final msg = ChatRoomMessage.customMessage(
                 roomId,
-                {"key": "value"},
+                "testEvent",
               );
               ChatUIKit.instance.sendMessage(message: msg);
             },
@@ -227,7 +210,36 @@ class _ChatRoomPageState extends State<ChatRoomPage> with ChatUIKitThemeMixin {
               chatroomShowMembersView(context,
                   roomId: roomId,
                   membersControllers: [
-                    ChatRoomUIKitMembersController('聊天室成员'),
+                    ChatRoomUIKitMembersController(
+                      '聊天室成员',
+                      itemBuilder: (context, profile, onMoreAction) {
+                        return ChatRoomUIKitMemberListTitle(
+                          profile: profile,
+                          onMoreAction: () async {
+                            String? result = await showChatUIKitBottomSheet(
+                              context: context,
+                              items: [
+                                ChatUIKitEventAction.normal(
+                                  label: '自定义事件1',
+                                  onTap: () {
+                                    Navigator.of(context).pop("自定义事件1");
+                                  },
+                                ),
+                                ChatUIKitEventAction.normal(
+                                  label: '自定义事件2',
+                                  onTap: () {
+                                    Navigator.of(context).pop("自定义事件2");
+                                  },
+                                ),
+                              ],
+                            );
+                            if (result != null) {
+                              EasyLoading.showToast('点击了: $result');
+                            }
+                          },
+                        );
+                      },
+                    ),
                     if (isOwner) ChatRoomUIKitMutesController('禁言列表')
                   ]);
             },
