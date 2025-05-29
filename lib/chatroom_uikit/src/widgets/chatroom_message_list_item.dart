@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 
 class ChatMessageListItemManager {
   static Widget getMessageListItem(Message message, ChatUIKitProfile? user) {
-    if (message.isJoinNotify) {
+    if (message.isChatRoomJoinNotify) {
       return ChatRoomUserJoinListItem(message, user);
-    } else if (message.isGift) {
+    } else if (message.isChatRoomGift) {
       return ChatRoomGiftListItem(message, user);
+    } else if (message.isChatRoomCustomMessage) {
+      return ChatRoomMessageListItem(message, user: user);
     } else {
       return ChatRoomTextMessageListItem(message, user);
     }
@@ -17,10 +19,11 @@ class ChatMessageListItemManager {
 }
 
 class ChatRoomMessageListItem extends StatefulWidget {
-  const ChatRoomMessageListItem(this.msg, {this.child, this.user, super.key});
+  const ChatRoomMessageListItem(this.msg,
+      {this.inlineSpan, this.user, super.key});
   final Message msg;
   final ChatUIKitProfile? user;
-  final TextSpan? child;
+  final InlineSpan? inlineSpan;
   @override
   State<ChatRoomMessageListItem> createState() =>
       _ChatRoomMessageListItemState();
@@ -98,8 +101,8 @@ class _ChatRoomMessageListItemState extends State<ChatRoomMessageListItem>
       );
     }
 
-    if (widget.child != null) {
-      list.add(widget.child!);
+    if (widget.inlineSpan != null) {
+      list.add(widget.inlineSpan!);
     }
 
     Widget content = Text.rich(
@@ -150,7 +153,7 @@ class _ChatRoomUserJoinListItemState extends State<ChatRoomUserJoinListItem>
       widget.msg,
       user: widget.user,
       // TODO: 国际化
-      child: TextSpan(
+      inlineSpan: TextSpan(
           text: " 加入聊天室",
           style: TextStyle(
             color: theme.color.isDark
@@ -173,14 +176,14 @@ class _ChatRoomGiftListItemState extends State<ChatRoomGiftListItem>
     with ChatUIKitThemeMixin {
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
-    if (!widget.msg.isGift) return const SizedBox();
+    if (!widget.msg.isChatRoomGift) return const SizedBox();
     ChatRoomGift? gift = widget.msg.getGift();
 
     return ChatRoomMessageListItem(
       widget.msg,
       user: widget.user,
       // TODO: 国际化
-      child: TextSpan(
+      inlineSpan: TextSpan(
         children: [
           const WidgetSpan(child: Padding(padding: EdgeInsets.only(left: 4))),
           // TODO 礼物名称国际化
@@ -299,7 +302,7 @@ class _ChatRoomTextMessageListItemState
     return ChatRoomMessageListItem(
       widget.msg,
       user: widget.user,
-      child: TextSpan(
+      inlineSpan: TextSpan(
         children: [
           const WidgetSpan(child: Padding(padding: EdgeInsets.only(left: 4))),
           TextSpan(children: list),

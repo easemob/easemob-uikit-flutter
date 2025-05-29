@@ -117,7 +117,7 @@ class _ChatRoomShowGiftViewState extends State<ChatRoomShowGiftView>
     localMsgs.removeWhere((element) {
       return element.conversationId != widget.roomId ||
           element.isBroadcast ||
-          !element.isGift;
+          !element.isChatRoomGift;
     });
     for (var msg in localMsgs) {
       showGift(msg);
@@ -126,7 +126,9 @@ class _ChatRoomShowGiftViewState extends State<ChatRoomShowGiftView>
 
   @override
   void onMessageSendSuccess(String msgId, Message msg) {
-    if (msg.conversationId != widget.roomId || msg.isBroadcast || !msg.isGift) {
+    if (msg.conversationId != widget.roomId ||
+        msg.isBroadcast ||
+        !msg.isChatRoomGift) {
       return;
     }
     showGift(msg);

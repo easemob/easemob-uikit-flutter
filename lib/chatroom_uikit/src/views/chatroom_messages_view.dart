@@ -15,7 +15,8 @@ class ChatRoomMessagesView extends StatefulWidget {
 
   final String roomId;
 
-  final Widget Function(Message msg)? itemBuilder;
+  final Widget? Function(
+      BuildContext content, Message msg, ChatUIKitProfile? user)? itemBuilder;
   final void Function(BuildContext content, Message msg)? onTap;
   final void Function(BuildContext content, Message msg)? onLongPress;
   @override
@@ -84,11 +85,12 @@ class _ChatRoomMessagesViewState extends State<ChatRoomMessagesView>
                   widget.onTap?.call(context, msg);
                 }
               : null,
-          child: widget.itemBuilder?.call(msg) ??
-              ChatMessageListItemManager.getMessageListItem(
-                msg,
-                profileCache[msg.from!],
-              ),
+          child:
+              widget.itemBuilder?.call(context, msg, profileCache[msg.from!]) ??
+                  ChatMessageListItemManager.getMessageListItem(
+                    msg,
+                    profileCache[msg.from!],
+                  ),
         );
       },
       findChildIndexCallback: (key) {

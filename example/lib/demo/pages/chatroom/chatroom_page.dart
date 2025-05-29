@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ChatRoomPage extends StatefulWidget {
   const ChatRoomPage(this.room, {super.key});
@@ -39,6 +40,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> with ChatUIKitThemeMixin {
       ChatRoomUIKit.instance.joinChatRoom(roomId: roomId).then((_) {
         debugPrint('join chat room');
       }).catchError((e) {
+        EasyLoading.showError('加入失败');
         debugPrint('join chat room error: $e');
       });
     });
@@ -75,6 +77,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> with ChatUIKitThemeMixin {
 
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
+    // 预加暗色载背景图片,防止切换时闪屏
+    precacheImage(const AssetImage('assets/room/dark_bg.png'), context);
     Widget content = Stack(
       children: [
         Positioned.fill(
@@ -115,6 +119,12 @@ class _ChatRoomPageState extends State<ChatRoomPage> with ChatUIKitThemeMixin {
           bottom: 90,
           child: ChatRoomMessagesView(
             roomId: roomId,
+            itemBuilder: (ctx, msg, user) {
+              if (msg.isChatRoomCustomMessage) {
+                return ChatRoomMessageListItem(msg, user: user);
+              }
+              return null;
+            },
             onTap: (context, msg) {
               debugPrint('onTap: $msg');
             },
@@ -182,6 +192,21 @@ class _ChatRoomPageState extends State<ChatRoomPage> with ChatUIKitThemeMixin {
         ],
         backgroundColor: Colors.transparent,
         trailingActions: [
+          ChatUIKitAppBarAction(
+              child: IconButton(
+            onPressed: () {
+              // 发送自定义消息
+              final msg = ChatRoomMessage.customMessage(
+                roomId,
+                {"key": "value"},
+              );
+              ChatUIKit.instance.sendMessage(message: msg);
+            },
+            icon: Icon(
+              Icons.email,
+              color: theme.color.isDark ? Colors.white38 : Colors.white70,
+            ),
+          )),
           ChatUIKitAppBarAction(
               child: IconButton(
             onPressed: () {

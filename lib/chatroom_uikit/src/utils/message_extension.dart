@@ -5,14 +5,15 @@ import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 
 class ChatRoomUIKitKey {
-  static String userJoinEvent = 'CHATROOMUIKITUSERJOIN';
   static String userInfo = 'chatroom_uikit_userInfo';
+  static String userJoinEvent = 'CHATROOMUIKITUSERJOIN';
+  static String customEvent = 'CHATROOMUIKITCUSTOM';
   static String giftEvent = 'CHATROOMUIKITGIFT';
   static String gift = 'chatroom_uikit_gift';
 }
 
 extension ChatRoomMessage on Message {
-  bool get isJoinNotify {
+  bool get isChatRoomJoinNotify {
     bool ret = false;
     if (body.type == MessageType.CUSTOM) {
       String event = (body as CustomMessageBody).event;
@@ -23,11 +24,11 @@ extension ChatRoomMessage on Message {
     return ret;
   }
 
-  bool get isGiftNotify {
+  bool get isChatRoomGiftNotify {
     return isBroadcast;
   }
 
-  bool get isGift {
+  bool get isChatRoomGift {
     bool ret = false;
     if (body.type == MessageType.CUSTOM) {
       String event = (body as CustomMessageBody).event;
@@ -113,5 +114,25 @@ extension ChatRoomMessage on Message {
     );
     msg.addUserInfo(roomId);
     return msg;
+  }
+
+  /// 创建聊天室消息
+  static Message customMessage(
+    String roomId, [
+    Map<String, String>? params,
+    List<String>? receiver,
+  ]) {
+    Message msg = Message.createCustomSendMessage(
+      targetId: roomId,
+      event: ChatRoomUIKitKey.customEvent,
+      params: params,
+    );
+    msg.addUserInfo(roomId);
+    return msg;
+  }
+
+  bool get isChatRoomCustomMessage {
+    return body.type == MessageType.CUSTOM &&
+        (body as CustomMessageBody).event == ChatRoomUIKitKey.customEvent;
   }
 }
