@@ -1,5 +1,6 @@
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
 import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
+import 'package:em_chat_uikit/chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 import 'package:flutter/material.dart';
@@ -229,6 +230,8 @@ class _ChatRoomMessagesViewState extends State<ChatRoomMessagesView>
 
   @override
   void onMessageSendSuccess(String msgId, Message msg) {
+    if (msg.bodyType == MessageType.CMD) return;
+
     if (msg.conversationId == widget.roomId && !msg.isBroadcast) {
       final profile = msg.getUserInfo();
       if (profile != null && profile.type == ChatUIKitProfileType.contact) {
