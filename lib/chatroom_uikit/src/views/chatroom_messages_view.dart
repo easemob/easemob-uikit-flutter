@@ -203,6 +203,13 @@ class _ChatRoomMessagesViewState extends State<ChatRoomMessagesView>
       return element.conversationId != widget.roomId || element.isBroadcast;
     });
 
+    for (var msg in localMsgs) {
+      final profile = msg.getUserInfo();
+      if (profile != null && profile.type == ChatUIKitProfileType.contact) {
+        profileCache[profile.id] = profile;
+      }
+    }
+
     setState(() {
       this.messages.addAll(localMsgs);
       if (canMoveToBottom.value) {
