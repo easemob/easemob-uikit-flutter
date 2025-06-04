@@ -12,7 +12,7 @@ extension ChatRoomUserInfo on ChatUIKitProfile {
     String? avatarUrl,
     int? gender,
     String? identify,
-    Map<String, Object>? ext,
+    Map<String, String>? ext,
   }) {
     final profile = ChatUIKitProfile(
       id: userId,
