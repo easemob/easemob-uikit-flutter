@@ -3,6 +3,7 @@ import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 
 const String userGenderKey = 'gender';
 const String userIdentifyKey = 'identify';
+const String userExtKey = 'ext';
 
 extension ChatRoomUserInfo on ChatUIKitProfile {
   static ChatUIKitProfile createUserProfile({
@@ -11,6 +12,7 @@ extension ChatRoomUserInfo on ChatUIKitProfile {
     String? avatarUrl,
     int? gender,
     String? identify,
+    Map<String, Object>? ext,
   }) {
     final profile = ChatUIKitProfile(
       id: userId,
@@ -23,6 +25,9 @@ extension ChatRoomUserInfo on ChatUIKitProfile {
     }
     if (identify != null) {
       profile.extension[userIdentifyKey] = identify;
+    }
+    if (ext != null) {
+      profile.extension[userExtKey] = ext;
     }
     return profile;
   }
@@ -40,6 +45,9 @@ extension ChatRoomUserInfo on ChatUIKitProfile {
     if (json[userIdentifyKey] != null) {
       profile.extension[userIdentifyKey] = json[userIdentifyKey];
     }
+    if (json[userExtKey] != null) {
+      profile.extension[userExtKey] = json[userExtKey];
+    }
     return profile;
   }
 
@@ -50,6 +58,7 @@ extension ChatRoomUserInfo on ChatUIKitProfile {
     map.putIfNotNull('avatarURL', avatarUrl);
     map.putIfNotNull('gender', extension[userGenderKey]);
     map.putIfNotNull('identify', extension[userIdentifyKey]);
+    map.putIfNotNull('ext', extension[userExtKey]);
     return map;
   }
 

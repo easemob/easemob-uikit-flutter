@@ -69,9 +69,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> with ChatUIKitThemeMixin {
   // 设置自己在聊天室中的信息
   Future<void> setupMyInfo() async {
     ChatUIKitProfile profile = ChatRoomUserInfo.createUserProfile(
-      userId: ChatRoomUIKit.instance.currentUserId!,
-      nickname: '在 ${widget.room.name ?? roomId} 中的昵称',
-    );
+        userId: ChatRoomUIKit.instance.currentUserId!,
+        nickname: '在 ${widget.room.name ?? roomId} 中的昵称',
+        ext: {"testKey": "testValue"});
     ChatUIKitProvider.instance.addProfiles([profile], roomId);
   }
 

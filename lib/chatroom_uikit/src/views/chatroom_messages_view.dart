@@ -4,6 +4,7 @@ import 'package:em_chat_uikit/chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class ChatRoomMessagesView extends StatefulWidget {
   const ChatRoomMessagesView({
@@ -112,7 +113,10 @@ class _ChatRoomMessagesViewState extends State<ChatRoomMessagesView>
 
     content = NotificationListener<ScrollNotification>(
       onNotification: (notification) {
-        if (notification is ScrollUpdateNotification) {
+        if (notification is UserScrollNotification &&
+            notification.direction == ScrollDirection.forward) {
+          canMoveToBottom.value = false;
+        } else if (notification is ScrollEndNotification) {
           canMoveToBottom.value = scrollController.position.pixels >=
               scrollController.position.maxScrollExtent;
           if (canMoveToBottom.value) {
@@ -255,9 +259,9 @@ class _ChatRoomMessagesViewState extends State<ChatRoomMessagesView>
 
   void moveToBottom() {
     if (scrollController.hasClients) {
-      Future.delayed(const Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 50), () {
         scrollController.animateTo(scrollController.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+            duration: const Duration(milliseconds: 200), curve: Curves.easeOut);
       });
     }
   }

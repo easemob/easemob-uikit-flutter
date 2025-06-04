@@ -117,6 +117,7 @@ extension ChatRoomMessage on Message {
       targetId: roomId,
       event: event,
       params: params,
+      chatType: ChatType.ChatRoom,
     );
 
     msg.chatroomMessagePriority = priority;
