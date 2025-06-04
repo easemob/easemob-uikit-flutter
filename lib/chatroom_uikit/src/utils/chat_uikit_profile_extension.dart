@@ -69,4 +69,8 @@ extension ChatRoomUserInfo on ChatUIKitProfile {
   int? get gender {
     return extension[userGenderKey] as int?;
   }
+
+  Map<String, String>? get ext {
+    return extension[userExtKey] as Map<String, String>?;
+  }
 }
