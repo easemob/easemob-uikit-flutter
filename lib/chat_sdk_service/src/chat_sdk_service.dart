@@ -24,6 +24,7 @@ import 'wrappers/presence_wrapper.dart';
 import 'wrappers/notification_wrapper.dart';
 import 'wrappers/thread_wrapper.dart';
 import 'wrappers/user_info_wrapper.dart';
+import 'wrappers/connect_wrapper.dart';
 
 const String sdkEventKey = 'chat_uikit';
 
@@ -99,6 +100,7 @@ class ChatSDKService extends ChatUIKitServiceBase
         NotificationWrapper,
         ThreadWrapper,
         PresenceWrapper,
+        ConnectWrapper,
         UserInfoWrapper,
         ChatActions,
         ContactActions,
