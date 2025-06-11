@@ -159,6 +159,13 @@ extension MessageHelper on Message {
     return null;
   }
 
+  bool get isGif {
+    if (bodyType == MessageType.IMAGE) {
+      return (body as ImageMessageBody).isGif;
+    }
+    return false;
+  }
+
   String? get thumbnailRemotePath {
     if (bodyType == MessageType.IMAGE) {
       return (body as ImageMessageBody).thumbnailRemotePath;

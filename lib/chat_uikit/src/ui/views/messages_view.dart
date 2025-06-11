@@ -1612,7 +1612,11 @@ class _MessagesViewState extends State<MessagesView>
     try {
       final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
-        controller.sendImageMessage(image.path, name: image.name);
+        controller.sendImageMessage(
+          image.path,
+          name: image.name,
+          isGif: image.name.toLowerCase().endsWith('.gif'),
+        );
         return true;
       }
     } catch (e) {

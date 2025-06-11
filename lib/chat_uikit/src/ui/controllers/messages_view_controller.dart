@@ -234,6 +234,7 @@ class MessagesViewController extends ChangeNotifier
   void onMessagesReceived(List<Message> messages) {
     List<MessageModel> list = [];
     for (var element in messages) {
+      debugPrint(element.toString());
       if (element.conversationId == profile.id) {
         list.add(
           MessageModel(message: element),
@@ -606,28 +607,59 @@ class MessagesViewController extends ChangeNotifier
     sendMessage(message);
   }
 
-  Future<void> sendImageMessage(String path, {String? name}) async {
+  Future<void> sendImageMessage(
+    String path, {
+    String? name,
+    bool? isGif,
+  }) async {
     if (path.isEmpty) {
       return;
     }
 
     File file = File(path);
-    Image.file(file).image.resolve(const ImageConfiguration()).addListener(
-      ImageStreamListener(
-        (info, synchronousCall) {
-          Message message = Message.createImageSendMessage(
-            targetId: profile.id,
-            chatType: chatType,
-            filePath: path,
-            width: info.image.width.toDouble(),
-            height: info.image.height.toDouble(),
-            fileSize: file.lengthSync(),
-            displayName: name,
-          );
-          sendMessage(message);
-        },
-      ),
+
+    final ImageStream stream =
+        Image.file(file).image.resolve(ImageConfiguration.empty);
+    final Completer<Size> completer = Completer<Size>();
+    final ImageStreamListener listener = ImageStreamListener(
+      (ImageInfo imageInfo, bool synchronousCall) {
+        final Size size = Size(
+          imageInfo.image.width.toDouble(),
+          imageInfo.image.height.toDouble(),
+        );
+        if (!completer.isCompleted) {
+          completer.complete(size);
+        }
+      },
+      onError: (dynamic exception, StackTrace? stackTrace) {
+        if (!completer.isCompleted) {
+          completer.completeError(exception, stackTrace);
+        }
+      },
     );
+
+    stream.addListener(listener);
+    Size? size;
+    try {
+      size = await completer.future;
+    } catch (e) {
+      debugPrint('获取图片尺寸失败: $e');
+    } finally {
+      stream.removeListener(listener);
+    }
+
+    Message message = Message.createImageSendMessage(
+      targetId: profile.id,
+      chatType: chatType,
+      filePath: path,
+      width: size?.width ?? 100,
+      height: size?.height ?? 100,
+      fileSize: file.lengthSync(),
+      displayName: name,
+      isGif: isGif ?? false,
+    );
+
+    sendMessage(message);
   }
 
   Future<void> sendVideoMessage(

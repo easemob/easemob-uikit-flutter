@@ -232,7 +232,8 @@ class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget>
   void download() {
     if (downloading) return;
     downloading = true;
-    if (model.message.thumbnailLocalPath?.isNotEmpty == true) {
+    if (model.message.thumbnailLocalPath?.isNotEmpty == true &&
+        !model.message.isGif) {
       if (widget.isCombine) {
         ChatUIKit.instance
             .downloadMessageThumbnailInCombine(message: model.message);

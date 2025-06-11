@@ -13,7 +13,8 @@ class ChatRoomPage extends StatefulWidget {
   State<ChatRoomPage> createState() => _ChatRoomPageState();
 }
 
-class _ChatRoomPageState extends State<ChatRoomPage> with ChatUIKitThemeMixin {
+class _ChatRoomPageState extends State<ChatRoomPage>
+    with RoomObserver, ChatUIKitThemeMixin {
   ChatRoomInputBarController inputBarController = ChatRoomInputBarController();
 
   // 发送礼物列表 使用
@@ -23,9 +24,16 @@ class _ChatRoomPageState extends State<ChatRoomPage> with ChatUIKitThemeMixin {
   @override
   void initState() {
     super.initState();
+    ChatUIKit.instance.addObserver(this);
     analysisGiftList();
     setup();
     isOwner = widget.room.owner == ChatUIKit.instance.currentUserId;
+  }
+
+  @override
+  void dispose() {
+    ChatUIKit.instance.removeObserver(this);
+    super.dispose();
   }
 
   void setup() async {
@@ -73,6 +81,14 @@ class _ChatRoomPageState extends State<ChatRoomPage> with ChatUIKitThemeMixin {
         nickname: '在 ${widget.room.name ?? roomId} 中的昵称',
         ext: {"testKey": "testValue"});
     ChatUIKitProvider.instance.addProfiles([profile], roomId);
+  }
+
+  @override
+  void onRemovedFromChatRoom(String roomId, String? roomName,
+      String? participant, LeaveReason? reason) {
+    if (roomId == widget.room.roomId) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override

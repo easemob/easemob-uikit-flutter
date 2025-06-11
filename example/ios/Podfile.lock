@@ -1,5 +1,5 @@
 PODS:
-  - AgoraInfra_iOS (1.2.13)
+  - AgoraInfra_iOS (1.2.13.1)
   - audioplayers_darwin (0.0.1):
     - Flutter
   - chat_uikit_keyboard_panel (0.0.1):
@@ -43,11 +43,11 @@ PODS:
   - Flutter (1.0.0)
   - flutter_localization (0.0.1):
     - Flutter
-  - HyphenateChat (4.13.0):
-    - AgoraInfra_iOS (= 1.2.13)
-  - im_flutter_sdk_ios (0.0.1):
+  - HyphenateChat (4.15.0):
+    - AgoraInfra_iOS (~> 1.2.13)
+  - im_flutter_sdk_ios (4.14.0):
     - Flutter
-    - HyphenateChat (= 4.13.0)
+    - HyphenateChat (= 4.15.0)
   - image_picker_ios (0.0.1):
     - Flutter
   - path_provider_foundation (0.0.1):
@@ -55,9 +55,9 @@ PODS:
     - FlutterMacOS
   - record_darwin (1.0.0):
     - Flutter
-  - SDWebImage (5.20.0):
-    - SDWebImage/Core (= 5.20.0)
-  - SDWebImage/Core (5.20.0)
+  - SDWebImage (5.21.0):
+    - SDWebImage/Core (= 5.21.0)
+  - SDWebImage/Core (5.21.0)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -132,7 +132,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_player_avfoundation/darwin"
 
 SPEC CHECKSUMS:
-  AgoraInfra_iOS: 65e11a2183ab7836258768868d06058c22701b13
+  AgoraInfra_iOS: 3691b2b277a1712a35ae96de25af319de0d73d08
   audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
   chat_uikit_keyboard_panel: 67cdf0084a828cc82c53c7065b54d92b9fc8951e
   DKImagePickerController: 946cec48c7873164274ecc4624d19e3da4c1ef3c
@@ -141,12 +141,12 @@ SPEC CHECKSUMS:
   file_picker: b159e0c068aef54932bb15dc9fd1571818edaf49
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_localization: f43b18844a2b3d2c71fd64f04ffd6b1e64dd54d4
-  HyphenateChat: c2ecd32ae5328c027d8e270bdbe63c0902cfc828
-  im_flutter_sdk_ios: 989968246d61b7472044cd19c93ff2bb70194a10
+  HyphenateChat: 4523c7fb2075771c49a2c492b31544d6cc82ff50
+  im_flutter_sdk_ios: 2348d34baa17e98d8c490d92023410956c8afee1
   image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   record_darwin: 3b1a8e7d5c0cbf45ad6165b4d83a6ca643d929c3
-  SDWebImage: 73c6079366fea25fa4bb9640d5fb58f0893facd8
+  SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
   SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
