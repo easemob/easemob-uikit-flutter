@@ -569,7 +569,10 @@ class _MessagesViewState extends State<MessagesView>
         if (ret != true) {}
         return ret;
       },
-      itemBuilder: widget.itemBuilder ?? itemBuilder,
+      itemBuilder: (ctx, model) {
+        controller.sendMessageReadAck(model.message);
+        return widget.itemBuilder?.call(ctx, model) ?? itemBuilder(ctx, model);
+      },
       alertItemBuilder: widget.alertItemBuilder ?? alertItem,
       onErrorBtnTap: (model) {
         bool ret = widget.onErrorBtnTapHandler?.call(context, model) ?? false;
@@ -788,7 +791,6 @@ class _MessagesViewState extends State<MessagesView>
   }
 
   Widget? itemBuilder(BuildContext context, MessageModel model) {
-    controller.sendMessageReadAck(model.message);
     if (model.message.bodyType != MessageType.VOICE) return null;
 
     Widget content = ChatUIKitMessageListViewMessageItem(
