@@ -100,8 +100,8 @@ class MessagesViewController extends ChangeNotifier
       final profile = ChatUIKitProvider.instance.getProfileById(
         ChatUIKit.instance.currentUserId!,
       );
-      if (profile == null) {
-        userMap[ChatUIKit.instance.currentUserId!] = profile!;
+      if (profile != null) {
+        userMap[ChatUIKit.instance.currentUserId!] = profile;
       }
     }
   }
@@ -747,8 +747,8 @@ class MessagesViewController extends ChangeNotifier
       final profile = ChatUIKitProvider.instance.getProfileById(
         ChatUIKit.instance.currentUserId!,
       );
-      if (profile == null) {
-        userMap[ChatUIKit.instance.currentUserId!] = profile!;
+      if (profile != null) {
+        userMap[ChatUIKit.instance.currentUserId!] = profile;
       }
     }
     // 插入缓存中的消息

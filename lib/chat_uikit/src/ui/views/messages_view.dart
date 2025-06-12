@@ -653,24 +653,33 @@ class _MessagesViewState extends State<MessagesView>
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
       appBar: widget.enableAppBar ? ChatUIKitAppBar.model(appBarModel!) : null,
-      body: SafeArea(
-        maintainBottomViewPadding: true,
-        child: ChatUIKitSettings.enablePinMsg &&
-                controller.chatType == ChatType.GroupChat
-            ? Stack(
-                children: [
-                  content,
-                  PinMessageListView(
-                    maxHeight: MediaQuery.of(context).size.height / 5 * 3,
-                    pinMessagesController: pinMessageController!,
-                    onTap: (message) => jumpToMessage(
-                      message.msgId,
-                      position: AutoScrollPosition.begin,
+      body: InkWell(
+        onTap: () {
+          clearAllType();
+          inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
+        },
+        hoverColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        child: SafeArea(
+          maintainBottomViewPadding: true,
+          child: ChatUIKitSettings.enablePinMsg &&
+                  controller.chatType == ChatType.GroupChat
+              ? Stack(
+                  children: [
+                    content,
+                    PinMessageListView(
+                      maxHeight: MediaQuery.of(context).size.height / 5 * 3,
+                      pinMessagesController: pinMessageController!,
+                      onTap: (message) => jumpToMessage(
+                        message.msgId,
+                        position: AutoScrollPosition.begin,
+                      ),
                     ),
-                  ),
-                ],
-              )
-            : content,
+                  ],
+                )
+              : content,
+        ),
       ),
     );
 
@@ -733,13 +742,6 @@ class _MessagesViewState extends State<MessagesView>
                 ))
             : const SizedBox(),
       ],
-    );
-    content = InkWell(
-      onTap: () {
-        clearAllType();
-        inputController.switchPanel(ChatUIKitKeyboardPanelType.none);
-      },
-      child: content,
     );
 
     content = ShareUserData(

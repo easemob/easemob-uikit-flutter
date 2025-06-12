@@ -42,8 +42,8 @@ class ThreadMessagesViewController
       final profile = ChatUIKitProvider.instance.getProfileById(
         ChatUIKit.instance.currentUserId!,
       );
-      if (profile == null) {
-        userMap[ChatUIKit.instance.currentUserId!] = profile!;
+      if (profile != null) {
+        userMap[ChatUIKit.instance.currentUserId!] = profile;
       }
     }
     thread ??= model?.thread;
@@ -382,8 +382,8 @@ class ThreadMessagesViewController
       final profile = ChatUIKitProvider.instance.getProfileById(
         ChatUIKit.instance.currentUserId!,
       );
-      if (profile == null) {
-        userMap[ChatUIKit.instance.currentUserId!] = profile!;
+      if (profile != null) {
+        userMap[ChatUIKit.instance.currentUserId!] = profile;
       }
     }
 
