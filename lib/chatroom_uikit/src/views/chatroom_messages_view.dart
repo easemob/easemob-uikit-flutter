@@ -29,7 +29,6 @@ class ChatRoomMessagesView extends StatefulWidget {
 
 class _ChatRoomMessagesViewState extends State<ChatRoomMessagesView>
     with
-        RoomObserver,
         ChatObserver,
         MessageObserver,
         ChatUIKitProviderObserver,
@@ -44,13 +43,11 @@ class _ChatRoomMessagesViewState extends State<ChatRoomMessagesView>
   @override
   void initState() {
     super.initState();
-    ChatRoomUIKit.instance.addObserver(this);
     ChatUIKitProvider.instance.addObserver(this);
   }
 
   @override
   void dispose() {
-    ChatRoomUIKit.instance.removeObserver(this);
     ChatUIKitProvider.instance.removeObserver(this);
     super.dispose();
   }
@@ -265,11 +262,4 @@ class _ChatRoomMessagesViewState extends State<ChatRoomMessagesView>
       });
     }
   }
-
-  @override
-  void onMemberJoinedFromChatRoom(
-    String roomId,
-    String participant,
-    String? ext,
-  ) {}
 }

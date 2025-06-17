@@ -12,11 +12,26 @@ class ChatRoomUIKitMutesController extends ChatRoomUIKitMembersInterface {
 
   @override
   Future<List<String>> loadData() async {
+    if (isLoadFinished) return [];
     try {
-      List<String> result = await ChatRoomUIKit.instance
-          .fetchChatRoomMuteList(roomId: _state!.roomId, pageNum: pageNumber);
+      List<String> result = await ChatRoomUIKit.instance.fetchChatRoomMuteList(
+        roomId: _state!.roomId,
+        pageNum: pageNumber,
+      );
+
       pageNumber++;
       firstLoading.value = false;
+      if (result.length < pageNumber) {
+        isLoadFinished = true;
+      }
+
+      if (lastestMember?.isNotEmpty == true && lastestMember == result.last) {
+        result = [];
+        isLoadFinished = true;
+      } else {
+        lastestMember = result.last;
+      }
+
       return result;
     } catch (e) {
       firstLoading.value = false;
@@ -29,8 +44,11 @@ class ChatRoomUIKitMutesController extends ChatRoomUIKitMembersInterface {
   Future<List<String>> reloadData() async {
     try {
       pageNumber = 1;
-      List<String> result = await ChatRoomUIKit.instance
-          .fetchChatRoomMuteList(roomId: _state!.roomId, pageNum: pageNumber);
+      lastestMember = null;
+      List<String> result = await ChatRoomUIKit.instance.fetchChatRoomMuteList(
+        roomId: _state!.roomId,
+        pageNum: pageNumber,
+      );
       pageNumber;
       firstLoading.value = false;
       return result;
@@ -45,17 +63,22 @@ class ChatRoomUIKitMutesController extends ChatRoomUIKitMembersInterface {
 class ChatRoomUIKitMembersController extends ChatRoomUIKitMembersInterface {
   ChatRoomUIKitMembersController(super.title, {super.itemBuilder});
   String? cursor;
+  final int pageSize = 10;
 
   @override
   Future<List<String>> loadData() async {
     try {
+      if (cursor == '') {
+        return [];
+      }
       CursorResult<String> result =
           await ChatRoomUIKit.instance.fetchChatRoomMembers(
         roomId: _state!.roomId,
         cursor: cursor,
+        pageSize: pageSize,
       );
-      cursor = result.cursor;
-      firstLoading.value = false;
+      cursor = result.cursor ?? '';
+      debugPrint("tttt ${result.data}");
       return result.data;
     } catch (e) {
       debugPrint('Error fetching chat room members: $e');
@@ -93,6 +116,8 @@ abstract class ChatRoomUIKitMembersInterface {
   final String title;
   final ChatRoomUIKitMembersListItemBuilder? itemBuilder;
   ValueNotifier firstLoading = ValueNotifier(true);
+  bool isLoadFinished = false;
+  String? lastestMember;
 
   _ChatRoomMemberListViewState? _state;
   void _attach(_ChatRoomMemberListViewState state) {
@@ -259,7 +284,7 @@ class _ChatRoomMemberListViewState extends State<ChatRoomMemberListView>
               return;
             }
             loadingMore = true;
-            loadData();
+            await loadData();
             loadingMore = false;
           }
         });
@@ -275,7 +300,7 @@ class _ChatRoomMemberListViewState extends State<ChatRoomMemberListView>
     super.dispose();
   }
 
-  void loadData() async {
+  Future<void> loadData() async {
     List<String> list = await widget.controller.loadData();
     List<ChatUIKitProfile> temp =
         list.map((userId) => ChatUIKitProfile.contact(id: userId)).toList();
