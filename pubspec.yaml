@@ -12,12 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # im_flutter_sdk: 4.13.0
-  im_flutter_sdk:
-    git:
-      url: https://github.com/easemob/im_flutter_sdk.git
-      ref: 4.15.0
-      path: im_flutter_sdk
+  im_flutter_sdk: 4.15.0
 
   chat_uikit_theme: 1.0.4
 
