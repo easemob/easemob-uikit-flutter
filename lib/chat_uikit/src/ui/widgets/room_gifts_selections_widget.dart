@@ -1,4 +1,6 @@
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
+import 'package:em_chat_uikit/chat_uikit/src/chat_uikit_settings.dart';
+import 'package:em_chat_uikit/chat_uikit/src/ui/custom/custom_tab_indicator.dart';
 import 'package:em_chat_uikit/chat_uikit/src/ui/models/room_uikit_gift_model.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 import 'package:flutter/material.dart';
@@ -181,10 +183,10 @@ class ChatRoomGiftItem extends StatelessWidget {
 
     Widget placeholderWidget = (placeholder != null)
         ? Image.asset(placeholder!, fit: BoxFit.fill)
-        : (ChatRoomUIKitSettings.defaultGiftIcon == null)
+        : (ChatUIKitSettings.roomDefaultGiftIcon == null)
             ? Container()
             : Image.asset(
-                ChatRoomUIKitSettings.defaultGiftIcon!,
+                ChatUIKitSettings.roomDefaultGiftIcon!,
               );
 
     Widget imageWidget = ChatRoomImageLoader.roomNetworkImage(
@@ -207,9 +209,9 @@ class ChatRoomGiftItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             () {
-              if (ChatRoomUIKitSettings.defaultGiftPriceIcon != null) {
+              if (ChatUIKitSettings.roomDefaultGiftPriceIcon != null) {
                 return Image.asset(
-                  ChatRoomUIKitSettings.defaultGiftPriceIcon!,
+                  ChatUIKitSettings.roomDefaultGiftPriceIcon!,
                   width: 14,
                   height: 14,
                 );
@@ -282,9 +284,9 @@ class ChatRoomGiftItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               () {
-                if (ChatRoomUIKitSettings.defaultGiftPriceIcon != null) {
+                if (ChatUIKitSettings.roomDefaultGiftPriceIcon != null) {
                   return Image.asset(
-                    ChatRoomUIKitSettings.defaultGiftPriceIcon!,
+                    ChatUIKitSettings.roomDefaultGiftPriceIcon!,
                     width: 14,
                     height: 14,
                   );

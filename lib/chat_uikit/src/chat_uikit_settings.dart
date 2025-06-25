@@ -133,4 +133,16 @@ class ChatUIKitSettings {
       ChatUIKitMessageAttachmentMenuStyle.menu;
 
   static ChatRecordEncodeType audioEncoder = ChatRecordEncodeType.aac;
+
+  /// Default display avatar
+  static String? roomUserDefaultAvatar;
+
+  /// Default identity icon
+  static String? roomDefaultIdentify;
+
+  /// Default gift icon
+  static String? roomDefaultGiftIcon;
+
+  /// Default gift price icon
+  static String? roomDefaultGiftPriceIcon;
 }

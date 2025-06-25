@@ -6,7 +6,14 @@ import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 import 'package:flutter/material.dart';
 
 class RoomMessageListItemManager {
-  static Widget getMessageListItem(Message message, ChatUIKitProfile? user) {
+  static Widget getMessageListItem(
+    Message message,
+    ChatUIKitProfile? user, {
+    bool showTime = true,
+    bool showIdentify = true,
+    bool showAvatar = true,
+    bool showNickname = true,
+  }) {
     if (message.bodyType == MessageType.CUSTOM) {
       if (message.isChatRoomJoinNotify) {
         return RoomUserJoinMessageListItem(message, user);
@@ -21,10 +28,21 @@ class RoomMessageListItemManager {
 }
 
 class RoomMessageListItem extends StatefulWidget {
-  const RoomMessageListItem(this.msg, {this.inlineSpan, this.user, super.key});
+  const RoomMessageListItem(this.msg,
+      {this.inlineSpan,
+      this.user,
+      this.showTime = true,
+      this.showIdentify = true,
+      this.showAvatar = true,
+      this.showNickname = true,
+      super.key});
   final Message msg;
   final ChatUIKitProfile? user;
   final InlineSpan? inlineSpan;
+  final bool showTime;
+  final bool showIdentify;
+  final bool showAvatar;
+  final bool showNickname;
   @override
   State<RoomMessageListItem> createState() => _RoomMessageListItemState();
 }
@@ -35,12 +53,12 @@ class _RoomMessageListItemState extends State<RoomMessageListItem>
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     List<InlineSpan> list = [];
     // time
-    if (ChatRoomUIKitSettings.enableMsgListTime) {
+    if (widget.showTime) {
       list.add(TextSpan(text: TimeTool.timeStrByMs(widget.msg.serverTime)));
     }
 
     ChatUIKitProfile? userProfile = widget.user ?? widget.msg.getUserInfo();
-    if (ChatRoomUIKitSettings.enableMsgListIdentify) {
+    if (widget.showIdentify) {
       if (userProfile?.identify?.isNotEmpty == true) {
         list.add(WidgetSpan(
           child: Container(
@@ -53,9 +71,9 @@ class _RoomMessageListItemState extends State<RoomMessageListItem>
             child: ChatRoomImageLoader.roomNetworkImage(
               image: userProfile!.identify!,
               size: 15,
-              placeholderWidget: (ChatRoomUIKitSettings.defaultIdentify == null)
+              placeholderWidget: (ChatUIKitSettings.roomDefaultIdentify == null)
                   ? Container()
-                  : Image.asset(ChatRoomUIKitSettings.defaultIdentify!,
+                  : Image.asset(ChatUIKitSettings.roomDefaultIdentify!,
                       width: 15, height: 15),
             ),
           ),
@@ -64,7 +82,7 @@ class _RoomMessageListItemState extends State<RoomMessageListItem>
       }
     }
 
-    if (ChatRoomUIKitSettings.enableMsgListAvatar) {
+    if (widget.showAvatar) {
       list.add(
         TextSpan(children: [
           WidgetSpan(
@@ -79,7 +97,7 @@ class _RoomMessageListItemState extends State<RoomMessageListItem>
         ]),
       );
     }
-    if (ChatRoomUIKitSettings.enableMsgListNickname) {
+    if (widget.showNickname) {
       list.add(
         TextSpan(children: [
           const WidgetSpan(
@@ -137,9 +155,22 @@ class _RoomMessageListItemState extends State<RoomMessageListItem>
 }
 
 class RoomUserJoinMessageListItem extends StatefulWidget {
-  const RoomUserJoinMessageListItem(this.msg, this.user, {super.key});
+  const RoomUserJoinMessageListItem(
+    this.msg,
+    this.user, {
+    this.showTime = true,
+    this.showIdentify = true,
+    this.showAvatar = true,
+    this.showNickname = true,
+    super.key,
+  });
   final Message msg;
   final ChatUIKitProfile? user;
+  final bool showTime;
+  final bool showIdentify;
+  final bool showAvatar;
+  final bool showNickname;
+
   @override
   State<RoomUserJoinMessageListItem> createState() =>
       _RoomUserJoinMessageListItemState();
@@ -152,6 +183,10 @@ class _RoomUserJoinMessageListItemState
     return RoomMessageListItem(
       widget.msg,
       user: widget.user,
+      showTime: widget.showTime,
+      showIdentify: widget.showIdentify,
+      showAvatar: widget.showAvatar,
+      showNickname: widget.showNickname,
       // TODO: 国际化
       inlineSpan: TextSpan(
           text: " 加入聊天室",
@@ -165,9 +200,21 @@ class _RoomUserJoinMessageListItemState
 }
 
 class RoomGiftMessageListItem extends StatefulWidget {
-  const RoomGiftMessageListItem(this.msg, this.user, {super.key});
+  const RoomGiftMessageListItem(
+    this.msg,
+    this.user, {
+    this.showTime = true,
+    this.showIdentify = true,
+    this.showAvatar = true,
+    this.showNickname = true,
+    super.key,
+  });
   final Message msg;
   final ChatUIKitProfile? user;
+  final bool showTime;
+  final bool showIdentify;
+  final bool showAvatar;
+  final bool showNickname;
   @override
   State<RoomGiftMessageListItem> createState() =>
       _RoomGiftMessageListItemState();
@@ -183,6 +230,10 @@ class _RoomGiftMessageListItemState extends State<RoomGiftMessageListItem>
     return RoomMessageListItem(
       widget.msg,
       user: widget.user,
+      showTime: widget.showTime,
+      showIdentify: widget.showIdentify,
+      showAvatar: widget.showAvatar,
+      showNickname: widget.showNickname,
       // TODO: 国际化
       inlineSpan: TextSpan(
         children: [
@@ -202,10 +253,10 @@ class _RoomGiftMessageListItemState extends State<RoomGiftMessageListItem>
                 image: gift.giftIcon,
                 size: 18,
                 placeholderWidget:
-                    (ChatRoomUIKitSettings.defaultGiftIcon == null)
+                    (ChatUIKitSettings.roomDefaultGiftIcon == null)
                         ? Container()
                         : Image.asset(
-                            ChatRoomUIKitSettings.defaultGiftIcon!,
+                            ChatUIKitSettings.roomDefaultGiftIcon!,
                           ),
               ),
             ),
@@ -218,9 +269,21 @@ class _RoomGiftMessageListItemState extends State<RoomGiftMessageListItem>
 }
 
 class RoomTextMessageListItem extends StatefulWidget {
-  const RoomTextMessageListItem(this.msg, this.user, {super.key});
+  const RoomTextMessageListItem(
+    this.msg,
+    this.user, {
+    this.showTime = true,
+    this.showIdentify = true,
+    this.showAvatar = true,
+    this.showNickname = true,
+    super.key,
+  });
   final Message msg;
   final ChatUIKitProfile? user;
+  final bool showTime;
+  final bool showIdentify;
+  final bool showAvatar;
+  final bool showNickname;
   @override
   State<RoomTextMessageListItem> createState() =>
       _RoomTextMessageListItemState();
@@ -303,6 +366,10 @@ class _RoomTextMessageListItemState extends State<RoomTextMessageListItem>
     return RoomMessageListItem(
       widget.msg,
       user: widget.user,
+      showTime: widget.showTime,
+      showIdentify: widget.showIdentify,
+      showAvatar: widget.showAvatar,
+      showNickname: widget.showNickname,
       inlineSpan: TextSpan(
         children: [
           const WidgetSpan(child: Padding(padding: EdgeInsets.only(left: 4))),

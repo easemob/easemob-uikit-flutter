@@ -12,10 +12,18 @@ class ChatRoomMessagesWidget extends StatefulWidget {
     this.onTap,
     this.onLongPress,
     this.itemBuilder,
+    this.showTime = true,
+    this.showIdentify = true,
+    this.showAvatar = true,
+    this.showNickname = true,
     super.key,
   });
 
   final String roomId;
+  final bool showTime;
+  final bool showIdentify;
+  final bool showAvatar;
+  final bool showNickname;
 
   final Widget? Function(
       BuildContext content, Message msg, ChatUIKitProfile? user)? itemBuilder;
@@ -79,6 +87,10 @@ class _ChatRoomMessagesWidgetState extends State<ChatRoomMessagesWidget>
             RoomMessageListItemManager.getMessageListItem(
               msg,
               profileCache[msg.from!],
+              showTime: widget.showTime,
+              showIdentify: widget.showIdentify,
+              showAvatar: widget.showAvatar,
+              showNickname: widget.showNickname,
             );
         listItem = InkWell(
           key: ValueKey(msg.msgId),

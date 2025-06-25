@@ -1,6 +1,8 @@
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
 import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
+import 'package:em_chat_uikit/chat_uikit/src/chat_uikit_settings.dart';
 import 'package:em_chat_uikit/chat_uikit/src/tools/chat_uikit_extension.dart';
+import 'package:em_chat_uikit/chat_uikit/src/ui/custom/custom_tab_indicator.dart';
 import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 
@@ -139,10 +141,12 @@ class ChatUIKitRoomMembersWidget extends StatefulWidget {
     required this.roomId,
     required this.ownerId,
     required this.controllers,
+    this.showIdentify = true,
     super.key,
   });
   final String roomId;
   final String ownerId;
+  final bool showIdentify;
   final List<ChatUIKitRoomMembersInterface> controllers;
 
   @override
@@ -215,6 +219,7 @@ class _ChatUIKitRoomMembersWidgetState extends State<ChatUIKitRoomMembersWidget>
                         roomId: roomId,
                         controller: controller,
                         ownerId: widget.ownerId,
+                        showIdentify: widget.showIdentify,
                         onSearch: (isSearch) {
                           onSearch.value = isSearch;
                         },
@@ -247,12 +252,14 @@ class ChatRoomMembersWidget extends StatefulWidget {
     required this.controller,
     this.ownerId,
     this.onSearch,
+    this.showIdentify = true,
     super.key,
   });
   final String roomId;
   final String? ownerId;
   final void Function(bool onSearch)? onSearch;
   final ChatUIKitRoomMembersInterface controller;
+  final bool showIdentify;
 
   @override
   State<ChatRoomMembersWidget> createState() => _ChatRoomMembersWidgetState();
@@ -569,12 +576,13 @@ class ChatRoomUIKitMemberListTitle extends StatefulWidget {
   const ChatRoomUIKitMemberListTitle({
     required this.profile,
     this.onMoreAction,
+    this.showIdentify = true,
     super.key,
   });
 
   final ChatUIKitProfile profile;
   final VoidCallback? onMoreAction;
-
+  final bool showIdentify;
   @override
   State<ChatRoomUIKitMemberListTitle> createState() =>
       _ChatRoomUIKitMemberListTitleState();
@@ -594,7 +602,7 @@ class _ChatRoomUIKitMemberListTitleState
       children: [
         () {
           if (widget.profile.identify?.isNotEmpty == true &&
-              ChatRoomUIKitSettings.enableMessageViewIdentify) {
+              widget.showIdentify) {
             return Container(
               margin: const EdgeInsets.only(right: 14.7),
               width: 21.67,
@@ -602,9 +610,9 @@ class _ChatRoomUIKitMemberListTitleState
               child: ChatRoomImageLoader.roomNetworkImage(
                 image: widget.profile.identify,
                 placeholderWidget:
-                    (ChatRoomUIKitSettings.defaultIdentify == null)
+                    (ChatUIKitSettings.roomDefaultIdentify == null)
                         ? Container()
-                        : Image.asset(ChatRoomUIKitSettings.defaultIdentify!),
+                        : Image.asset(ChatUIKitSettings.roomDefaultIdentify!),
               ),
             );
           } else {

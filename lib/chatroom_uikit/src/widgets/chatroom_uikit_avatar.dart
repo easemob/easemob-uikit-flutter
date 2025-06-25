@@ -1,3 +1,4 @@
+import 'package:em_chat_uikit/chat_uikit/src/chat_uikit_settings.dart';
 import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
 import 'package:em_chat_uikit/chat_uikit_universal/chat_uikit_universal.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
@@ -22,7 +23,7 @@ class ChatRoomUIKitAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double circular = 0;
-    CornerRadius radius = cornerRadius ?? ChatRoomUIKitSettings.avatarRadius;
+    CornerRadius radius = cornerRadius ?? ChatUIKitSettings.avatarRadius;
     if (radius == CornerRadius.extraSmall) {
       circular = height / 16;
     } else if (radius == CornerRadius.small) {
@@ -46,9 +47,9 @@ class ChatRoomUIKitAvatar extends StatelessWidget {
           return ChatRoomImageLoader.roomNetworkImage(
             image: user?.avatarUrl ?? '',
             size: width,
-            placeholderWidget: (ChatRoomUIKitSettings.userDefaultAvatar == null)
+            placeholderWidget: (ChatUIKitSettings.roomUserDefaultAvatar == null)
                 ? ChatRoomImageLoader.roomDefaultAvatar(size: width)
-                : Image.asset(ChatRoomUIKitSettings.userDefaultAvatar!),
+                : Image.asset(ChatUIKitSettings.roomUserDefaultAvatar!),
           );
         } else {
           return ChatRoomImageLoader.roomAvatar(size: width);
