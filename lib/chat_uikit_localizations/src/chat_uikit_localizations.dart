@@ -899,7 +899,7 @@ class ChatUIKitLocalizations {
     defaultLocale = defaultLocale + locales;
   }
 
-  void resetLocales() {
+  void resetLocales([String? defaultLanguageCode]) {
     _localization.init(
       mapLocales: defaultLocale.map((e) {
         return MapLocale(
@@ -910,7 +910,7 @@ class ChatUIKitLocalizations {
           scriptCode: e.scriptCode,
         );
       }).toList(),
-      initLanguageCode: 'en',
+      initLanguageCode: defaultLanguageCode ?? 'en',
     );
   }
 

@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:async';
+
 import 'package:em_chat_uikit/chat_uikit.dart';
 
 import 'package:flutter/gestures.dart';
@@ -155,6 +157,7 @@ class ChatRouteFilter {
       profile: arguments.profile,
     );
     bool visible = true;
+
     arguments = arguments.copyWith(
       controller: controller,
       viewObserver: viewObserver,
@@ -189,6 +192,12 @@ class ChatRouteFilter {
         return false;
       },
       floatingWidget: (ctx) {
+        Future.delayed(const Duration(seconds: 4), () {
+          if (ctx.mounted) {
+            visible = false;
+            viewObserver.refresh();
+          }
+        });
         return IgnorePointer(
           ignoring: !visible,
           child: AnimatedOpacity(
@@ -262,12 +271,15 @@ class ChatRouteFilter {
                   ),
                   const SizedBox(width: 8),
                   InkWell(
-                    child: Icon(
-                      Icons.close,
-                      color: ChatUIKitTheme.instance.color.isDark
-                          ? ChatUIKitTheme.instance.color.neutralColor9
-                          : ChatUIKitTheme.instance.color.neutralColor3,
-                      size: 16,
+                    child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: Icon(
+                        Icons.close,
+                        color: ChatUIKitTheme.instance.color.isDark
+                            ? ChatUIKitTheme.instance.color.neutralColor9
+                            : ChatUIKitTheme.instance.color.neutralColor3,
+                        size: 16,
+                      ),
                     ),
                     onTapUp: (details) {
                       visible = false;

@@ -327,7 +327,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     List<ChatUIKitDetailContentAction> defaultList = [
       ChatUIKitDetailContentAction(
         title: ChatUIKitLocal.groupDetailViewSend.localString(context),
-        icon: 'assets/images/chat.png',
+        icon: 'assets/images/chat/chat.png',
         iconSize: const Size(32, 32),
         packageName: ChatUIKitImageLoader.packageName,
         onTap: (context) {
@@ -336,7 +336,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       ),
       ChatUIKitDetailContentAction(
         title: ChatUIKitLocal.contactDetailViewSearch.localString(context),
-        icon: 'assets/images/search_history.png',
+        icon: 'assets/images/chat/search_history.png',
         packageName: ChatUIKitImageLoader.packageName,
         iconSize: const Size(32, 32),
         onTap: (context) {
