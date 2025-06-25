@@ -826,22 +826,6 @@ extension MessageHelper on Message {
     return ret;
   }
 
-  bool isAlertMessage() {
-    return isAlertCustomMessage ||
-        isTimeMessageAlert ||
-        isCreateGroupAlert ||
-        isCreateThreadAlert ||
-        isUpdateThreadAlert ||
-        isDeleteThreadAlert ||
-        isRecallAlert ||
-        isDestroyGroupAlert ||
-        isLeaveGroupAlert ||
-        isKickedGroupAlert ||
-        isNewContactAlert ||
-        isPinAlert ||
-        isUnPinAlert;
-  }
-
   bool get isTimeMessageAlert {
     if (bodyType == MessageType.CUSTOM) {
       if ((body as CustomMessageBody).event == alertTimeKey) {
