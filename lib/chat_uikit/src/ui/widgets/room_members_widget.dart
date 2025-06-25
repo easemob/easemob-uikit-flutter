@@ -29,7 +29,7 @@ class ChatUIKitRoomMutesController extends ChatUIKitRoomMembersInterface {
       if (lastMember?.isNotEmpty == true && lastMember == result.last) {
         result = [];
         isLoadFinished = true;
-      } else {``
+      } else {
         lastMember = result.last;
       }
 
