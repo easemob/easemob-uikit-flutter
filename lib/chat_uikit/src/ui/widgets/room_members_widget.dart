@@ -1,12 +1,13 @@
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
 import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
+import 'package:em_chat_uikit/chat_uikit/src/tools/chat_uikit_extension.dart';
 import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 
 import 'package:flutter/material.dart';
 
-class ChatRoomUIKitMutesController extends ChatRoomUIKitMembersInterface {
-  ChatRoomUIKitMutesController(super.title, {super.itemBuilder});
+class ChatUIKitRoomMutesController extends ChatUIKitRoomMembersInterface {
+  ChatUIKitRoomMutesController(super.title, {super.itemBuilder});
   String? cursor;
   int pageNumber = 1;
 
@@ -25,11 +26,11 @@ class ChatRoomUIKitMutesController extends ChatRoomUIKitMembersInterface {
         isLoadFinished = true;
       }
 
-      if (lastestMember?.isNotEmpty == true && lastestMember == result.last) {
+      if (lastMember?.isNotEmpty == true && lastMember == result.last) {
         result = [];
         isLoadFinished = true;
-      } else {
-        lastestMember = result.last;
+      } else {``
+        lastMember = result.last;
       }
 
       return result;
@@ -44,7 +45,7 @@ class ChatRoomUIKitMutesController extends ChatRoomUIKitMembersInterface {
   Future<List<String>> reloadData() async {
     try {
       pageNumber = 1;
-      lastestMember = null;
+      lastMember = null;
       List<String> result = await ChatRoomUIKit.instance.fetchChatRoomMuteList(
         roomId: _state!.roomId,
         pageNum: pageNumber,
@@ -60,8 +61,8 @@ class ChatRoomUIKitMutesController extends ChatRoomUIKitMembersInterface {
   }
 }
 
-class ChatRoomUIKitMembersController extends ChatRoomUIKitMembersInterface {
-  ChatRoomUIKitMembersController(super.title, {super.itemBuilder});
+class ChatUIKitRoomMembersController extends ChatUIKitRoomMembersInterface {
+  ChatUIKitRoomMembersController(super.title, {super.itemBuilder});
   String? cursor;
   final int pageSize = 10;
 
@@ -111,16 +112,16 @@ typedef ChatRoomUIKitMembersListItemBuilder = Widget? Function(
   VoidCallback? onMoreAction,
 );
 
-abstract class ChatRoomUIKitMembersInterface {
-  ChatRoomUIKitMembersInterface(this.title, {this.itemBuilder});
+abstract class ChatUIKitRoomMembersInterface {
+  ChatUIKitRoomMembersInterface(this.title, {this.itemBuilder});
   final String title;
   final ChatRoomUIKitMembersListItemBuilder? itemBuilder;
   ValueNotifier firstLoading = ValueNotifier(true);
   bool isLoadFinished = false;
-  String? lastestMember;
+  String? lastMember;
 
-  _ChatRoomMemberListViewState? _state;
-  void _attach(_ChatRoomMemberListViewState state) {
+  _ChatRoomMembersWidgetState? _state;
+  void _attach(_ChatRoomMembersWidgetState state) {
     _state = state;
   }
 
@@ -133,8 +134,8 @@ abstract class ChatRoomUIKitMembersInterface {
   Future<List<String>> reloadData();
 }
 
-class ChatRoomUIKitMembersView extends StatefulWidget {
-  const ChatRoomUIKitMembersView({
+class ChatUIKitRoomMembersWidget extends StatefulWidget {
+  const ChatUIKitRoomMembersWidget({
     required this.roomId,
     required this.ownerId,
     required this.controllers,
@@ -142,16 +143,16 @@ class ChatRoomUIKitMembersView extends StatefulWidget {
   });
   final String roomId;
   final String ownerId;
-  final List<ChatRoomUIKitMembersInterface> controllers;
+  final List<ChatUIKitRoomMembersInterface> controllers;
 
   @override
-  State<ChatRoomUIKitMembersView> createState() =>
-      _ChatRoomUIKitMembersViewState();
+  State<ChatUIKitRoomMembersWidget> createState() =>
+      _ChatUIKitRoomMembersWidgetState();
 }
 
-class _ChatRoomUIKitMembersViewState extends State<ChatRoomUIKitMembersView>
+class _ChatUIKitRoomMembersWidgetState extends State<ChatUIKitRoomMembersWidget>
     with SingleTickerProviderStateMixin, ChatUIKitThemeMixin {
-  late List<ChatRoomUIKitMembersInterface> controllers;
+  late List<ChatUIKitRoomMembersInterface> controllers;
   late TabController _tabController;
 
   ScrollController scrollController = ScrollController();
@@ -210,7 +211,7 @@ class _ChatRoomUIKitMembersViewState extends State<ChatRoomUIKitMembersView>
                   child: TabBarView(
                     controller: _tabController,
                     children: widget.controllers.map((controller) {
-                      return ChatRoomMemberListView(
+                      return ChatRoomMembersWidget(
                         roomId: roomId,
                         controller: controller,
                         ownerId: widget.ownerId,
@@ -240,8 +241,8 @@ class _ChatRoomUIKitMembersViewState extends State<ChatRoomUIKitMembersView>
   }
 }
 
-class ChatRoomMemberListView extends StatefulWidget {
-  const ChatRoomMemberListView({
+class ChatRoomMembersWidget extends StatefulWidget {
+  const ChatRoomMembersWidget({
     required this.roomId,
     required this.controller,
     this.ownerId,
@@ -251,13 +252,13 @@ class ChatRoomMemberListView extends StatefulWidget {
   final String roomId;
   final String? ownerId;
   final void Function(bool onSearch)? onSearch;
-  final ChatRoomUIKitMembersInterface controller;
+  final ChatUIKitRoomMembersInterface controller;
 
   @override
-  State<ChatRoomMemberListView> createState() => _ChatRoomMemberListViewState();
+  State<ChatRoomMembersWidget> createState() => _ChatRoomMembersWidgetState();
 }
 
-class _ChatRoomMemberListViewState extends State<ChatRoomMemberListView>
+class _ChatRoomMembersWidgetState extends State<ChatRoomMembersWidget>
     with AutomaticKeepAliveClientMixin {
   List<ChatUIKitProfile> members = [];
   ScrollController scrollController = ScrollController();

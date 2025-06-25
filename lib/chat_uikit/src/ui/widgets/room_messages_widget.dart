@@ -6,8 +6,8 @@ import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-class ChatRoomMessagesView extends StatefulWidget {
-  const ChatRoomMessagesView({
+class ChatRoomMessagesWidget extends StatefulWidget {
+  const ChatRoomMessagesWidget({
     required this.roomId,
     this.onTap,
     this.onLongPress,
@@ -24,10 +24,10 @@ class ChatRoomMessagesView extends StatefulWidget {
   final void Function(
       BuildContext content, Message msg, ChatUIKitProfile? user)? onLongPress;
   @override
-  State<ChatRoomMessagesView> createState() => _ChatRoomMessagesViewState();
+  State<ChatRoomMessagesWidget> createState() => _ChatRoomMessagesWidgetState();
 }
 
-class _ChatRoomMessagesViewState extends State<ChatRoomMessagesView>
+class _ChatRoomMessagesWidgetState extends State<ChatRoomMessagesWidget>
     with
         ChatObserver,
         MessageObserver,

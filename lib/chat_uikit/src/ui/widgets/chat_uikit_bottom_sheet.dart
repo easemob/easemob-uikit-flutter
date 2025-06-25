@@ -1,6 +1,8 @@
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
 import 'package:em_chat_uikit/chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/chat_uikit/src/ui/models/room_uikit_gift_model.dart';
 import 'package:em_chat_uikit/chat_uikit_localizations/chat_uikit_localizations.dart';
+import 'package:em_chat_uikit/chat_uikit/src/ui/widgets/room_members_widget.dart';
 
 import 'package:flutter/material.dart';
 
@@ -359,4 +361,53 @@ class ChatUIKitBottomSheet<T> extends StatelessWidget {
 
     return content;
   }
+}
+
+Future<ChatRoomGift?> showRoomGiftsView(
+  BuildContext context, {
+  required List<ChatroomGiftPageController> giftControllers,
+}) {
+  return showModalBottomSheet<ChatRoomGift?>(
+    context: context,
+    clipBehavior: Clip.hardEdge,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(16.0),
+        topRight: Radius.circular(16.0),
+      ),
+    ),
+    builder: (ctx) {
+      return ChatRoomGiftsView(
+        giftControllers: giftControllers,
+        onSendTap: (gift) {
+          Navigator.of(ctx).pop(gift);
+        },
+      );
+    },
+  );
+}
+
+Future<void> showRoomMembersView(
+  BuildContext context, {
+  required String roomId,
+  required List<ChatUIKitRoomMembersInterface> membersControllers,
+  String? ownerId,
+}) {
+  return showModalBottomSheet<ChatRoomGift?>(
+    context: context,
+    clipBehavior: Clip.hardEdge,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(16.0),
+        topRight: Radius.circular(16.0),
+      ),
+    ),
+    builder: (context) {
+      return ChatUIKitRoomMembersWidget(
+        roomId: roomId,
+        ownerId: ownerId ?? '',
+        controllers: membersControllers,
+      );
+    },
+  );
 }

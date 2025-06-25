@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
 import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
-import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
+import 'package:em_chat_uikit/chat_uikit/src/chat_uikit_service/chat_uikit_service.dart';
 import 'package:flutter/material.dart';
 
-class ChatRoomGlobalMessageView extends StatefulWidget
+class ChatRoomGlobalMessageWidget extends StatefulWidget
     implements PreferredSizeWidget {
-  const ChatRoomGlobalMessageView({
+  const ChatRoomGlobalMessageWidget({
     this.icon,
     this.textStyle,
     this.backgroundColor,
@@ -16,14 +16,15 @@ class ChatRoomGlobalMessageView extends StatefulWidget
   final TextStyle? textStyle;
   final Color? backgroundColor;
   @override
-  State<ChatRoomGlobalMessageView> createState() =>
-      _ChatRoomGlobalMessageViewState();
+  State<ChatRoomGlobalMessageWidget> createState() =>
+      _ChatRoomGlobalMessageWidgetState();
 
   @override
   Size get preferredSize => const Size.fromHeight(20);
 }
 
-class _ChatRoomGlobalMessageViewState extends State<ChatRoomGlobalMessageView>
+class _ChatRoomGlobalMessageWidgetState
+    extends State<ChatRoomGlobalMessageWidget>
     with ChatObserver, ChatUIKitThemeMixin {
   ScrollController scrollController = ScrollController();
 
@@ -39,12 +40,12 @@ class _ChatRoomGlobalMessageViewState extends State<ChatRoomGlobalMessageView>
   @override
   void initState() {
     super.initState();
-    ChatRoomUIKit.instance.addObserver(this);
+    ChatUIKit.instance.addObserver(this);
   }
 
   @override
   void dispose() {
-    ChatRoomUIKit.instance.removeObserver(this);
+    ChatUIKit.instance.removeObserver(this);
     scrollController.dispose();
     timer?.cancel();
     _sub?.cancel();

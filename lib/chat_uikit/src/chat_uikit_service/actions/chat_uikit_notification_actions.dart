@@ -1,8 +1,6 @@
-
-
 import 'package:em_chat_uikit/chat_sdk_context/chat_sdk_context.dart';
 import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
-import 'package:em_chat_uikit/chat_uikit/src/tools/chat_uikit_context.dart';
+import 'package:em_chat_uikit/chat_uikit/src/tools/chat_uikit_extension.dart';
 
 mixin ChatUIKitNotificationActions on ChatSDKService {
   @override

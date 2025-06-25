@@ -1,14 +1,11 @@
-export 'src/tools/chat_uikit_context.dart';
-
 export 'src/chat_uikit_service/chat_uikit_service.dart';
 export 'src/chat_uikit_service/chat_uikit_action_events.dart';
 export 'src/chat_uikit_service/observers/chat_uikit_events_observers.dart';
 
-export 'src/tools/chat_string_extension.dart';
+export 'src/tools/chat_uikit_extension.dart';
 export 'src/tools/chat_uikit_helper.dart';
 export '../chat_uikit_universal/src/widgets/chat_uikit_image_loader.dart';
 export 'src/tools/chat_uikit_message_extension.dart';
-export 'src/tools/chat_uikit_conversation_extension.dart';
 export 'src/tools/chat_uikit_file_size_tool.dart';
 export 'src/tools/chat_uikit_time_tool.dart';
 export 'src/tools/chat_uikit_url_helper.dart';
@@ -61,6 +58,8 @@ export 'src/ui/widgets/record_bar/chat_uikit_record_bar.dart';
 export 'src/ui/widgets/chat_uikit_search_widget.dart';
 export 'src/ui/widgets/chat_uikit_show_image_widget.dart';
 export 'src/ui/widgets/chat_uikit_show_video_widget.dart';
+export 'src/ui/widgets/room_global_message_widget.dart';
+export 'src/ui/widgets/room_gifts_selections_widget.dart';
 
 export 'src/ui/widgets/message_bottom_menu/chat_uikit_message_view_bottom_menu.dart';
 export 'src/ui/widgets/edit_bar/chat_uikit_edit_bar.dart';
@@ -84,10 +83,11 @@ export 'src/ui/models/conversation_item_model.dart';
 export 'src/ui/models/contact_item_model.dart';
 export 'src/ui/models/group_item_model.dart';
 export 'src/ui/models/new_request_item_model.dart';
-export 'src/ui/models/quote_mode.dart';
+export 'src/ui/models/quote_model.dart';
 export 'src/ui/models/alphabetical_item_model.dart';
 export 'src/ui/models/message_model.dart';
 export 'src/ui/models/pin_list_item_model.dart';
+export 'src/ui/models/room_uikit_gift_model.dart';
 
 export 'src/ui/components/block_list_view.dart';
 export 'src/ui/components/conversation_list_view.dart';

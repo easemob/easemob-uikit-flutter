@@ -117,7 +117,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
           child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20, child: ChatRoomGlobalMessageView()),
+              SizedBox(height: 20, child: ChatRoomGlobalMessageWidget()),
             ],
           ),
         ),
@@ -133,7 +133,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
           right: 78,
           height: 204,
           bottom: 90,
-          child: ChatRoomMessagesView(
+          child: ChatRoomMessagesWidget(
             roomId: roomId,
             itemBuilder: (ctx, msg, user) {
               return null;
@@ -221,7 +221,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
               child: IconButton(
             onPressed: () {
               showRoomMembersView(context, roomId: roomId, membersControllers: [
-                ChatRoomUIKitMembersController(
+                ChatUIKitRoomMembersController(
                   '聊天室成员',
                   itemBuilder: (context, profile, onMoreAction) {
                     return ChatRoomUIKitMemberListTitle(
@@ -251,7 +251,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
                     );
                   },
                 ),
-                if (isOwner) ChatRoomUIKitMutesController('禁言列表')
+                if (isOwner) ChatUIKitRoomMutesController('禁言列表')
               ]);
             },
             icon: Icon(

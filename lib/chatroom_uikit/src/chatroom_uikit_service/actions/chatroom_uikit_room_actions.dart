@@ -1,5 +1,5 @@
 import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
-import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
+import 'package:em_chat_uikit/chat_uikit/src/tools/chat_uikit_extension.dart';
 
 mixin ChatRoomUIKitRoomActions on ChatSDKService {
   @override
