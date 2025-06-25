@@ -1,5 +1,6 @@
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
 import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
+import 'package:em_chat_uikit/chat_uikit/src/chat_uikit_service/chat_uikit_service.dart';
 import 'package:em_chat_uikit/chat_uikit/src/chat_uikit_settings.dart';
 import 'package:em_chat_uikit/chat_uikit/src/tools/chat_uikit_extension.dart';
 import 'package:em_chat_uikit/chat_uikit/src/ui/custom/custom_tab_indicator.dart';
@@ -17,7 +18,7 @@ class ChatUIKitRoomMutesController extends ChatUIKitRoomMembersInterface {
   Future<List<String>> loadData() async {
     if (isLoadFinished) return [];
     try {
-      List<String> result = await ChatRoomUIKit.instance.fetchChatRoomMuteList(
+      List<String> result = await ChatUIKit.instance.fetchChatRoomMuteList(
         roomId: _state!.roomId,
         pageNum: pageNumber,
       );
@@ -48,7 +49,7 @@ class ChatUIKitRoomMutesController extends ChatUIKitRoomMembersInterface {
     try {
       pageNumber = 1;
       lastMember = null;
-      List<String> result = await ChatRoomUIKit.instance.fetchChatRoomMuteList(
+      List<String> result = await ChatUIKit.instance.fetchChatRoomMuteList(
         roomId: _state!.roomId,
         pageNum: pageNumber,
       );
@@ -75,7 +76,7 @@ class ChatUIKitRoomMembersController extends ChatUIKitRoomMembersInterface {
         return [];
       }
       CursorResult<String> result =
-          await ChatRoomUIKit.instance.fetchChatRoomMembers(
+          await ChatUIKit.instance.fetchChatRoomMembers(
         roomId: _state!.roomId,
         cursor: cursor,
         pageSize: pageSize,
@@ -94,7 +95,7 @@ class ChatUIKitRoomMembersController extends ChatUIKitRoomMembersInterface {
     try {
       cursor = null;
       CursorResult<String> result =
-          await ChatRoomUIKit.instance.fetchChatRoomMembers(
+          await ChatUIKit.instance.fetchChatRoomMembers(
         roomId: _state!.roomId,
         cursor: cursor,
       );
@@ -281,7 +282,7 @@ class _ChatRoomMembersWidgetState extends State<ChatRoomMembersWidget>
   void initState() {
     super.initState();
     widget.controller._attach(this);
-    isOwner = widget.ownerId == ChatRoomUIKit.instance.currentUserId;
+    isOwner = widget.ownerId == ChatUIKit.instance.currentUserId;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollController = ScrollController()
         ..addListener(() async {

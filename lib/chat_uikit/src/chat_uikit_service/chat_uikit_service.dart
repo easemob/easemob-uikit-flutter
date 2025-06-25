@@ -1,3 +1,5 @@
+import 'package:em_chat_uikit/chat_uikit/src/chat_uikit_service/actions/chat_uikit_room_actions.dart';
+
 import '../../../chat_sdk_context/chat_sdk_context.dart';
 
 import '../../../../chat_uikit.dart';
@@ -20,6 +22,7 @@ class ChatUIKit extends ChatSDKService
         ChatUIKitContactActions,
         ChatUIKitGroupActions,
         ChatUIKitEventsActions,
+        ChatUIKitRoomActions,
         ChatUIKitNotificationActions,
         ChatUIKitChatObservers,
         ChatUIKitGroupObservers,

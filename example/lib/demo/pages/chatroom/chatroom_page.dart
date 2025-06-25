@@ -45,7 +45,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
   // 加入聊天室
   void joinChatRoom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ChatRoomUIKit.instance.joinChatRoom(roomId: roomId).then((_) {
+      ChatUIKit.instance.joinChatRoom(roomId: roomId).then((_) {
         debugPrint('join chat room');
       }).catchError((e) {
         EasyLoading.showError('加入失败');
@@ -77,7 +77,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
   // 设置自己在聊天室中的信息
   Future<void> setupMyInfo() async {
     ChatUIKitProfile profile = ChatRoomUserInfo.createUserProfile(
-        userId: ChatRoomUIKit.instance.currentUserId!,
+        userId: ChatUIKit.instance.currentUserId!,
         nickname: '在 ${widget.room.name ?? roomId} 中的昵称',
         ext: {"testKey": "testValue"});
     ChatUIKitProvider.instance.addProfiles([profile], roomId);
@@ -152,7 +152,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
               if (msg.trim().isEmpty) {
                 return;
               }
-              ChatRoomUIKit.instance.sendMessage(
+              ChatUIKit.instance.sendMessage(
                 message: ChatRoomMessage.roomMessage(roomId, msg),
               );
             },
@@ -164,7 +164,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
                     giftControllers: controllers,
                   );
                   if (gift != null) {
-                    ChatRoomUIKit.instance.sendMessage(
+                    ChatUIKit.instance.sendMessage(
                       message: ChatRoomMessage.giftMessage(roomId, gift),
                     );
                   }
@@ -291,7 +291,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
 
     content = PopScope(
       onPopInvokedWithResult: (didPop, result) async {
-        ChatRoomUIKit.instance.leaveChatRoom(roomId).then((_) {
+        ChatUIKit.instance.leaveChatRoom(roomId).then((_) {
           debugPrint('leave chat room');
         }).catchError((e) {
           debugPrint('leave chat room error: $e');

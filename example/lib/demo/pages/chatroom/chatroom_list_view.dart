@@ -27,7 +27,7 @@ class _ChatRoomListViewState extends State<ChatRoomListView>
     try {
       loading.value = true;
       PageResult<ChatRoom> result =
-          await ChatRoomUIKit.instance.fetchPublicChatRoomsFromServer();
+          await ChatUIKit.instance.fetchPublicChatRoomsFromServer();
       List<String> roomIds = result.data.map((e) => e.roomId).toList();
       list.removeWhere((room) => roomIds.contains(room.roomId));
       list.addAll(result.data);

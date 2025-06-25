@@ -63,8 +63,8 @@ class _ChatRoomMessagesWidgetState extends State<ChatRoomMessagesWidget>
   @override
   void onProfilesUpdate(Map<String, ChatUIKitProfile> map, [String? belongId]) {
     if (belongId == widget.roomId) {
-      if (ChatRoomUIKit.instance.currentUserId != null) {
-        final profile = map[ChatRoomUIKit.instance.currentUserId!];
+      if (ChatUIKit.instance.currentUserId != null) {
+        final profile = map[ChatUIKit.instance.currentUserId!];
         if (profile != null && profile.type == ChatUIKitProfileType.contact) {
           profileCache[profile.id] = profile;
           setState(() {});

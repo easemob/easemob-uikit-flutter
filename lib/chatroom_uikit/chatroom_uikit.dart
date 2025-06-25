@@ -1,4 +1,3 @@
-export 'src/chatroom_uikit_service/chatroom_uikit_service.dart';
 export '../chat_uikit/src/ui/widgets/room_show_gift_widget.dart';
 export '../chat_uikit/src/ui/widgets/room_global_message_widget.dart';
 export '../chat_uikit/src/ui/widgets/room_messages_widget.dart';

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
 import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
+import 'package:em_chat_uikit/chat_uikit/src/chat_uikit_service/chat_uikit_service.dart';
 import 'package:em_chat_uikit/chat_uikit/src/tools/chat_uikit_extension.dart';
 import 'package:em_chat_uikit/chat_uikit/src/ui/models/room_uikit_gift_model.dart';
 import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
@@ -44,12 +45,12 @@ class _ChatRoomShowGiftViewState extends State<ChatRoomShowGiftView>
   @override
   void initState() {
     super.initState();
-    ChatRoomUIKit.instance.addObserver(this);
+    ChatUIKit.instance.addObserver(this);
   }
 
   @override
   void dispose() {
-    ChatRoomUIKit.instance.removeObserver(this);
+    ChatUIKit.instance.removeObserver(this);
     for (var element in list) {
       element.stopTimer();
     }

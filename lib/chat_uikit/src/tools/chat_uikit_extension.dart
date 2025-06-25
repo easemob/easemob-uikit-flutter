@@ -304,7 +304,7 @@ extension ChatRoomMessage on Message {
     ChatUIKitProfile? profile =
         ChatUIKitProvider.instance.getProfileById(from, belongId);
     profile ??= ChatUIKitProfile.contact(
-      id: ChatRoomUIKit.instance.currentUserId!,
+      id: ChatUIKit.instance.currentUserId!,
     );
     attributes ??= {};
     attributes![ChatRoomUIKitKey.userInfo] = profile.toJson();
