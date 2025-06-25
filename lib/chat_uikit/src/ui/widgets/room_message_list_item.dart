@@ -16,14 +16,31 @@ class RoomMessageListItemManager {
   }) {
     if (message.bodyType == MessageType.CUSTOM) {
       if (message.isChatRoomJoinNotify) {
-        return RoomUserJoinMessageListItem(message, user);
+        return RoomUserJoinMessageListItem(message, user,
+            showTime: showTime,
+            showIdentify: showIdentify,
+            showAvatar: showAvatar,
+            showNickname: showNickname);
       } else if (message.isChatRoomGift) {
-        return RoomGiftMessageListItem(message, user);
+        return RoomGiftMessageListItem(message, user,
+            showTime: showTime,
+            showIdentify: showIdentify,
+            showAvatar: showAvatar,
+            showNickname: showNickname);
       }
     } else if (message.bodyType == MessageType.TXT) {
-      return RoomTextMessageListItem(message, user);
+      return RoomTextMessageListItem(message, user,
+          showTime: showTime,
+          showIdentify: showIdentify,
+          showAvatar: showAvatar,
+          showNickname: showNickname);
     }
-    return RoomMessageListItem(message, user: user);
+    return RoomMessageListItem(message,
+        user: user,
+        showTime: showTime,
+        showIdentify: showIdentify,
+        showAvatar: showAvatar,
+        showNickname: showNickname);
   }
 }
 

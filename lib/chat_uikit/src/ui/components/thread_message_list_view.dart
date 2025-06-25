@@ -228,14 +228,7 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView>
       return content;
     }
 
-    if (model.message.isRecallAlert ||
-        model.message.isCreateGroupAlert ||
-        model.message.isCreateThreadAlert ||
-        model.message.isUpdateThreadAlert ||
-        model.message.isDeleteThreadAlert ||
-        model.message.isDestroyGroupAlert ||
-        model.message.isKickedGroupAlert ||
-        model.message.isLeaveGroupAlert) {
+    if (model.message.isAlertMessage()) {
       if (widget.alertItemBuilder != null) {
         return widget.alertItemBuilder!.call(context, model)!;
       }

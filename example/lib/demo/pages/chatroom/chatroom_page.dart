@@ -38,7 +38,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
 
   void setup() async {
     // 先获取自己的信息，之后再加入聊天室
-    await setupMyInfo();
+    await setupMyInfo("加入昵称");
     joinChatRoom();
   }
 
@@ -75,10 +75,10 @@ class _ChatRoomPageState extends State<ChatRoomPage>
   }
 
   // 设置自己在聊天室中的信息
-  Future<void> setupMyInfo() async {
+  Future<void> setupMyInfo(String showName) async {
     ChatUIKitProfile profile = ChatRoomUserInfo.createUserProfile(
         userId: ChatUIKit.instance.currentUserId!,
-        nickname: '在 ${widget.room.name ?? roomId} 中的昵称',
+        nickname: showName,
         ext: {"testKey": "testValue"});
     ChatUIKitProvider.instance.addProfiles([profile], roomId);
   }
@@ -202,6 +202,17 @@ class _ChatRoomPageState extends State<ChatRoomPage>
         ],
         backgroundColor: Colors.transparent,
         trailingActions: [
+          ChatUIKitAppBarAction(
+            child: IconButton(
+              onPressed: () {
+                setupMyInfo('新昵称');
+              },
+              icon: Icon(
+                Icons.face,
+                color: theme.color.isDark ? Colors.white38 : Colors.white70,
+              ),
+            ),
+          ),
           ChatUIKitAppBarAction(
               child: IconButton(
             onPressed: () {

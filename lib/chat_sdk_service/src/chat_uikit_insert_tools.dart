@@ -336,6 +336,7 @@ const String alertGroupKickedKey = 'alertGroupKickedKey';
 const String alertContactAddKey = 'alertContactAddKey';
 const String alertPinMessageKey = 'alertPinMessageKey';
 const String alertUnPinMessageKey = 'alertUnPinMessageKey';
+const String alertCustomMessageKey = 'alertCustomMessageKey';
 
 const String mentionKey = 'em_at_list';
 const String mentionAllValue = 'ALL';

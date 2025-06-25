@@ -161,6 +161,38 @@ class ChatRouteFilter {
     arguments = arguments.copyWith(
       controller: controller,
       viewObserver: viewObserver,
+      appBarModel: ChatUIKitAppBarModel(
+        title: 'test',
+        trailingActions: [
+          ChatUIKitAppBarAction(
+            child: const Icon(Icons.add),
+            onTap: (context) {
+              final msg = ChatUIKitMessage.createAlertMessage(
+                arguments.profile.id,
+                arguments.profile.type == ChatUIKitProfileType.group
+                    ? ChatType.GroupChat
+                    : ChatType.Chat,
+                params: {
+                  'alert': '自定义的提醒消息',
+                },
+              );
+              ChatUIKit.instance.insertMessage(
+                message: msg,
+                runMessageReceived: true,
+                needUpdateConversationList: true,
+              );
+            },
+          ),
+        ],
+      ),
+      alertItemBuilder: (context, model) {
+        if (model.message.isAlertCustomMessage) {
+          String? alert = model.message.customBodyParams?['alert'];
+          return Center(child: Text(alert ?? '默认提醒消息内容'));
+        } else {
+          return null;
+        }
+      },
       showMessageItemNickname: (model) {
         // 只有群组消息并且不是自己发的消息显示昵称
         return (arguments.profile.type == ChatUIKitProfileType.group) &&

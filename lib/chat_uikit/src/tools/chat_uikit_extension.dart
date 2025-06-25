@@ -249,6 +249,24 @@ extension ChatRoomUserInfo on ChatUIKitProfile {
   }
 }
 
+extension ChatUIKitMessage on Message {
+  static Message createAlertMessage(String targetId, ChatType chatType,
+      {Map<String, String>? params}) {
+    return Message.createCustomSendMessage(
+        targetId: targetId,
+        event: alertCustomMessageKey,
+        chatType: chatType,
+        params: params);
+  }
+
+  Map<String, String>? get customBodyParams {
+    if (bodyType == MessageType.CUSTOM) {
+      return (body as CustomMessageBody).params;
+    }
+    return null;
+  }
+}
+
 class ChatRoomUIKitKey {
   static String userInfo = 'chatroom_uikit_userInfo';
   static String userJoinEvent = 'CHATROOMUIKITUSERJOIN';
@@ -808,9 +826,34 @@ extension MessageHelper on Message {
     return ret;
   }
 
+  bool isAlertMessage() {
+    return isAlertCustomMessage ||
+        isTimeMessageAlert ||
+        isCreateGroupAlert ||
+        isCreateThreadAlert ||
+        isUpdateThreadAlert ||
+        isDeleteThreadAlert ||
+        isRecallAlert ||
+        isDestroyGroupAlert ||
+        isLeaveGroupAlert ||
+        isKickedGroupAlert ||
+        isNewContactAlert ||
+        isPinAlert ||
+        isUnPinAlert;
+  }
+
   bool get isTimeMessageAlert {
     if (bodyType == MessageType.CUSTOM) {
       if ((body as CustomMessageBody).event == alertTimeKey) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool get isAlertCustomMessage {
+    if (bodyType == MessageType.CUSTOM) {
+      if ((body as CustomMessageBody).event == alertCustomMessageKey) {
         return true;
       }
     }
