@@ -43,15 +43,15 @@ class ChatRoomUIKitAvatar extends StatelessWidget {
       height: height,
       child: () {
         if (user?.avatarUrl?.isNotEmpty == true) {
-          return ChatRoomImageLoader.networkImage(
+          return ChatRoomImageLoader.roomNetworkImage(
             image: user?.avatarUrl ?? '',
             size: width,
             placeholderWidget: (ChatRoomUIKitSettings.userDefaultAvatar == null)
-                ? ChatRoomImageLoader.defaultAvatar(size: width)
+                ? ChatRoomImageLoader.roomDefaultAvatar(size: width)
                 : Image.asset(ChatRoomUIKitSettings.userDefaultAvatar!),
           );
         } else {
-          return ChatRoomImageLoader.avatar(size: width);
+          return ChatRoomImageLoader.roomAvatar(size: width);
         }
       }(),
     );

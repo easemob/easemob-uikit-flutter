@@ -76,7 +76,7 @@ class _ChatRoomMessagesViewState extends State<ChatRoomMessagesView>
         final msg = messages[index];
         final profile = profileCache[msg.from!];
         Widget? listItem = widget.itemBuilder?.call(context, msg, profile) ??
-            ChatMessageListItemManager.getMessageListItem(
+            RoomMessageListItemManager.getMessageListItem(
               msg,
               profileCache[msg.from!],
             );

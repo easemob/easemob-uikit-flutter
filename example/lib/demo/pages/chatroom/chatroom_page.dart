@@ -15,7 +15,7 @@ class ChatRoomPage extends StatefulWidget {
 
 class _ChatRoomPageState extends State<ChatRoomPage>
     with RoomObserver, ChatUIKitThemeMixin {
-  ChatRoomInputBarController inputBarController = ChatRoomInputBarController();
+  RoomInputBarController inputBarController = RoomInputBarController();
 
   // 发送礼物列表 使用
   List<ChatroomGiftPageController> controllers = [];
@@ -159,7 +159,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
             actions: [
               InkWell(
                 onTap: () async {
-                  ChatRoomGift? gift = await chatroomShowGiftsView(
+                  ChatRoomGift? gift = await showRoomGiftsView(
                     context,
                     giftControllers: controllers,
                   );
@@ -220,41 +220,39 @@ class _ChatRoomPageState extends State<ChatRoomPage>
           ChatUIKitAppBarAction(
               child: IconButton(
             onPressed: () {
-              chatroomShowMembersView(context,
-                  roomId: roomId,
-                  membersControllers: [
-                    ChatRoomUIKitMembersController(
-                      '聊天室成员',
-                      itemBuilder: (context, profile, onMoreAction) {
-                        return ChatRoomUIKitMemberListTitle(
-                          profile: profile,
-                          onMoreAction: () async {
-                            String? result = await showChatUIKitBottomSheet(
-                              context: context,
-                              items: [
-                                ChatUIKitEventAction.normal(
-                                  label: '自定义事件1',
-                                  onTap: () {
-                                    Navigator.of(context).pop("自定义事件1");
-                                  },
-                                ),
-                                ChatUIKitEventAction.normal(
-                                  label: '自定义事件2',
-                                  onTap: () {
-                                    Navigator.of(context).pop("自定义事件2");
-                                  },
-                                ),
-                              ],
-                            );
-                            if (result != null) {
-                              EasyLoading.showToast('点击了: $result');
-                            }
-                          },
+              showRoomMembersView(context, roomId: roomId, membersControllers: [
+                ChatRoomUIKitMembersController(
+                  '聊天室成员',
+                  itemBuilder: (context, profile, onMoreAction) {
+                    return ChatRoomUIKitMemberListTitle(
+                      profile: profile,
+                      onMoreAction: () async {
+                        String? result = await showChatUIKitBottomSheet(
+                          context: context,
+                          items: [
+                            ChatUIKitEventAction.normal(
+                              label: '自定义事件1',
+                              onTap: () {
+                                Navigator.of(context).pop("自定义事件1");
+                              },
+                            ),
+                            ChatUIKitEventAction.normal(
+                              label: '自定义事件2',
+                              onTap: () {
+                                Navigator.of(context).pop("自定义事件2");
+                              },
+                            ),
+                          ],
                         );
+                        if (result != null) {
+                          EasyLoading.showToast('点击了: $result');
+                        }
                       },
-                    ),
-                    if (isOwner) ChatRoomUIKitMutesController('禁言列表')
-                  ]);
+                    );
+                  },
+                ),
+                if (isOwner) ChatRoomUIKitMutesController('禁言列表')
+              ]);
             },
             icon: Icon(
               Icons.group,

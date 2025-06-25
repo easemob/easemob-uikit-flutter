@@ -5,33 +5,31 @@ import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 import 'package:flutter/material.dart';
 
-class ChatMessageListItemManager {
+class RoomMessageListItemManager {
   static Widget getMessageListItem(Message message, ChatUIKitProfile? user) {
     if (message.bodyType == MessageType.CUSTOM) {
       if (message.isChatRoomJoinNotify) {
-        return ChatRoomUserJoinListItem(message, user);
+        return RoomUserJoinMessageListItem(message, user);
       } else if (message.isChatRoomGift) {
-        return ChatRoomGiftListItem(message, user);
+        return RoomGiftMessageListItem(message, user);
       }
     } else if (message.bodyType == MessageType.TXT) {
-      return ChatRoomTextMessageListItem(message, user);
+      return RoomTextMessageListItem(message, user);
     }
-    return ChatRoomMessageListItem(message, user: user);
+    return RoomMessageListItem(message, user: user);
   }
 }
 
-class ChatRoomMessageListItem extends StatefulWidget {
-  const ChatRoomMessageListItem(this.msg,
-      {this.inlineSpan, this.user, super.key});
+class RoomMessageListItem extends StatefulWidget {
+  const RoomMessageListItem(this.msg, {this.inlineSpan, this.user, super.key});
   final Message msg;
   final ChatUIKitProfile? user;
   final InlineSpan? inlineSpan;
   @override
-  State<ChatRoomMessageListItem> createState() =>
-      _ChatRoomMessageListItemState();
+  State<RoomMessageListItem> createState() => _RoomMessageListItemState();
 }
 
-class _ChatRoomMessageListItemState extends State<ChatRoomMessageListItem>
+class _RoomMessageListItemState extends State<RoomMessageListItem>
     with ChatUIKitThemeMixin {
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
@@ -52,7 +50,7 @@ class _ChatRoomMessageListItemState extends State<ChatRoomMessageListItem>
             margin: const EdgeInsets.only(left: 4),
             width: 15,
             height: 15,
-            child: ChatRoomImageLoader.networkImage(
+            child: ChatRoomImageLoader.roomNetworkImage(
               image: userProfile!.identify!,
               size: 15,
               placeholderWidget: (ChatRoomUIKitSettings.defaultIdentify == null)
@@ -138,20 +136,20 @@ class _ChatRoomMessageListItemState extends State<ChatRoomMessageListItem>
   }
 }
 
-class ChatRoomUserJoinListItem extends StatefulWidget {
-  const ChatRoomUserJoinListItem(this.msg, this.user, {super.key});
+class RoomUserJoinMessageListItem extends StatefulWidget {
+  const RoomUserJoinMessageListItem(this.msg, this.user, {super.key});
   final Message msg;
   final ChatUIKitProfile? user;
   @override
-  State<ChatRoomUserJoinListItem> createState() =>
-      _ChatRoomUserJoinListItemState();
+  State<RoomUserJoinMessageListItem> createState() =>
+      _RoomUserJoinMessageListItemState();
 }
 
-class _ChatRoomUserJoinListItemState extends State<ChatRoomUserJoinListItem>
-    with ChatUIKitThemeMixin {
+class _RoomUserJoinMessageListItemState
+    extends State<RoomUserJoinMessageListItem> with ChatUIKitThemeMixin {
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
-    return ChatRoomMessageListItem(
+    return RoomMessageListItem(
       widget.msg,
       user: widget.user,
       // TODO: 国际化
@@ -166,22 +164,23 @@ class _ChatRoomUserJoinListItemState extends State<ChatRoomUserJoinListItem>
   }
 }
 
-class ChatRoomGiftListItem extends StatefulWidget {
-  const ChatRoomGiftListItem(this.msg, this.user, {super.key});
+class RoomGiftMessageListItem extends StatefulWidget {
+  const RoomGiftMessageListItem(this.msg, this.user, {super.key});
   final Message msg;
   final ChatUIKitProfile? user;
   @override
-  State<ChatRoomGiftListItem> createState() => _ChatRoomGiftListItemState();
+  State<RoomGiftMessageListItem> createState() =>
+      _RoomGiftMessageListItemState();
 }
 
-class _ChatRoomGiftListItemState extends State<ChatRoomGiftListItem>
+class _RoomGiftMessageListItemState extends State<RoomGiftMessageListItem>
     with ChatUIKitThemeMixin {
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     if (!widget.msg.isChatRoomGift) return const SizedBox();
     ChatRoomGift? gift = widget.msg.getGift();
 
-    return ChatRoomMessageListItem(
+    return RoomMessageListItem(
       widget.msg,
       user: widget.user,
       // TODO: 国际化
@@ -199,7 +198,7 @@ class _ChatRoomGiftListItemState extends State<ChatRoomGiftListItem>
               width: 18,
               height: 18,
               margin: const EdgeInsets.only(left: 4),
-              child: ChatRoomImageLoader.networkImage(
+              child: ChatRoomImageLoader.roomNetworkImage(
                 image: gift.giftIcon,
                 size: 18,
                 placeholderWidget:
@@ -218,17 +217,17 @@ class _ChatRoomGiftListItemState extends State<ChatRoomGiftListItem>
   }
 }
 
-class ChatRoomTextMessageListItem extends StatefulWidget {
-  const ChatRoomTextMessageListItem(this.msg, this.user, {super.key});
+class RoomTextMessageListItem extends StatefulWidget {
+  const RoomTextMessageListItem(this.msg, this.user, {super.key});
   final Message msg;
   final ChatUIKitProfile? user;
   @override
-  State<ChatRoomTextMessageListItem> createState() =>
-      _ChatRoomTextMessageListItemState();
+  State<RoomTextMessageListItem> createState() =>
+      _RoomTextMessageListItemState();
 }
 
-class _ChatRoomTextMessageListItemState
-    extends State<ChatRoomTextMessageListItem> with ChatUIKitThemeMixin {
+class _RoomTextMessageListItemState extends State<RoomTextMessageListItem>
+    with ChatUIKitThemeMixin {
   String? content;
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
@@ -284,7 +283,7 @@ class _ChatRoomTextMessageListItemState
         );
       }
       list.add((WidgetSpan(
-          child: ChatRoomImageLoader.emoji(emojiIndex.emoji, size: 20))));
+          child: ChatRoomImageLoader.roomEmoji(emojiIndex.emoji, size: 20))));
 
       lastIndex = emojiIndex;
     }
@@ -301,7 +300,7 @@ class _ChatRoomTextMessageListItemState
       );
     }
 
-    return ChatRoomMessageListItem(
+    return RoomMessageListItem(
       widget.msg,
       user: widget.user,
       inlineSpan: TextSpan(

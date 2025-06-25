@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const String packageName = 'em_chat_uikit';
 
 class ChatRoomImageLoader {
-  static Widget emoji(String imageName, {double size = 36}) {
+  static Widget roomEmoji(String imageName, {double size = 36}) {
     String name = imageName.substring(0, imageName.length);
     return Image.asset(
       'assets/images/chatroom/emojis/$name.png',
@@ -13,7 +13,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget airplane({double size = 30, Color? color}) {
+  static Widget roomSend({double size = 30, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/airplane.png',
       package: packageName,
@@ -22,7 +22,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget pinMessage({double size = 18, Color? color}) {
+  static Widget roomPinMsg({double size = 18, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/pin.png',
       package: packageName,
@@ -31,7 +31,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget textKeyboard({double size = 30, Color? color}) {
+  static Widget roomKeyboard({double size = 30, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/textKeyboard.png',
       package: packageName,
@@ -41,7 +41,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget face({double size = 30, Color? color}) {
+  static Widget roomFace({double size = 30, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/face.png',
       package: packageName,
@@ -51,7 +51,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget avatar({double size = 30, Color? color}) {
+  static Widget roomAvatar({double size = 30, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/avatar.png',
       package: packageName,
@@ -61,7 +61,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget chatRaise({double size = 30, Color? color}) {
+  static Widget roomChatRaise({double size = 30, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/chatRaise.png',
       package: packageName,
@@ -71,7 +71,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget more({double size = 30, Color? color}) {
+  static Widget roomMore({double size = 30, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/more.png',
       package: packageName,
@@ -81,7 +81,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget search({double size = 30, Color? color}) {
+  static Widget roomSearch({double size = 30, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/search.png',
       package: packageName,
@@ -91,7 +91,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget selected({double size = 30, Color? color}) {
+  static Widget roomSelected({double size = 30, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/selected.png',
       package: packageName,
@@ -101,7 +101,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget success({double size = 30, Color? color}) {
+  static Widget roomSuccess({double size = 30, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/success.png',
       package: packageName,
@@ -111,7 +111,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget unselected({double size = 30, Color? color}) {
+  static Widget roomUnselected({double size = 30, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/unselected.png',
       package: packageName,
@@ -121,7 +121,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget inputChat({double size = 30, Color? color}) {
+  static Widget roomInputChat({double size = 30, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/chat.png',
       package: packageName,
@@ -131,7 +131,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget delete({double size = 30, Color? color}) {
+  static Widget roomDelete({double size = 30, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/delete.png',
       package: packageName,
@@ -141,7 +141,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget empty({double size = 140, Color? color}) {
+  static Widget roomEmpty({double size = 140, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/empty.png',
       package: packageName,
@@ -151,7 +151,7 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget defaultGift({double size = 30, Color? color}) {
+  static Widget roomDefaultGift({double size = 30, Color? color}) {
     return Image.asset(
       'assets/images/chatroom/default_gift.png',
       package: packageName,
@@ -161,11 +161,11 @@ class ChatRoomImageLoader {
     );
   }
 
-  static Widget defaultAvatar({double size = 30, Color? color}) {
+  static Widget roomDefaultAvatar({double size = 30, Color? color}) {
     return Icon(Icons.perm_identity, size: size, color: color);
   }
 
-  static Widget networkImage({
+  static Widget roomNetworkImage({
     String? image,
     Widget? placeholderWidget,
     double? size,

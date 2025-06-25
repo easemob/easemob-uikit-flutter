@@ -334,11 +334,11 @@ class GiftItem extends StatelessWidget {
     list.add(content);
 
     // 礼物图片
-    list.add(ChatRoomImageLoader.networkImage(
+    list.add(ChatRoomImageLoader.roomNetworkImage(
       image: gift.giftIcon,
       size: 40,
       fit: BoxFit.fill,
-      placeholderWidget: placeHolder ?? ChatRoomImageLoader.defaultGift(),
+      placeholderWidget: placeHolder ?? ChatRoomImageLoader.roomDefaultGift(),
     ));
 
     list.add(

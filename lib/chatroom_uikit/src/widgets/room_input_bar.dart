@@ -5,7 +5,7 @@ import 'package:em_chat_uikit/chat_uikit_universal/chat_uikit_universal.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 import 'package:flutter/material.dart';
 
-class ChatRoomInputBarController {
+class RoomInputBarController {
   void _attach(ChatRoomInputBarState state) {
     _state = state;
   }
@@ -47,7 +47,7 @@ class ChatRoomInputBar extends StatefulWidget {
   final List<Widget>? actions;
   final TextDirection? textDirection;
   final void Function(String msg)? onSend;
-  final ChatRoomInputBarController? controller;
+  final RoomInputBarController? controller;
   final TextEditingController? textEditingController;
   final double bottomDistance;
 
@@ -63,11 +63,11 @@ enum InputType {
 
 class ChatRoomInputBarState extends State<ChatRoomInputBar>
     with ChatUIKitThemeMixin {
-  late ChatRoomInputBarController controller;
+  late RoomInputBarController controller;
   @override
   void initState() {
     super.initState();
-    controller = widget.controller ?? ChatRoomInputBarController();
+    controller = widget.controller ?? RoomInputBarController();
     controller._attach(this);
     focusNode = FocusNode();
     textEditingController =
@@ -147,7 +147,7 @@ class ChatRoomInputBarState extends State<ChatRoomInputBar>
             margin: const EdgeInsets.all(4),
             width: 24,
             child: widget.inputIcon ??
-                ChatRoomImageLoader.inputChat(
+                ChatRoomImageLoader.roomInputChat(
                   color: const Color.fromRGBO(255, 255, 255, 0.8),
                 ),
           ),
@@ -328,12 +328,12 @@ class ChatRoomInputBarState extends State<ChatRoomInputBar>
         },
         child: () {
           return _inputType == InputType.emoji
-              ? ChatRoomImageLoader.textKeyboard(
+              ? ChatRoomImageLoader.roomKeyboard(
                   color: (theme.color.isDark
                       ? theme.color.neutralColor98
                       : theme.color.neutralColor1),
                 )
-              : ChatRoomImageLoader.face(
+              : ChatRoomImageLoader.roomFace(
                   color: (theme.color.isDark
                       ? theme.color.neutralColor98
                       : theme.color.neutralColor1),
@@ -350,7 +350,7 @@ class ChatRoomInputBarState extends State<ChatRoomInputBar>
           _inputType = InputType.normal;
         });
       },
-      child: ChatRoomImageLoader.airplane(),
+      child: ChatRoomImageLoader.roomSend(),
     ));
 
     list.addAll(trailing.map(

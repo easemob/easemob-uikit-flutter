@@ -71,7 +71,7 @@ class ChatInputEmoji extends StatelessWidget {
                     ? theme.color.neutralColor3
                     : theme.color.neutralColor98),
               ),
-              child: ChatRoomImageLoader.delete(
+              child: ChatRoomImageLoader.roomDelete(
                 size: 40,
                 color: (theme.color.isDark
                     ? theme.color.neutralColor98
@@ -110,7 +110,7 @@ class ChatExpression extends StatelessWidget {
     //   emoji,
     //   style: const TextStyle(fontSize: 30),
     // );
-    Widget icon = ChatRoomImageLoader.emoji(emojiImage, size: 36);
+    Widget icon = ChatRoomImageLoader.roomEmoji(emojiImage, size: 36);
     return TextButton(
       style: ButtonStyle(
         padding: WidgetStatePropertyAll(

@@ -1,7 +1,7 @@
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 import 'package:flutter/material.dart';
 
-Future<ChatRoomGift?> chatroomShowGiftsView(
+Future<ChatRoomGift?> showRoomGiftsView(
   BuildContext context, {
   required List<ChatroomGiftPageController> giftControllers,
 }) {
@@ -25,7 +25,7 @@ Future<ChatRoomGift?> chatroomShowGiftsView(
   );
 }
 
-Future<void> chatroomShowMembersView(
+Future<void> showRoomMembersView(
   BuildContext context, {
   required String roomId,
   required List<ChatRoomUIKitMembersInterface> membersControllers,

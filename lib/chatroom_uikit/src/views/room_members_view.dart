@@ -373,7 +373,7 @@ class _ChatRoomMemberListViewState extends State<ChatRoomMemberListView>
             if (members.isEmpty) {
               return Align(
                 heightFactor: 1.5,
-                child: ChatRoomImageLoader.empty(),
+                child: ChatRoomImageLoader.roomEmpty(),
               );
             } else {
               return Expanded(child: content);
@@ -437,7 +437,7 @@ class _ChatRoomMemberListViewState extends State<ChatRoomMemberListView>
                     children: [
                       Padding(
                         padding: const EdgeInsets.fromLTRB(8, 6, 4, 8),
-                        child: ChatRoomImageLoader.search(
+                        child: ChatRoomImageLoader.roomSearch(
                           size: 20,
                           color: (theme.color.isDark
                               ? theme.color.neutralColor4
@@ -521,7 +521,7 @@ class _ChatRoomMemberListViewState extends State<ChatRoomMemberListView>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ChatRoomImageLoader.search(
+                ChatRoomImageLoader.roomSearch(
                   size: 22,
                   color: (theme.color.isDark
                       ? theme.color.neutralColor4
@@ -598,7 +598,7 @@ class _ChatRoomUIKitMemberListTitleState
               margin: const EdgeInsets.only(right: 14.7),
               width: 21.67,
               height: 21.76,
-              child: ChatRoomImageLoader.networkImage(
+              child: ChatRoomImageLoader.roomNetworkImage(
                 image: widget.profile.identify,
                 placeholderWidget:
                     (ChatRoomUIKitSettings.defaultIdentify == null)

@@ -59,7 +59,7 @@ class ChatRoomTextEditingController extends TextEditingController {
         }
         tp.add(
           WidgetSpan(
-            child: ChatRoomImageLoader.emoji(item.emoji, size: 20),
+            child: ChatRoomImageLoader.roomEmoji(item.emoji, size: 20),
           ),
         );
         index = item.index + item.length;

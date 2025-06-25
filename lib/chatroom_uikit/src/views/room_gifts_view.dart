@@ -2,7 +2,6 @@ import 'package:chat_uikit_theme/chat_uikit_theme.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 import 'package:flutter/material.dart';
 
-
 /// Gift page controller, you can customize the gift page
 class ChatroomGiftPageController {
   /// gift page title
@@ -187,7 +186,7 @@ class ChatRoomGiftItem extends StatelessWidget {
                 ChatRoomUIKitSettings.defaultGiftIcon!,
               );
 
-    Widget imageWidget = ChatRoomImageLoader.networkImage(
+    Widget imageWidget = ChatRoomImageLoader.roomNetworkImage(
       image: gift.giftIcon,
       placeholderWidget: placeholderWidget,
       fit: BoxFit.fill,
