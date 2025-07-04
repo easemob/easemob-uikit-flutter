@@ -51,11 +51,13 @@ class _ChatRoomMessagesWidgetState extends State<ChatRoomMessagesWidget>
   @override
   void initState() {
     super.initState();
+    ChatRoomUIKit.instance.addObserver(this);
     ChatUIKitProvider.instance.addObserver(this);
   }
 
   @override
   void dispose() {
+    ChatRoomUIKit.instance.removeObserver(this);
     ChatUIKitProvider.instance.removeObserver(this);
     super.dispose();
   }
