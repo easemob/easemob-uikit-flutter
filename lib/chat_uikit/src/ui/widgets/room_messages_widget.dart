@@ -269,11 +269,11 @@ class _ChatRoomMessagesWidgetState extends State<ChatRoomMessagesWidget>
   }
 
   void moveToBottom() {
-    if (scrollController.hasClients) {
-      Future.delayed(const Duration(milliseconds: 50), () {
+    Future.delayed(const Duration(milliseconds: 50), () {
+      if (scrollController.hasClients) {
         scrollController.animateTo(scrollController.position.maxScrollExtent,
             duration: const Duration(milliseconds: 200), curve: Curves.easeOut);
-      });
-    }
+      }
+    });
   }
 }
