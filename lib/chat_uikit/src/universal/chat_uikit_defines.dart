@@ -42,6 +42,13 @@ typedef MessageItemBubbleBuilder = Widget? Function(
   MessageModel model,
 );
 
+/// 提示信息builder
+typedef MessageItemAlertBuilder = Widget? Function(
+  BuildContext context,
+  Widget? child,
+  MessageModel model,
+);
+
 /// 联系人列表 item 构建器，需要返回一个 widget，如果返回 null 将会使用默认的 item。 返回后会用于列表显示。
 typedef ChatUIKitContactItemBuilder = Widget? Function(
     BuildContext context, ContactItemModel model);

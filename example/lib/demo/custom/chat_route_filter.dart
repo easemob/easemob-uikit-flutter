@@ -159,172 +159,191 @@ class ChatRouteFilter {
     bool visible = true;
 
     arguments = arguments.copyWith(
-      controller: controller,
-      viewObserver: viewObserver,
-      appBarModel: ChatUIKitAppBarModel(
-        title: 'test',
-        trailingActions: [
-          ChatUIKitAppBarAction(
-            child: const Icon(Icons.add),
-            onTap: (context) {
-              final msg = ChatUIKitMessage.createAlertMessage(
-                arguments.profile.id,
-                arguments.profile.type == ChatUIKitProfileType.group
-                    ? ChatType.GroupChat
-                    : ChatType.Chat,
-                params: {
-                  'alert': '自定义的提醒消息',
-                },
-              );
-              ChatUIKit.instance.insertMessage(
-                message: msg,
-                runMessageReceived: true,
-                needUpdateConversationList: true,
-              );
-            },
-          ),
-        ],
-      ),
-      alertItemBuilder: (context, model) {
-        if (model.message.isAlertCustomMessage) {
-          String? alert = model.message.customBodyParams?['alert'];
-          return Center(child: Text(alert ?? '默认提醒消息内容'));
-        } else {
-          return null;
-        }
-      },
-      showMessageItemNickname: (model) {
-        // 只有群组消息并且不是自己发的消息显示昵称
-        return (arguments.profile.type == ChatUIKitProfileType.group) &&
-            model.message.from != ChatUIKit.instance.currentUserId;
-      },
-      bubbleContentBuilder: (context, model) {
-        if (model.message.bodyType == MessageType.TXT) {
-          return ChatUIKitTextBubbleWidget(
-            model: model,
-            onExpTap: (expStr) {
-              debugPrint('expStr: $expStr');
-            },
-          );
-        }
-        return null;
-      },
-      onItemTap: (ctx, messageModel, rect) {
-        if (messageModel.message.bodyType == MessageType.FILE) {
-          Navigator.of(ctx).push(
-            MaterialPageRoute(
-              builder: (context) => DownloadFileWidget(
-                message: messageModel.message,
-                key: ValueKey(messageModel.message.localTime),
-              ),
+        controller: controller,
+        viewObserver: viewObserver,
+        appBarModel: ChatUIKitAppBarModel(
+          title: 'test',
+          trailingActions: [
+            ChatUIKitAppBarAction(
+              child: const Icon(Icons.add),
+              onTap: (context) {
+                final msg = ChatUIKitMessage.createAlertMessage(
+                  arguments.profile.id,
+                  arguments.profile.type == ChatUIKitProfileType.group
+                      ? ChatType.GroupChat
+                      : ChatType.Chat,
+                  params: {
+                    'alert': '自定义的提醒消息',
+                  },
+                );
+                ChatUIKit.instance.insertMessage(
+                  message: msg,
+                  runMessageReceived: true,
+                  needUpdateConversationList: true,
+                );
+              },
             ),
-          );
-          return true;
-        }
-        return false;
-      },
-      floatingWidget: (ctx) {
-        Future.delayed(const Duration(seconds: 4), () {
-          if (ctx.mounted) {
-            visible = false;
-            viewObserver.refresh();
+          ],
+        ),
+        alertItemBuilder: (context, child, model) {
+          if (model.message.isAlertCustomMessage) {
+            String? alert = model.message.customBodyParams?['alert'];
+            return Center(child: Text(alert ?? '默认提醒消息内容'));
+          } else {
+            return Container(
+              color: Colors.red,
+              child: child,
+            );
           }
-        });
-        return IgnorePointer(
-          ignoring: !visible,
-          child: AnimatedOpacity(
-            opacity: visible ? 1 : 0,
-            duration: const Duration(milliseconds: 300),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              margin: const EdgeInsets.only(top: 60, left: 8, right: 8),
-              height: 78,
-              decoration: BoxDecoration(
-                color: ChatUIKitTheme.instance.color.isDark
-                    ? ChatUIKitTheme.instance.color.neutralColor2
-                    : ChatUIKitTheme.instance.color.neutralSpecialColor9,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    offset: const Offset(0, 2),
-                    blurRadius: 4,
-                  ),
-                ],
+        },
+        showMessageItemNickname: (model) {
+          // 只有群组消息并且不是自己发的消息显示昵称
+          return (arguments.profile.type == ChatUIKitProfileType.group) &&
+              model.message.from != ChatUIKit.instance.currentUserId;
+        },
+        bubbleContentBuilder: (context, model) {
+          if (model.message.bodyType == MessageType.TXT) {
+            return ChatUIKitTextBubbleWidget(
+              model: model,
+              onExpTap: (expStr) {
+                debugPrint('expStr: $expStr');
+              },
+            );
+          }
+          return null;
+        },
+        onItemTap: (ctx, messageModel, rect) {
+          if (messageModel.message.bodyType == MessageType.FILE) {
+            Navigator.of(ctx).push(
+              MaterialPageRoute(
+                builder: (context) => DownloadFileWidget(
+                  message: messageModel.message,
+                  key: ValueKey(messageModel.message.localTime),
+                ),
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.error,
-                    color: ChatUIKitTheme.instance.color.primaryColor5,
-                    size: 16,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text:
-                                '请勿轻信任何关于汇款、中奖等信息，务必提高警惕，谨慎对待来自陌生号码的电话。如遇可疑情况，请及时向相关部门反馈并采取必要的防范措施。',
-                            style: TextStyle(
-                              height: 1.5,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: ChatUIKitTheme.instance.color.isDark
-                                  ? ChatUIKitTheme.instance.color.neutralColor9
-                                  : ChatUIKitTheme.instance.color.neutralColor3,
+            );
+            return true;
+          }
+          return false;
+        },
+        floatingWidget: (ctx) {
+          if (!visible) {
+            return const SizedBox.shrink();
+          }
+          Future.delayed(const Duration(seconds: 4), () {
+            if (ctx.mounted) {
+              visible = false;
+              viewObserver.refresh();
+            }
+          });
+          return IgnorePointer(
+            ignoring: !visible,
+            child: AnimatedOpacity(
+              opacity: visible ? 1 : 0,
+              duration: const Duration(milliseconds: 300),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.only(top: 60, left: 8, right: 8),
+                height: 78,
+                decoration: BoxDecoration(
+                  color: ChatUIKitTheme.instance.color.isDark
+                      ? ChatUIKitTheme.instance.color.neutralColor2
+                      : ChatUIKitTheme.instance.color.neutralSpecialColor9,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      offset: const Offset(0, 2),
+                      blurRadius: 4,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.error,
+                      color: ChatUIKitTheme.instance.color.primaryColor5,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text:
+                                  '请勿轻信任何关于汇款、中奖等信息，务必提高警惕，谨慎对待来自陌生号码的电话。如遇可疑情况，请及时向相关部门反馈并采取必要的防范措施。',
+                              style: TextStyle(
+                                height: 1.5,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: ChatUIKitTheme.instance.color.isDark
+                                    ? ChatUIKitTheme
+                                        .instance.color.neutralColor9
+                                    : ChatUIKitTheme
+                                        .instance.color.neutralColor3,
+                              ),
                             ),
-                          ),
-                          TextSpan(
-                            text: '点击举报',
-                            style: TextStyle(
-                              height: 1.5,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color:
-                                  ChatUIKitTheme.instance.color.primaryColor5,
+                            TextSpan(
+                              text: '点击举报',
+                              style: TextStyle(
+                                height: 1.5,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color:
+                                    ChatUIKitTheme.instance.color.primaryColor5,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () async {
+                                  EasyLoading.show(status: '举报中...');
+                                  Future.delayed(
+                                    const Duration(seconds: 1),
+                                    () {
+                                      EasyLoading.showSuccess('举报成功');
+                                    },
+                                  );
+                                },
                             ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                EasyLoading.show(status: '举报中...');
-                                Future.delayed(
-                                  const Duration(seconds: 1),
-                                  () {
-                                    EasyLoading.showSuccess('举报成功');
-                                  },
-                                );
-                              },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  InkWell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(3),
-                      child: Icon(
-                        Icons.close,
-                        color: ChatUIKitTheme.instance.color.isDark
-                            ? ChatUIKitTheme.instance.color.neutralColor9
-                            : ChatUIKitTheme.instance.color.neutralColor3,
-                        size: 16,
+                    const SizedBox(width: 8),
+                    InkWell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(3),
+                        child: Icon(
+                          Icons.close,
+                          color: ChatUIKitTheme.instance.color.isDark
+                              ? ChatUIKitTheme.instance.color.neutralColor9
+                              : ChatUIKitTheme.instance.color.neutralColor3,
+                          size: 16,
+                        ),
                       ),
+                      onTapUp: (details) {
+                        visible = false;
+                        viewObserver.refresh();
+                      },
                     ),
-                    onTapUp: (details) {
-                      visible = false;
-                      viewObserver.refresh();
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
+          );
+        },
+        backgroundWidget: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text('您使用的是'),
+              Text('演示DEMO'),
+              Text('仅限体验功能'),
+              Text('数据全部为虚拟内容'),
+            ],
           ),
-        );
-      },
-    );
+        ));
 
     return RouteSettings(name: settings.name, arguments: arguments);
   }

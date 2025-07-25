@@ -140,7 +140,7 @@ class MessagesView extends StatefulWidget {
   final MessageItemBuilder? itemBuilder;
 
   /// 提示消息构建器， 如果设置后需要显示提示消息时会直接回调，如果不处理可以返回 `null`。
-  final MessageItemBuilder? alertItemBuilder;
+  final MessageItemAlertBuilder? alertItemBuilder;
 
   /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitEventAction]。
   final List<ChatUIKitEventAction>? morePressActions;
@@ -573,7 +573,7 @@ class _MessagesViewState extends State<MessagesView>
         controller.sendMessageReadAck(model.message);
         return widget.itemBuilder?.call(ctx, model) ?? itemBuilder(ctx, model);
       },
-      alertItemBuilder: widget.alertItemBuilder ?? alertItem,
+      alertItemBuilder: alertItem,
       onErrorBtnTap: (model) {
         bool ret = widget.onErrorBtnTapHandler?.call(context, model) ?? false;
         if (ret == false) {
@@ -879,12 +879,10 @@ class _MessagesViewState extends State<MessagesView>
 
   Widget alertItem(
     BuildContext ctx,
+    Widget? child,
     MessageModel model,
   ) {
-    Widget? content = widget.alertItemBuilder?.call(context, model);
-    if (content != null) {
-      return content;
-    }
+    Widget? content;
 
     if (model.message.isTimeMessageAlert) {
       content = ChatUIKitMessageListViewAlertItem(
@@ -899,7 +897,6 @@ class _MessagesViewState extends State<MessagesView>
           )
         ],
       );
-      return content;
     }
 
     // 如果是撤回消息提醒
@@ -919,7 +916,7 @@ class _MessagesViewState extends State<MessagesView>
         }
       }
 
-      content ??= ChatUIKitMessageListViewAlertItem(
+      content = ChatUIKitMessageListViewAlertItem(
         actions: [
           MessageAlertAction(
             text: '$showName',
@@ -930,7 +927,6 @@ class _MessagesViewState extends State<MessagesView>
           ),
         ],
       );
-      return content;
     }
 
     Map<String, String>? map = (model.message.body as CustomMessageBody).params;
@@ -958,7 +954,7 @@ class _MessagesViewState extends State<MessagesView>
         );
       }
 
-      content ??= ChatUIKitMessageListViewAlertItem(
+      content = ChatUIKitMessageListViewAlertItem(
         actions: [
           MessageAlertAction(
             text: showName,
@@ -973,13 +969,11 @@ class _MessagesViewState extends State<MessagesView>
           ),
         ],
       );
-      return content;
     }
 
     if (model.message.isCreateThreadAlert) {
       String? alertTargetName = map?[alertTargetNameKey];
-
-      content ??= ChatUIKitMessageListViewAlertItem(
+      content = ChatUIKitMessageListViewAlertItem(
         actions: [
           MessageAlertAction(
             text: showName,
@@ -1030,11 +1024,10 @@ class _MessagesViewState extends State<MessagesView>
           ),
         ],
       );
-      return content;
     }
 
     if (model.message.isDestroyGroupAlert) {
-      return ChatUIKitMessageListViewAlertItem(
+      content = ChatUIKitMessageListViewAlertItem(
         actions: [
           MessageAlertAction(
             text: ChatUIKitLocal.alertDestroy.localString(context),
@@ -1044,7 +1037,7 @@ class _MessagesViewState extends State<MessagesView>
     }
 
     if (model.message.isLeaveGroupAlert) {
-      return ChatUIKitMessageListViewAlertItem(
+      content = ChatUIKitMessageListViewAlertItem(
         actions: [
           MessageAlertAction(
             text: showName,
@@ -1058,7 +1051,7 @@ class _MessagesViewState extends State<MessagesView>
     }
 
     if (model.message.isKickedGroupAlert) {
-      return ChatUIKitMessageListViewAlertItem(
+      content = ChatUIKitMessageListViewAlertItem(
         actions: [
           MessageAlertAction(
             text: showName,
@@ -1074,7 +1067,7 @@ class _MessagesViewState extends State<MessagesView>
     if (model.message.isNewContactAlert) {
       ChatUIKitProfile profile = ChatUIKitProvider.instance
           .getProfile(ChatUIKitProfile.contact(id: operator!));
-      return ChatUIKitMessageListViewAlertItem(
+      content = ChatUIKitMessageListViewAlertItem(
         actions: [
           MessageAlertAction(
             text: ChatUIKitLocal.alertYou.localString(context),
@@ -1095,7 +1088,7 @@ class _MessagesViewState extends State<MessagesView>
     }
 
     if (model.message.isPinAlert) {
-      return ChatUIKitMessageListViewAlertItem(
+      content = ChatUIKitMessageListViewAlertItem(
         actions: [
           MessageAlertAction(
             text: showName,
@@ -1109,7 +1102,7 @@ class _MessagesViewState extends State<MessagesView>
     }
 
     if (model.message.isUnPinAlert) {
-      return ChatUIKitMessageListViewAlertItem(
+      content = ChatUIKitMessageListViewAlertItem(
         actions: [
           MessageAlertAction(
             text: showName,
@@ -1121,8 +1114,8 @@ class _MessagesViewState extends State<MessagesView>
         ],
       );
     }
-
-    return const SizedBox();
+    content = widget.alertItemBuilder?.call(context, content, model) ?? content;
+    return content ?? const SizedBox();
   }
 
   List<ChatUIKitEventAction> moreActions() {

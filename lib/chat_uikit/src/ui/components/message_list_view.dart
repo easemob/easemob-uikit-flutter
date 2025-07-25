@@ -59,7 +59,7 @@ class MessageListView extends StatefulWidget {
   final MessageItemBuilder? itemBuilder;
 
   /// The builder of the alert item.
-  final MessageItemBuilder? alertItemBuilder;
+  final MessageItemAlertBuilder? alertItemBuilder;
 
   /// The builder of need show avatar.
   final MessageItemShowHandler? showAvatar;
@@ -195,11 +195,7 @@ class _MessageListViewState extends State<MessageListView>
 
   Widget _item(MessageModel model, int index) {
     if (model.message.isTimeMessageAlert) {
-      Widget? content = widget.alertItemBuilder?.call(
-        context,
-        model,
-      );
-      content ??= ChatUIKitMessageListViewAlertItem(
+      Widget content = ChatUIKitMessageListViewAlertItem(
         actions: [
           MessageAlertAction(
             text: ChatUIKitTimeFormatter.instance.formatterHandler?.call(
@@ -213,6 +209,8 @@ class _MessageListViewState extends State<MessageListView>
           )
         ],
       );
+      content =
+          widget.alertItemBuilder?.call(context, content, model) ?? content;
       return content;
     }
 
@@ -229,7 +227,8 @@ class _MessageListViewState extends State<MessageListView>
         model.message.isUnPinAlert ||
         model.message.isLeaveGroupAlert) {
       if (widget.alertItemBuilder != null) {
-        return widget.alertItemBuilder!.call(context, model)!;
+        return widget.alertItemBuilder!.call(context, null, model) ??
+            const SizedBox(height: 20, width: 20);
       }
     }
 

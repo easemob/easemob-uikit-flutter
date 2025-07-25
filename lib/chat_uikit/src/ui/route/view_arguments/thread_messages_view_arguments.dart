@@ -85,7 +85,7 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
   final MessageItemBuilder? itemBuilder;
 
   /// 提示消息构建器， 如果设置后需要显示提示消息时会直接回调，如果不处理可以返回 `null`。
-  final MessageItemBuilder? alertItemBuilder;
+  final MessageItemAlertBuilder? alertItemBuilder;
 
   /// 更多按钮点击事件列表，如果设置后将会替换默认的更多按钮点击事件列表。详细参考 [ChatUIKitEventAction]。
   final List<ChatUIKitEventAction>? morePressActions;
@@ -146,7 +146,7 @@ class ThreadMessagesViewArguments implements ChatUIKitViewArguments {
     MessageItemTapHandler? onAvatarLongPress,
     MessageItemTapHandler? onNicknameTap,
     MessageItemBuilder? itemBuilder,
-    MessageItemBuilder? alertItemBuilder,
+    MessageItemAlertBuilder? alertItemBuilder,
     List<ChatUIKitEventAction>? morePressActions,
     MessagesViewMorePressHandler? onMoreActionsItemsHandler,
     List<ChatUIKitEventAction>? longPressActions,

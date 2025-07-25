@@ -59,7 +59,7 @@ class ThreadMessageListView extends StatefulWidget {
   final MessageItemBuilder? itemBuilder;
 
   /// The builder of the alert item.
-  final MessageItemBuilder? alertItemBuilder;
+  final MessageItemAlertBuilder? alertItemBuilder;
 
   /// The builder of the show avatar.
   final MessageItemShowHandler? showAvatar;
@@ -207,11 +207,7 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView>
 
   Widget _item(MessageModel model, int index) {
     if (model.message.isTimeMessageAlert) {
-      Widget? content = widget.alertItemBuilder?.call(
-        context,
-        model,
-      );
-      content ??= ChatUIKitMessageListViewAlertItem(
+      Widget content = ChatUIKitMessageListViewAlertItem(
         actions: [
           MessageAlertAction(
             text: ChatUIKitTimeFormatter.instance.formatterHandler?.call(
@@ -225,6 +221,8 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView>
           )
         ],
       );
+      content =
+          widget.alertItemBuilder?.call(context, content, model) ?? content;
       return content;
     }
 
@@ -238,7 +236,7 @@ class _ThreadMessageListViewState extends State<ThreadMessageListView>
         model.message.isLeaveGroupAlert ||
         model.message.isAlertCustomMessage) {
       if (widget.alertItemBuilder != null) {
-        return widget.alertItemBuilder!.call(context, model)!;
+        return widget.alertItemBuilder!.call(context, null, model)!;
       }
     }
 
