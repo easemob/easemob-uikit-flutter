@@ -48,4 +48,12 @@ mixin MessageWrapper on ChatUIKitServiceBase {
       }
     }
   }
+
+  void onMessageWillSend(Message message) {
+    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
+      if (observer is MessageObserver) {
+        observer.onMessageWillSend(message);
+      }
+    }
+  }
 }

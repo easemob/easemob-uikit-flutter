@@ -9,15 +9,50 @@ class ConversationPage extends StatefulWidget {
 }
 
 class _ConversationPageState extends State<ConversationPage>
-    with ChatUIKitThemeMixin, MessageObserver {
+    with ChatUIKitThemeMixin, MessageObserver, ChatObserver {
   @override
   void dispose() {
     super.dispose();
+    ChatUIKit.instance.removeObserver(this);
   }
 
   @override
   void initState() {
     super.initState();
+    ChatUIKit.instance.addObserver(this);
+  }
+
+  Message getWarningMessage(String targetId, ChatType type, int time) {
+    final msg = ChatUIKitMessage.createAlertMessage(
+      targetId,
+      type,
+      params: {
+        'alert': 'warning',
+      },
+    );
+    msg.serverTime = time;
+    msg.localTime = time;
+
+    return msg;
+  }
+
+  @override
+  void onMessageSendSuccess(String msgId, Message msg) {
+    ChatUIKit.instance.insertMessage(
+      message: getWarningMessage(
+          msg.conversationId!, msg.chatType, msg.serverTime + 1),
+      runMessageReceived: true,
+    );
+  }
+
+  @override
+  void onMessagesReceived(List<Message> messages) {
+    for (var msg in messages) {
+      ChatUIKit.instance.insertMessage(
+        message: getWarningMessage(
+            msg.conversationId!, msg.chatType, msg.serverTime + 1),
+      );
+    }
   }
 
   @override

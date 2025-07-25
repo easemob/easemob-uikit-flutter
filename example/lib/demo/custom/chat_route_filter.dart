@@ -187,8 +187,18 @@ class ChatRouteFilter {
         ),
         alertItemBuilder: (context, child, model) {
           if (model.message.isAlertCustomMessage) {
-            String? alert = model.message.customBodyParams?['alert'];
-            return Center(child: Text(alert ?? '默认提醒消息内容'));
+            String? alert = model.message.customBodyParams?['warning'];
+            return Center(
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 3),
+                padding: const EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  color: Colors.lightGreen,
+                  borderRadius: BorderRadius.circular(3),
+                ),
+                child: Text(alert ?? '默认提醒消息内容'),
+              ),
+            );
           } else {
             return Container(
               color: Colors.red,
