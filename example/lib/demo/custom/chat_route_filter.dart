@@ -191,7 +191,7 @@ class ChatRouteFilter {
             return Center(
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 3),
-                padding: const EdgeInsets.all(3),
+                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 6),
                 decoration: BoxDecoration(
                   color: Colors.lightGreen,
                   borderRadius: BorderRadius.circular(3),
@@ -347,7 +347,10 @@ class ChatRouteFilter {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Text('您使用的是'),
+              Text(
+                '您使用的是',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
               Text('演示DEMO'),
               Text('仅限体验功能'),
               Text('数据全部为虚拟内容'),
