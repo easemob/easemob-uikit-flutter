@@ -192,16 +192,23 @@ class ChatRouteFilter {
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 3),
                 padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 6),
-                decoration: BoxDecoration(
-                  color: Colors.lightGreen,
-                  borderRadius: BorderRadius.circular(3),
+                // decoration: BoxDecoration(
+                //   color: Colors.grey,
+                //   borderRadius: BorderRadius.circular(3),
+                // ),
+                child: Text(
+                  alert ?? '演示功能，无真实数据，仅供体验',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-                child: Text(alert ?? '默认提醒消息内容'),
               ),
             );
           } else {
             return Container(
-              color: Colors.red,
+              color: const Color.fromARGB(255, 233, 229, 229),
               child: child,
             );
           }
@@ -349,11 +356,37 @@ class ChatRouteFilter {
             children: [
               Text(
                 '您使用的是',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-              Text('演示DEMO'),
-              Text('仅限体验功能'),
-              Text('数据全部为虚拟内容'),
+              SizedBox(height: 8),
+              Text(
+                '演示 DEMO',
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 4),
+              Text(
+                '仅限体验功能',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+              SizedBox(height: 2),
+              Text(
+                '数据全部为虚拟内容',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
             ],
           ),
         ));
