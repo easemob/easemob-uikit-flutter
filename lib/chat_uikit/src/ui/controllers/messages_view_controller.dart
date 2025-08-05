@@ -235,6 +235,12 @@ class MessagesViewController extends ChangeNotifier
     List<MessageModel> list = [];
     for (var element in messages) {
       debugPrint(element.toString());
+      // 如果是当前用户发送的消息，并且不是Alert类型的自定义消息，则跳过
+      if (element.from == ChatUIKit.instance.currentUserId &&
+          !element.isAlertCustomMessage) {
+        continue;
+      }
+      // 检查是否属于当前会话
       if (element.conversationId == profile.id) {
         list.add(
           MessageModel(message: element),
