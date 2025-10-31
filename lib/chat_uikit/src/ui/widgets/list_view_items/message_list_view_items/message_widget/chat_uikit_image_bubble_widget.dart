@@ -130,12 +130,7 @@ class _ChatUIKitImageBubbleWidgetState extends State<ChatUIKitImageBubbleWidget>
         bool exists = file.existsSync();
         if (exists) {
           content = Image(
-            image: ResizeImage(
-              FileImage(file),
-              width: width.toInt(),
-              height: height.toInt(),
-              policy: ResizeImagePolicy.fit,
-            ),
+            image: FileImage(file),
             width: width,
             height: height,
             gaplessPlayback: true,
