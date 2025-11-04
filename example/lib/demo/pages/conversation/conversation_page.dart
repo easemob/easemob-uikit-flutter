@@ -38,11 +38,11 @@ class _ConversationPageState extends State<ConversationPage>
 
   @override
   void onMessageSendSuccess(String msgId, Message msg) {
-    ChatUIKit.instance.insertMessage(
-      message: getWarningMessage(
-          msg.conversationId!, msg.chatType, msg.serverTime + 1),
-      runMessageReceived: true,
-    );
+    // ChatUIKit.instance.insertMessage(
+    //   message: getWarningMessage(
+    //       msg.conversationId!, msg.chatType, msg.serverTime + 1),
+    //   runMessageReceived: true,
+    // );
   }
 
   @override
@@ -52,11 +52,11 @@ class _ConversationPageState extends State<ConversationPage>
           msg.from == ChatUIKit.instance.currentUserId) {
         continue;
       }
-      ChatUIKit.instance.insertMessage(
-        message: getWarningMessage(
-            msg.conversationId!, msg.chatType, msg.serverTime + 1),
-        runMessageReceived: true,
-      );
+      // ChatUIKit.instance.insertMessage(
+      //   message: getWarningMessage(
+      //       msg.conversationId!, msg.chatType, msg.serverTime + 1),
+      //   runMessageReceived: true,
+      // );
     }
   }
 
