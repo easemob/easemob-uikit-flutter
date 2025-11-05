@@ -451,9 +451,9 @@ class MessagesViewController extends ChangeNotifier
   }
 
   Future<void> _clearMention(List<MessageModel> msgs) async {
-    if (profile.type == ChatUIKitProfileType.group) {
-      return;
-    }
+    // if (profile.type == ChatUIKitProfileType.group) {
+    //   return;
+    // }
     if (msgs.any((element) => element.message.hasMention)) {
       clearMentionIfNeed();
     }
