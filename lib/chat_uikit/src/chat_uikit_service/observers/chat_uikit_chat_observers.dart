@@ -4,21 +4,25 @@ import 'package:em_chat_uikit/chat_uikit/chat_uikit.dart';
 mixin ChatUIKitChatObservers on ChatSDKService {
   @override
   void onMessagesReceived(List<Message> messages) async {
-    List<Conversation>? needMentionConversations;
+    Map<Conversation, String>? needMentionConversations;
     for (var msg in messages) {
-      if (msg.hasMention) {
-        needMentionConversations ??= [];
+      String? mentionType = msg.hasMention;
+      if (mentionType != null) {
+        needMentionConversations ??= {};
         Conversation? conversation = await ChatUIKit.instance.getConversation(
           conversationId: msg.conversationId!,
           type: ConversationType.values[msg.chatType.index],
         );
-        needMentionConversations.add(conversation!);
+        // 如果已经是 mentionAll，则保持 mentionAll；否则更新为新的类型
+        if (needMentionConversations[conversation!] != hasMentionAllValue) {
+          needMentionConversations[conversation] = mentionType;
+        }
       }
     }
     if (needMentionConversations?.isNotEmpty == true) {
       List<Future> futures = [];
-      for (var conversation in needMentionConversations!) {
-        futures.add(conversation.addMention());
+      for (var entry in needMentionConversations!.entries) {
+        futures.add(entry.key.addMention(entry.value));
       }
       Future.wait(futures);
     }

@@ -339,9 +339,10 @@ const String alertUnPinMessageKey = 'alertUnPinMessageKey';
 const String alertCustomMessageKey = 'alertCustomMessageKey';
 
 const String mentionKey = 'em_at_list';
-const String mentionAllValue = 'ALL';
+const String mentionAllValue = 'All';
 const String hasMentionKey = 'mention';
 const String hasMentionValue = 'mention';
+const String hasMentionAllValue = 'mentionAll';
 
 const String voiceHasReadKey = 'voiceHasRead';
 const String hasTranslatedKey = 'hasTranslatedKey';

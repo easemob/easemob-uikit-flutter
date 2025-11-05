@@ -454,7 +454,7 @@ class MessagesViewController extends ChangeNotifier
     // if (profile.type == ChatUIKitProfileType.group) {
     //   return;
     // }
-    if (msgs.any((element) => element.message.hasMention)) {
+    if (msgs.any((element) => element.message.hasMention != null)) {
       clearMentionIfNeed();
     }
   }

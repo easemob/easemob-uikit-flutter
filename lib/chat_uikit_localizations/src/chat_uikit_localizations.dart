@@ -305,6 +305,7 @@ mixin ChatUIKitLocal {
   static const nonSupportMessage = 'non_support_message';
 
   static const conversationListItemMention = 'conversation_list_item_mention';
+  static const conversationListItemMentionAll = 'conversation_list_item_mention_all';
 
   static const listViewLoadFailed = 'list_view_load_failed';
   static const listViewReload = 'list_view_reload';
@@ -546,6 +547,7 @@ mixin ChatUIKitLocal {
     selectContactViewSearchHint: '搜索联系人',
     nonSupportMessage: '不支持的消息类型',
     conversationListItemMention: '有人@我',
+    conversationListItemMentionAll: '@所有人',
     listViewLoadFailed: '加载失败',
     listViewReload: '重新加载',
     messageTextWidgetURLPreviewParsing: '解析中...',
@@ -786,6 +788,7 @@ mixin ChatUIKitLocal {
     selectContactViewSearchHint: 'Search Contacts',
     nonSupportMessage: 'Unsupported message type',
     conversationListItemMention: 'Mentioned',
+    conversationListItemMentionAll: 'Mentioned All',
     listViewLoadFailed: 'Load Failed',
     listViewReload: 'Reload',
     messageTextWidgetURLPreviewParsing: 'Parsing...',

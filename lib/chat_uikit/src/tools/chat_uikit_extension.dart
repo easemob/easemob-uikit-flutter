@@ -148,9 +148,9 @@ const String userIdentifyKey = 'identify';
 const String userExtKey = 'ext';
 
 extension ConversationHelp on Conversation {
-  Future<void> addMention() async {
+  Future<void> addMention([String mentionType = hasMentionValue]) async {
     Map<String, String> conversationExt = ext ?? {};
-    conversationExt[hasMentionKey] = hasMentionValue;
+    conversationExt[hasMentionKey] = mentionType;
     await setExt(conversationExt);
   }
 
@@ -804,26 +804,25 @@ extension MessageHelper on Message {
     return str ?? '';
   }
 
-  bool get hasMention {
-    bool ret = false;
+  String? get hasMention {
     if (attributes == null) {
-      ret = false;
+      return null;
     }
     if (attributes?[mentionKey] == null) {
-      ret = false;
+      return null;
     }
     if (attributes?[mentionKey] is List) {
       List mentionList = attributes?[mentionKey];
       if (mentionList.isNotEmpty) {
-        ret = mentionList.contains(ChatUIKit.instance.currentUserId);
-      }
-    } else if (attributes?[mentionKey] is String) {
-      if (attributes?[mentionKey] == mentionAllValue) {
-        ret = true;
+        if (mentionList.any((item) => item.toString().toLowerCase() == mentionAllValue.toLowerCase())) {
+          return hasMentionAllValue;
+        } else if (mentionList.contains(ChatUIKit.instance.currentUserId)) {
+          return hasMentionValue;
+        }
       }
     }
 
-    return ret;
+    return null;
   }
 
   bool get isTimeMessageAlert {
