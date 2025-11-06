@@ -6,6 +6,7 @@ import 'package:em_chat_uikit/chat_uikit/src/tools/chat_uikit_extension.dart';
 import 'package:em_chat_uikit/chat_uikit/src/ui/custom/custom_tab_indicator.dart';
 import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
+import 'package:em_chat_uikit/chat_uikit_localizations/chat_uikit_localizations.dart';
 
 import 'package:flutter/material.dart';
 
@@ -471,8 +472,7 @@ class _ChatRoomMembersWidgetState extends State<ChatRoomMembersWidget>
                             contentPadding: const EdgeInsets.symmetric(
                               vertical: -8,
                             ),
-                            // TODO : 国际化
-                            hintText: '搜索',
+                            hintText: ChatUIKitLocal.roomMembersSearch.localString(context),
                             hintStyle: TextStyle(
                               fontWeight: theme.font.bodyLarge.fontWeight,
                               fontSize: theme.font.bodyLarge.fontSize,
@@ -503,8 +503,7 @@ class _ChatRoomMembersWidgetState extends State<ChatRoomMembersWidget>
                     focusNode.unfocus();
                   },
                   child: Text(
-                    // TODO : 国际化
-                    '取消',
+                    ChatUIKitLocal.roomMembersCancel.localString(context),
                     style: TextStyle(
                       color: (theme.color.isDark
                           ? theme.color.neutralColor6
@@ -538,8 +537,7 @@ class _ChatRoomMembersWidgetState extends State<ChatRoomMembersWidget>
                 ),
                 const SizedBox(width: 5.83),
                 Text(
-                  // TODO : 国际化
-                  '搜索',
+                  ChatUIKitLocal.roomMembersSearch.localString(context),
                   style: TextStyle(
                     fontWeight: theme.font.bodyLarge.fontWeight,
                     fontSize: theme.font.bodyLarge.fontSize,

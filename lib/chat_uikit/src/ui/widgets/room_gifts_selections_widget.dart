@@ -1,7 +1,9 @@
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
 import 'package:em_chat_uikit/chat_uikit/src/chat_uikit_settings.dart';
+import 'package:em_chat_uikit/chat_uikit/src/tools/chat_uikit_extension.dart';
 import 'package:em_chat_uikit/chat_uikit/src/ui/custom/custom_tab_indicator.dart';
 import 'package:em_chat_uikit/chat_uikit/src/ui/models/room_uikit_gift_model.dart';
+import 'package:em_chat_uikit/chat_uikit_localizations/chat_uikit_localizations.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 import 'package:flutter/material.dart';
 
@@ -246,8 +248,7 @@ class ChatRoomGiftItem extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                // TODO: 国际化
-                '发送',
+                ChatUIKitLocal.roomGiftSend.localString(context),
                 style: TextStyle(
                   fontWeight: theme.font.labelMedium.fontWeight,
                   fontSize: theme.font.labelMedium.fontSize,

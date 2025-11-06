@@ -361,6 +361,14 @@ mixin ChatUIKitLocal {
   static const floatingUnreadMessage = 'floating_unread_message';
   static const deleteSomeMessages = 'delete_some_messages';
 
+  static const roomGiftSend = 'room_gift_send';
+  static const roomMembersSearch = 'room_members_search';
+  static const roomMembersCancel = 'room_members_cancel';
+  static const roomMessageJoined = 'room_message_joined';
+  static const roomGiftDefaultName = 'room_gift_default_name';
+  static const roomInputHint = 'room_input_hint';
+  static const chatroomBottomSheetCancel = 'chatroom_bottom_sheet_cancel';
+
   static const Map<String, String> zh = {
     conversationsViewMenuAddContact: '添加联系人',
     conversationsViewMenuCreateGroup: '创建群组',
@@ -591,6 +599,13 @@ mixin ChatUIKitLocal {
     unPinConfirmed: '确认移除',
     floatingUnreadMessage: '条未读消息',
     deleteSomeMessages: '删除%a条消息?',
+    roomGiftSend: '发送',
+    roomMembersSearch: '搜索',
+    roomMembersCancel: '取消',
+    roomMessageJoined: '加入聊天室',
+    roomGiftDefaultName: '礼物',
+    roomInputHint: '发点什么吧~',
+    chatroomBottomSheetCancel: '取消',
   };
 
   static const Map<String, String> en = {
@@ -832,6 +847,13 @@ mixin ChatUIKitLocal {
     unPinConfirmed: 'Confirm',
     floatingUnreadMessage: 'unread messages',
     deleteSomeMessages: 'Delete %a messages?',
+    roomGiftSend: 'Send',
+    roomMembersSearch: 'Search',
+    roomMembersCancel: 'Cancel',
+    roomMessageJoined: 'joined the chat room',
+    roomGiftDefaultName: 'Gift',
+    roomInputHint: 'Say something...',
+    chatroomBottomSheetCancel: 'Cancel',
   };
 }
 

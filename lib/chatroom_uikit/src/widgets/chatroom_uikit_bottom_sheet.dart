@@ -1,4 +1,6 @@
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
+import 'package:em_chat_uikit/chat_uikit/src/tools/chat_uikit_extension.dart';
+import 'package:em_chat_uikit/chat_uikit_localizations/chat_uikit_localizations.dart';
 import 'package:flutter/material.dart';
 
 class ChatRoomUIKitBottomSheet extends StatelessWidget {
@@ -126,8 +128,7 @@ class ChatRoomUIKitBottomSheet extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 17),
           alignment: Alignment.center,
           child: Text(
-            // TODO 国际化
-            '取消',
+            ChatUIKitLocal.chatroomBottomSheetCancel.localString(context),
             style: cancelStyle ??
                 TextStyle(
                   fontWeight: theme.font.titleMedium.fontWeight,
