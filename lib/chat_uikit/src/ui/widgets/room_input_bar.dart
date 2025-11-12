@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
 import 'package:em_chat_uikit/chat_uikit/src/chat_uikit_settings.dart';
+import 'package:em_chat_uikit/chat_uikit/src/tools/chat_uikit_extension.dart';
+import 'package:em_chat_uikit/chat_uikit_localizations/chat_uikit_localizations.dart';
 import 'package:em_chat_uikit/chat_uikit_universal/chat_uikit_universal.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 import 'package:flutter/material.dart';
@@ -156,8 +158,7 @@ class ChatRoomInputBarState extends State<ChatRoomInputBar>
             child: Padding(
               padding: const EdgeInsets.only(right: 4, left: 4),
               child: Text(
-                // widget.inputHint ?? 'Let\'s chat',
-                widget.inputHint ?? '发点什么吧~',
+                widget.inputHint ?? ChatUIKitLocal.roomInputHint.localString(context),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(

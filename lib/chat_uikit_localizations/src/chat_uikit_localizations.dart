@@ -305,6 +305,7 @@ mixin ChatUIKitLocal {
   static const nonSupportMessage = 'non_support_message';
 
   static const conversationListItemMention = 'conversation_list_item_mention';
+  static const conversationListItemMentionAll = 'conversation_list_item_mention_all';
 
   static const listViewLoadFailed = 'list_view_load_failed';
   static const listViewReload = 'list_view_reload';
@@ -359,6 +360,14 @@ mixin ChatUIKitLocal {
 
   static const floatingUnreadMessage = 'floating_unread_message';
   static const deleteSomeMessages = 'delete_some_messages';
+
+  static const roomGiftSend = 'room_gift_send';
+  static const roomMembersSearch = 'room_members_search';
+  static const roomMembersCancel = 'room_members_cancel';
+  static const roomMessageJoined = 'room_message_joined';
+  static const roomGiftDefaultName = 'room_gift_default_name';
+  static const roomInputHint = 'room_input_hint';
+  static const chatroomBottomSheetCancel = 'chatroom_bottom_sheet_cancel';
 
   static const Map<String, String> zh = {
     conversationsViewMenuAddContact: '添加联系人',
@@ -546,6 +555,7 @@ mixin ChatUIKitLocal {
     selectContactViewSearchHint: '搜索联系人',
     nonSupportMessage: '不支持的消息类型',
     conversationListItemMention: '有人@我',
+    conversationListItemMentionAll: '@所有人',
     listViewLoadFailed: '加载失败',
     listViewReload: '重新加载',
     messageTextWidgetURLPreviewParsing: '解析中...',
@@ -589,6 +599,13 @@ mixin ChatUIKitLocal {
     unPinConfirmed: '确认移除',
     floatingUnreadMessage: '条未读消息',
     deleteSomeMessages: '删除%a条消息?',
+    roomGiftSend: '发送',
+    roomMembersSearch: '搜索',
+    roomMembersCancel: '取消',
+    roomMessageJoined: '加入聊天室',
+    roomGiftDefaultName: '礼物',
+    roomInputHint: '发点什么吧~',
+    chatroomBottomSheetCancel: '取消',
   };
 
   static const Map<String, String> en = {
@@ -786,6 +803,7 @@ mixin ChatUIKitLocal {
     selectContactViewSearchHint: 'Search Contacts',
     nonSupportMessage: 'Unsupported message type',
     conversationListItemMention: 'Mentioned',
+    conversationListItemMentionAll: 'Mentioned All',
     listViewLoadFailed: 'Load Failed',
     listViewReload: 'Reload',
     messageTextWidgetURLPreviewParsing: 'Parsing...',
@@ -829,6 +847,13 @@ mixin ChatUIKitLocal {
     unPinConfirmed: 'Confirm',
     floatingUnreadMessage: 'unread messages',
     deleteSomeMessages: 'Delete %a messages?',
+    roomGiftSend: 'Send',
+    roomMembersSearch: 'Search',
+    roomMembersCancel: 'Cancel',
+    roomMessageJoined: 'joined the chat room',
+    roomGiftDefaultName: 'Gift',
+    roomInputHint: 'Say something...',
+    chatroomBottomSheetCancel: 'Cancel',
   };
 }
 

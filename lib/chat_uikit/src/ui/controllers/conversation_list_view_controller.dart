@@ -175,13 +175,19 @@ class ConversationListViewController
   Future<List<Conversation>> clearEmptyAndChatRoomConversations(
       List<Conversation> list) async {
     List<Conversation> tmp = [];
+
+    // 获取配置值，判断是否允许空会话
+    bool enableEmpty = ChatUIKit.instance.options?.enableEmptyConversation ?? false;
+
     for (var item in list) {
       if (item.type == ConversationType.ChatRoom) {
         continue;
       }
       final latest = await item.latestMessage();
       final unreadCount = await item.unreadCount();
-      if (latest != null || unreadCount > 0) {
+
+      // 如果启用了空会话，或者会话不为空
+      if (enableEmpty || latest != null || unreadCount > 0) {
         tmp.add(item);
       }
     }

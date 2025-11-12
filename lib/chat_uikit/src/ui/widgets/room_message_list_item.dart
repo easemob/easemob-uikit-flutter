@@ -1,6 +1,7 @@
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
 import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
 import 'package:em_chat_uikit/chat_uikit/chat_uikit.dart';
+import 'package:em_chat_uikit/chat_uikit_localizations/chat_uikit_localizations.dart';
 import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
 import 'package:em_chat_uikit/chatroom_uikit/chatroom_uikit.dart';
 import 'package:flutter/material.dart';
@@ -204,9 +205,8 @@ class _RoomUserJoinMessageListItemState
       showIdentify: widget.showIdentify,
       showAvatar: widget.showAvatar,
       showNickname: widget.showNickname,
-      // TODO: 国际化
       inlineSpan: TextSpan(
-          text: " 加入聊天室",
+          text: " ${ChatUIKitLocal.roomMessageJoined.localString(context)}",
           style: TextStyle(
             color: theme.color.isDark
                 ? theme.color.secondaryColor7
@@ -251,12 +251,10 @@ class _RoomGiftMessageListItemState extends State<RoomGiftMessageListItem>
       showIdentify: widget.showIdentify,
       showAvatar: widget.showAvatar,
       showNickname: widget.showNickname,
-      // TODO: 国际化
       inlineSpan: TextSpan(
         children: [
           const WidgetSpan(child: Padding(padding: EdgeInsets.only(left: 4))),
-          // TODO 礼物名称国际化
-          TextSpan(text: gift!.giftName ?? '礼物'),
+          TextSpan(text: gift!.giftName ?? ChatUIKitLocal.roomGiftDefaultName.localString(context)),
           WidgetSpan(
             child: Container(
               clipBehavior: Clip.hardEdge,

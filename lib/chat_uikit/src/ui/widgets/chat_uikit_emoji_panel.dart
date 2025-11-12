@@ -41,21 +41,52 @@ class ChatUIKitEmojiPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ChatUIKitTheme.instance;
-    Widget content = GridView.custom(
-      shrinkWrap: true,
-      padding: padding ??
-          const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 60),
-      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: maxCrossAxisExtent,
-        mainAxisSpacing: mainAxisSpacing,
-        crossAxisSpacing: crossAxisSpacing,
-        childAspectRatio: childAspectRatio,
-        mainAxisExtent: maxCrossAxisExtent,
-      ),
-      childrenDelegate: SliverChildBuilderDelegate(
-        (context, position) => _getEmojiItemContainer(position),
-        childCount: ChatUIKitEmojiData.listSize,
-      ),
+    // Widget content = GridView.custom(
+    //   shrinkWrap: true,
+    //   padding: padding ??
+    //       const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 60),
+    //   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+    //     maxCrossAxisExtent: maxCrossAxisExtent,
+    //     mainAxisSpacing: mainAxisSpacing,
+    //     crossAxisSpacing: crossAxisSpacing,
+    //     childAspectRatio: childAspectRatio,
+    //     mainAxisExtent: maxCrossAxisExtent,
+    //   ),
+    //   childrenDelegate: SliverChildBuilderDelegate(
+    //     (context, position) => _getEmojiItemContainer(position),
+    //     childCount: ChatUIKitEmojiData.listSize,
+    //   ),
+    // );
+
+    // 计算顶部空白高度：约为半个 emoji 图标高度
+    // emoji 图标大小 = 32px，加上 padding 和间距约 36px
+    // 半个图标高度约为 18px，我们使用 20px 便于调整
+    const double topSpacerHeight = 20.0;
+
+    Widget content = Column(
+      children: [
+        // 顶部空白区域，当键盘弹出时这部分会被遮挡
+        const SizedBox(height: topSpacerHeight),
+        // Emoji 网格，使用 Expanded 填充剩余空间
+        Expanded(
+          child: GridView.custom(
+            shrinkWrap: true,
+            padding: padding ??
+                const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 60),
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: maxCrossAxisExtent,
+              mainAxisSpacing: mainAxisSpacing,
+              crossAxisSpacing: crossAxisSpacing,
+              childAspectRatio: childAspectRatio,
+              mainAxisExtent: maxCrossAxisExtent,
+            ),
+            childrenDelegate: SliverChildBuilderDelegate(
+              (context, position) => _getEmojiItemContainer(position),
+              childCount: ChatUIKitEmojiData.listSize,
+            ),
+          ),
+        ),
+      ],
     );
 
     content = Container(

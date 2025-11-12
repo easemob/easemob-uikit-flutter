@@ -1,4 +1,5 @@
 import 'package:chat_uikit_theme/chat_uikit_theme.dart';
+import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
 import 'package:em_chat_uikit/chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/chat_uikit_localizations/chat_uikit_localizations.dart';
 import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
@@ -151,10 +152,15 @@ class ChatUIKitConversationListViewItem extends StatelessWidget {
                   text: TextSpan(
                     style: style,
                     children: [
-                      if (info.hasMention)
+                      if (info.hasMention != null)
                         TextSpan(
-                            text:
-                                '[${ChatUIKitLocal.conversationListItemMention.localString(context)}]',
+                            text: () {
+                              if (info.hasMention == hasMentionAllValue) {
+                                return '[${ChatUIKitLocal.conversationListItemMentionAll.localString(context)}]';
+                              } else {
+                                return '[${ChatUIKitLocal.conversationListItemMention.localString(context)}]';
+                              }
+                            }(),
                             style: () {
                               final style = TextStyle(
                                 color: theme.color.isDark

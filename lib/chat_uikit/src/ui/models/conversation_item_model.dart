@@ -9,7 +9,7 @@ class ConversationItemModel with ChatUIKitListItemModelBase, NeedSearch {
   final int unreadCount;
   final bool pinned;
   final bool noDisturb;
-  final bool hasMention;
+  final String? hasMention;
   final Map<String, String>? attributes;
   @override
   ChatUIKitProfile profile;
@@ -20,7 +20,7 @@ class ConversationItemModel with ChatUIKitListItemModelBase, NeedSearch {
     this.unreadCount = 0,
     this.noDisturb = false,
     this.pinned = false,
-    this.hasMention = false,
+    this.hasMention,
     this.attributes,
   });
 
@@ -40,7 +40,7 @@ class ConversationItemModel with ChatUIKitListItemModelBase, NeedSearch {
       lastMessage: lastMessage,
       pinned: conversation.isPinned,
       noDisturb: noDisturb,
-      hasMention: conversation.ext?[hasMentionKey] == hasMentionValue,
+      hasMention: conversation.ext?[hasMentionKey],
       attributes: conversation.ext,
     );
     return info;
@@ -52,7 +52,7 @@ class ConversationItemModel with ChatUIKitListItemModelBase, NeedSearch {
     int? unreadCount,
     bool? pinned,
     bool? noDisturb,
-    bool? hasMention,
+    String? hasMention,
     Map<String, String>? attributes,
   }) {
     return ConversationItemModel(
