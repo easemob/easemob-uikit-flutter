@@ -820,6 +820,13 @@ extension MessageHelper on Message {
           return hasMentionValue;
         }
       }
+    } else if (attributes?[mentionKey] is String) {
+      String mentionType = attributes?[mentionKey];
+      if (mentionType.toLowerCase() == mentionAllValue.toLowerCase()) {
+        return hasMentionAllValue;
+      } else if (mentionType == ChatUIKit.instance.currentUserId) {
+        return hasMentionValue;
+      }
     }
 
     return null;
