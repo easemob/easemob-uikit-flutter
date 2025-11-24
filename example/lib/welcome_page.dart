@@ -1,8 +1,6 @@
 import 'package:em_chat_uikit/chat_uikit.dart';
-import 'package:em_chat_uikit_example/demo_localizations.dart';
 
 import 'package:flutter/material.dart';
-
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
@@ -11,7 +9,7 @@ class WelcomePage extends StatefulWidget {
   State<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _WelcomePageState extends State<WelcomePage> {
+class _WelcomePageState extends State<WelcomePage> with ChatUIKitThemeMixin {
   @override
   void initState() {
     super.initState();
@@ -20,17 +18,27 @@ class _WelcomePageState extends State<WelcomePage> {
 
   void startShowTimer() async {
     await Future.delayed(const Duration(seconds: 2)).then((value) {
-      if (ChatUIKit.instance.isLogged()) {
-        Navigator.of(context).pushReplacementNamed('/home');
+      return ChatUIKit.instance.isLoginBefore();
+    }).then((value) {
+      if (value) {
+        toHomePage();
       } else {
-        Navigator.of(context).pushReplacementNamed('/login');
+        toLoginPage();
       }
     });
   }
 
+  void toHomePage() {
+    Navigator.of(context).pushReplacementNamed('/home');
+  }
+
+  void toLoginPage() {
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+  }
+
   @override
-  Widget build(BuildContext context) {
-    final theme = ChatUIKitTheme.of(context);
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     return Scaffold(
       backgroundColor: theme.color.primaryColor95,
       body: Stack(
@@ -43,31 +51,12 @@ class _WelcomePageState extends State<WelcomePage> {
               SizedBox(
                 width: 100,
                 height: 100,
-                child: Image.asset('assets/images/icon.png'),
+                child: Image.asset('assets/chat/icon.png'),
               ),
               const SizedBox(height: 38),
-              Text(
-                DemoLocalizations.welcome.localString(context),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w500,
-                  color: theme.color.primaryColor5,
-                ),
-              ),
               const SizedBox(height: 180),
             ],
           ),
-          Positioned(
-            bottom: 60,
-            left: 0,
-            right: 0,
-            child: Text(
-              'Powered by Easemob',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: theme.color.neutralColor5),
-            ),
-          )
         ],
       ),
     );

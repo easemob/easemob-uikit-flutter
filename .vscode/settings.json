@@ -1,5 +1,5 @@
 {
-    "editor.fontSize": 10,
+    "editor.fontSize": 12,
     "cSpell.words": [
         "autofocus",
         "avatarurl",
@@ -8,5 +8,6 @@
     ],
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.dependency.syncWithFolderExplorer": false,
-    "java.project.explorer.showNonJavaResources": false
+    "java.project.explorer.showNonJavaResources": false,
+    "CodeGPT.apiKey": "Ollama"
 }

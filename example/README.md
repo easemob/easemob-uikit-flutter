@@ -1,16 +1,7 @@
-# em_chat_uikit_example
+# example
 
-Demonstrates how to use the em_chat_uikit plugin.
+如果需要运行建议使用您自己的appkey。修改 `main.dart` 文件中的appkey为你的 `appkey`
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```dart
+const appKey = 'Your Appkey';
+```

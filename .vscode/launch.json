@@ -40,6 +40,12 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
+        },
+        {
+            "name": "Flutter (lib/ui/controllers/messages_view_controller.dart)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/ui/controllers/messages_view_controller.dart"
         }
     ]
 }
