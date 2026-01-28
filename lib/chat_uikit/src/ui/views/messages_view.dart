@@ -815,6 +815,8 @@ class _MessagesViewState extends State<MessagesView>
       showAvatar: widget.showMessageItemAvatar,
       quoteBuilder: widget.quoteBuilder,
       showNickname: widget.showMessageItemNickname,
+      bubbleBuilder: widget.bubbleBuilder,
+      bubbleContentBuilder: widget.bubbleContentBuilder,
       onAvatarTap: () {
         if (widget.onAvatarTap == null) {
           avatarTap(model);
