@@ -346,3 +346,4 @@ const String hasMentionAllValue = 'mentionAll';
 
 const String voiceHasReadKey = 'voiceHasRead';
 const String hasTranslatedKey = 'hasTranslatedKey';
+const String rtcCallWithAgoraValue = 'rtcCallWithAgora';
