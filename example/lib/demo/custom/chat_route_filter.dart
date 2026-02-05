@@ -219,59 +219,12 @@ class ChatRouteFilter {
               model.message.from != ChatUIKit.instance.currentUserId;
         },
         bubbleContentBuilder: (context, model) {
-          bool rtcCallMessage =
-              model.message.attributes?.containsValue('rtcCallWithAgora') ??
-                  false;
-          if (model.message.bodyType == MessageType.TXT && !rtcCallMessage) {
+          if (model.message.bodyType == MessageType.TXT) {
             return ChatUIKitTextBubbleWidget(
               model: model,
               onExpTap: (expStr) {
                 debugPrint('expStr: $expStr');
               },
-            );
-          }
-
-          // 表明是呼叫相关cell
-          if (rtcCallMessage) {
-            final theme = ChatUIKitTheme.instance;
-            bool left = model.message.direction == MessageDirection.RECEIVE;
-            Color color = left
-                ? (theme.color.isDark
-                    ? theme.color.neutralColor98
-                    : theme.color.neutralColor1)
-                : (theme.color.isDark
-                    ? theme.color.neutralColor1
-                    : theme.color.neutralColor98);
-            final text = _getCallEndReason(
-              context,
-              model.message,
-            );
-            return InkWell(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onTap: () {
-                debugPrint('音视频弹窗');
-              },
-              child: Text.rich(
-                TextSpan(
-                  children: [
-                    WidgetSpan(
-                      child: SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: Image.asset(
-                          'assets/images/voice_call.png',
-                          color: color,
-                        ),
-                      ),
-                    ),
-                    TextSpan(
-                      text: text,
-                      style: theme.titleMedium(color: color),
-                    ),
-                  ],
-                ),
-              ),
             );
           }
           return null;
@@ -514,55 +467,5 @@ class ChatRouteFilter {
     );
 
     return RouteSettings(name: settings.name, arguments: arguments);
-  }
-
-  static String _getCallEndReason(BuildContext context, Message message) {
-    Map<String, dynamic> ext = Map.from(message.attributes ?? {});
-    final raw = ext["call_end_reason"] as int?;
-    String callEndReason = (message.body as TextMessageBody?)?.content ?? '';
-    if (raw == null) {
-      return callEndReason;
-    }
-    switch (raw) {
-      case 0: // hangup
-        int? duration = ext["call_duration"] as int?;
-        callEndReason = "";
-        if (duration != null) {
-          // 将秒数转换为时分秒格式
-          int hours = duration ~/ 3600;
-          int minutes = (duration % 3600) ~/ 60;
-          int seconds = duration % 60;
-          String formattedDuration =
-              '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-          callEndReason =
-              ' ${DemoLocalizations.callDuration.localString(context)} $formattedDuration';
-        }
-        break;
-      case 1: // cancel
-        callEndReason = DemoLocalizations.callCanceled.localString(context);
-        break;
-      case 2: // remoteCancel
-        callEndReason =
-            DemoLocalizations.otherPartyCanceled.localString(context);
-        break;
-      case 3: // refuse
-        callEndReason = DemoLocalizations.refused.localString(context);
-        break;
-      case 5: // busy
-        callEndReason = DemoLocalizations.otherPartyBusy.localString(context);
-        break;
-      case 7: // remoteNoResponse
-        callEndReason = DemoLocalizations.noResponse.localString(context);
-        break;
-      case 8: // handleOnOtherDevice
-        callEndReason =
-            DemoLocalizations.callHandledOnOtherDevice.localString(context);
-        break;
-      default:
-        callEndReason =
-            DemoLocalizations.callEndedAbnormally.localString(context);
-        break;
-    }
-    return callEndReason;
   }
 }
