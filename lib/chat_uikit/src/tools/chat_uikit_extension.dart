@@ -814,7 +814,8 @@ extension MessageHelper on Message {
     if (attributes?[mentionKey] is List) {
       List mentionList = attributes?[mentionKey];
       if (mentionList.isNotEmpty) {
-        if (mentionList.any((item) => item.toString().toLowerCase() == mentionAllValue.toLowerCase())) {
+        if (mentionList.any((item) =>
+            item.toString().toLowerCase() == mentionAllValue.toLowerCase())) {
           return hasMentionAllValue;
         } else if (mentionList.contains(ChatUIKit.instance.currentUserId)) {
           return hasMentionValue;
@@ -938,6 +939,10 @@ extension MessageHelper on Message {
       }
     }
     return false;
+  }
+
+  bool get isRtcCallWithAgora {
+    return attributes?.containsValue(rtcCallWithAgoraValue) ?? false;
   }
 
   bool get hasTranslate {
