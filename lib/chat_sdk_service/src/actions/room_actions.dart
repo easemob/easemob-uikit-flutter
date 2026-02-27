@@ -8,7 +8,7 @@ mixin RoomActions on RoomWrapper {
   }) async {
     return checkResult(ChatSDKEvent.joinChatRoom, () {
       return Client.getInstance.chatRoomManager
-          .joinChatRoom(roomId, leaveOther: leaveOther, ext: ext);
+          .joinChatRoom(roomId, leaveOtherRooms: leaveOther, ext: ext);
     });
   }
 

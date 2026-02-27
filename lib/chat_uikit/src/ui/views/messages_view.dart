@@ -59,7 +59,8 @@ class MessagesView extends StatefulWidget {
         onThreadItemTap = arguments.onThreadItemTap,
         threadItemBuilder = arguments.threadItemBuilder,
         backgroundWidget = arguments.backgroundWidget,
-        floatingWidget = arguments.floatingWidget;
+        floatingWidget = arguments.floatingWidget,
+        inputBarHintText = arguments.inputBarHintText;
 
   /// 构造函数。
   const MessagesView({
@@ -98,6 +99,7 @@ class MessagesView extends StatefulWidget {
     this.threadItemBuilder,
     this.backgroundWidget,
     this.floatingWidget,
+    this.inputBarHintText,
     super.key,
   });
 
@@ -205,6 +207,9 @@ class MessagesView extends StatefulWidget {
 
   /// 悬浮组件，悬浮在聊天页上面
   final WidgetBuilder? floatingWidget;
+
+  /// 输入框提示文本，如果设置后将会替换默认的提示文本 'Aa'。
+  final String? inputBarHintText;
 
   @override
   State<MessagesView> createState() => _MessagesViewState();
@@ -815,6 +820,8 @@ class _MessagesViewState extends State<MessagesView>
       showAvatar: widget.showMessageItemAvatar,
       quoteBuilder: widget.quoteBuilder,
       showNickname: widget.showMessageItemNickname,
+      bubbleBuilder: widget.bubbleBuilder,
+      bubbleContentBuilder: widget.bubbleContentBuilder,
       onAvatarTap: () {
         if (widget.onAvatarTap == null) {
           avatarTap(model);
@@ -1260,6 +1267,7 @@ class _MessagesViewState extends State<MessagesView>
       onPanelChanged: (panelType) {
         currentPanelType.value = panelType;
       },
+      hintText: widget.inputBarHintText,
     );
 
     content = Column(
@@ -1876,7 +1884,7 @@ class _MessagesViewState extends State<MessagesView>
               ChatUIKitDetailContentAction(
                 title:
                     ChatUIKitLocal.contactDetailViewSearch.localString(context),
-                icon: 'assets/images/search_history.png',
+                icon: 'assets/images/chat/search_history.png',
                 packageName: ChatUIKitImageLoader.packageName,
                 iconSize: const Size(32, 32),
                 onTap: (context) {

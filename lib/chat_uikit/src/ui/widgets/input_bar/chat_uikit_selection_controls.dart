@@ -5,6 +5,8 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:chat_uikit_theme/chat_uikit_theme.dart';
+
 const double _kHandleSize = 11.0;
 const double _kToolbarContentDistanceBelow = _kHandleSize - 2.0;
 const double _kToolbarContentDistance = 8.0;
@@ -107,7 +109,8 @@ class _TextSelectionControlsToolbar extends StatefulWidget {
 }
 
 class _TextSelectionControlsToolbarState
-    extends State<_TextSelectionControlsToolbar> with TickerProviderStateMixin {
+    extends State<_TextSelectionControlsToolbar>
+    with TickerProviderStateMixin, ChatUIKitThemeMixin {
   get math => null;
 
   void _onChangedClipboardStatus() {
@@ -138,7 +141,7 @@ class _TextSelectionControlsToolbarState
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
     // If there are no buttons to be shown, don't render anything.
     if (widget.handleCut == null &&
         widget.handleCopy == null &&
@@ -211,21 +214,46 @@ class _TextSelectionControlsToolbarState
       return const SizedBox.shrink();
     }
 
-    return TextSelectionToolbar(
-      anchorAbove: anchorAbove,
-      anchorBelow: anchorBelow,
-      children: itemDatas
-          .asMap()
-          .entries
-          .map((MapEntry<int, _TextSelectionToolbarItemData> entry) {
-        return TextSelectionToolbarTextButton(
-          padding: TextSelectionToolbarTextButton.getPadding(
-              entry.key, itemDatas.length),
-          alignment: AlignmentDirectional.centerStart,
-          onPressed: entry.value.onPressed,
-          child: Text(entry.value.label),
-        );
-      }).toList(),
+    return Theme(
+      data: Theme.of(context).copyWith(
+        canvasColor: theme.color.isDark
+            ? theme.color.neutralColor2
+            : theme.color.neutralColor98,
+        cardColor: theme.color.isDark
+            ? theme.color.neutralColor2
+            : theme.color.neutralColor98,
+        colorScheme: Theme.of(context).colorScheme.copyWith(
+              surface: theme.color.isDark
+                  ? theme.color.neutralColor2
+                  : theme.color.neutralColor98,
+              onSurface: theme.color.isDark
+                  ? theme.color.neutralColor98
+                  : theme.color.neutralColor1,
+            ),
+      ),
+      child: TextSelectionToolbar(
+        anchorAbove: anchorAbove,
+        anchorBelow: anchorBelow,
+        children: itemDatas
+            .asMap()
+            .entries
+            .map((MapEntry<int, _TextSelectionToolbarItemData> entry) {
+          return TextSelectionToolbarTextButton(
+            padding: TextSelectionToolbarTextButton.getPadding(
+                entry.key, itemDatas.length),
+            alignment: AlignmentDirectional.centerStart,
+            onPressed: entry.value.onPressed,
+            child: Text(
+              entry.value.label,
+              style: TextStyle(
+                color: theme.color.isDark
+                    ? theme.color.neutralColor98
+                    : theme.color.neutralColor1,
+              ),
+            ),
+          );
+        }).toList(),
+      ),
     );
   }
 }
