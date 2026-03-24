@@ -39,6 +39,9 @@ class _ChatRoomListViewState extends State<ChatRoomListView>
 
   @override
   Widget themeBuilder(BuildContext context, ChatUIKitTheme theme) {
+    Color separatorColor = theme.color.isDark
+        ? theme.color.neutralColor2
+        : theme.color.neutralColor9;
     return Scaffold(
       appBar: ChatUIKitAppBar(
         title: 'ChatRoom',
@@ -68,11 +71,18 @@ class _ChatRoomListViewState extends State<ChatRoomListView>
               return const CircularProgressIndicator();
             }
             return ListView.separated(
-              separatorBuilder: (context, index) => const Divider(),
+              separatorBuilder: (context, index) => Divider(color: separatorColor, height: 1, thickness: 1),
               itemCount: list.length,
               itemBuilder: (context, index) {
                 final chatRoom = list[index];
-                return ListTile(
+                return Container(
+                  color: theme.color.isDark
+                      ? theme.color.neutralColor1
+                      : theme.color.neutralColor98,
+                  child: ListTile(
+                  textColor: theme.color.isDark
+                      ? theme.color.neutralColor98
+                      : theme.color.neutralColor1,
                   title: Text(chatRoom.name ?? chatRoom.roomId),
                   onTap: () {
                     // Navigate to chat room details
@@ -82,6 +92,7 @@ class _ChatRoomListViewState extends State<ChatRoomListView>
                       ),
                     );
                   },
+                 ),
                 );
               },
             );

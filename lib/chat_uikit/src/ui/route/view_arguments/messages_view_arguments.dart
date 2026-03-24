@@ -40,6 +40,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     this.threadItemBuilder,
     this.backgroundWidget,
     this.floatingWidget,
+    this.inputBarHintText,
   }) {
     this.appBarModel = appBarModel ?? ChatUIKitAppBarModel(centerTitle: false);
   }
@@ -138,6 +139,9 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
   /// 悬浮组件，悬浮在聊天页上面
   final WidgetBuilder? floatingWidget;
 
+  /// 输入框提示文本，如果设置后将会替换默认的提示文本 'Aa'。
+  final String? inputBarHintText;
+
   /// View 附加属性，设置后的内容将会带入到下一个页面。
   @override
   String? attributes;
@@ -205,6 +209,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
     MessageItemBuilder? threadItemBuilder,
     Widget? backgroundWidget,
     WidgetBuilder? floatingWidget,
+    String? inputBarHintText,
   }) {
     return MessagesViewArguments(
       profile: profile ?? this.profile,
@@ -246,6 +251,7 @@ class MessagesViewArguments implements ChatUIKitViewArguments {
       threadItemBuilder: threadItemBuilder ?? this.threadItemBuilder,
       backgroundWidget: backgroundWidget ?? this.backgroundWidget,
       floatingWidget: floatingWidget ?? this.floatingWidget,
+      inputBarHintText: inputBarHintText ?? this.inputBarHintText,
     );
   }
 }

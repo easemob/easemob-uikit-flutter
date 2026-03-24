@@ -18,6 +18,7 @@ class ChatUIKitInputBar extends StatefulWidget {
     this.onInputTextChanged,
     this.readOnly = false,
     this.bottomDistance = 0,
+    this.hintText,
     super.key,
   });
   final List<Widget>? leftItems;
@@ -29,6 +30,7 @@ class ChatUIKitInputBar extends StatefulWidget {
   final bool maintainBottomViewPadding;
   final bool readOnly;
   final double bottomDistance;
+  final String? hintText;
 
   @override
   State<ChatUIKitInputBar> createState() => _ChatUIKitInputBarState();
@@ -129,7 +131,7 @@ class _ChatUIKitInputBarState extends State<ChatUIKitInputBar>
                             : theme.color.neutralColor95),
                     filled: true,
                     isDense: true,
-                    hintText: 'Aa',
+                    hintText: widget.hintText ?? 'Aa',
                     hintStyle: TextStyle(
                       color: inputTheme?.inputHintTextColor ??
                           (theme.color.isDark
