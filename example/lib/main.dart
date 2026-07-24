@@ -16,7 +16,7 @@ import 'package:example/demo/tool/settings_data_store.dart';
 import 'package:example/welcome_page.dart';
 
 // App Key 常量定义
-const appKey = 'easemob#easeim';
+const appKey = 'easemob-demo#chatdemoui';
 
 // 是否开启调试模式
 const bool appDebug = false;

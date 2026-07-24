@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  im_flutter_sdk: 4.15.2
+  im_flutter_sdk: 4.19.3
 
   chat_uikit_theme: 1.0.4
 

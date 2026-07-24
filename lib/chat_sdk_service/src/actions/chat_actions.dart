@@ -29,7 +29,7 @@ mixin ChatActions on ChatWrapper {
     });
   }
 
-  Future<bool> sendMessageReadAck({required Message message}) {
+  Future<void> sendMessageReadAck({required Message message}) {
     return checkResult(ChatSDKEvent.sendMessageReadAck, () {
       return Client.getInstance.chatManager.sendMessageReadAck(message);
     });

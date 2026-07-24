@@ -42,3 +42,6 @@ android {
 flutter {
     source = "../.."
 }
+
+extra["aosl_prefer"] = "easemob"
+apply(from = file("aosl-fix.gradle"))

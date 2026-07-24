@@ -4,7 +4,8 @@
         "autofocus",
         "avatarurl",
         "Datas",
-        "sqflite"
+        "sqflite",
+        "uikit"
     ],
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.dependency.syncWithFolderExplorer": false,
