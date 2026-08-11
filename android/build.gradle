@@ -1,4 +1,4 @@
-group 'com.ease.em_chat_uikit'
+group 'com.chat.uikit'
 version '1.0-SNAPSHOT'
 
 buildscript {
@@ -28,7 +28,7 @@ apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
     if (project.android.hasProperty("namespace")) {
-        namespace = "com.ease.em_chat_uikit"
+        namespace = "com.chat.uikit"
     }
 
     compileSdk = 34

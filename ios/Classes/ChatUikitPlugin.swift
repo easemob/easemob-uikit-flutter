@@ -1,10 +1,10 @@
 import Flutter
 import UIKit
 
-public class EmChatUikitPlugin: NSObject, FlutterPlugin {
+public class ChatUikitPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "em_chat_uikit", binaryMessenger: registrar.messenger())
-    let instance = EmChatUikitPlugin()
+    let channel = FlutterMethodChannel(name: "chat_uikit", binaryMessenger: registrar.messenger())
+    let instance = ChatUikitPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 

@@ -1,4 +1,4 @@
-package com.ease.em_chat_uikit
+package com.chat.uikit
 
 import androidx.annotation.NonNull
 
@@ -8,8 +8,8 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
-/** EmChatUikitPlugin */
-class EmChatUikitPlugin: FlutterPlugin, MethodCallHandler {
+/** ChatUikitPlugin */
+class ChatUikitPlugin: FlutterPlugin, MethodCallHandler {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -17,7 +17,7 @@ class EmChatUikitPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "em_chat_uikit")
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "chat_uikit")
     channel.setMethodCallHandler(this)
   }
 

@@ -49,10 +49,10 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.ease.em_chat_uikit
-        pluginClass: EmChatUikitPlugin
+        package: com.chat.uikit
+        pluginClass: ChatUikitPlugin
       ios:
-        pluginClass: EmChatUikitPlugin
+        pluginClass: ChatUikitPlugin
 
   assets:
     - assets/images/chat/
