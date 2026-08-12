@@ -1,6 +1,8 @@
 # 单群聊 UIKit
 
-本产品主要旨在给用户打造一个良好体验的单群聊UIKit。主要为用户解决直接集成SDK繁琐，复杂度高等问题。致力于打造集成简单，自由度高，流程简单，文档说明足够详细的单群聊UIKit产品。
+[English](README.md)
+
+本产品主要旨在给用户打造一个良好体验的单群聊 UIKit。主要为用户解决直接集成 SDK 繁琐，复杂度高等问题。致力于打造集成简单，自由度高，流程简单，文档说明足够详细的单群聊 UIKit 产品，覆盖单聊、群聊与聊天室场景。欢迎下载 demo 体验。
 
 # 单群聊 UIKit 指南
 
@@ -8,7 +10,7 @@
 
 本指南介绍了 ChatUIKit 框架在 flutter 开发中的概述和使用示例，并描述了该 UIKit 的各个组件和功能，使开发人员能够很好地了解 UIKit 并有效地使用它。
 
-## 目录 
+## 目录
 - [单群聊 UIKit](#单群聊-uikit)
 - [单群聊 UIKit 指南](#单群聊-uikit-指南)
   - [简介](#简介)
@@ -36,10 +38,10 @@
 ```yaml
 environment:
   sdk: '>=3.0.0 <4.0.0'
-  flutter: ">=3.19.0"
+  flutter: ">=3.3.0"
 ```
 
-- ios 12+
+- ios 11+
 - android minSDKVersion 24
 
 # 安装
@@ -52,38 +54,39 @@ flutter pub add em_chat_uikit
 
 ```bash
 .
-├── chat_uikit.dart                                             // library
-├── chat_uikit_alphabet_sort_helper.dart                        // 联系人首字母排序纠正工具
-├── chat_uikit_defines.dart                                     // UIKit handler 定义类
-├── chat_uikit_emoji_data.dart                                  // 消息表情数据类
-├── chat_uikit_localizations.dart                               // 国际化工具类
-├── chat_uikit_service                                          // 对 chat sdk 包装类的二次包装，用于将包装类中不符合的功能再次修改以适配 UIKit 功能
-├── chat_uikit_settings.dart                                    // 功能设置类，用于开关和配置某些功能
-├── chat_uikit_time_formatter.dart                              // 时间显示格式设置工具
-├── provider                                                    // 用户属性工具
-│   ├── chat_uikit_profile.dart                                 // 用户属性对象，包括头像，昵称，备注等。
-│   └── chat_uikit_provider.dart                                // 用户属性 Provider，需要通过实现 Provider，为 UIKit 中的 Profile 设置数据。
-├── sdk_service                                                 // 对 chat sdk 的包装，用于包装 chat sdk 对外接口, UIKit 只与 包装类打交道，不直接调用 chat sdk
-├── tools                                                       // 内部的工具类
-│   ├── chat_uikit_context.dart                                 // 数据上下文，用于存储一些状态
-│   ├── chat_uikit_conversation_extension.dart                  // 会话列表的加工类，用于预加工一些属性
-│   ├── chat_uikit_file_size_tool.dart                          // 文件大小显示计算工具
-│   ├── chat_uikit_helper.dart                                  // 内部计算圆角类
-│   ├── chat_uikit_highlight_tool.dart                          // 计算组件高亮工具类
-│   ├── chat_uikit_image_loader.dart                            // 图片加载工具类
-│   ├── chat_uikit_message_extension.dart                       // 消息加工类，用于预加工一些属性
-│   ├── chat_uikit_time_tool.dart                               // 默认时间格式类
-│   ├── chat_uikit_url_helper.dart                              // url preview 工具类
-│   └── safe_disposed.dart                                      // 内部对 ChangeNotifier 的加工类
-├── ui                                                          // UI 组件
-│   ├── components                                              // Components
-│   ├── controllers                                             // view / widget 相关的 controllers
-│   ├── custom                                                  // ui中重写的部分
-│   ├── models                                                  // models
-│   ├── route                                                   // uikit 中的路由组件
-│   ├── views                                                   // Views
-│   └── widgets                                                 // widgets
-└── universal                                                   // 内部使用类
+├── chat_uikit.dart                                             // 主入口，导出以下所有模块
+├── chat_sdk_context                                            // 数据上下文，用于存储一些状态
+├── chat_sdk_service                                            // 对 chat sdk 的包装，UIKit 只与该层打交道，不直接调用 chat sdk
+│   └── src
+│       ├── actions                                             // SDK 方法调用的包装
+│       ├── observers                                           // 事件观察者
+│       └── wrappers                                            // SDK 事件处理器的包装
+├── chat_uikit                                                  // 聊天 UI 组件
+│   └── src
+│       ├── chat_uikit_alphabet_sort_helper.dart                // 联系人首字母排序纠正工具
+│       ├── chat_uikit_service                                  // 对 SDK 包装类的二次包装，将 SDK 功能适配为 UIKit 功能
+│       ├── chat_uikit_settings.dart                            // 功能设置类，用于开关和配置某些功能
+│       ├── chat_uikit_time_formatter.dart                      // 时间显示格式设置工具
+│       ├── tools                                               // 内部工具类（图片加载、扩展、url preview 等）
+│       ├── ui                                                  // UI 组件
+│       │   ├── components                                      // Components
+│       │   ├── controllers                                     // view / widget 相关的 controllers
+│       │   ├── custom                                          // ui 中重写的部分
+│       │   ├── models                                          // Models
+│       │   ├── route                                           // uikit 中的路由组件
+│       │   ├── views                                           // Views
+│       │   └── widgets                                         // Widgets
+│       └── universal                                           // 内部使用类
+├── chat_uikit_localizations                                    // 国际化
+├── chat_uikit_provider                                         // 用户属性工具
+│   └── src
+│       ├── chat_uikit_profile.dart                             // 用户属性对象，包括头像，昵称，备注等
+│       └── chat_uikit_provider.dart                            // 用户属性 Provider，需要通过实现 Provider，为 UIKit 中的 Profile 设置数据
+├── chat_uikit_universal                                        // 跨模块共享的通用组件
+└── chatroom_uikit                                              // 聊天室 UI 组件
+    └── src
+        ├── utils                                               // 聊天室工具类
+        └── widgets                                             // 聊天室组件
 ```
 
 # 快速开始
@@ -286,7 +289,7 @@ class _ChatPageState extends State<ChatPage> {
 
 ## Provider
 
-Provider 是一个数据提供者，当需要展示用户或群组信息时 UIKit 会通过 Provider 向你请求数据，你需要将数据返回给 Provider, 当UIKit 得到你传入的数据时会根据你的数据进行刷新和显示。下面是 Provider 的具体实现示例(`example/lib/tool/user_provider_widget.dart`)。
+Provider 是一个数据提供者，当需要展示用户或群组信息时 UIKit 会通过 Provider 向你请求数据，你需要将数据返回给 Provider, 当 UIKit 得到你传入的数据时会根据你的数据进行刷新和显示。下面是 Provider 的具体实现示例(`example/lib/demo/tool/user_provider_widget.dart`)。
 
 ### 示例
 
@@ -331,7 +334,7 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
     await loadGroupInfos();
     // 2. Load user information, and check if it has been filled into uikit. If not, fetch data from the server and then fill it into uikit.
     await loadUserInfos();
-    // 3. etch current user information, then fill it into uikit.
+    // 3. Fetch current user information, then fill it into uikit.
     await fetchCurrentUserInfo();
   }
 
@@ -354,7 +357,10 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
 
   // This method is called when uikit needs to display user information and the cache does not exist;
   // it requires fetching and storing the information in the db based on user attributes.
-  List<ChatUIKitProfile>? onProfilesRequest(List<ChatUIKitProfile> profiles) {
+  List<ChatUIKitProfile>? onProfilesRequest(
+    List<ChatUIKitProfile> profiles, [
+    String? belongId,
+  ]) {
     List<String> userIds = profiles
         .where((e) => e.type == ChatUIKitProfileType.contact)
         .map((e) => e.id)
@@ -481,7 +487,7 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
 
 ### 用法讲解
 
-`ChatUIKitProvider` 在使用时需要先设置对应的handler `profilesHandler`, 设置之后，当 UIKit 需要展示对应的信息时，会通过 handler 返会给你一个默认的 `ChatUIKitProfile` 对象，之后需要你返回一个 `ChatUIKitProfile` 对象, 建议先返回一个占位的 `ChatUIKitProfile` 对象，当你从你的服务器或者数据库中得到准确的 `ChatUIKitProfile` 对象后，再通过 `ChatUIKitProvider.instance.addProfiles(list)` 方法将其传递给 UIKit， UIKit 在收到后会自定进行页面刷新，并缓存你传入的数据，当再次需要展示时，则直接使用缓存数据。 根据以上描述和示例，在使用 ChatUIKitProvider 时，可以使用已下步骤
+`ChatUIKitProvider` 在使用时需要先设置对应的 handler `profilesHandler`, 设置之后，当 UIKit 需要展示对应的信息时，会通过 handler 返回给你一个默认的 `ChatUIKitProfile` 对象，之后需要你返回一个 `ChatUIKitProfile` 对象, 建议先返回一个占位的 `ChatUIKitProfile` 对象，当你从你的服务器或者数据库中得到准确的 `ChatUIKitProfile` 对象后，再通过 `ChatUIKitProvider.instance.addProfiles(list)` 方法将其传递给 UIKit， UIKit 在收到后会自动进行页面刷新，并缓存你传入的数据，当再次需要展示时，则直接使用缓存数据。 根据以上描述和示例，在使用 ChatUIKitProvider 时，可以使用以下步骤：
 
 1. App 启动并完成登录后，设置 `profilesHandler` 。
 
@@ -496,10 +502,13 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
     ChatUIKitProvider.instance.addProfiles(list);
 ```
 
-3. 当 `profilesHandler` 执行时，先返回占位 `ChatUIKitProfile`, 之后从服务器获数据，将获取到的数据存到本地，并传递给 UIKit。
+3. 当 `profilesHandler` 执行时，先返回占位 `ChatUIKitProfile`, 之后从服务器获取数据，将获取到的数据存到本地，并传递给 UIKit。
 
 ```dart
-  List<ChatUIKitProfile>? onProfilesRequest(List<ChatUIKitProfile> profiles) {
+  List<ChatUIKitProfile>? onProfilesRequest(
+    List<ChatUIKitProfile> profiles, [
+    String? belongId,
+  ]) {
     List<String> userIds = profiles
         .where((e) => e.type == ChatUIKitProfileType.contact)
         .map((e) => e.id)
@@ -541,6 +550,9 @@ class ChatUIKitSettings {
   /// Default avatar placeholder image
   static ImageProvider? avatarPlaceholder;
 
+  /// Default group avatar placeholder image
+  static ImageProvider? groupAvatarPlaceholder;
+
   /// The corner radius for the dialog.
   static ChatUIKitDialogRectangleType dialogRectangleType =
       ChatUIKitDialogRectangleType.filletCorner;
@@ -557,6 +569,9 @@ class ChatUIKitSettings {
 
   // Mute icon displayed in the conversation list
   static ImageProvider? conversationListMuteImage;
+
+  /// Contact item list height
+  static double contactItemListItemHeight = 60;
 
   /// Message long press menu
   static List<ChatUIKitActionType> msgItemLongPressActions = [
@@ -644,6 +659,29 @@ class ChatUIKitSettings {
 
   /// Contact alphabetical sorting order, if there are Chinese characters, you can redefine the initials using [ChatUIKitAlphabetSortHelper].
   static String sortAlphabetical = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#';
+
+  /// Message long press menu style
+  static ChatUIKitMessageLongPressMenuStyle messageLongPressMenuStyle =
+      ChatUIKitMessageLongPressMenuStyle.popupMenu;
+
+  /// Message attachment menu style
+  static ChatUIKitMessageAttachmentMenuStyle messageAttachmentMenuStyle =
+      ChatUIKitMessageAttachmentMenuStyle.menu;
+
+  /// Audio recording encode type
+  static ChatRecordEncodeType audioEncoder = ChatRecordEncodeType.aac;
+
+  /// Default display avatar in chatroom
+  static String? roomUserDefaultAvatar;
+
+  /// Default identity icon in chatroom
+  static String? roomDefaultIdentify;
+
+  /// Default gift icon in chatroom
+  static String? roomDefaultGiftIcon;
+
+  /// Default gift price icon in chatroom
+  static String? roomDefaultGiftPriceIcon;
 }
 
 ```
@@ -735,11 +773,11 @@ return MaterialApp(
 
 ## 路由拦截与自定义
 
-UIKit 内部通过 `pushNamed` 进行跳转，同时会传递跳转页面对应的 `ChatUIKitViewArguments` 对象，可以通过拦截 `onGenerateRoute(RouteSettings settings)`, 并解析 `settings.name` 得到跳转的目标页面，之后重写 `ChatUIKitViewArguments` 参数实现跳转拦截和自定义页面的功能。 跳转页的名称在 `chat_uikit_route_names.dart` 文件中进行定义。 具体拦截方式可以参考 `example/lib/custom/chat_route_filter.dart` 文件。
+UIKit 内部通过 `pushNamed` 进行跳转，同时会传递跳转页面对应的 `ChatUIKitViewArguments` 对象，可以通过拦截 `onGenerateRoute(RouteSettings settings)`, 并解析 `settings.name` 得到跳转的目标页面，之后重写 `ChatUIKitViewArguments` 参数实现跳转拦截和自定义页面的功能。 跳转页的名称在 `chat_uikit_route_names.dart` 文件中进行定义。 具体拦截方式可以参考 `example/lib/demo/custom/chat_route_filter.dart` 文件。
 
 ## 事件通知和异常处理
 
-UIKit 在调用 ChatSDK 时会通过 `ChatSDKEventsObserver.onChatSDKEventBegin` 进行回调，调用结束时会通过 `ChatSDKEventsObserver.onChatSDKEventEnd` 进行回调，如果存在错误会还会抛出对应的 `ChatError`。
+UIKit 在调用 ChatSDK 时会通过 `ChatSDKEventsObserver.onChatSDKEventBegin` 进行回调，调用结束时会通过 `ChatSDKEventsObserver.onChatSDKEventEnd` 进行回调，如果存在错误还会抛出对应的 `ChatError`。
 
 ```dart
 class SDKEventHandlerPage extends StatefulWidget {
@@ -774,9 +812,9 @@ class _SDKEventHandlerPageState extends State<SDKEventHandlerPage>
   ...
 }
 ```
-更多信息可以参考 `example/lib/tool/toast_page.dart` 文件。
+更多信息可以参考 `example/lib/demo/tool/toast_page.dart` 文件。
 
-同时在一些非 ChatSDK 的事件会通过 `ChatUIKitEventsObservers.onChatUIKitEventsReceived` 进行回调。
+同时一些非 ChatSDK 的事件会通过 `ChatUIKitEventsObservers.onChatUIKitEventsReceived` 进行回调。
 
 ```dart
 class UIKitEventHandlePage extends StatefulWidget {
@@ -809,7 +847,7 @@ class _UIKitEventHandlePageState extends State<UIKitEventHandlePage>
 
 ```
 
-更多信息可以参考 `example/lib/tool/toast_page.dart` 文件。
+更多信息可以参考 `example/lib/demo/tool/toast_page.dart` 文件。
 
 ## 连接状态变更和登录过期回调
 
@@ -832,11 +870,11 @@ ChatUIKit.instance.connectHandler(
 );
 ```
 
-更多信息可以参考 `example/lib/tool/token_status_handler_widget.dart` 文件。
+更多信息可以参考 `example/lib/demo/tool/token_status_handler_widget.dart` 文件。
 
 ## 消息时间格式化
 
-UIKit 中在展示时间时使用了默认的格式，如果需要需要修改格式化方式，可以通过 `ChatUIKitTimeFormatter` 进行处理。
+UIKit 中在展示时间时使用了默认的格式，如果需要修改格式化方式，可以通过 `ChatUIKitTimeFormatter` 进行处理。
 
 ```dart
 ChatUIKitTimeFormatter.instance.formatterHandler = (context, type, time) {
@@ -849,13 +887,11 @@ ChatUIKitTimeFormatter.instance.formatterHandler = (context, type, time) {
 当联系人名称中存在非英文时，如需要首字母排序可以通过 `ChatUIKitAlphabetSortHelper` 进行处理
 
 ```dart
-ChatUIKitAlphabetSortHelper.instance.sortHandler = (String showName) {
+ChatUIKitAlphabetSortHelper.instance.sortHandler = (String? groupId, String userId, String showName) {
   // Return the first letter of the showName for sorting, especially useful for sorting Chinese characters
   return PinyinHelper.getFirstWordPinyin(showName);
 };
 ```
-
-
 
 # 设计指南
 
