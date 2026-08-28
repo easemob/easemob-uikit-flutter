@@ -1,3 +1,7 @@
+## 2.3.3
+- Upgrade: Dependency SDK to 4.22.0.
+- Chore(example): Upgrade Android build toolchain for Flutter 3.47 (Gradle 9.3.1 / AGP 9.1.0 / KGP 2.4.0), sample project build config only.
+
 ## 2.3.2
 - Upgrade: Dependency SDK to 4.19.3.
 - Fix: Import conflict of same-named types such as `MessageType` when integrated in the same project as `im_flutter_sdk`.

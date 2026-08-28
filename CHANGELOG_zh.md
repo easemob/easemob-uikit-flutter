@@ -1,3 +1,7 @@
+## 2.3.3
+- 升级 依赖 SDK 为 4.22.0；
+- 升级 example 的 Android 构建工具链以适配 Flutter 3.47（Gradle 9.3.1 / AGP 9.1.0 / KGP 2.4.0），仅示例工程构建配置。
+
 ## 2.3.2
 - 升级 依赖sdk为 4.19.3；
 - 修复 与 `im_flutter_sdk` 同项目集成时 `MessageType` 等同名类型产生导入冲突的问题；
