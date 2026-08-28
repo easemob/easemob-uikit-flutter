@@ -355,34 +355,34 @@ packages:
     dependency: transitive
     description:
       name: im_flutter_sdk
-      sha256: ecd1ff77ee2387b200257a5b235e1437ca1d7a12cf308d77c2b9fb4d2b46b9d9
+      sha256: "58c9e780ed25251e1e99ec95b08f0f2155948c016edff6e18ee957616d9725ab"
       url: "https://pub.dev"
     source: hosted
-    version: "4.19.3"
+    version: "4.22.0"
   im_flutter_sdk_android:
     dependency: transitive
     description:
       name: im_flutter_sdk_android
-      sha256: "228364c8db465c297a5c8ff8de5deecd8e5592388533f07a6883522d83eea598"
+      sha256: "4941e426556e5d6c7b01093cffdc25aa593ed42b9291859fe39824dc4839069b"
       url: "https://pub.dev"
     source: hosted
-    version: "4.19.3"
+    version: "4.22.0"
   im_flutter_sdk_interface:
     dependency: transitive
     description:
       name: im_flutter_sdk_interface
-      sha256: "10e297179646afd9acf67beb7d47ea282a8d2fa1e84e24ec8d82d7290516bcd4"
+      sha256: b6253e8035331f8801438fefea9692d1237d625031fef3f14719012d0301c6e0
       url: "https://pub.dev"
     source: hosted
-    version: "4.19.3"
+    version: "4.22.0"
   im_flutter_sdk_ios:
     dependency: transitive
     description:
       name: im_flutter_sdk_ios
-      sha256: "91f10fbf83fc1bf6a3ec493cd1d4e83ecb53ffc53c2ba1325eec12f5a4ec5225"
+      sha256: "3c2c73cdcb72179a641839a871b8912a36f778a8a90f0a55d1fda4885c15cc07"
       url: "https://pub.dev"
     source: hosted
-    version: "4.19.3"
+    version: "4.22.0"
   image_picker:
     dependency: transitive
     description:
@@ -451,10 +451,10 @@ packages:
     dependency: transitive
     description:
       name: intl
-      sha256: "3df61194eb431efc39c4ceba583b95633a403f46c9fd341e550ce0bfa50e9aa5"
+      sha256: "1ca20c894b1717686a2319b8548763d812bc0aabdac580420a44c5178c57a867"
       url: "https://pub.dev"
     source: hosted
-    version: "0.20.2"
+    version: "0.20.3"
   lints:
     dependency: transitive
     description:
@@ -475,10 +475,10 @@ packages:
     dependency: transitive
     description:
       name: meta
-      sha256: "23f08335362185a5ea2ad3a4e597f1375e78bce8a040df5c600c8d3552ef2394"
+      sha256: "307249ce4ff29d58a18e97f6345f539382eb9c9c29ecda628900f31de0443dd9"
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.0"
+    version: "1.19.0"
   mime:
     dependency: transitive
     description:
@@ -872,10 +872,10 @@ packages:
     dependency: transitive
     description:
       name: vector_math
-      sha256: d530bd74fea330e6e364cda7a85019c434070188383e1cd8d9777ee586914c5b
+      sha256: f36f9f3be64c6198714492bb455c11056e33e2f85d9a0b676a48301e44fdcf47
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "2.4.2"
   video_compress:
     dependency: transitive
     description:
@@ -957,5 +957,5 @@ packages:
     source: hosted
     version: "6.6.1"
 sdks:
-  dart: ">=3.9.0 <4.0.0"
+  dart: ">=3.11.0-0 <4.0.0"
   flutter: ">=3.35.0"

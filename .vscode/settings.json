@@ -10,5 +10,6 @@
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.dependency.syncWithFolderExplorer": false,
     "java.project.explorer.showNonJavaResources": false,
-    "CodeGPT.apiKey": "Ollama"
+    "CodeGPT.apiKey": "Ollama",
+    "python-envs.defaultEnvManager": "ms-python.python:pyenv"
 }
