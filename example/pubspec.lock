@@ -355,18 +355,18 @@ packages:
     dependency: transitive
     description:
       name: im_flutter_sdk
-      sha256: "58c9e780ed25251e1e99ec95b08f0f2155948c016edff6e18ee957616d9725ab"
+      sha256: "60c1225029c18f2cd7f43d928c27036351d356895695f31bde90f253a9c43d51"
       url: "https://pub.dev"
     source: hosted
-    version: "4.22.0"
+    version: "4.25.0"
   im_flutter_sdk_android:
     dependency: transitive
     description:
       name: im_flutter_sdk_android
-      sha256: "4941e426556e5d6c7b01093cffdc25aa593ed42b9291859fe39824dc4839069b"
+      sha256: b1c7c6d9ab48bdcf1f1b9006c950fb1a4c537d2502dddf74c536280d999869c5
       url: "https://pub.dev"
     source: hosted
-    version: "4.22.0"
+    version: "4.25.0"
   im_flutter_sdk_interface:
     dependency: transitive
     description:
@@ -379,10 +379,10 @@ packages:
     dependency: transitive
     description:
       name: im_flutter_sdk_ios
-      sha256: "3c2c73cdcb72179a641839a871b8912a36f778a8a90f0a55d1fda4885c15cc07"
+      sha256: "2ae847de774675e2cdb989e2a9e6547032147fe68bb7dd1a817d5f5b6e4ec0f6"
       url: "https://pub.dev"
     source: hosted
-    version: "4.22.0"
+    version: "4.25.0"
   image_picker:
     dependency: transitive
     description:
