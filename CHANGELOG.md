@@ -1,3 +1,6 @@
+## 2.3.4
+- Upgrade: Dependency SDK to 4.25.0.
+
 ## 2.3.3
 - Upgrade: Dependency SDK to 4.22.0.
 - Chore(example): Upgrade Android build toolchain for Flutter 3.47 (Gradle 9.3.1 / AGP 9.1.0 / KGP 2.4.0), sample project build config only.
