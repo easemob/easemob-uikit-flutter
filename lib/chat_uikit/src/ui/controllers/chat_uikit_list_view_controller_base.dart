@@ -1,9 +1,44 @@
 import 'package:em_chat_uikit/chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+
+class _BuildSafeValueNotifier<T> extends ValueNotifier<T> {
+  _BuildSafeValueNotifier(super.value);
+
+  bool _notificationScheduled = false;
+  bool _disposed = false;
+
+  @override
+  void notifyListeners() {
+    if (_disposed) return;
+
+    if (SchedulerBinding.instance.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
+      if (_notificationScheduled) return;
+      _notificationScheduled = true;
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        if (!_notificationScheduled) return;
+        _notificationScheduled = false;
+        if (!_disposed) super.notifyListeners();
+      });
+      return;
+    }
+
+    _notificationScheduled = false;
+    super.notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    _notificationScheduled = false;
+    super.dispose();
+  }
+}
 
 abstract mixin class ChatUIKitListViewControllerBase {
   ValueNotifier<ChatUIKitListViewType> loadingType =
-      ValueNotifier(ChatUIKitListViewType.normal);
+      _BuildSafeValueNotifier(ChatUIKitListViewType.normal);
 
   bool hasMore = true;
   bool hasDisposed = false;
