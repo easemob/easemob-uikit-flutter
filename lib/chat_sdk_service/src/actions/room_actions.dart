@@ -32,43 +32,16 @@ mixin RoomActions on RoomWrapper {
 
   Future<ChatRoom> fetchChatRoomInfoFromServer({
     required String roomId,
-    bool fetchMembers = false,
   }) {
     return checkResult(ChatSDKEvent.fetchChatRoomInfoFromServer, () {
-      return Client.getInstance.chatRoomManager.fetchChatRoomInfoFromServer(
-        roomId,
-        fetchMembers: fetchMembers,
-      );
+      return Client.getInstance.chatRoomManager
+          .fetchChatRoomInfoFromServer(roomId);
     });
   }
 
   Future<ChatRoom?> getChatRoomWithId(String roomId) {
     return checkResult(ChatSDKEvent.getChatRoomWithId, () {
       return Client.getInstance.chatRoomManager.getChatRoomWithId(roomId);
-    });
-  }
-
-  Future<ChatRoom> createChatRoom({
-    required String name,
-    String? desc,
-    String? welcomeMsg,
-    int maxUserCount = 300,
-    List<String>? members,
-  }) {
-    return checkResult(ChatSDKEvent.createChatRoom, () {
-      return Client.getInstance.chatRoomManager.createChatRoom(name,
-          desc: desc,
-          welcomeMsg: welcomeMsg,
-          maxUserCount: maxUserCount,
-          members: members);
-    });
-  }
-
-  Future<void> destroyChatRoom(
-    String roomId,
-  ) {
-    return checkResult(ChatSDKEvent.destroyChatRoom, () {
-      return Client.getInstance.chatRoomManager.destroyChatRoom(roomId);
     });
   }
 

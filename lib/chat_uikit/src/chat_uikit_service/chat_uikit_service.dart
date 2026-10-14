@@ -47,25 +47,6 @@ class ChatUIKit extends ChatSDKService
   Future<void> init({required Options options}) async {
     _options = options;
     await super.init(options: options);
-    ChatSDKContext.instance.setUserId(currentUserId);
-  }
-
-  /// Login
-  ///
-  /// Param [userId] : userId
-  ///
-  /// Param [password] : user password
-  @override
-  Future<void> loginWithPassword({
-    required String userId,
-    required String password,
-  }) async {
-    try {
-      await super.loginWithPassword(userId: userId, password: password);
-      ChatSDKContext.instance.setUserId(userId);
-    } catch (e) {
-      rethrow;
-    }
   }
 
   @override

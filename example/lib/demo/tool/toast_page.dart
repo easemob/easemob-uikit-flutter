@@ -58,7 +58,6 @@ class _ToastPageState extends State<ToastPage>
         event == ChatSDKEvent.setSilentMode ||
         event == ChatSDKEvent.createGroup ||
         event == ChatSDKEvent.fetchChatThreadMembers ||
-        event == ChatSDKEvent.reportMessage ||
         event == ChatSDKEvent.clearSilentMode ||
         event == ChatSDKEvent.fetchPinnedMessages) {
       EasyLoading.show();
@@ -75,7 +74,6 @@ class _ToastPageState extends State<ToastPage>
         event == ChatSDKEvent.changeGroupOwner ||
         event == ChatSDKEvent.declineContactRequest ||
         event == ChatSDKEvent.setSilentMode ||
-        event == ChatSDKEvent.reportMessage ||
         event == ChatSDKEvent.createGroup ||
         event == ChatSDKEvent.clearSilentMode ||
         event == ChatSDKEvent.fetchPinnedMessages) {

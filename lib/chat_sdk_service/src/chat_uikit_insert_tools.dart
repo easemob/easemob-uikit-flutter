@@ -144,7 +144,7 @@ class ChatUIKitInsertTools {
         alertOperatorIdKey: group.owner ?? creator ?? '',
         alertOperatorNameKey: creator ?? group.owner ?? '',
         alertTargetIdKey: group.groupId,
-        alertTargetNameKey: group.name ?? '',
+        alertTargetNameKey: group.groupName ?? '',
       },
     );
 

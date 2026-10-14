@@ -36,52 +36,55 @@ class _TokenStatusHandlerWidgetState extends State<TokenStatusHandlerWidget>
   }
 
   @override
-  void onDisconnected() {
-    debugPrint('onDisconnected');
-  }
-
-  @override
-  void onUserDidLoginFromOtherDevice(LoginExtensionInfo info) {
-    showDialogInfo(title: 'Login From ${info.deviceName}');
-  }
-
-  @override
-  void onUserDidRemoveFromServer() {
-    debugPrint('onUserDidRemoveFromServer');
-    showDialogInfo(
-        title: 'User Removed', content: 'Please contact the administrator');
-  }
-
-  @override
-  void onUserDidForbidByServer() {
-    debugPrint('onUserDidForbidByServer');
-    showDialogInfo(
-        title: 'User Forbidden', content: 'Please contact the administrator');
-  }
-
-  @override
-  void onUserDidChangePassword() {
-    debugPrint('onUserDidChangePassword');
-    showDialogInfo(title: 'Password Changed', content: 'Please login again');
-  }
-
-  @override
-  void onUserDidLoginTooManyDevice() {
-    debugPrint('onUserDidLoginTooManyDevice');
-    showDialogInfo(title: 'LoginTooManyDevice');
-  }
-
-  @override
-  void onUserKickedByOtherDevice() {
-    debugPrint('onUserKickedByOtherDevice');
-    showDialogInfo(title: 'KickedByOtherDevice');
-  }
-
-  @override
-  void onUserAuthenticationFailed() {
-    debugPrint('onUserAuthenticationFailed');
-    showDialogInfo(
-        title: 'Authentication Failed', content: 'Please login again');
+  void onDisconnected(int? errorCode, LoginExtensionInfo? info) {
+    debugPrint('onDisconnected: $errorCode');
+    switch (errorCode) {
+      case ChatDisconnectErrorCode.USER_LOGIN_ANOTHER_DEVICE:
+        showDialogInfo(
+          title: 'Login From ${info?.deviceName ?? 'Other Device'}',
+        );
+        return;
+      case ChatDisconnectErrorCode.USER_REMOVED:
+        showDialogInfo(
+          title: 'User Removed',
+          content: 'Please contact the administrator',
+        );
+        return;
+      case ChatDisconnectErrorCode.USER_LOGIN_TOO_MANY_DEVICES:
+        showDialogInfo(title: 'Login Too Many Devices');
+        return;
+      case ChatDisconnectErrorCode.USER_KICKED_BY_OTHER_DEVICE:
+        showDialogInfo(title: 'Kicked By Other Device');
+        return;
+      case ChatDisconnectErrorCode.USER_KICKED_BY_CHANGE_PASSWORD:
+        showDialogInfo(
+          title: 'Login Credential Changed',
+          content: 'Please login again',
+        );
+        return;
+      case ChatDisconnectErrorCode.APP_ACTIVE_NUMBER_REACH_LIMITATION:
+        showDialogInfo(title: 'App Active Number Reached Limit');
+        return;
+      case ChatDisconnectErrorCode.SERVER_SERVICE_RESTRICTED:
+        showDialogInfo(
+          title: 'Service Restricted',
+          content: 'Please contact the administrator',
+        );
+        return;
+      case ChatDisconnectErrorCode.INVALID_TOKEN:
+      case ChatDisconnectErrorCode.INVALID_PARAM:
+      case ChatDisconnectErrorCode.USER_NOT_FOUND:
+      case ChatDisconnectErrorCode.USER_BIND_ANOTHER_DEVICE:
+      case ChatDisconnectErrorCode.USER_DEVICE_CHANGED:
+      case ChatDisconnectErrorCode.SERVER_GET_DNSLIST_FAILED:
+        showDialogInfo(
+          title: 'Authentication Failed',
+          content: 'Please login again',
+        );
+        return;
+      default:
+        return;
+    }
   }
 
   @override
@@ -92,13 +95,6 @@ class _TokenStatusHandlerWidgetState extends State<TokenStatusHandlerWidget>
   @override
   void onTokenDidExpire() {
     showDialogInfo(title: 'Token Expired', content: 'Please login again');
-  }
-
-  @override
-  void onAppActiveNumberReachLimit() {
-    showDialogInfo(
-      title: 'onAppActiveNumberReachLimit',
-    );
   }
 
   void showDialogInfo({

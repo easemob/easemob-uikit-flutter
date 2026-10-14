@@ -19,12 +19,12 @@ mixin ChatUIKitGroupActions on ChatSDKService {
     String? desc,
     List<String>? inviteMembers,
     String? inviteReason,
-    required GroupOptions options,
+    required GroupConfigs configs,
   }) async {
     Group group = await super.createGroup(
       groupName: groupName,
       desc: desc,
-      options: options,
+      configs: configs,
       inviteMembers: inviteMembers,
       inviteReason: inviteReason,
     );

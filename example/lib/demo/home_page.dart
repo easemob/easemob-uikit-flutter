@@ -190,7 +190,7 @@ class _HomePageState extends State<HomePage>
   void onChatSDKEventEnd(ChatSDKEvent event, ChatError? error) {
     if (event == ChatSDKEvent.acceptContactRequest ||
         event == ChatSDKEvent.declineContactRequest ||
-        event == ChatSDKEvent.markConversationAsRead ||
+        event == ChatSDKEvent.clearConversationUnreadMessageCount ||
         event == ChatSDKEvent.setSilentMode ||
         event == ChatSDKEvent.clearSilentMode) {
       setState(() {});

@@ -2,23 +2,31 @@ import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
 import 'package:em_chat_uikit/chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
 
-class GroupListViewController with ChatUIKitListViewControllerBase {
-  GroupListViewController({
-    this.pageSize = 20,
-  });
+class GroupListViewController
+    with ChatUIKitListViewControllerBase, ConnectObserver {
+  GroupListViewController() {
+    ChatUIKit.instance.addObserver(this);
+  }
 
-  final int pageSize;
-  int pageNum = 0;
+  @override
+  void dispose() {
+    ChatUIKit.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void onDataSyncFinish(int type, ChatError? error) {
+    if (error == null && (type & ChatDataSyncType.joinedGroups) != 0) {
+      fetchItemList();
+    }
+  }
 
   @override
   Future<void> fetchItemList({bool force = false}) async {
     loadingType.value = ChatUIKitListViewType.loading;
-    pageNum = 0;
     try {
-      List<Group> items = await ChatUIKit.instance.fetchJoinedGroups(
-        pageSize: pageSize,
-        pageNum: pageNum,
-      );
+      List<Group> items = await ChatUIKit.instance.getJoinedGroups();
+      hasMore = false;
       List<GroupItemModel> tmp = mapperToGroupItemModelItems(items);
       list.clear();
       list.addAll(tmp);
@@ -34,18 +42,7 @@ class GroupListViewController with ChatUIKitListViewControllerBase {
 
   @override
   Future<void> fetchMoreItemList() async {
-    if (!hasMore) return;
-    pageNum += 1;
-    List<Group> items = await ChatUIKit.instance.fetchJoinedGroups(
-      pageSize: pageSize,
-      pageNum: pageNum,
-    );
-    if (items.isEmpty || items.length < pageSize) {
-      hasMore = false;
-    }
-    List<GroupItemModel> tmp = mapperToGroupItemModelItems(items);
-    list.addAll(tmp);
-    refresh();
+    hasMore = false;
   }
 
   void addNewGroup(String groupId) async {
@@ -54,7 +51,7 @@ class GroupListViewController with ChatUIKitListViewControllerBase {
     GroupItemModel info = GroupItemModel.fromProfile(
       ChatUIKitProfile.group(
         id: group.groupId,
-        groupName: group.name,
+        groupName: group.groupName,
       ),
     );
     list.insert(0, info);
@@ -69,7 +66,7 @@ class GroupListViewController with ChatUIKitListViewControllerBase {
       for (var item in groups) {
         list.add(ChatUIKitProfile.group(
           id: item.groupId,
-          groupName: item.name,
+          groupName: item.groupName,
         ));
       }
       return list;

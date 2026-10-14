@@ -51,18 +51,6 @@ mixin ContactActions on ContactWrapper {
     });
   }
 
-  Future<List<String>> fetchAllContactIds() {
-    return checkResult(ChatSDKEvent.fetchAllContactIds, () {
-      return Client.getInstance.contactManager.fetchAllContactIds();
-    });
-  }
-
-  Future<List<Contact>> fetchAllContacts() {
-    return checkResult(ChatSDKEvent.fetchAllContacts, () {
-      return Client.getInstance.contactManager.fetchAllContacts();
-    });
-  }
-
   Future<List<String>> fetchAllBlockedContactIds() {
     return checkResult(ChatSDKEvent.fetchAllBlockedContactIds, () {
       return Client.getInstance.contactManager.fetchBlockIds();

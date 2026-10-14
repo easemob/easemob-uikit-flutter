@@ -1,3 +1,13 @@
+## 2.4.0
+- Upgrade: Dependency SDK to 5.0.0.
+- Breaking: Remove password login and automatic-login handling; UIKit and its example now use explicit token login only.
+- Breaking: Adapt connection callbacks, automatic data synchronization, message read receipts, group configurations, and renamed SDK APIs to SDK 5.0.
+- Breaking: Remove client-side APIs that no longer have SDK replacements, including the default message-report submission flow and chat room creation/destruction.
+- Breaking: Remove public-group discovery APIs and obsolete push APIs; push integration now retains device-token binding only.
+- Change: Read conversations, contacts, joined groups, and pinned state from the synchronized local database.
+- Change: Refresh conversation, contact, and joined-group lists when the corresponding SDK data synchronization completes.
+- Change: Raise the iOS plugin deployment target to iOS 13.0.
+
 ## 2.3.4
 - Upgrade: Dependency SDK to 4.25.0.
 

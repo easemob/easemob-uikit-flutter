@@ -1,13 +1,17 @@
 import 'package:em_chat_uikit/chat_sdk_context/chat_sdk_context.dart';
+import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
 import 'package:em_chat_uikit/chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
 
 /// 联系人列表控制器
-class ContactListViewController with ChatUIKitListViewControllerBase {
+class ContactListViewController
+    with ChatUIKitListViewControllerBase, ConnectObserver {
   ContactListViewController({
     this.willShowHandler,
     this.enableRefresh = true,
-  });
+  }) {
+    ChatUIKit.instance.addObserver(this);
+  }
 
   /// 是否开启下来刷新
   final bool enableRefresh;
@@ -15,10 +19,20 @@ class ContactListViewController with ChatUIKitListViewControllerBase {
   /// 会话列表显示前的回调，你可以在这里对会话列表进行处理，比如排序或者加减等。如果不设置将会直接显示。
   final ContactListViewShowHandler? willShowHandler;
 
-  String? cursor;
+  @override
+  void dispose() {
+    ChatUIKit.instance.removeObserver(this);
+    super.dispose();
+  }
 
-  /// 获取联系人列表，会优先从本地获取，如果本地没有，并且没有从服务器获取过，则从服务器获取。
-  /// `force` (bool) 是否强制从服务器获取，默认为 `false`。
+  @override
+  void onDataSyncFinish(int type, ChatError? error) {
+    if (error == null && (type & ChatDataSyncType.contacts) != 0) {
+      reload();
+    }
+  }
+
+  /// 获取 SDK 自动同步到本地的联系人列表。
   @override
   Future<void> fetchItemList({
     bool force = false,
@@ -32,10 +46,6 @@ class ContactListViewController with ChatUIKitListViewControllerBase {
 
     try {
       List<String> items = await ChatUIKit.instance.getAllContactIds();
-      if ((items.isEmpty && !ChatSDKContext.instance.isContactLoadFinished()) ||
-          force == true) {
-        items = await fetchContacts();
-      }
       ChatSDKContext.instance.removeRequests(items);
       List<ContactItemModel> tmp = mapperToContactItemModels(items);
       list.clear();
@@ -48,12 +58,6 @@ class ContactListViewController with ChatUIKitListViewControllerBase {
     } catch (e) {
       loadingType.value = ChatUIKitListViewType.error;
     }
-  }
-
-  Future<List<String>> fetchContacts() async {
-    List<String> result = await ChatUIKit.instance.fetchAllContactIds();
-    ChatSDKContext.instance.setContactLoadFinished();
-    return result;
   }
 
   List<ContactItemModel> mapperToContactItemModels(List<String> userIds) {

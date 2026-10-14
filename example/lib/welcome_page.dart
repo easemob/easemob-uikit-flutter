@@ -17,19 +17,10 @@ class _WelcomePageState extends State<WelcomePage> with ChatUIKitThemeMixin {
   }
 
   void startShowTimer() async {
-    await Future.delayed(const Duration(seconds: 2)).then((value) {
-      return ChatUIKit.instance.isLoginBefore();
-    }).then((value) {
-      if (value) {
-        toHomePage();
-      } else {
-        toLoginPage();
-      }
-    });
-  }
-
-  void toHomePage() {
-    Navigator.of(context).pushReplacementNamed('/home');
+    await Future.delayed(const Duration(seconds: 2));
+    if (mounted) {
+      toLoginPage();
+    }
   }
 
   void toLoginPage() {

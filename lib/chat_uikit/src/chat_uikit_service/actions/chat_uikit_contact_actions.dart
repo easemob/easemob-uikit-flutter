@@ -23,15 +23,6 @@ mixin ChatUIKitContactActions on ChatSDKService {
   }
 
   @override
-  Future<List<String>> fetchAllContactIds() async {
-    List<String> ret = await super.fetchAllContactIds();
-    for (var userId in ret) {
-      ChatSDKContext.instance.removeRequest(userId);
-    }
-    return ret;
-  }
-
-  @override
   Future<void> addBlockedContact({required String userId}) async {
     await super.addBlockedContact(userId: userId);
     ChatUIKit.instance.onBlockedContactAdded(userId);

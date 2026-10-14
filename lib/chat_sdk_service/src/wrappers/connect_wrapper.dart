@@ -11,16 +11,10 @@ mixin ConnectWrapper on ChatUIKitServiceBase {
       ConnectionEventHandler(
         onConnected: onConnected,
         onDisconnected: onDisconnected,
-        onUserDidLoginFromOtherDevice: onUserDidLoginFromOtherDevice,
-        onUserDidRemoveFromServer: onUserDidRemoveFromServer,
-        onUserDidForbidByServer: onUserDidForbidByServer,
-        onUserDidChangePassword: onUserDidChangePassword,
-        onUserDidLoginTooManyDevice: onUserDidLoginTooManyDevice,
-        onUserKickedByOtherDevice: onUserKickedByOtherDevice,
-        onUserAuthenticationFailed: onUserAuthenticationFailed,
         onTokenWillExpire: onTokenWillExpire,
         onTokenDidExpire: onTokenDidExpire,
-        onAppActiveNumberReachLimit: onAppActiveNumberReachLimit,
+        onDataSyncStart: onDataSyncStart,
+        onDataSyncFinish: onDataSyncFinish,
       ),
     );
   }
@@ -41,70 +35,10 @@ mixin ConnectWrapper on ChatUIKitServiceBase {
   }
 
   @protected
-  void onDisconnected() {
+  void onDisconnected(int? errorCode, LoginExtensionInfo? info) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ConnectObserver) {
-        observer.onDisconnected();
-      }
-    }
-  }
-
-  void onUserDidLoginFromOtherDevice(LoginExtensionInfo deviceName) {
-    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
-      if (observer is ConnectObserver) {
-        observer.onUserDidLoginFromOtherDevice(deviceName);
-      }
-    }
-  }
-
-  @protected
-  void onUserDidRemoveFromServer() {
-    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
-      (observer as ConnectObserver).onUserDidRemoveFromServer();
-    }
-  }
-
-  @protected
-  void onUserDidForbidByServer() {
-    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
-      if (observer is ConnectObserver) {
-        observer.onUserDidForbidByServer();
-      }
-    }
-  }
-
-  @protected
-  void onUserDidChangePassword() {
-    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
-      if (observer is ConnectObserver) {
-        observer.onUserDidChangePassword();
-      }
-    }
-  }
-
-  @protected
-  void onUserDidLoginTooManyDevice() {
-    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
-      if (observer is ConnectObserver) {
-        observer.onUserDidLoginTooManyDevice();
-      }
-    }
-  }
-
-  @protected
-  void onUserKickedByOtherDevice() {
-    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
-      if (observer is ConnectObserver) {
-        observer.onUserKickedByOtherDevice();
-      }
-    }
-  }
-
-  @protected
-  void onUserAuthenticationFailed() {
-    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
-      if (observer is ConnectObserver) {
-        observer.onUserAuthenticationFailed();
+        observer.onDisconnected(errorCode, info);
       }
     }
   }
@@ -128,10 +62,19 @@ mixin ConnectWrapper on ChatUIKitServiceBase {
   }
 
   @protected
-  void onAppActiveNumberReachLimit() {
+  void onDataSyncStart(int type) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ConnectObserver) {
-        observer.onAppActiveNumberReachLimit();
+        observer.onDataSyncStart(type);
+      }
+    }
+  }
+
+  @protected
+  void onDataSyncFinish(int type, ChatError? error) {
+    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
+      if (observer is ConnectObserver) {
+        observer.onDataSyncFinish(type, error);
       }
     }
   }

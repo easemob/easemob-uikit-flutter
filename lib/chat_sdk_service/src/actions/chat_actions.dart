@@ -29,31 +29,9 @@ mixin ChatActions on ChatWrapper {
     });
   }
 
-  Future<void> sendMessageReadAck({required Message message}) {
-    return checkResult(ChatSDKEvent.sendMessageReadAck, () {
-      return Client.getInstance.chatManager.sendMessageReadAck(message);
-    });
-  }
-
-  Future<void> sendGroupMessageReadAck({
-    required String msgId,
-    required String groupId,
-    String? content,
-  }) {
-    return checkResult(ChatSDKEvent.sendGroupMessageReadAck, () {
-      return Client.getInstance.chatManager.sendGroupMessageReadAck(
-        msgId,
-        groupId,
-        content: content,
-      );
-    });
-  }
-
-  Future<void> sendConversationReadAck({required String conversationId}) {
-    return checkResult(ChatSDKEvent.sendConversationReadAck, () async {
-      return await Client.getInstance.chatManager.sendConversationReadAck(
-        conversationId,
-      );
+  Future<void> sendMessageReadReceipts({required List<Message> messages}) {
+    return checkResult(ChatSDKEvent.sendMessageReadReceipts, () {
+      return Client.getInstance.chatManager.sendMessageReadReceipts(messages);
     });
   }
 
@@ -118,23 +96,23 @@ mixin ChatActions on ChatWrapper {
     });
   }
 
-  Future<void> markAllConversationsAsRead() async {
-    return checkResult(ChatSDKEvent.markAllConversationsAsRead, () async {
-      Future<void> ret =
-          Client.getInstance.chatManager.markAllConversationsAsRead();
+  Future<void> clearAllConversationUnreadMessageCount() async {
+    return checkResult(ChatSDKEvent.clearAllConversationUnreadMessageCount,
+        () async {
+      Future<void> ret = Client.getInstance.chatManager
+          .clearAllConversationUnreadMessageCount();
       super.onConversationsUpdate();
       return ret;
     });
   }
 
-  Future<void> markConversationAsRead({
+  Future<void> clearConversationUnreadMessageCount({
     required String conversationId,
   }) {
-    return checkResult(ChatSDKEvent.markConversationAsRead, () async {
-      Conversation? conv = await Client.getInstance.chatManager.getConversation(
-        conversationId,
-      );
-      Future<void>? ret = conv?.markAllMessagesAsRead();
+    return checkResult(ChatSDKEvent.clearConversationUnreadMessageCount,
+        () async {
+      Future<void> ret = Client.getInstance.chatManager
+          .clearConversationUnreadMessageCount(conversationId);
       super.onConversationsUpdate();
       return ret;
     });
@@ -260,19 +238,6 @@ mixin ChatActions on ChatWrapper {
     });
   }
 
-  Future<CursorResult<Conversation>> fetchConversations({
-    String? cursor,
-    int pageSize = 20,
-  }) {
-    return checkResult(ChatSDKEvent.fetchConversations, () {
-      // ignore: deprecated_member_use
-      return Client.getInstance.chatManager.fetchConversation(
-        cursor: cursor,
-        pageSize: pageSize,
-      );
-    });
-  }
-
   Future<void> deleteRemoteMessagesWithIds({
     required String conversationId,
     required ConversationType type,
@@ -313,33 +278,14 @@ mixin ChatActions on ChatWrapper {
     });
   }
 
-  Future<CursorResult<Message>> fetchHistoryMessages({
-    required String conversationId,
-    ConversationType type = ConversationType.Chat,
-    int pageSize = 20,
-    SearchDirection direction = SearchDirection.Up,
-    String startMsgId = '',
-  }) {
-    return checkResult(ChatSDKEvent.fetchHistoryMessages, () {
-      // ignore: deprecated_member_use
-      return Client.getInstance.chatManager.fetchHistoryMessages(
-        conversationId: conversationId,
-        type: type,
-        startMsgId: startMsgId,
-        pageSize: pageSize,
-        direction: direction,
-      );
-    });
-  }
-
-  Future<CursorResult<Message>> fetchHistoryMessagesByOptions({
+  Future<CursorResult<Message>> fetchHistoryMessagesByOption({
     required String conversationId,
     required ConversationType type,
     FetchMessageOptions? options,
     String? cursor,
     int pageSize = 50,
   }) {
-    return checkResult(ChatSDKEvent.fetchHistoryMessagesByOptions, () {
+    return checkResult(ChatSDKEvent.fetchHistoryMessagesByOption, () {
       return Client.getInstance.chatManager.fetchHistoryMessagesByOption(
         conversationId,
         type,
@@ -368,7 +314,7 @@ mixin ChatActions on ChatWrapper {
         keywords,
         count: maxCount,
         timestamp: timestamp,
-        sender: sender,
+        senders: sender == null ? null : [sender],
         searchScope: MessageSearchScope.Content,
         direction: direction,
       );
@@ -383,28 +329,28 @@ mixin ChatActions on ChatWrapper {
     SearchDirection direction = SearchDirection.Up,
   }) {
     return checkResult(ChatSDKEvent.searchLocalMessage, () {
-      // ignore: deprecated_member_use
-      return Client.getInstance.chatManager.searchMsgFromDB(
+      return Client.getInstance.chatManager.loadMessagesWithKeyword(
         keywords,
         timestamp: timestamp,
-        maxCount: maxCount,
-        from: from ?? '',
+        count: maxCount,
+        sender: from,
+        searchScope: MessageSearchScope.Content,
         direction: direction,
       );
     });
   }
 
-  Future<CursorResult<GroupMessageAck>> fetchGroupAckList({
+  Future<CursorResult<GroupReadReceipt>> fetchGroupMessageReadReceipts({
     required String msgId,
     required String groupId,
-    String? startAckId,
+    String cursor = '',
     int pageSize = 20,
   }) {
-    return checkResult(ChatSDKEvent.fetchGroupAckList, () {
-      return Client.getInstance.chatManager.fetchGroupAcks(
+    return checkResult(ChatSDKEvent.fetchGroupMessageReadReceipts, () {
+      return Client.getInstance.chatManager.fetchGroupMessageReadReceipts(
         msgId,
         groupId,
-        startAckId: startAckId,
+        cursor: cursor,
         pageSize: pageSize,
       );
     });
@@ -428,20 +374,6 @@ mixin ChatActions on ChatWrapper {
     return checkResult(ChatSDKEvent.deleteLocalMessages, () {
       return Client.getInstance.chatManager.deleteMessagesBefore(
         beforeTime,
-      );
-    });
-  }
-
-  Future<void> reportMessage({
-    required String messageId,
-    required String tag,
-    required String reason,
-  }) {
-    return checkResult(ChatSDKEvent.reportMessage, () {
-      return Client.getInstance.chatManager.reportMessage(
-        messageId: messageId,
-        tag: tag,
-        reason: reason,
       );
     });
   }
@@ -515,19 +447,6 @@ mixin ChatActions on ChatWrapper {
   Future<List<TranslateLanguage>> fetchSupportedLanguages() {
     return checkResult(ChatSDKEvent.fetchSupportedLanguages, () {
       return Client.getInstance.chatManager.fetchSupportedLanguages();
-    });
-  }
-
-  Future<CursorResult<Conversation>> fetchPinnedConversations({
-    String? cursor,
-    int pageSize = 20,
-  }) {
-    return checkResult(ChatSDKEvent.fetchPinnedConversations, () {
-      // ignore: deprecated_member_use
-      return Client.getInstance.chatManager.fetchPinnedConversations(
-        cursor: cursor,
-        pageSize: pageSize,
-      );
     });
   }
 

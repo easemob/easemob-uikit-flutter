@@ -199,7 +199,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.3.4"
+    version: "2.4.0"
   ffi:
     dependency: transitive
     description:
@@ -355,34 +355,34 @@ packages:
     dependency: transitive
     description:
       name: im_flutter_sdk
-      sha256: "60c1225029c18f2cd7f43d928c27036351d356895695f31bde90f253a9c43d51"
+      sha256: e1c25f1f0e7405c38a8e743f6f261d364bae5875008798023a4ec4150ca8355f
       url: "https://pub.dev"
     source: hosted
-    version: "4.25.0"
+    version: "5.0.0"
   im_flutter_sdk_android:
     dependency: transitive
     description:
       name: im_flutter_sdk_android
-      sha256: b1c7c6d9ab48bdcf1f1b9006c950fb1a4c537d2502dddf74c536280d999869c5
+      sha256: eac40d9ee0ef679e2c965cf98a2dd92e8e61ad6eacf21e8aa9ad0f8ddac9f8b1
       url: "https://pub.dev"
     source: hosted
-    version: "4.25.0"
+    version: "5.0.0"
   im_flutter_sdk_interface:
     dependency: transitive
     description:
       name: im_flutter_sdk_interface
-      sha256: b6253e8035331f8801438fefea9692d1237d625031fef3f14719012d0301c6e0
+      sha256: e5d1272dc844444b5974f0d043c4446479c7ba897aa742da1228e573e3565fdf
       url: "https://pub.dev"
     source: hosted
-    version: "4.22.0"
+    version: "4.25.0"
   im_flutter_sdk_ios:
     dependency: transitive
     description:
       name: im_flutter_sdk_ios
-      sha256: "2ae847de774675e2cdb989e2a9e6547032147fe68bb7dd1a817d5f5b6e4ec0f6"
+      sha256: "4d8136110e6467a96b0c01f1f5b273dc622a135cf5b477c0491f8387adce2882"
       url: "https://pub.dev"
     source: hosted
-    version: "4.25.0"
+    version: "5.0.0"
   image_picker:
     dependency: transitive
     description:

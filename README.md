@@ -124,7 +124,12 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 void main() {
   ChatUIKit.instance
-      .init(options: Options(appKey: <!--Your AppKey-->, autoLogin: false))
+      .init(options: Options.withAppKey(
+        <!--Your AppKey-->,
+        dataSyncType: ChatDataSyncType.conversations |
+            ChatDataSyncType.contacts |
+            ChatDataSyncType.joinedGroups,
+      ))
       .then((value) {
     runApp(const MyApp());
   });
@@ -132,7 +137,8 @@ void main() {
 
 ```
 
-5. Log in to the UIKit.
+5. Log in to the UIKit. SDK 5.0 only supports token login and does not
+   automatically restore a login session, so the app must log in explicitly.
 
 ```dart
 Future<void> login() async {
@@ -182,7 +188,12 @@ const String chatterId = '';
 
 void main() {
   ChatUIKit.instance
-      .init(options: Options(appKey: appKey, autoLogin: false))
+      .init(options: Options.withAppKey(
+        appKey,
+        dataSyncType: ChatDataSyncType.conversations |
+            ChatDataSyncType.contacts |
+            ChatDataSyncType.joinedGroups,
+      ))
       .then((value) {
     runApp(MyApp());
   });
@@ -636,22 +647,6 @@ class ChatUIKitSettings {
   /// Whether to enable message editing feature.
   static bool enableMessageEdit = true;
 
-  /// Whether to enable message reporting feature.
-  static bool enableMessageReport = true;
-
-  /// Message report tags, can be customized. The reasons for reporting should be written in the localization file, and the key for the reason in the localization file should be consistent with the tag. For example, [ChatUIKitLocal.reportTarget1]
-  static List<String> reportMessageTags = [
-    'tag1',
-    'tag2',
-    'tag3',
-    'tag4',
-    'tag5',
-    'tag6',
-    'tag7',
-    'tag8',
-    'tag9',
-  ];
-
   /// Whether to enable message multi-selection feature.
   static bool enableMessageMultiSelect = true;
 
@@ -861,18 +856,14 @@ When the connection status or login status changes, the corresponding event in `
 
 ```dart
 ChatUIKit.instance.connectHandler(
-  onUserAuthenticationFailed: () {},
-  onUserDidChangePassword: () {},
-  onUserDidForbidByServer: () {},
-  onUserDidLoginFromOtherDevice: (info) {},
-  onUserDidLoginTooManyDevice: () {},
-  onUserDidRemoveFromServer: () {},
-  onUserKickedByOtherDevice: () {},
   onConnected: () {},
-  onDisconnected: () {},
+  onDisconnected: (errorCode, info) {
+    // Branch on ChatDisconnectErrorCode when the login state is invalid.
+  },
   onTokenWillExpire: () {},
   onTokenDidExpire: () {},
-  onAppActiveNumberReachLimit: () {},
+  onDataSyncStart: (type) {},
+  onDataSyncFinish: (type, error) {},
 );
 ```
 

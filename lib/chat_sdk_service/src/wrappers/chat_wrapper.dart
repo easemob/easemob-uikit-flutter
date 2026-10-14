@@ -10,13 +10,9 @@ mixin ChatWrapper on ChatUIKitServiceBase {
       ChatEventHandler(
         onMessagesReceived: onMessagesReceived,
         onCmdMessagesReceived: onCmdMessagesReceived,
-        onMessagesRead: onMessagesRead,
-        onGroupMessageRead: onGroupMessageRead,
-        onReadAckForGroupMessageUpdated: onReadAckForGroupMessageUpdated,
+        onMessageReadReceipts: onMessageReadReceipts,
         onMessagesDelivered: onMessagesDelivered,
-        onMessagesRecalled: onMessagesRecalled,
         onConversationsUpdate: onConversationsUpdate,
-        onConversationRead: onConversationRead,
         onMessageReactionDidChange: onMessageReactionDidChange,
         onMessageContentChanged: onMessageContentChanged,
         onMessagePinChanged: onMessagePinChanged,
@@ -52,28 +48,10 @@ mixin ChatWrapper on ChatUIKitServiceBase {
   }
 
   @protected
-  void onMessagesRead(List<Message> messages) {
+  void onMessageReadReceipts(List<MessageReadReceipt> receipts) {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
-        observer.onMessagesRead(messages);
-      }
-    }
-  }
-
-  @protected
-  void onGroupMessageRead(List<GroupMessageAck> groupMessageAcks) {
-    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
-      if (observer is ChatObserver) {
-        observer.onGroupMessageRead(groupMessageAcks);
-      }
-    }
-  }
-
-  @protected
-  void onReadAckForGroupMessageUpdated() {
-    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
-      if (observer is ChatObserver) {
-        observer.onReadAckForGroupMessageUpdated();
+        observer.onMessageReadReceipts(receipts);
       }
     }
   }
@@ -83,16 +61,6 @@ mixin ChatWrapper on ChatUIKitServiceBase {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
         observer.onMessagesDelivered(messages);
-      }
-    }
-  }
-
-  @protected
-  void onMessagesRecalled(List<Message> messages) {
-    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
-      if (observer is ChatObserver) {
-        // ignore: deprecated_member_use_from_same_package
-        observer.onMessagesRecalled(messages);
       }
     }
   }
@@ -118,15 +86,6 @@ mixin ChatWrapper on ChatUIKitServiceBase {
     for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
       if (observer is ChatObserver) {
         observer.onConversationsUpdate();
-      }
-    }
-  }
-
-  @protected
-  void onConversationRead(String from, String to) {
-    for (var observer in List<ChatUIKitObserverBase>.of(observers)) {
-      if (observer is ChatObserver) {
-        observer.onConversationRead(from, to);
       }
     }
   }

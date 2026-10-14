@@ -352,9 +352,7 @@ class _ConversationsViewState extends State<ConversationsView>
           label: ChatUIKitLocal.conversationListLongPressMenuRead
               .localString(context),
           onTap: () async {
-            ChatUIKit.instance.markConversationAsRead(
-              conversationId: info.profile.id,
-            );
+            controller.markConversationAsRead(info.profile.id);
             Navigator.of(context).pop();
           },
         ),
@@ -496,7 +494,7 @@ class _ConversationsViewState extends State<ConversationsView>
     if (group is Group) {
       pushNewConversation(ChatUIKitProfile.group(
         id: group.groupId,
-        groupName: group.name,
+        groupName: group.groupName,
       ));
     }
   }

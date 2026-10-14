@@ -575,7 +575,7 @@ class _MessagesViewState extends State<MessagesView>
         return ret;
       },
       itemBuilder: (ctx, model) {
-        controller.sendMessageReadAck(model.message);
+        controller.sendMessageReadReceipt(model.message);
         return widget.itemBuilder?.call(ctx, model) ?? itemBuilder(ctx, model);
       },
       alertItemBuilder: alertItem,
@@ -1790,32 +1790,6 @@ class _MessagesViewState extends State<MessagesView>
     }
   }
 
-  void reportMessage(MessageModel model) async {
-    List<String> reasonKeys = ChatUIKitSettings.reportMessageTags;
-    List<String> reasons =
-        reasonKeys.map((e) => e.localString(context)).toList();
-
-    final reportReason = await ChatUIKitRoute.pushOrPushNamed(
-      context,
-      ChatUIKitRouteNames.reportMessageView,
-      ReportMessageViewArguments(
-        messageId: model.message.msgId,
-        reportReasons: reasons,
-        attributes: widget.attributes,
-      ),
-    );
-
-    if (reportReason != null && reportReason is String) {
-      int index = reasons.indexOf(reportReason);
-      String tag = reasonKeys[index];
-      controller.reportMessage(
-        message: model.message,
-        tag: tag,
-        reason: reportReason,
-      );
-    }
-  }
-
   void pushNextPage(ChatUIKitProfile profile) async {
     clearAllType();
     inputController.switchPanel(
@@ -2258,32 +2232,6 @@ class _MessagesViewState extends State<MessagesView>
         ));
       }
 
-      if (model.message.status == MessageStatus.SUCCESS &&
-          element == ChatUIKitActionType.report &&
-          ChatUIKitSettings.enableMessageReport) {
-        // 举报
-        items.add(ChatUIKitEventAction.normal(
-          actionType: ChatUIKitActionType.report,
-          label: ChatUIKitLocal.messagesViewLongPressActionsTitleReport
-              .localString(context),
-          style: TextStyle(
-            color: theme.color.isDark
-                ? theme.color.neutralColor98
-                : theme.color.neutralColor1,
-            fontWeight: theme.font.bodyLarge.fontWeight,
-            fontSize: theme.font.bodyLarge.fontSize,
-          ),
-          icon: ChatUIKitImageLoader.messageLongPressReport(
-            color: theme.color.isDark
-                ? theme.color.neutralColor9
-                : theme.color.neutralColor3,
-          ),
-          onTap: () async {
-            closeMenu();
-            reportMessage(model);
-          },
-        ));
-      }
       if (element == ChatUIKitActionType.delete) {
         // 删除
         items.add(ChatUIKitEventAction.normal(

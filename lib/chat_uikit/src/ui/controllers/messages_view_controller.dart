@@ -279,17 +279,6 @@ class MessagesViewController extends ChangeNotifier
   }
 
   @override
-  void onConversationRead(String from, String to) {
-    if (from == profile.id) {
-      for (var element in msgModelList) {
-        element.message.hasReadAck = true;
-      }
-
-      refresh();
-    }
-  }
-
-  @override
   void onMessagesDelivered(List<Message> messages) {
     List<MessageModel> list = msgModelList
         .where((element1) => messages
@@ -305,16 +294,23 @@ class MessagesViewController extends ChangeNotifier
   }
 
   @override
-  void onMessagesRead(List<Message> messages) {
-    List<MessageModel> list = msgModelList
-        .where((element1) => messages
-            .where((element2) => element1.message.msgId == element2.msgId)
-            .isNotEmpty)
-        .toList();
-    if (list.isNotEmpty) {
-      for (var element in list) {
-        element.message.hasReadAck = true;
+  void onMessageReadReceipts(List<MessageReadReceipt> receipts) async {
+    bool updated = false;
+    for (var receipt in receipts) {
+      if (receipt.conversationId != profile.id) continue;
+      final index = msgModelList.indexWhere(
+        (element) => element.message.msgId == receipt.messageId,
+      );
+      if (index == -1) continue;
+      final message = await ChatUIKit.instance.loadMessage(
+        messageId: receipt.messageId,
+      );
+      if (message != null) {
+        msgModelList[index] = msgModelList[index].copyWith(message: message);
+        updated = true;
       }
+    }
+    if (updated) {
       refresh();
     }
   }
@@ -592,21 +588,6 @@ class MessagesViewController extends ChangeNotifier
     }
   }
 
-  Future<void> reportMessage({
-    required Message message,
-    required String tag,
-    required String reason,
-  }) async {
-    try {
-      ChatUIKit.instance.reportMessage(
-        messageId: message.msgId,
-        tag: tag,
-        reason: reason,
-      );
-      // ignore: empty_catches
-    } catch (e) {}
-  }
-
   Future<void> sendVoiceMessage(
       String path, int duration, String? displayName) async {
     final message = Message.createVoiceSendMessage(
@@ -755,6 +736,7 @@ class MessagesViewController extends ChangeNotifier
       }
     }
     willSendMsg.addProfile();
+    willSendMsg.isNeedReadReceipt = true;
     if (ChatUIKit.instance.currentUserId != null) {
       final profile = ChatUIKitProvider.instance.getProfileById(
         ChatUIKit.instance.currentUserId!,
@@ -818,45 +800,37 @@ class MessagesViewController extends ChangeNotifier
 
 // support single chat.
   Future<void> sendConversationsReadAck() async {
-    await markAllMessageAsRead();
-    if (conversationType == ConversationType.Chat) {
-      try {
-        final conv = await ChatUIKit.instance.getConversation(
-          conversationId: profile.id,
-          type: conversationType,
-        );
-        int unreadCount = await conv?.unreadCount() ?? 0;
-        if (unreadCount > 0) {
-          await ChatUIKit.instance
-              .sendConversationReadAck(conversationId: profile.id);
-          for (var element in msgModelList) {
-            element.message.hasReadAck = true;
-          }
-        }
-
-        // 因为已读状态是对方看的，所以这个时候不需要刷新ui
-        // updateView();
-        // ignore: empty_catches
-      } catch (e) {
-        debugPrint('sendConversationsReadAck: $e');
+    final messages = msgModelList
+        .map((element) => element.message)
+        .where((message) =>
+            message.direction == MessageDirection.RECEIVE &&
+            message.isNeedReadReceipt &&
+            !message.isRead)
+        .take(50)
+        .toList();
+    try {
+      await markAllMessageAsRead();
+      if (messages.isNotEmpty) {
+        await ChatUIKit.instance.sendMessageReadReceipts(messages: messages);
       }
+    } catch (e) {
+      debugPrint('sendConversationsReadAck: $e');
     }
   }
 
-  void sendMessageReadAck(Message message) {
-    if (message.chatType == ChatType.Chat &&
-        message.direction == MessageDirection.RECEIVE &&
-        message.hasReadAck == false) {
+  void sendMessageReadReceipt(Message message) {
+    if (message.direction == MessageDirection.RECEIVE &&
+        message.isNeedReadReceipt &&
+        !message.isRead) {
       ChatSDKService.instance
-          .sendMessageReadAck(message: message)
-          .then((value) {
-        message.hasReadAck = true;
-      }).catchError((error) {});
+          .sendMessageReadReceipts(messages: [message]).catchError((error) {});
     }
   }
 
   Future<void> markAllMessageAsRead() async {
-    await ChatUIKit.instance.markConversationAsRead(conversationId: profile.id);
+    await ChatUIKit.instance.clearConversationUnreadMessageCount(
+      conversationId: profile.id,
+    );
   }
 
   Future<void> downloadMessage(Message message) async {

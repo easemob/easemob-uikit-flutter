@@ -6,10 +6,6 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 
-const String convLoadFinishedKey =
-    'EaseChatUIKit_conversation_load_more_finished';
-const String contactLoadFinishedKey =
-    'EaseChatUIKit_contact_load_more_finished';
 const String muteMapKey = 'EaseChatUIKit_conversation_mute_map';
 const String requestsKey = 'EaseChatUIKit_friend_requests';
 
@@ -95,28 +91,6 @@ extension Request on ChatSDKContext {
       save();
       ChatUIKit.instance.onFriendRequestCountChanged(newRequestCount());
     }
-  }
-}
-
-extension ContactLoad on ChatSDKContext {
-  bool isContactLoadFinished() {
-    return cachedMap[contactLoadFinishedKey] ??= false;
-  }
-
-  void setContactLoadFinished() {
-    cachedMap[contactLoadFinishedKey] = true;
-    save();
-  }
-}
-
-extension ConversationFirstLoad on ChatSDKContext {
-  bool isConversationLoadFinished() {
-    return cachedMap[convLoadFinishedKey] ??= false;
-  }
-
-  void setConversationLoadFinished() {
-    cachedMap[convLoadFinishedKey] = true;
-    save();
   }
 }
 

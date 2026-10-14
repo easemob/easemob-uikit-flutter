@@ -102,12 +102,14 @@ class ThreadMessagesViewController
     try {
       fetching = true;
       CursorResult<Message> result =
-          await ChatUIKit.instance.fetchHistoryMessages(
+          await ChatUIKit.instance.fetchHistoryMessagesByOption(
         conversationId: thread!.threadId,
         type: ConversationType.GroupChat,
+        options: const FetchMessageOptions(
+          direction: SearchDirection.Down,
+        ),
         pageSize: pageSize,
-        startMsgId: cursor ?? '',
-        direction: SearchDirection.Down,
+        cursor: cursor,
       );
       cursor = result.cursor;
       if (result.data.length < pageSize) {
@@ -245,21 +247,6 @@ class ThreadMessagesViewController
     } catch (e) {}
   }
 
-  Future<void> reportMessage({
-    required Message message,
-    required String tag,
-    required String reason,
-  }) async {
-    try {
-      ChatUIKit.instance.reportMessage(
-        messageId: message.msgId,
-        tag: tag,
-        reason: reason,
-      );
-      // ignore: empty_catches
-    } catch (e) {}
-  }
-
   Future<void> sendVoiceMessage(
       String path, int duration, String? displayName) async {
     if (await createThreadIfNotExits() == false) return;
@@ -377,6 +364,7 @@ class ThreadMessagesViewController
     willSendMsg.addProfile();
     willSendMsg.isChatThreadMessage = true;
     willSendMsg.chatType = ChatType.GroupChat;
+    willSendMsg.isNeedReadReceipt = true;
     final msg = await ChatSDKService.instance.sendMessage(message: willSendMsg);
     if (ChatUIKit.instance.currentUserId != null) {
       final profile = ChatUIKitProvider.instance.getProfileById(

@@ -51,7 +51,6 @@ class ChatUIKitSettings {
     ChatUIKitActionType.multiSelect,
     ChatUIKitActionType.pinMessage,
     ChatUIKitActionType.translate, // only text message
-    ChatUIKitActionType.report,
     ChatUIKitActionType.delete,
   ];
 
@@ -100,22 +99,6 @@ class ChatUIKitSettings {
 
   /// Whether to enable message editing feature
   static bool enableMessageEdit = true;
-
-  /// Whether to enable message reporting feature
-  static bool enableMessageReport = true;
-
-  /// Message report tags, can be customized. The reasons for reporting should be written in the localization file, and the key for the reason in the localization file should be consistent with the tag. For example, [ChatUIKitLocal.reportTarget1]
-  static List<String> reportMessageTags = [
-    'tag1',
-    'tag2',
-    'tag3',
-    'tag4',
-    'tag5',
-    'tag6',
-    'tag7',
-    'tag8',
-    'tag9',
-  ];
 
   /// Whether to enable message multi-select forwarding feature
   static bool enableMessageMultiSelect = true;

@@ -38,7 +38,7 @@ class ChatRouteFilter {
         groupId: arguments.profile.id,
       );
       ChatUIKitProfile profile = arguments.profile.copyWith(
-        showName: group.name,
+        showName: group.groupName,
         avatarUrl: group.extension,
       );
       ChatUIKitProvider.instance.addProfiles([profile]);
@@ -452,7 +452,7 @@ class ChatRouteFilter {
                     MessagesViewArguments(
                       profile: ChatUIKitProfile.group(
                         id: group.groupId,
-                        groupName: group.name,
+                        groupName: group.groupName,
                       ),
                     ),
                   );

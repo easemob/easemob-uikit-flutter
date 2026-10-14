@@ -268,9 +268,9 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
       ),
     );
 
-    Widget desc = group?.description?.isNotEmpty == true
+    Widget desc = group?.desc?.isNotEmpty == true
         ? Text(
-            group?.description ?? '',
+            group?.desc ?? '',
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             textScaler: TextScaler.noScaling,
@@ -368,8 +368,8 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
         const SizedBox(height: 12),
         name,
         const SizedBox(height: 4),
-        if (group?.description?.isNotEmpty == true) desc,
-        if (group?.description?.isNotEmpty == true) const SizedBox(height: 4),
+        if (group?.desc?.isNotEmpty == true) desc,
+        if (group?.desc?.isNotEmpty == true) const SizedBox(height: 4),
         row,
         const SizedBox(height: 20),
         Padding(
@@ -548,7 +548,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
             children: [
               Expanded(
                 child: Text(
-                  group?.name ?? "",
+                  group?.groupName ?? "",
                   overflow: TextOverflow.ellipsis,
                   textScaler: TextScaler.noScaling,
                   maxLines: 1,
@@ -583,7 +583,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
             children: [
               Expanded(
                 child: Text(
-                  group?.description ?? "",
+                  group?.desc ?? "",
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.end,
                   maxLines: 1,
@@ -846,7 +846,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
         attributes: widget.attributes,
         inputTextCallback: () async {
           if (group?.groupId != null) {
-            return group!.name ?? '';
+            return group!.groupName ?? '';
           }
           return null;
         },
@@ -854,7 +854,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     ).then((value) {
       if (value is String) {
         ChatUIKit.instance
-            .changeGroupName(groupId: group!.groupId, name: value)
+            .updateGroupName(groupId: group!.groupId, name: value)
             .then((_) {
           fetchGroup();
         }).catchError((e) {});
@@ -874,7 +874,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
         attributes: widget.attributes,
         inputTextCallback: () async {
           if (group?.groupId != null) {
-            return group!.description ?? '';
+            return group!.desc ?? '';
           }
           return null;
         },
@@ -882,7 +882,7 @@ class _GroupDetailsViewState extends State<GroupDetailsView>
     ).then((value) {
       if (value is String) {
         ChatUIKit.instance
-            .changeGroupDescription(groupId: group!.groupId, desc: value)
+            .updateGroupDesc(groupId: group!.groupId, desc: value)
             .then((_) {
           fetchGroup();
         }).catchError((e) {

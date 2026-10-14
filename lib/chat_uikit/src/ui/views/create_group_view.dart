@@ -261,15 +261,18 @@ class _CreateGroupViewState extends State<CreateGroupView>
                 ]
           ].map((e) => e.contactShowName).join(','),
       desc: info?.groupDesc ?? widget.createGroupInfo?.groupDesc,
-      options: GroupOptions(
+      configs: GroupConfigs(
         maxCount: info?.maxCount ?? widget.createGroupInfo?.maxCount ?? 1000,
-        style: info?.style ??
-            widget.createGroupInfo?.style ??
-            GroupStyle.PrivateMemberCanInvite,
         inviteNeedConfirm: info?.inviteNeedConfirm ??
             widget.createGroupInfo?.inviteNeedConfirm ??
             false,
         ext: info?.ext ?? widget.createGroupInfo?.ext,
+        isPublic: info?.isPublic ?? widget.createGroupInfo?.isPublic ?? false,
+        joinApprovalRequired: info?.joinApprovalRequired ??
+            widget.createGroupInfo?.joinApprovalRequired ??
+            false,
+        allowInvites:
+            info?.allowInvites ?? widget.createGroupInfo?.allowInvites ?? true,
       ),
       inviteMembers: userIds,
     )
@@ -295,7 +298,9 @@ class CreateGroupInfo {
     this.onGroupCreateCallback,
     this.inviteMembers,
     this.maxCount = 1000,
-    this.style = GroupStyle.PrivateMemberCanInvite,
+    this.isPublic = false,
+    this.joinApprovalRequired = false,
+    this.allowInvites = true,
     this.inviteNeedConfirm = false,
     this.ext,
   });
@@ -305,7 +310,9 @@ class CreateGroupInfo {
   final String? groupAvatar;
   final GroupCreateCallback? onGroupCreateCallback;
   final List<ChatUIKitProfile>? inviteMembers;
-  final GroupStyle style;
+  final bool isPublic;
+  final bool joinApprovalRequired;
+  final bool allowInvites;
   final int maxCount;
   final bool inviteNeedConfirm;
   final String? ext;

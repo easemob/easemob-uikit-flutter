@@ -123,7 +123,12 @@ import 'package:em_chat_uikit/chat_uikit.dart';
 
 void main() {
   ChatUIKit.instance
-      .init(options: Options(appKey: <!--Your AppKey-->, autoLogin: false))
+      .init(options: Options.withAppKey(
+        <!--Your AppKey-->,
+        dataSyncType: ChatDataSyncType.conversations |
+            ChatDataSyncType.contacts |
+            ChatDataSyncType.joinedGroups,
+      ))
       .then((value) {
     runApp(const MyApp());
   });
@@ -131,7 +136,7 @@ void main() {
 
 ```
 
-5. 登录
+5. 登录。SDK 5.0 仅支持 Token 登录，且不会自动恢复登录状态，应用每次启动时需显式登录。
 
 ```dart
 Future<void> login() async {
@@ -181,7 +186,12 @@ const String chatterId = '';
 
 void main() {
   ChatUIKit.instance
-      .init(options: Options(appKey: appKey, autoLogin: false))
+      .init(options: Options.withAppKey(
+        appKey,
+        dataSyncType: ChatDataSyncType.conversations |
+            ChatDataSyncType.contacts |
+            ChatDataSyncType.joinedGroups,
+      ))
       .then((value) {
     runApp(MyApp());
   });
@@ -635,22 +645,6 @@ class ChatUIKitSettings {
   /// Whether to enable message editing feature
   static bool enableMessageEdit = true;
 
-  /// Whether to enable message reporting feature
-  static bool enableMessageReport = true;
-
-  /// Message report tags, can be customized. The reasons for reporting should be written in the localization file, and the key for the reason in the localization file should be consistent with the tag. For example, [ChatUIKitLocal.reportTarget1]
-  static List<String> reportMessageTags = [
-    'tag1',
-    'tag2',
-    'tag3',
-    'tag4',
-    'tag5',
-    'tag6',
-    'tag7',
-    'tag8',
-    'tag9',
-  ];
-
   /// Whether to enable message multi-select forwarding feature
   static bool enableMessageMultiSelect = true;
 
@@ -855,18 +849,14 @@ class _UIKitEventHandlePageState extends State<UIKitEventHandlePage>
 
 ```dart
 ChatUIKit.instance.connectHandler(
-  onUserAuthenticationFailed: () {},
-  onUserDidChangePassword: () {},
-  onUserDidForbidByServer: () {},
-  onUserDidLoginFromOtherDevice: (info) {},
-  onUserDidLoginTooManyDevice: () {},
-  onUserDidRemoveFromServer: () {},
-  onUserKickedByOtherDevice: () {},
   onConnected: () {},
-  onDisconnected: () {},
+  onDisconnected: (errorCode, info) {
+    // 登录态失效时按 ChatDisconnectErrorCode 分支处理。
+  },
   onTokenWillExpire: () {},
   onTokenDidExpire: () {},
-  onAppActiveNumberReachLimit: () {},
+  onDataSyncStart: (type) {},
+  onDataSyncFinish: (type, error) {},
 );
 ```
 

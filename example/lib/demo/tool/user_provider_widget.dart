@@ -91,7 +91,7 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
   void onGroupCreatedByMyself(Group group) async {
     ChatUIKitProfile profile = ChatUIKitProfile.group(
       id: group.groupId,
-      groupName: group.name,
+      groupName: group.groupName,
     );
 
     ChatUIKitProvider.instance.addProfiles([profile]);
@@ -106,8 +106,8 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
       group.groupId,
     );
 
-    profile = profile?.copyWith(showName: group.name) ??
-        ChatUIKitProfile.group(id: group.groupId, groupName: group.name);
+    profile = profile?.copyWith(showName: group.groupName) ??
+        ChatUIKitProfile.group(id: group.groupId, groupName: group.groupName);
 
     ChatUIKitProvider.instance.addProfiles([profile]);
     // save to db
@@ -125,7 +125,7 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
     List<Group> groups = await ChatUIKit.instance.getJoinedGroups();
     List<ChatUIKitProfile> profiles = groups
         .map(
-          (e) => ChatUIKitProfile.group(id: e.groupId, groupName: e.name),
+          (e) => ChatUIKitProfile.group(id: e.groupId, groupName: e.groupName),
         )
         .toList();
 
@@ -142,7 +142,7 @@ class _UserProviderWidgetState extends State<UserProviderWidget>
         Group group = await ChatUIKit.instance.fetchGroupInfo(groupId: groupId);
         ChatUIKitProfile profile = ChatUIKitProfile.group(
           id: group.groupId,
-          groupName: group.name,
+          groupName: group.groupName,
           avatarUrl: group.extension,
         );
         list.add(profile);

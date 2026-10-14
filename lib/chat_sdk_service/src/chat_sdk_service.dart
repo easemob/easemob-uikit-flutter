@@ -128,21 +128,6 @@ class ChatSDKService extends ChatUIKitServiceBase
     Client.getInstance.startCallback();
   }
 
-  /// Login with password
-  ///
-  /// Param [userId] : userId
-  ///
-  /// Param [password] : user password
-  Future<void> loginWithPassword({
-    required String userId,
-    required String password,
-  }) async {
-    return checkResult(ChatSDKEvent.loginWithPassword, () async {
-      await Client.getInstance.loginWithPassword(userId, password);
-      await Client.getInstance.startCallback();
-    });
-  }
-
   /// Login with token
   ///
   /// Param [userId] : userId
@@ -167,11 +152,6 @@ class ChatSDKService extends ChatUIKitServiceBase
     });
   }
 
-  /// Get current is logged
-  ///
-  /// Return: true is logged, false is not logged
-  Future<bool> isLoginBefore() => Client.getInstance.isLoginBefore();
-
   Future<bool> isConnect() => Client.getInstance.isConnected();
 
   /// Get current user id
@@ -187,44 +167,22 @@ class ChatSDKService extends ChatUIKitServiceBase
 
   void connectHandler({
     VoidCallback? onConnected,
-    VoidCallback? onDisconnected,
-    Function(LoginExtensionInfo)? onUserDidLoginFromOtherDevice,
-    VoidCallback? onUserDidRemoveFromServer,
-    VoidCallback? onUserDidForbidByServer,
-    VoidCallback? onUserDidChangePassword,
-    VoidCallback? onUserDidLoginTooManyDevice,
-    VoidCallback? onUserKickedByOtherDevice,
-    VoidCallback? onUserAuthenticationFailed,
+    void Function(int? errorCode, LoginExtensionInfo? info)? onDisconnected,
     VoidCallback? onTokenWillExpire,
     VoidCallback? onTokenDidExpire,
-    VoidCallback? onAppActiveNumberReachLimit,
+    void Function(int type)? onDataSyncStart,
+    void Function(int type, ChatError? error)? onDataSyncFinish,
   }) {
     Client.getInstance.addConnectionEventHandler(
       'chat_sdk_wrapper',
       ConnectionEventHandler(
         onConnected: onConnected,
         onDisconnected: onDisconnected,
-        onUserDidLoginFromOtherDevice: onUserDidLoginFromOtherDevice,
-        onUserDidRemoveFromServer: onUserDidRemoveFromServer,
-        onUserDidForbidByServer: onUserDidForbidByServer,
-        onUserDidChangePassword: onUserDidChangePassword,
-        onUserDidLoginTooManyDevice: onUserDidLoginTooManyDevice,
-        onUserKickedByOtherDevice: onUserKickedByOtherDevice,
-        onUserAuthenticationFailed: onUserAuthenticationFailed,
         onTokenWillExpire: onTokenWillExpire,
         onTokenDidExpire: onTokenDidExpire,
-        onAppActiveNumberReachLimit: onAppActiveNumberReachLimit,
+        onDataSyncStart: onDataSyncStart,
+        onDataSyncFinish: onDataSyncFinish,
       ),
     );
-    Client.getInstance.userInfoManager
-        .fetchOwnInfo()
-        .then((value) => null)
-        .catchError((e) {
-      if (e is ChatError) {
-        if (e.code == 401) {
-          onUserAuthenticationFailed?.call();
-        }
-      }
-    });
   }
 }

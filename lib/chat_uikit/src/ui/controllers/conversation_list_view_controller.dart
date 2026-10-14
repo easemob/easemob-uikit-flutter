@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:em_chat_uikit/chat_sdk_context/chat_sdk_context.dart';
 import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
 import 'package:em_chat_uikit/chat_uikit/chat_uikit.dart';
 import 'package:em_chat_uikit/chat_uikit_provider/chat_uikit_provider.dart';
@@ -8,20 +7,19 @@ import 'package:flutter/material.dart';
 
 /// 会话列表控制器
 class ConversationListViewController
-    with ChatUIKitListViewControllerBase, ChatObserver, MultiObserver {
+    with
+        ChatUIKitListViewControllerBase,
+        ChatObserver,
+        MultiObserver,
+        ConnectObserver {
   ConversationListViewController({
     this.willShowHandler,
   }) {
     ChatUIKit.instance.addObserver(this);
   }
 
-  /// 一次从服务器获取的会话列表数量，默认为 `50`。
-  final int pageSize = 50;
-
   /// 会话列表显示前的回调，你可以在这里对会话列表进行处理，比如排序或者加减等。如果不设置将会直接显示。
   final ConversationListViewShowHandler? willShowHandler;
-
-  String? cursor;
 
   @override
   void dispose() {
@@ -68,6 +66,13 @@ class ConversationListViewController
     reload();
   }
 
+  @override
+  void onDataSyncFinish(int type, ChatError? error) {
+    if (error == null && (type & ChatDataSyncType.conversations) != 0) {
+      reload();
+    }
+  }
+
   Future<void> deleteConversation({required String conversationId}) async {
     int index = list.indexWhere((element) {
       return (element as ConversationItemModel).profile.id == conversationId;
@@ -102,11 +107,32 @@ class ConversationListViewController
 
   Future<void> markConversationAsRead(String conversationId) async {
     try {
-      Conversation? conv = await ChatUIKit.instance
-          .getConversation(conversationId: conversationId);
-      await conv?.markAllMessagesAsRead();
-      await ChatUIKit.instance
-          .sendConversationReadAck(conversationId: conversationId);
+      final index = list.cast<ConversationItemModel>().indexWhere(
+            (element) => element.profile.id == conversationId,
+          );
+      final profile =
+          index == -1 ? null : (list[index] as ConversationItemModel).profile;
+      final conversation = await ChatUIKit.instance.getConversation(
+        conversationId: conversationId,
+        type: profile?.type == ChatUIKitProfileType.group
+            ? ConversationType.GroupChat
+            : ConversationType.Chat,
+      );
+      final unreadCount = await conversation?.unreadCount() ?? 0;
+      final messages = unreadCount == 0
+          ? <Message>[]
+          : (await conversation!.loadMessages(loadCount: 50))
+              .where((message) =>
+                  message.direction == MessageDirection.RECEIVE &&
+                  message.isNeedReadReceipt &&
+                  !message.isRead)
+              .toList();
+      await ChatUIKit.instance.clearConversationUnreadMessageCount(
+        conversationId: conversationId,
+      );
+      if (messages.isNotEmpty) {
+        await ChatUIKit.instance.sendMessageReadReceipts(messages: messages);
+      }
       reload();
     } catch (e) {
       debugPrint('conversation list markConversationAsRead: $e');
@@ -123,19 +149,13 @@ class ConversationListViewController
     }
   }
 
-  /// 获取会话列表，会优先从本地获取，如果本地没有，并且没有从服务器获取过，则从服务器获取。
-  ///`force` (bool) 是否强制从服务器获取，默认为 `false`。
+  /// 获取 SDK 自动同步到本地的会话列表。
   @override
   Future<void> fetchItemList({bool force = false}) async {
     loadingType.value = ChatUIKitListViewType.loading;
     List<Conversation> items = await ChatUIKit.instance.getAllConversations();
     try {
-      if ((items.isEmpty &&
-              !ChatSDKContext.instance.isConversationLoadFinished()) ||
-          force == true) {
-        await fetchConversations();
-        items = await ChatUIKit.instance.getAllConversations();
-      }
+      await updateConversationMuteType(items);
       items = await clearEmptyAndChatRoomConversations(items);
       List<ConversationItemModel> tmp =
           await mapperToConversationModelItems(items);
@@ -177,7 +197,8 @@ class ConversationListViewController
     List<Conversation> tmp = [];
 
     // 获取配置值，判断是否允许空会话
-    bool enableEmpty = ChatUIKit.instance.options?.enableEmptyConversation ?? false;
+    bool enableEmpty =
+        ChatUIKit.instance.options?.enableEmptyConversation ?? false;
 
     for (var item in list) {
       if (item.type == ConversationType.ChatRoom) {
@@ -194,49 +215,6 @@ class ConversationListViewController
     return tmp;
   }
 
-  bool hasFetchPinned = false;
-  Future<List<Conversation>> fetchConversations() async {
-    List<Conversation> items = [];
-    if (!hasFetchPinned) {
-      try {
-        CursorResult<Conversation> result =
-            await ChatUIKit.instance.fetchPinnedConversations(
-          pageSize: 50,
-        );
-        items.addAll(result.data);
-      } catch (e) {
-        debugPrint('fetchConversations error: $e');
-      }
-      hasFetchPinned = true;
-    }
-    bool hasError = false;
-    try {
-      CursorResult<Conversation> result =
-          await ChatUIKit.instance.fetchConversations(
-        pageSize: pageSize,
-        cursor: cursor,
-      );
-      cursor = result.cursor;
-      items.addAll(result.data);
-      if (result.data.length < pageSize || cursor == '') {
-        ChatSDKContext.instance.setConversationLoadFinished();
-        hasMore = false;
-      }
-    } catch (e) {
-      ChatSDKContext.instance.setConversationLoadFinished();
-      hasError = true;
-      debugPrint('fetchConversations error: $e');
-    }
-
-    await updateConversationMuteType(items);
-
-    if (hasMore && !hasError) {
-      List<Conversation> tmp = await fetchConversations();
-      items.addAll(tmp);
-    }
-    return items;
-  }
-
   Future<void> updateConversationMuteType(List<Conversation> items) async {
     try {
       List<List<Conversation>> data = [];
@@ -244,7 +222,7 @@ class ConversationListViewController
       while (index < items.length) {
         int intMin = min((index + 20), items.length);
         data.add(items.sublist(index, intMin));
-        index += intMin;
+        index = intMin;
       }
       for (var list in data) {
         if (list.isEmpty) continue;

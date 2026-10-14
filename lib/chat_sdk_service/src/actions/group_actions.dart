@@ -13,40 +13,12 @@ mixin GroupActions on GroupWrapper {
     });
   }
 
-  Future<List<Group>> fetchJoinedGroups({
-    int pageSize = 20,
-    int pageNum = 0,
-    bool needMemberCount = false,
-    bool needRole = false,
-  }) {
-    return checkResult(ChatSDKEvent.fetchJoinedGroups, () {
-      return Client.getInstance.groupManager.fetchJoinedGroupsFromServer(
-        pageSize: pageSize,
-        pageNum: pageNum,
-        needMemberCount: needMemberCount,
-        needRole: needRole,
-      );
-    });
-  }
-
-  Future<CursorResult<GroupInfo>> fetchPublicGroups({
-    int pageSize = 20,
-    String? cursor,
-  }) {
-    return checkResult(ChatSDKEvent.fetchPublicGroups, () {
-      return Client.getInstance.groupManager.fetchPublicGroupsFromServer(
-        pageSize: pageSize,
-        cursor: cursor,
-      );
-    });
-  }
-
   Future<Group> createGroup({
     required String groupName,
     String? desc,
     List<String>? inviteMembers,
     String? inviteReason,
-    required GroupOptions options,
+    required GroupConfigs configs,
   }) {
     return checkResult(ChatSDKEvent.createGroup, () async {
       Group group = await Client.getInstance.groupManager.createGroup(
@@ -54,7 +26,7 @@ mixin GroupActions on GroupWrapper {
         desc: desc,
         inviteMembers: inviteMembers,
         inviteReason: inviteReason,
-        options: options,
+        configs: configs,
       );
 
       onGroupCreatedByMyself(group);
@@ -65,13 +37,9 @@ mixin GroupActions on GroupWrapper {
 
   Future<Group> fetchGroupInfo({
     required String groupId,
-    bool fetchMembers = false,
   }) {
     return checkResult(ChatSDKEvent.fetchGroupInfo, () {
-      return Client.getInstance.groupManager.fetchGroupInfoFromServer(
-        groupId,
-        fetchMembers: fetchMembers,
-      );
+      return Client.getInstance.groupManager.fetchGroupInfoFromServer(groupId);
     });
   }
 
@@ -217,12 +185,12 @@ mixin GroupActions on GroupWrapper {
     });
   }
 
-  Future<void> changeGroupName({
+  Future<void> updateGroupName({
     required String groupId,
     required String name,
   }) {
-    return checkResult(ChatSDKEvent.changeGroupName, () async {
-      await Client.getInstance.groupManager.changeGroupName(
+    return checkResult(ChatSDKEvent.updateGroupName, () async {
+      await Client.getInstance.groupManager.updateGroupName(
         groupId,
         name,
       );
@@ -234,12 +202,12 @@ mixin GroupActions on GroupWrapper {
     });
   }
 
-  Future<void> changeGroupDescription({
+  Future<void> updateGroupDesc({
     required String groupId,
     required String desc,
   }) {
-    return checkResult(ChatSDKEvent.changeGroupDescription, () {
-      return Client.getInstance.groupManager.changeGroupDescription(
+    return checkResult(ChatSDKEvent.updateGroupDesc, () {
+      return Client.getInstance.groupManager.updateGroupDesc(
         groupId,
         desc,
       );

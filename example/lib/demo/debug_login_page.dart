@@ -55,7 +55,7 @@ class _DebugLoginPageState extends State<DebugLoginPage> {
       context: context,
       inputItems: [
         ChatUIKitDialogInputContentItem(hintText: 'UserId'),
-        ChatUIKitDialogInputContentItem(hintText: 'Password'),
+        ChatUIKitDialogInputContentItem(hintText: 'Token'),
       ],
       actionItems: list,
     );
@@ -65,10 +65,10 @@ class _DebugLoginPageState extends State<DebugLoginPage> {
     }
   }
 
-  void login(String userId, String password) async {
+  void login(String userId, String token) async {
     EasyLoading.show(status: 'Loading...');
     ChatUIKit.instance
-        .loginWithPassword(userId: userId, password: password)
+        .loginWithToken(userId: userId, token: token)
         .then((value) {
       toHomePage();
     }).catchError((e) {

@@ -1,5 +1,3 @@
-
-
 import 'package:em_chat_uikit/chat_sdk_context/chat_sdk_context.dart';
 import 'package:em_chat_uikit/chat_sdk_service/chat_sdk_service.dart';
 import 'package:em_chat_uikit/chat_uikit/chat_uikit.dart';
@@ -88,7 +86,6 @@ class BlockListViewController
 
   Future<List<String>> fetchBlocks() async {
     List<String> result = await ChatUIKit.instance.fetchAllBlockedContactIds();
-    ChatSDKContext.instance.setContactLoadFinished();
     return result;
   }
 
