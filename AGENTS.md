@@ -29,6 +29,7 @@ This file is versioned operating documentation. Whenever the package version or 
 - After completing a task, making an important decision, or receiving a correction from the user, append an entry to `dailylog/YYYY-MM-DD.md` using the local date. Create the file if it does not exist.
 - Append only; do not modify existing content. Format each entry as: `- HH:MM <what was done or decided>, reason: <...>`.
 - Logs may record progress and process details.
+- Pure read-only sessions (only querying, reading, or analyzing, with no repository files modified) are not logged; if a read-only analysis produces an adopted conclusion or decision (such as failure attribution or an approach trade-off), record one decision entry without logging the lookup process.
 - Track work logs under `dailylog/` in Git; do not add the directory to `.gitignore`. When making a user-authorized Git commit, include the log changes from the current work. Logging itself does not trigger a commit or push.
 
 ## Architecture
