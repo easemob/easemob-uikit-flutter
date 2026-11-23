@@ -6,7 +6,7 @@
 
 | Item | Current value |
 |---|---|
-| Package version | `3.0.0` |
+| Package version | `3.1.0` |
 | `im_flutter_sdk` | `^5.0.0` |
 | `chat_uikit_theme` | `1.0.4` |
 | `chat_uikit_keyboard_panel` | `0.1.2` |

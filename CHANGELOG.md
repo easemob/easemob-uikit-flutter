@@ -1,3 +1,6 @@
+## 3.1.0
+- iOS: Add Swift Package Manager support; the plugin now ships a `Package.swift` alongside the CocoaPods podspec, both consuming the same source tree.
+
 ## 3.0.0
 - Versioning: Re-release the SDK 5.0 integration from 2.4.0 as a major version to reflect its incompatibility with 2.3.x. No additional runtime or public API changes from 2.4.0.
 - Migration from 2.3.x: Use explicit token login on each application start; password login and SDK automatic login are no longer available.
